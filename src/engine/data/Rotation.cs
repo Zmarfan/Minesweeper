@@ -7,6 +7,10 @@ public struct Rotation {
     }
     private float _value;
 
+    public static Rotation Normal() {
+        return new Rotation(0);
+    }
+    
     public static Rotation UpsideDown() {
         return new Rotation(180);
     }

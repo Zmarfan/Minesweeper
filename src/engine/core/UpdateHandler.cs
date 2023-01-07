@@ -1,12 +1,15 @@
 ﻿using SDL2;
+using Worms.engine.game_object;
 
 namespace Worms.engine.core; 
 
 public class UpdateHandler {
+    private GameObject _root;
     private ulong _now;
     private ulong _last;
 
-    public UpdateHandler() {
+    public UpdateHandler(GameObject root) {
+        _root = root;
         _now = SDL.SDL_GetPerformanceCounter();
         _last = 0;
     }

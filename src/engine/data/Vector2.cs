@@ -14,6 +14,10 @@ public struct Vector2 {
     public float Magnitude => (float)Math.Sqrt(x * x + y * y);
     public float SqrMagnitude => x * x + y * y;
 
+    public static Vector2 Zero() {
+        return new Vector2(0, 1);
+    }
+    
     public static Vector2 One() {
         return new Vector2(1, 1);
     }
