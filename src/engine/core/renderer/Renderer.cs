@@ -1,4 +1,5 @@
-﻿using SDL2;
+﻿using System.Drawing;
+using SDL2;
 using Worms.engine.camera;
 using Worms.engine.data;
 using Worms.engine.game_object;
@@ -10,7 +11,8 @@ public class Renderer {
     private IntPtr _window;
     private IntPtr _renderer;
     private readonly GameSettings _settings;
-
+    private Color DefaultDrawColor => _settings.camera.defaultDrawColor;
+    
     private readonly Dictionary<string, StoredTexture> _loadedTextures = new();
 
     private readonly GameObjectHandler _gameObjectHandler;
@@ -40,6 +42,7 @@ public class Renderer {
 
     public void Render() {
         SDL.SDL_RenderClear(_renderer);
+        SDL.SDL_SetRenderDrawColor(_renderer, DefaultDrawColor.R, DefaultDrawColor.G, DefaultDrawColor.B, DefaultDrawColor.A);
         RenderTextures();
         SDL.SDL_RenderPresent(_renderer);
     }
@@ -58,9 +61,9 @@ public class Renderer {
             .ForEach(textureRenderer => {
                 StoredTexture texture = GetTexture(textureRenderer);
 
-                SDL.SDL_Rect destRect = WorldToScreenVectorCalculator.CalculateTextureDrawPosition(new WorldToScreenVectorParameters(textureRenderer.Transform, texture.surface, _settings));
+                SDL.SDL_FRect destRect = WorldToScreenVectorCalculator.CalculateTextureDrawPosition(new WorldToScreenVectorParameters(textureRenderer.Transform, texture.surface, _settings));
                 float worldRotation = textureRenderer.Transform.WorldRotation.Value;
-                SDL.SDL_RenderCopyEx(_renderer, texture.texture, IntPtr.Zero, ref destRect, worldRotation, IntPtr.Zero, SDL.SDL_RendererFlip.SDL_FLIP_NONE);
+                SDL.SDL_RenderCopyExF(_renderer, texture.texture, IntPtr.Zero, ref destRect, worldRotation, IntPtr.Zero, GetTextureFlipSettings(textureRenderer));
             });
     }
 
@@ -72,5 +75,16 @@ public class Renderer {
         }
 
         return texture;
+    }
+    
+    private static SDL.SDL_RendererFlip GetTextureFlipSettings(TextureRenderer tr) {
+        SDL.SDL_RendererFlip flip = SDL.SDL_RendererFlip.SDL_FLIP_NONE;
+        if (tr.flipX) {
+            flip |= SDL.SDL_RendererFlip.SDL_FLIP_HORIZONTAL;
+        }
+        if (tr.flipY) {
+            flip |= SDL.SDL_RendererFlip.SDL_FLIP_VERTICAL;
+        }
+        return flip;
     }
 }

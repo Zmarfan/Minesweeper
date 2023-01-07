@@ -17,13 +17,12 @@ public class UpdateHandler {
     
     public void Update() {
         float deltaTime = GetDeltaTime();
-        // _settings.camera.Size += deltaTime * 0.00005f;
-        // if (_settings.camera.Size > 2) {
-        //     _settings.camera.Size = 1;
-        //     _settings.camera.Position = Vector2.Zero();
-        // }
-        // _settings.camera.Position += Vector2.Right() * deltaTime * 0.05f;
-        // Console.WriteLine(_settings.camera.Position);
+        _settings.camera.Size += deltaTime * 0.00005f;
+        if (_settings.camera.Size > 2) {
+            _settings.camera.Size = 1;
+            _settings.camera.Position = new Vector2(-500, 0);
+        }
+        _settings.camera.Position += Vector2.Right() * deltaTime * 0.05f;
     }
 
     private float GetDeltaTime() {

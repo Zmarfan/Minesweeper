@@ -1,4 +1,5 @@
-﻿using Worms.engine;
+﻿using System.Drawing;
+using Worms.engine;
 using Worms.engine.camera;
 using Worms.engine.core;
 using Worms.engine.data;
@@ -27,23 +28,39 @@ internal static class Program {
                     .AddSibling("child2Sibling2")
                     .SetWorldPosition(new Vector2(-600, -400))
                     .SetLocalRotation(Rotation.UpsideDown())
-                    .SetComponent(TextureRendererBuilder.Builder("src\\assets\\test\\3.png").Build())
+                    .SetComponent(
+                        TextureRendererBuilder
+                            .Builder("src\\assets\\test\\3.png")
+                            .SetFlipY(true)
+                            .Build()
+                    )
                     .Build()
                     .AddSibling("child2Sibling3")
                     .SetLocalScale(0.25f)
                     .SetWorldPosition(new Vector2(600, -400))
                     .SetLocalRotation(Rotation.CounterClockwise())
-                    .SetComponent(TextureRendererBuilder.Builder("src\\assets\\test\\2.png").Build())
+                    .SetComponent(
+                        TextureRendererBuilder
+                            .Builder("src\\assets\\test\\2.png")
+                            .SetFlipX(true)
+                            .Build()
+                    )
                     .Build()
                         .AddChild("child2Sibling4")
-                        .SetWorldScale(2f)
+                        .SetWorldScale(1.75f)
                         .SetWorldPosition(new Vector2(0, 0))
                         .SetLocalRotation(Rotation.Clockwise())
-                        .SetComponent(TextureRendererBuilder.Builder("src\\assets\\test\\1.png").Build())
+                        .SetComponent(
+                            TextureRendererBuilder
+                                .Builder("src\\assets\\test\\1.png")
+                                .SetFlipX(true)
+                                .SetFlipY(true)
+                                .Build()
+                        )
                         .Build()
             .GetRoot();
         
-        Game game = new(new GameSettings("test game", 1200, 800, new Camera(2), root));
+        Game game = new(new GameSettings("test game", 1200, 800, new Camera(2, Color.Gray), root));
         game.Run();
     }
 }
