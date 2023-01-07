@@ -9,7 +9,7 @@ public class Transform : Component {
     public Vector2 LocalPosition { get; set; } = Vector2.Zero();
     public Rotation LocalRotation { get; set; } = Rotation.Normal();
     public float LocalScale { get; set; } = 1;
-    private readonly List<Transform> _children = new();
+    public readonly List<Transform> children = new();
 
     public Vector2 WorldPosition {
         get {
@@ -53,18 +53,14 @@ public class Transform : Component {
     }
 
     private void SetChild(Transform child) {
-        if (_children.Contains(child)) {
+        if (children.Contains(child)) {
             throw new ArgumentException("Can not add child to parent who already has that child");
         }
-        _children.Add(child);
+        children.Add(child);
     }
 
     public override string ToString() {
         string parentName = Parent?.GameObject.Name ?? "root";
-        string children = _children.Count == 0 ? string.Empty : _children
-            .Select(child => $"{child.GameObject}")
-            .Aggregate(new StringBuilder("\nChildren:\n"), (acc, entry) => acc.Append(entry))
-            .ToString();
-        return $"ParentName: {parentName}, LocalPosition: {LocalPosition}, WorldPosition: {WorldPosition}, LocalRotation: {LocalRotation}, WorldRotation: {WorldRotation}, LocalScale: {LocalScale}, WorldScale: {WorldScale}{children}";
+        return $"ParentName: {parentName}, LocalPosition: {LocalPosition}, WorldPosition: {WorldPosition}, LocalRotation: {LocalRotation}, WorldRotation: {WorldRotation}, LocalScale: {LocalScale}, WorldScale: {WorldScale}";
     }
 }

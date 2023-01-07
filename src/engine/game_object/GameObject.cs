@@ -7,13 +7,13 @@ public class GameObject {
     public string Name { get; set; }
     public bool IsActive { get; set; }
     public Transform Transform { get; }
-    private List<Component> _components;
+    private readonly List<Component> _components;
     
     public GameObject(string name, bool isActive, Transform transform, List<Component> components) {
         Name = name;
         IsActive = isActive;
         Transform = transform;
-        _components = components;
+        this._components = components;
     }
 
     public GameObject GetRoot() {
@@ -33,11 +33,25 @@ public class GameObject {
         builder.Build();
     }
 
+    public T GetComponent<T>() {
+        return (T)Convert.ChangeType(_components.First(static component => component is T), typeof(T));
+    }
+    
+    public bool TryGetComponent<T>(out T component) {
+        if (!_components.Any(static component => component is T)) {
+            component = default!;
+            return false;
+        }
+
+        component = GetComponent<T>();
+        return true;
+    }
+
     public override string ToString() {
-        string components = _components.Count == 0 ? string.Empty : _components
+        string componentsString = this._components.Count == 0 ? string.Empty : this._components
             .Select(component => $"{component}\n")
             .Aggregate(new StringBuilder("Components: "), (acc, entry) => acc.Append(entry))
             .ToString();
-        return $"GameObject: {Name}, IsActive: {IsActive}\nTransform: {Transform}\n{components}";
+        return $"GameObject: {Name}, IsActive: {IsActive}, Components: {componentsString}";
     }
 }

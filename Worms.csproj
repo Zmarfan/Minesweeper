@@ -5,10 +5,42 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="Sayers.SDL2.Core" Version="1.0.11" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="src\assets\test" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="src\assets\test\test.jpg" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="src\assets\test\1.png" />
+      <Content Include="src\assets\test\1.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\test\2.png" />
+      <Content Include="src\assets\test\2.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\test\3.png" />
+      <Content Include="src\assets\test\3.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\test\4.png" />
+      <Content Include="src\assets\test\4.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\test\5.png" />
+      <Content Include="src\assets\test\5.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

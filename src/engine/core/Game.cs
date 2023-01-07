@@ -1,4 +1,5 @@
 ﻿using SDL2;
+using Worms.engine.core.renderer;
 
 namespace Worms.engine.core; 
 
@@ -13,7 +14,7 @@ public class Game {
             throw new Exception();
         }
 
-        _renderer = new Renderer(settings.title, settings.width, settings.height);
+        _renderer = new Renderer(settings);
         _eventHandler = new EventHandler(() => _isRunning = false);
         _updateHandler = new UpdateHandler(settings.root);
 
