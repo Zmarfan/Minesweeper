@@ -1,5 +1,6 @@
 ﻿using SDL2;
 using Worms.engine.camera;
+using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.texture_renderer;
 
@@ -8,12 +9,13 @@ namespace Worms.engine.core.renderer;
 public class Renderer {
     private IntPtr _window;
     private IntPtr _renderer;
-    private readonly GameObject _root;
-    private readonly Camera _camera;
+    private readonly GameSettings _settings;
 
     private readonly Dictionary<string, StoredTexture> _loadedTextures = new();
 
-    public Renderer(GameSettings settings) {
+    private readonly GameObjectHandler _gameObjectHandler;
+    
+    public Renderer(GameSettings settings, GameObjectHandler gameObjectHandler) {
         _window = SDL.SDL_CreateWindow(
             settings.title,
             SDL.SDL_WINDOWPOS_CENTERED, 
@@ -30,9 +32,10 @@ public class Renderer {
         if (_renderer == IntPtr.Zero) {
             throw new Exception();
         }
-
-        _root = settings.root;
-        _camera = settings.camera;
+        SDL.SDL_SetHint(  SDL.SDL_HINT_RENDER_SCALE_QUALITY, "1" );
+        
+        _settings = settings;
+        _gameObjectHandler = gameObjectHandler;
     }
 
     public void Render() {
@@ -51,8 +54,7 @@ public class Renderer {
     }
 
     private unsafe void RenderTextures() {
-        GameObjectHelper.GetAllComponentsOfTypeFromGameObject<TextureRenderer>(_root, true)
-            .ToList()
+        _gameObjectHandler.AllActiveTextureRenderers
             .ForEach(textureRenderer => {
                 StoredTexture texture = GetTexture(textureRenderer);
 
@@ -72,11 +74,19 @@ public class Renderer {
     }
     
     private unsafe SDL.SDL_Rect CalculateTextureDrawPosition(Transform transform, SDL.SDL_Surface* sdlSurface) {
+        Vector2 screenPosition = CalculateScreenPosition(transform.WorldPosition, sdlSurface);
         SDL.SDL_Rect rect = new();
-        rect.x = (int)transform.WorldPosition.x;
-        rect.y = (int)-transform.WorldPosition.y;
-        rect.w = sdlSurface->w;
-        rect.h = sdlSurface->h;
+        rect.x = (int)screenPosition.x;
+        rect.y = (int)screenPosition.y;
+        rect.w = (int)(sdlSurface->w * (1 /_settings.camera.Size));
+        rect.h = (int)(sdlSurface->h * (1 /_settings.camera.Size));
         return rect;
+    }
+
+    private unsafe Vector2 CalculateScreenPosition(Vector2 position, SDL.SDL_Surface* sdlSurface) {
+        return new Vector2(
+            _settings.width / 2f + position.x * (1 /_settings.camera.Size) - sdlSurface->w / 2f * (1 /_settings.camera.Size),
+            _settings.height / 2f - position.y * (1 /_settings.camera.Size) - sdlSurface->h / 2f * (1 /_settings.camera.Size)
+        );
     }
 }

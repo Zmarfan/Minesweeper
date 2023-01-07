@@ -4,8 +4,20 @@ using Worms.engine.game_object.components;
 namespace Worms.engine.game_object; 
 
 public class GameObject {
+    public delegate void GameObjectUpdate();
+    public static event GameObjectUpdate? GameObjectUpdateEvent;
+    
     public string Name { get; set; }
-    public bool IsActive { get; set; }
+
+    public bool IsActive {
+        get => _isActive;
+        set {
+            GameObjectUpdateEvent?.Invoke();;
+            _isActive = value;
+        }
+    }
+    private bool _isActive;
+
     public Transform Transform { get; }
     private readonly List<Component> _components;
     
@@ -13,7 +25,7 @@ public class GameObject {
         Name = name;
         IsActive = isActive;
         Transform = transform;
-        this._components = components;
+        _components = components;
     }
 
     public GameObject GetRoot() {
@@ -31,6 +43,7 @@ public class GameObject {
     public void AddChild(GameObjectBuilder builder) {
         builder.SetParent(this);
         builder.Build();
+        GameObjectUpdateEvent?.Invoke();;
     }
 
     public T GetComponent<T>() {
@@ -48,7 +61,7 @@ public class GameObject {
     }
 
     public override string ToString() {
-        string componentsString = this._components.Count == 0 ? string.Empty : this._components
+        string componentsString = _components.Count == 0 ? string.Empty : _components
             .Select(component => $"{component}\n")
             .Aggregate(new StringBuilder("Components: "), (acc, entry) => acc.Append(entry))
             .ToString();

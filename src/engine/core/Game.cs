@@ -14,9 +14,10 @@ public class Game {
             throw new Exception();
         }
 
-        _renderer = new Renderer(settings);
+        GameObjectHandler gameObjectHandler = new(settings.root);
+        _renderer = new Renderer(settings, gameObjectHandler);
         _eventHandler = new EventHandler(() => _isRunning = false);
-        _updateHandler = new UpdateHandler(settings.root);
+        _updateHandler = new UpdateHandler(settings);
 
         _isRunning = true;
     }

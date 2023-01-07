@@ -4,18 +4,19 @@ using Worms.engine.game_object;
 namespace Worms.engine.core; 
 
 public class UpdateHandler {
-    private GameObject _root;
+    private GameSettings _settings;
     private ulong _now;
     private ulong _last;
 
-    public UpdateHandler(GameObject root) {
-        _root = root;
+    public UpdateHandler(GameSettings settings) {
+        _settings = settings;
         _now = SDL.SDL_GetPerformanceCounter();
         _last = 0;
     }
     
     public void Update() {
         float deltaTime = GetDeltaTime();
+        _settings.camera.Size += deltaTime * 0.00005f;
     }
 
     private float GetDeltaTime() {
