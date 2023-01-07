@@ -58,8 +58,9 @@ public class Renderer {
             .ForEach(textureRenderer => {
                 StoredTexture texture = GetTexture(textureRenderer);
 
-                SDL.SDL_Rect destRect = CalculateTextureDrawPosition(textureRenderer.Transform, texture.surface);
-                SDL.SDL_RenderCopy(_renderer, texture.texture, IntPtr.Zero, ref destRect);
+                SDL.SDL_Rect destRect = WorldToScreenVectorCalculator.CalculateTextureDrawPosition(new WorldToScreenVectorParameters(textureRenderer.Transform, texture.surface, _settings));
+                float worldRotation = textureRenderer.Transform.WorldRotation.Value;
+                SDL.SDL_RenderCopyEx(_renderer, texture.texture, IntPtr.Zero, ref destRect, worldRotation, IntPtr.Zero, SDL.SDL_RendererFlip.SDL_FLIP_NONE);
             });
     }
 
@@ -71,22 +72,5 @@ public class Renderer {
         }
 
         return texture;
-    }
-    
-    private unsafe SDL.SDL_Rect CalculateTextureDrawPosition(Transform transform, SDL.SDL_Surface* sdlSurface) {
-        Vector2 screenPosition = CalculateScreenPosition(transform.WorldPosition, sdlSurface);
-        SDL.SDL_Rect rect = new();
-        rect.x = (int)screenPosition.x;
-        rect.y = (int)screenPosition.y;
-        rect.w = (int)(sdlSurface->w * (1 /_settings.camera.Size));
-        rect.h = (int)(sdlSurface->h * (1 /_settings.camera.Size));
-        return rect;
-    }
-
-    private unsafe Vector2 CalculateScreenPosition(Vector2 position, SDL.SDL_Surface* sdlSurface) {
-        return new Vector2(
-            _settings.width / 2f + position.x * (1 /_settings.camera.Size) - sdlSurface->w / 2f * (1 /_settings.camera.Size),
-            _settings.height / 2f - position.y * (1 /_settings.camera.Size) - sdlSurface->h / 2f * (1 /_settings.camera.Size)
-        );
     }
 }

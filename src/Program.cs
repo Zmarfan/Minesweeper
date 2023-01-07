@@ -12,12 +12,12 @@ internal static class Program {
         GameObject root = GameObjectBuilder
             .Builder("rootObject")
             .SetLocalPosition(new Vector2(0, 0))
-            .SetLocalRotation(Rotation.Clockwise())
+            .SetLocalRotation(Rotation.Normal())
             .Build()
                 .AddChild("child1")
                 .SetWorldScale(0.5f)
                 .SetWorldPosition(new Vector2(-600, 400))
-                .SetWorldRotation(Rotation.Clockwise())
+                .SetLocalRotation(new Rotation(45))
                 .SetComponent(TextureRendererBuilder.Builder("src\\assets\\test\\5.png").Build())
                 .Build()
                     .AddChild("child2Sibling1")
@@ -26,24 +26,24 @@ internal static class Program {
                     .Build()
                     .AddSibling("child2Sibling2")
                     .SetWorldPosition(new Vector2(-600, -400))
-                    .SetWorldRotation(Rotation.UpsideDown())
+                    .SetLocalRotation(Rotation.UpsideDown())
                     .SetComponent(TextureRendererBuilder.Builder("src\\assets\\test\\3.png").Build())
                     .Build()
                     .AddSibling("child2Sibling3")
                     .SetLocalScale(0.25f)
                     .SetWorldPosition(new Vector2(600, -400))
-                    .SetWorldRotation(Rotation.UpsideDown())
+                    .SetLocalRotation(Rotation.CounterClockwise())
                     .SetComponent(TextureRendererBuilder.Builder("src\\assets\\test\\2.png").Build())
                     .Build()
                         .AddChild("child2Sibling4")
-                        .SetWorldScale(0.5f)
+                        .SetWorldScale(2f)
                         .SetWorldPosition(new Vector2(0, 0))
-                        .SetWorldRotation(Rotation.UpsideDown())
+                        .SetLocalRotation(Rotation.Clockwise())
                         .SetComponent(TextureRendererBuilder.Builder("src\\assets\\test\\1.png").Build())
                         .Build()
             .GetRoot();
         
-        Game game = new(new GameSettings("test game", 1200, 800, new Camera(), root));
+        Game game = new(new GameSettings("test game", 1200, 800, new Camera(2), root));
         game.Run();
     }
 }

@@ -3,7 +3,11 @@
 namespace Worms.engine.camera; 
 
 public class Camera {
-    public Vector2 LocalPosition { get; set; } = Vector2.Zero();
-    public Rotation LocalRotation { get; set; } = Rotation.Normal();
-    public float Size { get; set; } = 1;
+    public Vector2 Position { get; set; } = Vector2.Zero();
+    public Rotation Rotation { get; set; } = Rotation.Normal();
+    public float Size { get; set; }
+
+    public Camera(float size) {
+        Size = size;
+    }
 }
