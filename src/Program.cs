@@ -1,6 +1,7 @@
 ﻿using Worms.engine.core;
 using Worms.engine.data;
 using Worms.engine.game_object;
+using Worms.engine.game_object.components;
 using Worms.engine.game_object.components.texture_renderer;
 using Worms.game;
 

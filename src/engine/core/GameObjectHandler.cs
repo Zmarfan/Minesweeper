@@ -1,4 +1,5 @@
 ﻿using Worms.engine.game_object;
+using Worms.engine.game_object.components;
 using Worms.engine.game_object.scripts;
 
 namespace Worms.engine.core; 
@@ -32,6 +33,27 @@ public class GameObjectHandler {
         }
         foreach(Script script in StartScripts) {
             _hasRunStart.Add(script);
+        }
+    }
+    
+    public void DestroyGameObjects() {
+        bool didDestroy = false;
+        foreach (GameObject gameObject in AllGameObjects.Where(static gameObject => gameObject.ShouldDestroy)) {
+            didDestroy = true;
+            gameObject.Transform.Parent!.children.Remove(gameObject.Transform);
+        }
+
+        if (didDestroy) {
+            OnGameObjectChange();
+        }
+    }
+
+    public void DestroyComponents() {
+        IEnumerable<ToggleComponent> destroyComponents = AllGameObjects
+            .SelectMany(gameObject => gameObject.components)
+            .Where(component => component.ShouldDestroy);
+        if (destroyComponents.Any()) {
+            destroyComponents.ToList().ForEach(component => component.gameObject.components.Remove(component));
         }
     }
     

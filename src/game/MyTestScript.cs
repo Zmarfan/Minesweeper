@@ -12,8 +12,8 @@ public class MyTestScript : Script {
 
     public override void Update(float deltaTime) {
         _timer.Time += deltaTime;
-        if (_timer.Expired()) {
-            GetComponent<TextureRenderer>().IsActive = false;
+        if (_timer.Expired() && TryGetComponent(out TextureRenderer tr)) {
+            tr.Destroy();
         }
     }
 }

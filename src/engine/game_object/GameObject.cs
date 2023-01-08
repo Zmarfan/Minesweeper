@@ -3,7 +3,7 @@ using Worms.engine.game_object.components;
 
 namespace Worms.engine.game_object; 
 
-public class GameObject {
+public class GameObject : Object {
     public delegate void GameObjectUpdate();
     public static event GameObjectUpdate? GameObjectUpdateEvent;
     

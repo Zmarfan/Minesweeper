@@ -38,6 +38,8 @@ public class UpdateHandler {
         }
         _camera.Update(deltaTime);
         _gameObjectHandler.MadeUpdateCycle();
+        _gameObjectHandler.DestroyGameObjects();
+        _gameObjectHandler.DestroyComponents();
     }
 
     private float GetDeltaTime() {

@@ -1,6 +1,6 @@
 ﻿namespace Worms.engine.game_object.components; 
 
-public abstract class Component {
+public abstract class Component : Object {
     public GameObject gameObject = null!;
     public Transform Transform => gameObject.Transform;
 

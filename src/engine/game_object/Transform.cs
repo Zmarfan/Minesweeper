@@ -55,6 +55,10 @@ public class Transform : Component {
         children.Add(child);
     }
 
+    // You can't destroy the transform
+    public override void Destroy() {
+    }
+
     public override string ToString() {
         string parentName = Parent?.gameObject.Name ?? "root";
         return $"ParentName: {parentName}, LocalPosition: {LocalPosition}, WorldPosition: {WorldPosition}, LocalRotation: {LocalRotation}, WorldRotation: {WorldRotation}, LocalScale: {LocalScale}, WorldScale: {WorldScale}";
