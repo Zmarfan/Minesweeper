@@ -3,6 +3,7 @@ using Worms.engine.core;
 using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.texture_renderer;
+using Worms.game;
 
 namespace Worms;
 
@@ -14,39 +15,43 @@ internal static class Program {
             .SetLocalRotation(Rotation.Normal())
             .Build()
                 .AddChild("child1")
-                .SetWorldScale(0.5f)
-                .SetWorldPosition(new Vector2(-600, 400))
+                .SetLocalPosition(new Vector2(0, 0))
+                .SetLocalScale(1f)
                 .SetLocalRotation(new Rotation(45))
+                .SetComponent(new RotateSizeScript(true, 0.01f))
                 .SetComponent(TextureRendererBuilder.Builder("src\\assets\\test\\5.png").Build())
                 .Build()
                     .AddChild("child2Sibling1")
-                    .SetWorldPosition(new Vector2(600, 400))
+                    .SetLocalPosition(new Vector2(600, 400))
                     .SetComponent(TextureRendererBuilder.Builder("src\\assets\\test\\4.png").Build())
                     .Build()
                     .AddSibling("child2Sibling2")
-                    .SetWorldPosition(new Vector2(-600, -400))
+                    .SetLocalPosition(new Vector2(600, -400))
                     .SetLocalRotation(Rotation.UpsideDown())
+                    .SetLocalScale(1)
                     .SetComponent(
                         TextureRendererBuilder
                             .Builder("src\\assets\\test\\3.png")
                             .SetFlipY(true)
                             .Build()
                     )
+                    .SetComponent(new RotateSizeScript(true, 0.05f))
                     .Build()
-                    .AddSibling("child2Sibling3")
-                    .SetLocalScale(0.25f)
-                    .SetWorldPosition(new Vector2(600, -400))
-                    .SetLocalRotation(Rotation.CounterClockwise())
-                    .SetComponent(
-                        TextureRendererBuilder
-                            .Builder("src\\assets\\test\\2.png")
-                            .SetFlipX(true)
-                            .Build()
-                    )
-                    .Build()
-                        .AddChild("child2Sibling4")
-                        .SetWorldScale(1.75f)
-                        .SetWorldPosition(new Vector2(0, 0))
+                        .AddChild("child2Sibling3")
+                        .SetLocalScale(1)
+                        .SetLocalPosition(new Vector2(-1200, 0))
+                        .SetLocalRotation(Rotation.CounterClockwise())
+                        .SetComponent(
+                            TextureRendererBuilder
+                                .Builder("src\\assets\\test\\2.png")
+                                .SetFlipX(true)
+                                .Build()
+                        )
+                        .Build()
+                        .AddSibling("child2Sibling4")
+                        .SetLocalScale(0.5f)
+                        .SetComponent(new RotateSizeScript(true, 0.1f))
+                        .SetLocalPosition(new Vector2(-1200, 800))
                         .SetLocalRotation(Rotation.Clockwise())
                         .SetComponent(
                             TextureRendererBuilder
@@ -59,7 +64,7 @@ internal static class Program {
                         .Build()
             .GetRoot();
         
-        Game game = new(new GameSettings("test game", 1200, 800, new Camera(2, new Color(0.25f, 0.25f, 0.5f)), root));
+        Game game = new(new GameSettings("test game", 1200, 800, new MyCamera(), root));
         game.Run();
     }
 }

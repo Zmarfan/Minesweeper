@@ -10,7 +10,7 @@ public class GameObjectBuilder {
     private Rotation _localRotation = Rotation.Normal();
     private float _localScale = 1f;
     private bool _isActive = true;
-    private readonly List<Component> _components = new();
+    private readonly List<ToggleComponent> _components = new();
 
     public GameObjectBuilder(string name, Transform? parent) {
         _name = name;
@@ -35,12 +35,6 @@ public class GameObjectBuilder {
 
     public GameObjectBuilder SetParent(GameObject parent) {
         _parent = parent.Transform;
-        return this;
-    }
-    
-    public GameObjectBuilder SetWorldPosition(Vector2 worldPosition) {
-        Vector2 parentWorldPosition = _parent?.WorldPosition ?? Vector2.Zero();
-        _localPosition = worldPosition - parentWorldPosition;
         return this;
     }
     
@@ -76,7 +70,7 @@ public class GameObjectBuilder {
         return this;
     }
 
-    public GameObjectBuilder SetComponent(Component component) {
+    public GameObjectBuilder SetComponent(ToggleComponent component) {
         _components.Add(component);
         return this;
     }

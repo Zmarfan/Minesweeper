@@ -1,6 +1,6 @@
 ﻿using SDL2;
 
-namespace Worms.engine.core; 
+namespace Worms.engine.core.@event; 
 
 public class EventHandler {
     private readonly Action _quitCallback;

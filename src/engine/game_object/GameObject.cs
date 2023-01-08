@@ -19,9 +19,9 @@ public class GameObject {
     private bool _isActive;
 
     public Transform Transform { get; }
-    private readonly List<Component> _components;
+    private readonly List<ToggleComponent> _components;
     
-    public GameObject(string name, bool isActive, Transform transform, List<Component> components) {
+    public GameObject(string name, bool isActive, Transform transform, List<ToggleComponent> components) {
         Name = name;
         IsActive = isActive;
         Transform = transform;
@@ -46,11 +46,11 @@ public class GameObject {
         GameObjectUpdateEvent?.Invoke();;
     }
 
-    public T GetComponent<T>() {
-        return (T)Convert.ChangeType(_components.First(static component => component is T), typeof(T));
+    public T GetComponent<T>() where T : ToggleComponent {
+        return (T)_components.First(static component => component is T);
     }
     
-    public bool TryGetComponent<T>(out T component) {
+    public bool TryGetComponent<T>(out T component) where T : ToggleComponent {
         if (!_components.Any(static component => component is T)) {
             component = default!;
             return false;

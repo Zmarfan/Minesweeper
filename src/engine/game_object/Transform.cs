@@ -17,9 +17,8 @@ public class Transform : Component {
                 return LocalPosition;
             }
 
-            return Parent.WorldPosition + LocalPosition;
+            return Parent.WorldPosition + Vector2.RotatePointAroundPoint(LocalPosition * Parent.WorldScale, Vector2.Zero(), -Parent.WorldRotation.Value);
         }
-        set => LocalPosition = value - Parent?.WorldPosition ?? Vector2.Zero();
     }
     
     public Rotation WorldRotation {

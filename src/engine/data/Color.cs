@@ -15,6 +15,10 @@ public struct Color {
         return new Color(1, 1, 1);
     }
     
+    public static Color Black() {
+        return new Color(0, 0, 0, 1);
+    }
+    
     public Color(float r, float g, float b, float a) {
         this.r = r;
         this.g = g;

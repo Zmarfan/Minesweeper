@@ -84,6 +84,17 @@ public struct Vector2 {
         return vector;
     }
     
+    public static Vector2 RotatePointAroundPoint(Vector2 point, Vector2 pivot, float angle) {
+        double radians = Math.PI * angle / 180;
+        float s = (float)Math.Sin(radians);
+        float c = (float)Math.Cos(radians);
+
+        point -= pivot;
+        point = new Vector2(point.x * c - point.y * s, point.x * s + point.y * c) + pivot;
+
+        return point;
+    }
+    
     public Vector2(float x, float y) {
         this.x = x;
         this.y = y;

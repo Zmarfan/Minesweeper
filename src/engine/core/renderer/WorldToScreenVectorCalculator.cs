@@ -27,17 +27,6 @@ public static class WorldToScreenVectorCalculator {
     }
 
     private static Vector2 ConvertToCameraPosition(Vector2 position, Camera camera) {
-        return RotatePointAroundPoint(position, camera.Position, camera.Rotation.Value) - camera.Position;
-    }
-    
-    private static Vector2 RotatePointAroundPoint(Vector2 point, Vector2 pivot, float angle) {
-        double radians = Math.PI * angle / 180;
-        float s = (float)Math.Sin(radians);
-        float c = (float)Math.Cos(radians);
-
-        point -= pivot;
-        point = new Vector2(point.x * c - point.y * s, point.x * s + point.y * c) + pivot;
-
-        return point;
+        return Vector2.RotatePointAroundPoint(position, camera.Position, camera.Rotation.Value) - camera.Position;
     }
 }
