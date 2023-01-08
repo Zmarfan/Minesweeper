@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-using Worms.engine;
-using Worms.engine.camera;
+﻿using Worms.engine.camera;
 using Worms.engine.core;
 using Worms.engine.data;
 using Worms.engine.game_object;
@@ -53,6 +51,7 @@ internal static class Program {
                         .SetComponent(
                             TextureRendererBuilder
                                 .Builder("src\\assets\\test\\1.png")
+                                .SetColor(new Color(0.25f, 1f, 0.25f))
                                 .SetFlipX(true)
                                 .SetFlipY(true)
                                 .Build()
@@ -60,7 +59,7 @@ internal static class Program {
                         .Build()
             .GetRoot();
         
-        Game game = new(new GameSettings("test game", 1200, 800, new Camera(2, Color.Gray), root));
+        Game game = new(new GameSettings("test game", 1200, 800, new Camera(2, new Color(0.25f, 0.25f, 0.5f)), root));
         game.Run();
     }
 }

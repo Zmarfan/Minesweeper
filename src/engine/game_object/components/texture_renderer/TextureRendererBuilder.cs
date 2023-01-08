@@ -1,7 +1,10 @@
-﻿namespace Worms.engine.game_object.components.texture_renderer; 
+﻿using Worms.engine.data;
+
+namespace Worms.engine.game_object.components.texture_renderer; 
 
 public class TextureRendererBuilder {
     private readonly string _textureSrc;
+    private Color _color = Color.White();
     private bool _flipX;
     private bool _flipY;
 
@@ -14,7 +17,12 @@ public class TextureRendererBuilder {
     }
 
     public TextureRenderer Build() {
-        return new TextureRenderer(_textureSrc, _flipX, _flipY);
+        return new TextureRenderer(_textureSrc, _color, _flipX, _flipY);
+    }
+    
+    public TextureRendererBuilder SetColor(Color color) {
+        _color = color;
+        return this;
     }
     
     public TextureRendererBuilder SetFlipX(bool flipX) {

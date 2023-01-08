@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using Worms.engine.data;
+﻿using Worms.engine.data;
 
 namespace Worms.engine.camera; 
 

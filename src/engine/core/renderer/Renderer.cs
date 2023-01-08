@@ -1,5 +1,5 @@
-﻿using System.Drawing;
-using SDL2;
+﻿using SDL2;
+using Worms.engine.data;
 
 namespace Worms.engine.core.renderer; 
 
@@ -38,7 +38,7 @@ public class Renderer {
 
     public void Render() {
         SDL.SDL_RenderClear(_renderer);
-        SDL.SDL_SetRenderDrawColor(_renderer, DefaultDrawColor.R, DefaultDrawColor.G, DefaultDrawColor.B, DefaultDrawColor.A);
+        DrawBackground(DefaultDrawColor);
         _textureRendererHandler.RenderTextures(_gameObjectHandler.AllActiveTextureRenderers);
         SDL.SDL_RenderPresent(_renderer);
     }
@@ -47,5 +47,9 @@ public class Renderer {
         _textureRendererHandler.Clean();
         SDL.SDL_DestroyWindow(_window);
         SDL.SDL_DestroyRenderer(_renderer);
+    }
+
+    private void DrawBackground(Color c) {
+        SDL.SDL_SetRenderDrawColor(_renderer, c.Rbyte, c.Gbyte, c.Bbyte, c.Abyte);
     }
 }

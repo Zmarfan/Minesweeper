@@ -17,12 +17,13 @@ public class TextureRendererHandler {
         allActiveTextureRenderers.ForEach(RenderTexture);
     }
 
-    private unsafe void RenderTexture(TextureRenderer textureRenderer) {
-        StoredTexture texture = GetTexture(textureRenderer);
+    private unsafe void RenderTexture(TextureRenderer tr) {
+        StoredTexture texture = GetTexture(tr);
 
-        SDL.SDL_FRect destRect = WorldToScreenVectorCalculator.CalculateTextureDrawPosition(textureRenderer.Transform, texture.surface, _settings);
-        float worldRotation = textureRenderer.Transform.WorldRotation.Value - _settings.camera.Rotation.Value;
-        SDL.SDL_RenderCopyExF(_renderer, texture.texture, IntPtr.Zero, ref destRect, worldRotation, IntPtr.Zero, GetTextureFlipSettings(textureRenderer));
+        SDL.SDL_FRect destRect = WorldToScreenVectorCalculator.CalculateTextureDrawPosition(tr.Transform, texture.surface, _settings);
+        float worldRotation = tr.Transform.WorldRotation.Value - _settings.camera.Rotation.Value;
+        SDL.SDL_SetTextureColorMod(texture.texture, tr.color.Rbyte, tr.color.Gbyte, tr.color.Bbyte);
+        SDL.SDL_RenderCopyExF(_renderer, texture.texture, IntPtr.Zero, ref destRect, worldRotation, IntPtr.Zero, GetTextureFlipSettings(tr));
     }
     
     private unsafe StoredTexture GetTexture(TextureRenderer tr) {
