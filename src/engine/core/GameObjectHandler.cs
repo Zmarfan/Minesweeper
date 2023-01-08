@@ -1,4 +1,5 @@
 ﻿using Worms.engine.game_object;
+using Worms.engine.game_object.components;
 using Worms.engine.game_object.components.texture_renderer;
 
 namespace Worms.engine.core; 
@@ -11,24 +12,32 @@ public class GameObjectHandler {
     public GameObjectHandler(GameObject root) {
         _root = root;
         OnGameObjectChange();
+        OnToggleComponentChange();
         GameObject.GameObjectUpdateEvent += OnGameObjectChange;
+        ToggleComponent.ActivityUpdateEvent += OnToggleComponentChange;
     }
 
     ~GameObjectHandler() {
         GameObject.GameObjectUpdateEvent -= OnGameObjectChange;
+        ToggleComponent.ActivityUpdateEvent -= OnToggleComponentChange;
     }
 
     private void OnGameObjectChange() {
         AllActiveGameObjects = GetAllGameObjectsFromGameObject(_root, true).ToList();
-        AllActiveTextureRenderers = GetAllComponentsOfTypeFromGameObject<TextureRenderer>().ToList();
     }
     
-    private IEnumerable<T> GetAllComponentsOfTypeFromGameObject<T>() {
+    private void OnToggleComponentChange() {
+        AllActiveTextureRenderers = GetAllComponentsOfTypeFromGameObject<TextureRenderer>(true).ToList();
+    }
+    
+    private IEnumerable<T> GetAllComponentsOfTypeFromGameObject<T>(bool active) {
         List<T> components = new();
         AllActiveGameObjects
             .ToList()
             .ForEach(gameObject => {
-                if (gameObject.TryGetComponent(out T component)) {
+                if (!gameObject.TryGetComponent(out T component))
+                    return;
+                if (component is ToggleComponent { IsActive: true } || !active) {
                     components.Add(component);
                 }
             });

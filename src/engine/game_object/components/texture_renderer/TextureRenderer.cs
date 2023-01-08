@@ -2,7 +2,7 @@
 
 namespace Worms.engine.game_object.components.texture_renderer; 
 
-public class TextureRenderer : Component {
+public class TextureRenderer : ToggleComponent {
     private static readonly string ROOT_DIRECTORY = Directory.GetCurrentDirectory();
     
     public string textureSrc;
@@ -10,7 +10,7 @@ public class TextureRenderer : Component {
     public bool flipX;
     public bool flipY;
     
-    public TextureRenderer(string textureSrc, Color color, bool flipX, bool flipY) {
+    public TextureRenderer(bool isActive, string textureSrc, Color color, bool flipX, bool flipY) : base(isActive) {
         this.textureSrc = $"{ROOT_DIRECTORY}\\{textureSrc}";
         this.color = color;
         this.flipX = flipX;

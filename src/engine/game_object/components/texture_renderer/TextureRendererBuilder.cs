@@ -3,6 +3,7 @@
 namespace Worms.engine.game_object.components.texture_renderer; 
 
 public class TextureRendererBuilder {
+    private bool _isActive = true;
     private readonly string _textureSrc;
     private Color _color = Color.White();
     private bool _flipX;
@@ -17,7 +18,12 @@ public class TextureRendererBuilder {
     }
 
     public TextureRenderer Build() {
-        return new TextureRenderer(_textureSrc, _color, _flipX, _flipY);
+        return new TextureRenderer(_isActive, _textureSrc, _color, _flipX, _flipY);
+    }
+    
+    public TextureRendererBuilder SetIsActive(bool isActive) {
+        _isActive = isActive;
+        return this;
     }
     
     public TextureRendererBuilder SetColor(Color color) {
