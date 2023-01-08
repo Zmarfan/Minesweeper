@@ -5,7 +5,7 @@ namespace Worms.game;
 
 public class MyCamera : Camera {
     public override void Awake() {
-        Size = 7;
+        Size = 12;
         defaultDrawColor = new Color(0.1f, 0.25f, 0f);
     }
 

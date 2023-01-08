@@ -5,8 +5,8 @@ using Worms.engine.game_object.components.texture_renderer;
 namespace Worms.engine.core.renderer; 
 
 public class Renderer {
-    private IntPtr _window;
-    private IntPtr _renderer;
+    private readonly IntPtr _window;
+    private readonly IntPtr _renderer;
     private readonly TextureRendererHandler _textureRendererHandler;
     private readonly GameSettings _settings;
     private Color DefaultDrawColor => _settings.camera.defaultDrawColor;

@@ -17,7 +17,7 @@ internal static class Program {
                 .AddChild("child1")
                 .SetLocalPosition(new Vector2(0, 0))
                 .SetLocalScale(1f)
-                .SetComponent(new MyTestScript(true))
+                .SetComponent(new MyTestScript(2.5f))
                 .SetComponent(
                     TextureRendererBuilder
                         .Builder("src\\assets\\test\\5.png")
@@ -29,6 +29,7 @@ internal static class Program {
                     .AddChild("child2Sibling1")
                     .SetLocalPosition(new Vector2(600, 400))
                     .SetLocalScale(2)
+                    .SetComponent(new MyTestScript(1.5f))
                     .SetComponent(
                         TextureRendererBuilder
                             .Builder("src\\assets\\test\\4.png")
@@ -41,6 +42,7 @@ internal static class Program {
                     .SetLocalPosition(new Vector2(600, -400))
                     .SetLocalRotation(Rotation.UpsideDown())
                     .SetLocalScale(2)
+                    .SetComponent(new MyTestScript(4.5f))
                     .SetComponent(
                         TextureRendererBuilder
                             .Builder("src\\assets\\test\\3.png")
