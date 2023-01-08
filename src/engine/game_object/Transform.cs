@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Worms.engine.data;
+﻿using Worms.engine.data;
 using Worms.engine.game_object.components;
 
 namespace Worms.engine.game_object; 
@@ -29,7 +28,6 @@ public class Transform : Component {
 
             return Parent.WorldRotation + LocalRotation;
         }
-        set => LocalRotation = value - Parent?.WorldRotation ?? Rotation.Normal();
     }
     
     public float WorldScale {
@@ -40,7 +38,6 @@ public class Transform : Component {
 
             return Parent.WorldScale * LocalScale;
         }
-        set => LocalScale = value * Parent?.WorldScale ?? 1;
     }
     
     public Transform(Transform? parent, Vector2 localPosition, Rotation localRotation, float localScale) {

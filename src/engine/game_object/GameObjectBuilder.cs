@@ -42,24 +42,12 @@ public class GameObjectBuilder {
         _localPosition = localPosition;
         return this;
     }
-    
-    public GameObjectBuilder SetWorldRotation(Rotation worldRotation) {
-        Rotation parentWorldRotation = _parent?.WorldRotation ?? Rotation.Normal();
-        _localRotation = worldRotation - parentWorldRotation;
-        return this;
-    }
-    
+
     public GameObjectBuilder SetLocalRotation(Rotation localRotation) {
         _localRotation = localRotation;
         return this;
     }
 
-    public GameObjectBuilder SetWorldScale(float worldScale) {
-        float parentWorldScale = _parent?.WorldScale ?? 1;
-        _localScale = worldScale / parentWorldScale;
-        return this;
-    }
-    
     public GameObjectBuilder SetLocalScale(float localScale) {
         _localScale = localScale;
         return this;

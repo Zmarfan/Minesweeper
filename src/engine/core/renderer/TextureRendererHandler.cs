@@ -15,7 +15,9 @@ public class TextureRendererHandler {
     }
 
     public void RenderTextures(List<TextureRenderer> allActiveTextureRenderers) {
-        allActiveTextureRenderers.ForEach(RenderTexture);
+        foreach (TextureRenderer tr in allActiveTextureRenderers) {
+            RenderTexture(tr);
+        }
     }
 
     private unsafe void RenderTexture(TextureRenderer tr) {

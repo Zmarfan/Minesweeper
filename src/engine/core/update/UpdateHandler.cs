@@ -37,6 +37,7 @@ public class UpdateHandler {
             script.Update(deltaTime);
         }
         _camera.Update(deltaTime);
+        _gameObjectHandler.MadeUpdateCycle();
     }
 
     private float GetDeltaTime() {

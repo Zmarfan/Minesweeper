@@ -9,9 +9,9 @@ public class GameObjectHandler {
     public List<GameObject> AllActiveGameObjects { get; private set; } = new();
     public List<TextureRenderer> AllActiveTextureRenderers { get; private set; } = new();
 
-    public IEnumerable<Script> AwakeScripts => _allScripts.Where(ShouldRunAwake);
-    public IEnumerable<Script> StartScripts => _allScripts.Where(ShouldRunStart);
-    public IEnumerable<Script> UpdateScripts => _allScripts.Where(ShouldRunUpdate);
+    public List<Script> AwakeScripts { get; private set; } = new();
+    public List<Script> StartScripts { get; private set; } = new();
+    public List<Script> UpdateScripts { get; private set; } = new();
     private List<Script> _allScripts = new();
     private readonly HashSet<Script> _hasRunAwake = new();
     private readonly HashSet<Script> _hasRunStart = new();
@@ -47,6 +47,9 @@ public class GameObjectHandler {
     private void OnToggleComponentChange() {
         AllActiveTextureRenderers = GetAllComponentsOfTypeFromGameObject<TextureRenderer>(true).ToList();
         _allScripts = GetAllComponentsOfTypeFromGameObject<Script>(false).ToList();
+        AwakeScripts = _allScripts.Where(ShouldRunAwake).ToList();
+        StartScripts = _allScripts.Where(ShouldRunStart).ToList();
+        UpdateScripts = _allScripts.Where(ShouldRunUpdate).ToList();
     }
     
     private IEnumerable<T> GetAllComponentsOfTypeFromGameObject<T>(bool active) where T : ToggleComponent {
