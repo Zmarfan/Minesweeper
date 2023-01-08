@@ -1,17 +1,18 @@
-﻿using Worms.engine.game_object.components.texture_renderer;
+﻿using Worms.engine.data;
+using Worms.engine.game_object.components.texture_renderer;
 using Worms.engine.game_object.scripts;
 
 namespace Worms.game; 
 
 public class MyTestScript : Script {
-    private float _timer = 0;
+    private readonly ClockTimer _timer = new(5f);
     
     public MyTestScript(bool isActive) : base(isActive) {
     }
 
     public override void Update(float deltaTime) {
-        _timer += deltaTime;
-        if (_timer > 5) {
+        _timer.Time += deltaTime;
+        if (_timer.Expired()) {
             GetComponent<TextureRenderer>().IsActive = false;
         }
     }
