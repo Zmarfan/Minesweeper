@@ -32,6 +32,10 @@ public class GameObject : Object {
         return Transform.Parent == null ? this : Transform.Parent.gameObject.GetRoot();
     }
     
+    public GameObject GetParent() {
+        return Transform.Parent!.gameObject;
+    }
+    
     public GameObjectBuilder AddSibling(string name) {
         return GameObjectBuilder.Builder(name, Transform.Parent?.gameObject);
     }
