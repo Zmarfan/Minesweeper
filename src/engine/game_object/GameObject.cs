@@ -19,21 +19,21 @@ public class GameObject {
     private bool _isActive;
 
     public Transform Transform { get; }
-    private readonly List<ToggleComponent> _components;
+    public readonly List<ToggleComponent> components;
     
     public GameObject(string name, bool isActive, Transform transform, List<ToggleComponent> components) {
         Name = name;
         IsActive = isActive;
         Transform = transform;
-        _components = components;
+        this.components = components;
     }
 
     public GameObject GetRoot() {
-        return Transform.Parent == null ? this : Transform.Parent.GameObject.GetRoot();
+        return Transform.Parent == null ? this : Transform.Parent.gameObject.GetRoot();
     }
     
     public GameObjectBuilder AddSibling(string name) {
-        return GameObjectBuilder.Builder(name, Transform.Parent?.GameObject);
+        return GameObjectBuilder.Builder(name, Transform.Parent?.gameObject);
     }
     
     public GameObjectBuilder AddChild(string name) {
@@ -47,11 +47,11 @@ public class GameObject {
     }
 
     public T GetComponent<T>() where T : ToggleComponent {
-        return (T)_components.First(static component => component is T);
+        return (T)components.First(static component => component is T);
     }
     
     public bool TryGetComponent<T>(out T component) where T : ToggleComponent {
-        if (!_components.Any(static component => component is T)) {
+        if (!components.Any(static component => component is T)) {
             component = default!;
             return false;
         }
@@ -61,7 +61,7 @@ public class GameObject {
     }
 
     public override string ToString() {
-        string componentsString = _components.Count == 0 ? string.Empty : _components
+        string componentsString = components.Count == 0 ? string.Empty : components
             .Select(component => $"{component}\n")
             .Aggregate(new StringBuilder("Components: "), (acc, entry) => acc.Append(entry))
             .ToString();

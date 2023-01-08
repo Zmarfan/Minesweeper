@@ -1,5 +1,6 @@
 ﻿using SDL2;
 using Worms.engine.data;
+using Worms.engine.game_object.components.texture_renderer;
 
 namespace Worms.engine.core.renderer; 
 
@@ -29,7 +30,7 @@ public class Renderer {
         if (_renderer == IntPtr.Zero) {
             throw new Exception();
         }
-        SDL.SDL_SetHint(  SDL.SDL_HINT_RENDER_SCALE_QUALITY, "1" );
+        SDL.SDL_SetHint(SDL.SDL_HINT_RENDER_SCALE_QUALITY, "1" );
         
         _settings = settings;
         _gameObjectHandler = gameObjectHandler;
@@ -39,7 +40,11 @@ public class Renderer {
     public void Render() {
         SDL.SDL_RenderClear(_renderer);
         DrawBackground(DefaultDrawColor);
-        _textureRendererHandler.RenderTextures(_gameObjectHandler.AllActiveTextureRenderers);
+        _textureRendererHandler.RenderTextures(_gameObjectHandler.AllActiveGameObjects
+            .SelectMany(static gameObject => gameObject.components)
+            .OfType<TextureRenderer>()
+            .Where(tr => tr.IsActive)
+        );
         SDL.SDL_RenderPresent(_renderer);
     }
 

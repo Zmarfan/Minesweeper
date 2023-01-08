@@ -43,6 +43,6 @@ public class UpdateHandler {
     private float GetDeltaTime() {
         _last = _now;
         _now = SDL.SDL_GetPerformanceCounter();
-        return (float)(_now - _last) * 1000 / SDL.SDL_GetPerformanceFrequency();
+        return (float)(_now - _last) * 1000 / SDL.SDL_GetPerformanceFrequency() * 0.001f ;
     }
 }

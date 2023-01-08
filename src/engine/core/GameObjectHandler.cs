@@ -1,18 +1,16 @@
 ﻿using Worms.engine.game_object;
-using Worms.engine.game_object.components;
-using Worms.engine.game_object.components.texture_renderer;
 using Worms.engine.game_object.scripts;
 
 namespace Worms.engine.core; 
 
 public class GameObjectHandler {
     public List<GameObject> AllActiveGameObjects { get; private set; } = new();
-    public List<TextureRenderer> AllActiveTextureRenderers { get; private set; } = new();
+    public List<GameObject> AllGameObjects { get; private set; } = new();
 
-    public IEnumerable<Script> AwakeScripts => _allScripts.Where(ShouldRunAwake);
-    public IEnumerable<Script> StartScripts => _allScripts.Where(ShouldRunStart);
-    public IEnumerable<Script> UpdateScripts => _allScripts.Where(ShouldRunUpdate);
-    private List<Script> _allScripts = new();
+    public IEnumerable<Script> AwakeScripts => AllGameObjects.SelectMany(static gameObject => gameObject.components).OfType<Script>().Where(ShouldRunAwake);
+    public IEnumerable<Script> StartScripts => AllActiveGameObjects.SelectMany(static gameObject => gameObject.components).OfType<Script>().Where(ShouldRunStart);
+    public IEnumerable<Script> UpdateScripts => AllActiveGameObjects.SelectMany(static gameObject => gameObject.components).OfType<Script>().Where(ShouldRunUpdate);
+
     private readonly HashSet<Script> _hasRunAwake = new();
     private readonly HashSet<Script> _hasRunStart = new();
     
@@ -21,14 +19,11 @@ public class GameObjectHandler {
     public GameObjectHandler(GameObject root) {
         _root = root;
         OnGameObjectChange();
-        OnToggleComponentChange();
         GameObject.GameObjectUpdateEvent += OnGameObjectChange;
-        ToggleComponent.ActivityUpdateEvent += OnToggleComponentChange;
     }
 
     ~GameObjectHandler() {
         GameObject.GameObjectUpdateEvent -= OnGameObjectChange;
-        ToggleComponent.ActivityUpdateEvent -= OnToggleComponentChange;
     }
 
     public void MadeUpdateCycle() {
@@ -42,27 +37,9 @@ public class GameObjectHandler {
     
     private void OnGameObjectChange() {
         AllActiveGameObjects = GetAllGameObjectsFromGameObject(_root, true).ToList();
+        AllGameObjects = GetAllGameObjectsFromGameObject(_root, false).ToList();
     }
-    
-    private void OnToggleComponentChange() {
-        AllActiveTextureRenderers = GetAllComponentsOfTypeFromGameObject<TextureRenderer>(true).ToList();
-        _allScripts = GetAllComponentsOfTypeFromGameObject<Script>(false).ToList();
-    }
-    
-    private IEnumerable<T> GetAllComponentsOfTypeFromGameObject<T>(bool active) where T : ToggleComponent {
-        List<T> components = new();
-        AllActiveGameObjects
-            .ToList()
-            .ForEach(gameObject => {
-                if (!gameObject.TryGetComponent(out T component))
-                    return;
-                if (component is { IsActive: true } || !active) {
-                    components.Add(component);
-                }
-            });
-        return components;
-    }
-    
+
     private static IEnumerable<GameObject> GetAllGameObjectsFromGameObject(GameObject gameObject, bool active) {
         if (!gameObject.IsActive && active) {
             return new List<GameObject>();
@@ -76,7 +53,7 @@ public class GameObjectHandler {
     }
 
     private static IEnumerable<GameObject> GetChildren(GameObject gameObject) {
-        return gameObject.Transform.children.Select(static child => child.GameObject);
+        return gameObject.Transform.children.Select(static child => child.gameObject);
     }
     
     private bool ShouldRunAwake(Script script) {

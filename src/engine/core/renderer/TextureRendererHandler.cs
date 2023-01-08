@@ -18,7 +18,7 @@ public class TextureRendererHandler {
         _sortLayers.AddRange(settings.sortLayers);
     }
 
-    public void RenderTextures(List<TextureRenderer> allActiveTextureRenderers) {
+    public void RenderTextures(IEnumerable<TextureRenderer> allActiveTextureRenderers) {
         foreach (TextureRenderer tr in allActiveTextureRenderers.OrderByDescending(tr => _sortLayers.IndexOf(tr.sortingLayer)).ThenByDescending(tr => tr.orderInLayer)) {
             RenderTexture(tr);
         }

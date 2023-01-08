@@ -17,6 +17,7 @@ internal static class Program {
                 .AddChild("child1")
                 .SetLocalPosition(new Vector2(0, 0))
                 .SetLocalScale(1f)
+                .SetComponent(new MyTestScript(true))
                 .SetComponent(
                     TextureRendererBuilder
                         .Builder("src\\assets\\test\\5.png")

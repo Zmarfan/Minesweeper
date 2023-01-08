@@ -56,7 +56,7 @@ public class Transform : Component {
     }
 
     public override string ToString() {
-        string parentName = Parent?.GameObject.Name ?? "root";
+        string parentName = Parent?.gameObject.Name ?? "root";
         return $"ParentName: {parentName}, LocalPosition: {LocalPosition}, WorldPosition: {WorldPosition}, LocalRotation: {LocalRotation}, WorldRotation: {WorldRotation}, LocalScale: {LocalScale}, WorldScale: {WorldScale}";
     }
 }
