@@ -40,11 +40,7 @@ public class Renderer {
     public void Render() {
         SDL.SDL_RenderClear(_renderer);
         DrawBackground(DefaultDrawColor);
-        _textureRendererHandler.RenderTextures(_gameObjectHandler.AllActiveGameObjects
-            .SelectMany(static gameObject => gameObject.components)
-            .OfType<TextureRenderer>()
-            .Where(tr => tr.IsActive)
-        );
+        _textureRendererHandler.RenderTextures(_gameObjectHandler.AllActiveGameObjectTextureRenderers);
         SDL.SDL_RenderPresent(_renderer);
     }
 

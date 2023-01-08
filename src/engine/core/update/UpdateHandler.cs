@@ -20,26 +20,32 @@ public class UpdateHandler {
     }
     
     public void Awake() {
-        foreach (Script script in _gameObjectHandler.AwakeScripts) {
-            script.Awake();
-        }
+        _gameObjectHandler.AllScripts.ForEach(static script => {
+            if (!script.HasRunAwake) {
+                script.Awake();
+                script.HasRunAwake = true;
+            }
+        });
     }
     
     public void Start() {
-        foreach (Script script in _gameObjectHandler.StartScripts) {
-            script.Start();
-        }
+        _gameObjectHandler.AllActiveGameObjectScripts.ForEach(static script => {
+            if (script is { IsActive: true, HasRunStart: false }) {
+                script.Start();
+                script.HasRunStart = true;
+            }
+        });
     }
     
     public void Update() {
         float deltaTime = GetDeltaTime();
-        foreach (Script script in _gameObjectHandler.UpdateScripts) {
-            script.Update(deltaTime);
+        foreach (Script script in _gameObjectHandler.AllActiveGameObjectScripts) {
+            if (script.IsActive) {
+                script.Update(deltaTime);
+            }
         }
         _camera.Update(deltaTime);
-        _gameObjectHandler.MadeUpdateCycle();
-        _gameObjectHandler.DestroyGameObjects();
-        _gameObjectHandler.DestroyComponents();
+        _gameObjectHandler.DestroyObjects();
     }
 
     private float GetDeltaTime() {

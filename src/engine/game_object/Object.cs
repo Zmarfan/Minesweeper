@@ -1,9 +1,11 @@
 ﻿namespace Worms.engine.game_object; 
 
 public abstract class Object {
-    public bool ShouldDestroy { get; private set; }
+    public delegate void ObjectDestroyDelegate(Object obj);
 
-    public virtual void Destroy() {
-        ShouldDestroy = true;
+    public static event ObjectDestroyDelegate? ObjectDestroyEvent;
+
+    public void Destroy() {
+        ObjectDestroyEvent?.Invoke(this);
     }
 }

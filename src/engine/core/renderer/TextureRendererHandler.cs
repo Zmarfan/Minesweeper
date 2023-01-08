@@ -20,7 +20,9 @@ public class TextureRendererHandler {
 
     public void RenderTextures(IEnumerable<TextureRenderer> allActiveTextureRenderers) {
         foreach (TextureRenderer tr in allActiveTextureRenderers.OrderByDescending(tr => _sortLayers.IndexOf(tr.sortingLayer)).ThenByDescending(tr => tr.orderInLayer)) {
-            RenderTexture(tr);
+            if (tr.IsActive) {
+                RenderTexture(tr);
+            }
         }
     }
 

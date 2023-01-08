@@ -3,6 +3,9 @@
 namespace Worms.engine.game_object.scripts; 
 
 public abstract class Script : ToggleComponent {
+    public bool HasRunAwake { get; set; }
+    public bool HasRunStart { get; set; }
+    
     protected Script(bool isActive) : base(isActive) {
     }
 

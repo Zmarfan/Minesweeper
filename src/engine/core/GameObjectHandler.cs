@@ -1,67 +1,63 @@
-﻿using Worms.engine.game_object;
+﻿using System.Collections;
+using Worms.engine.game_object;
 using Worms.engine.game_object.components;
+using Worms.engine.game_object.components.texture_renderer;
 using Worms.engine.game_object.scripts;
+using Object = Worms.engine.game_object.Object;
 
 namespace Worms.engine.core; 
 
 public class GameObjectHandler {
-    public List<GameObject> AllActiveGameObjects { get; private set; } = new();
-    public List<GameObject> AllGameObjects { get; private set; } = new();
+    public List<Script> AllScripts { get; private set; } = new();
+    public List<Script> AllActiveGameObjectScripts { get; private set; } = new();
+    public List<TextureRenderer> AllActiveGameObjectTextureRenderers { get; private set; } = new();
+    private List<GameObject> _allGameObjects = new();
 
-    public IEnumerable<Script> AwakeScripts => AllGameObjects.SelectMany(static gameObject => gameObject.components).OfType<Script>().Where(ShouldRunAwake);
-    public IEnumerable<Script> StartScripts => AllActiveGameObjects.SelectMany(static gameObject => gameObject.components).OfType<Script>().Where(ShouldRunStart);
-    public IEnumerable<Script> UpdateScripts => AllActiveGameObjects.SelectMany(static gameObject => gameObject.components).OfType<Script>().Where(ShouldRunUpdate);
+    private Queue<Object> _destroyObjects = new();
 
-    private readonly HashSet<Script> _hasRunAwake = new();
-    private readonly HashSet<Script> _hasRunStart = new();
-    
     private readonly GameObject _root;
 
     public GameObjectHandler(GameObject root) {
         _root = root;
         OnGameObjectChange();
         GameObject.GameObjectUpdateEvent += OnGameObjectChange;
+        Object.ObjectDestroyEvent += OnObjectDestroy;
     }
 
-    ~GameObjectHandler() {
-        GameObject.GameObjectUpdateEvent -= OnGameObjectChange;
-    }
-
-    public void MadeUpdateCycle() {
-        foreach(Script script in AwakeScripts) {
-            _hasRunAwake.Add(script);
-        }
-        foreach(Script script in StartScripts) {
-            _hasRunStart.Add(script);
-        }
-    }
-    
-    public void DestroyGameObjects() {
-        bool didDestroy = false;
-        foreach (GameObject gameObject in AllGameObjects.Where(static gameObject => gameObject.ShouldDestroy)) {
-            didDestroy = true;
-            gameObject.Transform.Parent!.children.Remove(gameObject.Transform);
+    public void DestroyObjects() {
+        bool didUpdate = _destroyObjects.Count > 0;
+        while (_destroyObjects.Count > 0) {
+            Object obj = _destroyObjects.Dequeue();
+            if (obj is GameObject gameObject) {
+                gameObject.Transform.Parent!.children.Remove(gameObject.Transform);
+            }
+            else if (obj is ToggleComponent component) {
+                component.gameObject.components.Remove(component);
+            }
         }
 
-        if (didDestroy) {
+        if (didUpdate) {
             OnGameObjectChange();
         }
     }
 
-    public void DestroyComponents() {
-        IEnumerable<ToggleComponent> destroyComponents = AllGameObjects
-            .SelectMany(gameObject => gameObject.components)
-            .Where(component => component.ShouldDestroy);
-        if (destroyComponents.Any()) {
-            destroyComponents.ToList().ForEach(component => component.gameObject.components.Remove(component));
-        }
-    }
-    
     private void OnGameObjectChange() {
-        AllActiveGameObjects = GetAllGameObjectsFromGameObject(_root, true).ToList();
-        AllGameObjects = GetAllGameObjectsFromGameObject(_root, false).ToList();
+        List<ToggleComponent> allActive = GetAllComponents(true).ToList();
+
+        _allGameObjects = GetAllGameObjectsFromGameObject(_root, true).ToList();
+        AllActiveGameObjectTextureRenderers = allActive.OfType<TextureRenderer>().ToList();
+        AllScripts = _allGameObjects.SelectMany(gameObject => gameObject.components).OfType<Script>().ToList();
+        AllActiveGameObjectScripts = allActive.OfType<Script>().ToList();
     }
 
+    private void OnObjectDestroy(Object obj) {
+        _destroyObjects.Enqueue(obj);
+    } 
+
+    private IEnumerable<ToggleComponent> GetAllComponents(bool active) {
+        return GetAllGameObjectsFromGameObject(_root, active).SelectMany(gameObject => gameObject.components);
+    }
+    
     private static IEnumerable<GameObject> GetAllGameObjectsFromGameObject(GameObject gameObject, bool active) {
         if (!gameObject.IsActive && active) {
             return new List<GameObject>();
@@ -76,17 +72,5 @@ public class GameObjectHandler {
 
     private static IEnumerable<GameObject> GetChildren(GameObject gameObject) {
         return gameObject.Transform.children.Select(static child => child.gameObject);
-    }
-    
-    private bool ShouldRunAwake(Script script) {
-        return !_hasRunAwake.Contains(script);
-    }
-    
-    private bool ShouldRunStart(Script script) {
-        return script.IsActive && !_hasRunStart.Contains(script);
-    }
-    
-    private static bool ShouldRunUpdate(Script script) {
-        return script.IsActive;
     }
 }
