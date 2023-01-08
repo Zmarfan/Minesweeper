@@ -5,17 +5,21 @@ using Worms.engine.game_object.components.texture_renderer;
 namespace Worms.engine.core.renderer; 
 
 public class TextureRendererHandler {
+    public const string DEFAULT_SORTING_LAYER = "Default";
+
     private readonly IntPtr _renderer;
     private readonly GameSettings _settings;
     private readonly Dictionary<string, StoredTexture> _loadedTextures = new();
+    private readonly List<string> _sortLayers = new() { DEFAULT_SORTING_LAYER };
 
     public TextureRendererHandler(IntPtr renderer, GameSettings settings) {
         _renderer = renderer;
         _settings = settings;
+        _sortLayers.AddRange(settings.sortLayers);
     }
 
     public void RenderTextures(List<TextureRenderer> allActiveTextureRenderers) {
-        foreach (TextureRenderer tr in allActiveTextureRenderers) {
+        foreach (TextureRenderer tr in allActiveTextureRenderers.OrderByDescending(tr => _sortLayers.IndexOf(tr.sortingLayer)).ThenByDescending(tr => tr.orderInLayer)) {
             RenderTexture(tr);
         }
     }

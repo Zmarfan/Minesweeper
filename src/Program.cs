@@ -17,28 +17,39 @@ internal static class Program {
                 .AddChild("child1")
                 .SetLocalPosition(new Vector2(0, 0))
                 .SetLocalScale(1f)
-                .SetLocalRotation(new Rotation(45))
-                .SetComponent(new RotateSizeScript(true, 0.01f))
-                .SetComponent(TextureRendererBuilder.Builder("src\\assets\\test\\5.png").Build())
+                .SetComponent(
+                    TextureRendererBuilder
+                        .Builder("src\\assets\\test\\5.png")
+                        .SetSortingLayer("layer1")
+                        .SetSortingOrder(0)
+                        .Build()
+                )
                 .Build()
                     .AddChild("child2Sibling1")
                     .SetLocalPosition(new Vector2(600, 400))
-                    .SetComponent(TextureRendererBuilder.Builder("src\\assets\\test\\4.png").Build())
+                    .SetLocalScale(2)
+                    .SetComponent(
+                        TextureRendererBuilder
+                            .Builder("src\\assets\\test\\4.png")
+                            .SetSortingLayer("layer1")
+                            .SetSortingOrder(1)
+                            .Build()
+                    )
                     .Build()
                     .AddSibling("child2Sibling2")
                     .SetLocalPosition(new Vector2(600, -400))
                     .SetLocalRotation(Rotation.UpsideDown())
-                    .SetLocalScale(1)
+                    .SetLocalScale(2)
                     .SetComponent(
                         TextureRendererBuilder
                             .Builder("src\\assets\\test\\3.png")
+                            .SetSortingLayer("layer3")
                             .SetFlipY(true)
                             .Build()
                     )
-                    .SetComponent(new RotateSizeScript(true, 0.05f))
                     .Build()
                         .AddChild("child2Sibling3")
-                        .SetLocalScale(1)
+                        .SetLocalScale(2)
                         .SetLocalPosition(new Vector2(-1200, 0))
                         .SetLocalRotation(Rotation.CounterClockwise())
                         .SetComponent(
@@ -49,8 +60,7 @@ internal static class Program {
                         )
                         .Build()
                         .AddSibling("child2Sibling4")
-                        .SetLocalScale(0.5f)
-                        .SetComponent(new RotateSizeScript(true, 0.1f))
+                        .SetLocalScale(2)
                         .SetLocalPosition(new Vector2(-1200, 800))
                         .SetLocalRotation(Rotation.Clockwise())
                         .SetComponent(
@@ -64,7 +74,7 @@ internal static class Program {
                         .Build()
             .GetRoot();
         
-        Game game = new(new GameSettings("test game", 1200, 800, new MyCamera(), root));
+        Game game = new(new GameSettings("test game", 1200, 800, new MyCamera(), root, new List<string> { "layer1", "layer2", "layer3" }));
         game.Run();
     }
 }
