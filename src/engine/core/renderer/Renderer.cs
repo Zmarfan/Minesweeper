@@ -1,16 +1,14 @@
 ﻿using System.Drawing;
 using SDL2;
-using Worms.engine.game_object.components.texture_renderer;
 
 namespace Worms.engine.core.renderer; 
 
 public class Renderer {
     private IntPtr _window;
     private IntPtr _renderer;
+    private readonly TextureRendererHandler _textureRendererHandler;
     private readonly GameSettings _settings;
     private Color DefaultDrawColor => _settings.camera.defaultDrawColor;
-    
-    private readonly Dictionary<string, StoredTexture> _loadedTextures = new();
 
     private readonly GameObjectHandler _gameObjectHandler;
     
@@ -35,52 +33,19 @@ public class Renderer {
         
         _settings = settings;
         _gameObjectHandler = gameObjectHandler;
+        _textureRendererHandler = new TextureRendererHandler(_renderer, settings);
     }
 
     public void Render() {
         SDL.SDL_RenderClear(_renderer);
         SDL.SDL_SetRenderDrawColor(_renderer, DefaultDrawColor.R, DefaultDrawColor.G, DefaultDrawColor.B, DefaultDrawColor.A);
-        RenderTextures();
+        _textureRendererHandler.RenderTextures(_gameObjectHandler.AllActiveTextureRenderers);
         SDL.SDL_RenderPresent(_renderer);
     }
 
-    public unsafe void Clean() {
-        _loadedTextures.Values.ToList().ForEach(texture => {
-            SDL.SDL_FreeSurface((nint)texture.surface);
-            SDL.SDL_DestroyTexture(texture.texture);
-        });
+    public void Clean() {
+        _textureRendererHandler.Clean();
         SDL.SDL_DestroyWindow(_window);
         SDL.SDL_DestroyRenderer(_renderer);
-    }
-
-    private unsafe void RenderTextures() {
-        _gameObjectHandler.AllActiveTextureRenderers
-            .ForEach(textureRenderer => {
-                StoredTexture texture = GetTexture(textureRenderer);
-
-                SDL.SDL_FRect destRect = WorldToScreenVectorCalculator.CalculateTextureDrawPosition(new WorldToScreenVectorParameters(textureRenderer.Transform, texture.surface, _settings));
-                float worldRotation = textureRenderer.Transform.WorldRotation.Value - _settings.camera.Rotation.Value;
-                SDL.SDL_RenderCopyExF(_renderer, texture.texture, IntPtr.Zero, ref destRect, worldRotation, IntPtr.Zero, GetTextureFlipSettings(textureRenderer));
-            });
-    }
-
-    private unsafe StoredTexture GetTexture(TextureRenderer tr) {
-        if (!_loadedTextures.TryGetValue(tr.textureSrc, out StoredTexture? texture)) {
-            texture = new StoredTexture((SDL.SDL_Surface *)SDL_image.IMG_Load(tr.textureSrc), SDL_image.IMG_LoadTexture(_renderer, tr.textureSrc));
-            _loadedTextures.Add(tr.textureSrc, texture);
-        }
-
-        return texture;
-    }
-    
-    private static SDL.SDL_RendererFlip GetTextureFlipSettings(TextureRenderer tr) {
-        SDL.SDL_RendererFlip flip = SDL.SDL_RendererFlip.SDL_FLIP_NONE;
-        if (tr.flipX) {
-            flip |= SDL.SDL_RendererFlip.SDL_FLIP_HORIZONTAL;
-        }
-        if (tr.flipY) {
-            flip |= SDL.SDL_RendererFlip.SDL_FLIP_VERTICAL;
-        }
-        return flip;
     }
 }
