@@ -1,8 +1,5 @@
 ﻿using System.Drawing;
 using SDL2;
-using Worms.engine.camera;
-using Worms.engine.data;
-using Worms.engine.game_object;
 using Worms.engine.game_object.components.texture_renderer;
 
 namespace Worms.engine.core.renderer; 
@@ -62,7 +59,7 @@ public class Renderer {
                 StoredTexture texture = GetTexture(textureRenderer);
 
                 SDL.SDL_FRect destRect = WorldToScreenVectorCalculator.CalculateTextureDrawPosition(new WorldToScreenVectorParameters(textureRenderer.Transform, texture.surface, _settings));
-                float worldRotation = textureRenderer.Transform.WorldRotation.Value;
+                float worldRotation = textureRenderer.Transform.WorldRotation.Value - _settings.camera.Rotation.Value;
                 SDL.SDL_RenderCopyExF(_renderer, texture.texture, IntPtr.Zero, ref destRect, worldRotation, IntPtr.Zero, GetTextureFlipSettings(textureRenderer));
             });
     }
@@ -71,7 +68,6 @@ public class Renderer {
         if (!_loadedTextures.TryGetValue(tr.textureSrc, out StoredTexture? texture)) {
             texture = new StoredTexture((SDL.SDL_Surface *)SDL_image.IMG_Load(tr.textureSrc), SDL_image.IMG_LoadTexture(_renderer, tr.textureSrc));
             _loadedTextures.Add(tr.textureSrc, texture);
-            Console.WriteLine($"Loaded: {tr.textureSrc}");
         }
 
         return texture;

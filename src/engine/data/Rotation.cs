@@ -60,6 +60,22 @@ public struct Rotation {
         return new Rotation(a._value * d);
     }
 
+    public static Rotation operator +(Rotation a, float d) {
+        return new Rotation(a._value + d);
+    }
+
+    public static Rotation operator +(float d, Rotation a) {
+        return new Rotation(a._value + d);
+    }
+    
+    public static Rotation operator -(Rotation a, float d) {
+        return new Rotation(a._value - d);
+    }
+
+    public static Rotation operator -(float d, Rotation a) {
+        return new Rotation(a._value - d);
+    }
+    
     public static bool operator ==(Rotation lhs, Rotation rhs) {
         float num = lhs._value - rhs._value;
         return num * num < 9.99999944E-11f;
