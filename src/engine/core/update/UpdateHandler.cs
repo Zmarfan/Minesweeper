@@ -1,5 +1,6 @@
 ﻿using SDL2;
 using Worms.engine.camera;
+using Worms.engine.core.input;
 using Worms.engine.data;
 using Worms.engine.game_object.scripts;
 
@@ -39,6 +40,7 @@ public class UpdateHandler {
     
     public void Update() {
         float deltaTime = GetDeltaTime();
+        Input.Update(deltaTime);
         foreach (Script script in _gameObjectHandler.AllActiveGameObjectScripts) {
             if (script.IsActive) {
                 script.Update(deltaTime);
@@ -46,6 +48,7 @@ public class UpdateHandler {
         }
         _camera.Update(deltaTime);
         _gameObjectHandler.DestroyObjects();
+        Input.FrameReset();
     }
 
     private float GetDeltaTime() {

@@ -20,7 +20,7 @@ public class Renderer {
             SDL.SDL_WINDOWPOS_CENTERED,
             settings.width, 
             settings.height,
-            SDL.SDL_WindowFlags.SDL_WINDOW_SHOWN
+            SDL.SDL_WindowFlags.SDL_WINDOW_RESIZABLE
         );
         if (_window == IntPtr.Zero) {
             throw new Exception();

@@ -1,4 +1,5 @@
 ﻿using Worms.engine.core;
+using Worms.engine.core.input.listener;
 using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components;
@@ -17,7 +18,6 @@ internal static class Program {
                 .AddChild("child1")
                 .SetLocalPosition(new Vector2(0, 0))
                 .SetLocalScale(1f)
-                .SetComponent(new MyTestScript(2.5f))
                 .SetComponent(
                     TextureRendererBuilder
                         .Builder("src\\assets\\test\\5.png")
@@ -29,7 +29,6 @@ internal static class Program {
                     .AddChild("child2Sibling1")
                     .SetLocalPosition(new Vector2(600, 400))
                     .SetLocalScale(2)
-                    .SetComponent(new MyTestScript(1.5f))
                     .SetComponent(
                         TextureRendererBuilder
                             .Builder("src\\assets\\test\\4.png")
@@ -81,7 +80,6 @@ internal static class Program {
                     .SetLocalPosition(new Vector2(1200, 0))
                     .SetLocalScale(1f)
                     .SetLocalRotation(Rotation.UpsideDown())
-                    .SetComponent(new MyTestScript(2.5f))
                     .SetComponent(
                         TextureRendererBuilder
                             .Builder("src\\assets\\test\\5.png")
@@ -93,7 +91,6 @@ internal static class Program {
                         .AddChild("child2Sibling1")
                         .SetLocalPosition(new Vector2(600, 400))
                         .SetLocalScale(2)
-                        .SetComponent(new MyTestScript(1.5f))
                         .SetComponent(
                             TextureRendererBuilder
                                 .Builder("src\\assets\\test\\4.png")
@@ -140,8 +137,14 @@ internal static class Program {
                             )
                             .Build()
             .GetRoot();
+
+        List<InputListener> listeners = new() {
+            InputListenerBuilder.Builder("horizontal", Button.D).SetNegativeButton(Button.A).Build(),
+            InputListenerBuilder.Builder("vertical", Button.W).SetNegativeButton(Button.S).SetAxis(InputAxis.Y_AXIS).Build(),
+            InputListenerBuilder.Builder("action", Button.SPACE).Build(),
+        };
         
-        Game game = new(new GameSettings("test game", 1200, 800, new MyCamera(), root, new List<string> { "layer1", "layer2", "layer3" }));
+        Game game = new(new GameSettings("test game", 1200, 800, new MyCamera(), root, listeners, new List<string> { "layer1", "layer2", "layer3" }));
         game.Run();
     }
 }

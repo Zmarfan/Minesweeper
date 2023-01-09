@@ -1,7 +1,8 @@
 ﻿using SDL2;
+using Worms.engine.core.input;
 using Worms.engine.core.renderer;
 using Worms.engine.core.update;
-using EventHandler = Worms.engine.core.@event.EventHandler;
+using EventHandler = Worms.engine.core.event_handler.EventHandler;
 
 namespace Worms.engine.core; 
 
@@ -18,9 +19,11 @@ public class Game {
 
         GameObjectHandler gameObjectHandler = new(settings.root);
         _renderer = new Renderer(settings, gameObjectHandler);
-        _eventHandler = new EventHandler(() => _isRunning = false);
+        _eventHandler = new EventHandler(settings);
+        _eventHandler.QuitEvent += () => _isRunning = false;
         _updateHandler = new UpdateHandler(gameObjectHandler, settings.camera);
-
+        Input.Init(_eventHandler, settings.inputListeners);
+        
         _isRunning = true;
     }
 
