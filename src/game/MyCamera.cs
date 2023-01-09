@@ -1,4 +1,5 @@
 ﻿using Worms.engine.camera;
+using Worms.engine.core.input;
 using Worms.engine.data;
 
 namespace Worms.game; 
@@ -10,6 +11,6 @@ public class MyCamera : Camera {
     }
 
     public override void Update(float deltaTime) {
-        // Position += Vector2.Right() * deltaTime * 0.1f;
+        Position += Input.MouseDirection * 30f;
     }
 }

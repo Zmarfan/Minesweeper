@@ -15,7 +15,7 @@ public struct Vector2 {
     public float SqrMagnitude => x * x + y * y;
 
     public static Vector2 Zero() {
-        return new Vector2(0, 1);
+        return new Vector2(0, 0);
     }
     
     public static Vector2 One() {

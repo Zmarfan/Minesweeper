@@ -24,6 +24,7 @@ public class Game {
         _renderer = new Renderer(settings, gameObjectHandler);
         _eventHandler = new EventHandler(settings);
         _eventHandler.QuitEvent += () => _isRunning = false;
+        _eventHandler.ToggleFullscreenEvent += _renderer.ToggleFullScreen;
         _updateHandler = new UpdateHandler(gameObjectHandler, settings.camera);
         Input.Init(_eventHandler, settings.inputListeners);
         

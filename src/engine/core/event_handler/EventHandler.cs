@@ -1,4 +1,5 @@
 ﻿using SDL2;
+using Worms.engine.data;
 
 namespace Worms.engine.core.event_handler; 
 
@@ -6,11 +7,13 @@ public class EventHandler {
     public event EventVoidDelegate? QuitEvent;
     public event KeyDownEventDelegate? KeyDownEvent;
     public event KeyDownEventDelegate? KeyUpEvent;
-    
-    public readonly WindowEventHandler windowEventHandler;
+    public event MouseMovementEventDelegate? MouseMovementEvent;
+    public event EventVoidDelegate? ToggleFullscreenEvent;
+
+    private readonly GameSettings _settings;
     
     public EventHandler(GameSettings settings) {
-        windowEventHandler = new WindowEventHandler(settings);
+        _settings = settings;
     }
     
     public void HandleEvents() {
@@ -22,10 +25,16 @@ public class EventHandler {
                     QuitEvent?.Invoke();
                     break;
                 case SDL.SDL_EventType.SDL_WINDOWEVENT: {
-                    windowEventHandler.HandleEvent(e.window);
+                    if (e.window.windowEvent == SDL.SDL_WindowEventID.SDL_WINDOWEVENT_RESIZED) {
+                        _settings.width = e.window.data1;
+                        _settings.height = e.window.data2;
+                    }
                     break;
                 }
                 case SDL.SDL_EventType.SDL_KEYDOWN: {
+                    if (IsEnterFullScreen(e.key.keysym)) {
+                        ToggleFullscreenEvent?.Invoke();
+                    }
                     KeyDownEvent?.Invoke(e.key.keysym.scancode);
                     break;
                 }
@@ -33,7 +42,17 @@ public class EventHandler {
                     KeyUpEvent?.Invoke(e.key.keysym.scancode);
                     break;
                 }
+                case SDL.SDL_EventType.SDL_MOUSEMOTION: {
+                    float relativeXPosition = e.motion.x / (float)_settings.width;
+                    float relativeYPosition = (_settings.height - e.motion.y) / (float)_settings.height;
+                    MouseMovementEvent?.Invoke(new Vector2(relativeXPosition, relativeYPosition), new Vector2(e.motion.xrel, -e.motion.yrel));
+                    break;
+                }
             }
         }
+    }
+
+    private static bool IsEnterFullScreen(SDL.SDL_Keysym key) {
+        return key is { scancode: SDL.SDL_Scancode.SDL_SCANCODE_RETURN, mod: SDL.SDL_Keymod.KMOD_LALT };
     }
 }

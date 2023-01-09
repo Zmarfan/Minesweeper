@@ -4,31 +4,31 @@ namespace Worms.engine.core.input.listener;
 
 public class InputListenerBuilder {
     private readonly string _name;
-    private HashSet<SDL.SDL_Scancode> _negativeButtons = new();
-    private readonly HashSet<SDL.SDL_Scancode> _positiveButtons;
-    private HashSet<SDL.SDL_Scancode> _altNegativeButtons = new();
-    private HashSet<SDL.SDL_Scancode> _altPositiveButtons = new();
+    private Button? _negativeButton;
+    private readonly Button _positiveButton;
+    private Button? _altNegativeButton;
+    private Button? _altPositiveButton;
     private float _gravity = 3;
     private float _sensitivity = 3;
     private bool _snap = true;
     private InputAxis _axis = InputAxis.X_AXIS;
 
-    private InputListenerBuilder(string name, HashSet<SDL.SDL_Scancode> positiveButtons) {
+    private InputListenerBuilder(string name, Button positiveButton) {
         _name = name;
-        _positiveButtons = positiveButtons;
+        _positiveButton = positiveButton;
     }
 
     public static InputListenerBuilder Builder(string name, Button positiveButton) {
-        return new InputListenerBuilder(name, ScanCodeToButton.BUTTON_TO_SCANCODE[positiveButton]);
+        return new InputListenerBuilder(name, positiveButton);
     }
 
     public InputListener Build() {
         return new InputListener(
             _name, 
-            _negativeButtons, 
-            _positiveButtons, 
-            _altNegativeButtons, 
-            _altPositiveButtons, 
+            _negativeButton, 
+            _positiveButton, 
+            _altNegativeButton, 
+            _altPositiveButton, 
             _gravity,
             _sensitivity,
             _snap, 
@@ -37,17 +37,17 @@ public class InputListenerBuilder {
     }
 
     public InputListenerBuilder SetNegativeButton(Button negativeButton) {
-        _negativeButtons = ScanCodeToButton.BUTTON_TO_SCANCODE[negativeButton];
+        _negativeButton = negativeButton;
         return this;
     }
     
     public InputListenerBuilder SetAltNegativeButton(Button altNegativeButton) {
-        _altNegativeButtons = ScanCodeToButton.BUTTON_TO_SCANCODE[altNegativeButton];
+        _altNegativeButton = altNegativeButton;
         return this;
     }
     
     public InputListenerBuilder SetAltPositiveButton(Button altPositiveButton) {
-        _altPositiveButtons = ScanCodeToButton.BUTTON_TO_SCANCODE[altPositiveButton];
+        _altPositiveButton = altPositiveButton;
         return this;
     }
 

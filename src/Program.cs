@@ -15,7 +15,18 @@ internal static class Program {
             .SetLocalPosition(new Vector2(0, 0))
             .SetLocalRotation(Rotation.Normal())
             .Build()
-                .AddChild("child1")
+                .AddChild("background")
+                .SetLocalPosition(new Vector2(0, 0))
+                .SetLocalScale(12f)
+                .SetComponent(
+                    TextureRendererBuilder
+                        .Builder("src\\assets\\test\\background.png")
+                        .SetSortingLayer("layer3")
+                        .SetSortingOrder(0)
+                        .Build()
+                )
+                .Build()
+                .AddSibling("child1")
                 .SetLocalPosition(new Vector2(0, 0))
                 .SetLocalScale(1f)
                 .SetComponent(
@@ -143,6 +154,7 @@ internal static class Program {
                 .SetNegativeButton(Button.A)
                 .SetAltPositiveButton(Button.RIGHT)
                 .SetAltNegativeButton(Button.LEFT)
+                .SetSnap(false)
                 .Build(),
             InputListenerBuilder.Builder("vertical", Button.W)
                 .SetNegativeButton(Button.S)

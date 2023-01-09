@@ -10,6 +10,7 @@ public class Renderer {
     private readonly TextureRendererHandler _textureRendererHandler;
     private readonly GameSettings _settings;
     private Color DefaultDrawColor => _settings.camera.defaultDrawColor;
+    private bool _isFullscreen = false;
 
     private readonly GameObjectHandler _gameObjectHandler;
     
@@ -31,6 +32,7 @@ public class Renderer {
             throw new Exception();
         }
         SDL.SDL_SetHint(SDL.SDL_HINT_RENDER_SCALE_QUALITY, "1" );
+        SDL.SDL_SetRelativeMouseMode(SDL.SDL_bool.SDL_TRUE);
         
         _settings = settings;
         _gameObjectHandler = gameObjectHandler;
@@ -44,6 +46,12 @@ public class Renderer {
         SDL.SDL_RenderPresent(_renderer);
     }
 
+    public void ToggleFullScreen() {
+        uint flag = _isFullscreen ? 0 : (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN;
+        SDL.SDL_SetWindowFullscreen(_window, flag);
+        _isFullscreen = !_isFullscreen;
+    }
+    
     public void Clean() {
         _textureRendererHandler.Clean();
         SDL.SDL_DestroyWindow(_window);

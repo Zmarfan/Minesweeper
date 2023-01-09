@@ -8,24 +8,33 @@ namespace Worms.engine.core.input;
 public class Input {
     private static Input _self = null!;
     
+    public static Vector2 MouseScreenPosition { get; private set; }
+    public static Vector2 MouseDirection { get; private set; }
+    
     private readonly Dictionary<string, InputListener> _listenersByName;
-    private readonly Dictionary<SDL.SDL_Scancode, InputListener> _listenersByScanCode = new();
+    private readonly Dictionary<Button, InputListener> _listenersByButton = new();
 
     private Input(EventHandler eventHandler, List<InputListener> listeners) {
         _listenersByName = listeners.ToDictionary(l => l.name, l => l);
         listeners.ForEach(listener => {
-            HashSet<SDL.SDL_Scancode> scanCodes = new();
-            scanCodes.UnionWith(listener.negativeButtons);
-            scanCodes.UnionWith(listener.positiveButtons);
-            scanCodes.UnionWith(listener.altNegativeButtons);
-            scanCodes.UnionWith(listener.altPositiveButtons);
-            foreach (SDL.SDL_Scancode code in scanCodes) {
-                _listenersByScanCode.Add(code, listener);
+            _listenersByButton.Add(listener.positiveButton, listener);
+            if (listener.negativeButton != null) {
+                _listenersByButton.Add((Button)listener.negativeButton, listener);
+            }
+            if (listener.altPositiveButton != null) {
+                _listenersByButton.Add((Button)listener.altPositiveButton, listener);
+            }
+            if (listener.altNegativeButton != null) {
+                _listenersByButton.Add((Button)listener.altNegativeButton, listener);
             }
         });
 
         eventHandler.KeyDownEvent += ButtonDownEventListener;
         eventHandler.KeyUpEvent += ButtonUpEventListener;
+        eventHandler.MouseMovementEvent += (position, direction) => {
+            MouseScreenPosition = position;
+            MouseDirection = direction;
+        };
     }
 
     public static void Init(EventHandler eventHandler, List<InputListener> listeners) {
@@ -43,6 +52,7 @@ public class Input {
     }
 
     public static void FrameReset() {
+        MouseDirection = Vector2.Zero();
         foreach ((string _, InputListener listener) in _self._listenersByName) {
             listener.FrameReset();
         }
@@ -65,14 +75,16 @@ public class Input {
     }
 
     private void ButtonDownEventListener(SDL.SDL_Scancode scanCode) {
-        if (_listenersByScanCode.ContainsKey(scanCode)) {
-            _listenersByScanCode[scanCode].SetButtonDown(scanCode);
+        Button button = ScanCodeToButton.SCANCODE_TO_BUTTON[scanCode];
+        if (_listenersByButton.TryGetValue(button, out InputListener? value)) {
+            value.SetButtonDown(button);
         }
     }
     
     private void ButtonUpEventListener(SDL.SDL_Scancode scanCode) {
-        if (_listenersByScanCode.ContainsKey(scanCode)) {
-            _listenersByScanCode[scanCode].SetButtonUp(scanCode);
+        Button button = ScanCodeToButton.SCANCODE_TO_BUTTON[scanCode];
+        if (_listenersByButton.TryGetValue(button, out InputListener? value)) {
+            value.SetButtonUp(button);
         }
     }
 }

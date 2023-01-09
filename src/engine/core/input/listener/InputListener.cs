@@ -5,10 +5,10 @@ namespace Worms.engine.core.input.listener;
 
 public class InputListener {
     public readonly string name;
-    public readonly HashSet<SDL.SDL_Scancode> negativeButtons;
-    public readonly HashSet<SDL.SDL_Scancode> positiveButtons;
-    public readonly HashSet<SDL.SDL_Scancode> altNegativeButtons;
-    public readonly HashSet<SDL.SDL_Scancode> altPositiveButtons;
+    public readonly Button? negativeButton;
+    public readonly Button positiveButton;
+    public readonly Button? altNegativeButton;
+    public readonly Button? altPositiveButton;
     public readonly float gravity;
     public readonly float sensitivity;
     public readonly bool snap;
@@ -21,20 +21,20 @@ public class InputListener {
 
     public InputListener(
         string name,
-        HashSet<SDL.SDL_Scancode> negativeButtons,
-        HashSet<SDL.SDL_Scancode> positiveButtons,
-        HashSet<SDL.SDL_Scancode> altNegativeButtons,
-        HashSet<SDL.SDL_Scancode> altPositiveButtons,
+        Button? negativeButton,
+        Button positiveButton,
+        Button? altNegativeButton,
+        Button? altPositiveButton,
         float gravity,
         float sensitivity,
         bool snap,
         InputAxis axis
     ) {
         this.name = name;
-        this.negativeButtons = negativeButtons;
-        this.positiveButtons = positiveButtons;
-        this.altNegativeButtons = altNegativeButtons;
-        this.altPositiveButtons = altPositiveButtons;
+        this.negativeButton = negativeButton;
+        this.positiveButton = positiveButton;
+        this.altNegativeButton = altNegativeButton;
+        this.altPositiveButton = altPositiveButton;
         this.gravity = gravity;
         this.sensitivity = sensitivity;
         this.snap = snap;
@@ -58,15 +58,15 @@ public class InputListener {
     }
     
     public void UpdateAxis(float deltaTime) {
-        if ((!_negativeDown && !_positiveDown) || (_negativeDown && _positiveDown)) {
+        if (ShouldPerformGravityOperation()) {
             if (_value > 0) {
                 _value = Math.Max(_value - deltaTime * gravity, 0);
             }
             else {
                 _value = Math.Min(_value + deltaTime * gravity, 0);
             }
-            return;
         }
+
         if (_negativeDown) {
             if (_value > 0 && snap) {
                 _value = 0;
@@ -84,19 +84,26 @@ public class InputListener {
         
         _value = Math.Clamp(_value, -1, 1);
     }
-    
-    public void SetButtonDown(SDL.SDL_Scancode scanCode) {
-        _positiveDown = _positiveDown || positiveButtons.Contains(scanCode) || altPositiveButtons.Contains(scanCode);
-        _negativeDown = _negativeDown || negativeButtons.Contains(scanCode) || altNegativeButtons.Contains(scanCode);
+
+    public void SetButtonDown(Button button) {
+        _positiveDown = _positiveDown || positiveButton == button || altPositiveButton == button;
+        _negativeDown = _negativeDown || negativeButton == button || altNegativeButton == button;
     }
     
-    public void SetButtonUp(SDL.SDL_Scancode scanCode) {
-        _positiveDown = _positiveDown && !(positiveButtons.Contains(scanCode) || altPositiveButtons.Contains(scanCode));
-        _negativeDown = _negativeDown && !(negativeButtons.Contains(scanCode) || altNegativeButtons.Contains(scanCode));
+    public void SetButtonUp(Button button) {
+        _positiveDown = _positiveDown && !(positiveButton == button || altPositiveButton == button);
+        _negativeDown = _negativeDown && !(negativeButton == button || altNegativeButton == button);
     }
 
 
     public void FrameReset() {
         _wasPositiveDown = _positiveDown;
+    }
+    
+    private bool ShouldPerformGravityOperation() {
+        return (!_negativeDown && !_positiveDown)
+               || (_negativeDown && _positiveDown)
+               || (_positiveDown && _value < 0 && !snap)
+               || (_negativeDown && _value > 0 && !snap);
     }
 }
