@@ -139,9 +139,19 @@ internal static class Program {
             .GetRoot();
 
         List<InputListener> listeners = new() {
-            InputListenerBuilder.Builder("horizontal", Button.D).SetNegativeButton(Button.A).Build(),
-            InputListenerBuilder.Builder("vertical", Button.W).SetNegativeButton(Button.S).SetAxis(InputAxis.Y_AXIS).Build(),
-            InputListenerBuilder.Builder("action", Button.SPACE).Build(),
+            InputListenerBuilder.Builder("horizontal", Button.D)
+                .SetNegativeButton(Button.A)
+                .SetAltPositiveButton(Button.RIGHT)
+                .SetAltNegativeButton(Button.LEFT)
+                .Build(),
+            InputListenerBuilder.Builder("vertical", Button.W)
+                .SetNegativeButton(Button.S)
+                .SetAltPositiveButton(Button.UP)
+                .SetAltNegativeButton(Button.DOWN)
+                .SetAxis(InputAxis.Y_AXIS)
+                .Build(),
+            InputListenerBuilder.Builder("action", Button.SPACE)
+                .Build(),
         };
         
         Game game = new(new GameSettings("test game", 1200, 800, new MyCamera(), root, listeners, new List<string> { "layer1", "layer2", "layer3" }));
