@@ -162,7 +162,8 @@ internal static class Program {
                 .SetAltNegativeButton(Button.DOWN)
                 .SetAxis(InputAxis.Y_AXIS)
                 .Build(),
-            InputListenerBuilder.Builder("action", Button.SPACE)
+            InputListenerBuilder.Builder("action", Button.RIGHT_MOUSE)
+                .SetAltPositiveButton(Button.MIDDLE_MOUSE)
                 .Build(),
         };
         

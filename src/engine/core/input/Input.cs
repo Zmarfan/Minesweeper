@@ -74,15 +74,13 @@ public class Input {
         return _self._listenersByName[listenerName].GetAxis();
     }
 
-    private void ButtonDownEventListener(SDL.SDL_Scancode scanCode) {
-        Button button = ScanCodeToButton.SCANCODE_TO_BUTTON[scanCode];
+    private void ButtonDownEventListener(Button button) {
         if (_listenersByButton.TryGetValue(button, out InputListener? value)) {
             value.SetButtonDown(button);
         }
     }
     
-    private void ButtonUpEventListener(SDL.SDL_Scancode scanCode) {
-        Button button = ScanCodeToButton.SCANCODE_TO_BUTTON[scanCode];
+    private void ButtonUpEventListener(Button button) {
         if (_listenersByButton.TryGetValue(button, out InputListener? value)) {
             value.SetButtonUp(button);
         }
