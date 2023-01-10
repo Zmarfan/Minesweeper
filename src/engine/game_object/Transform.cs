@@ -6,7 +6,7 @@ namespace Worms.engine.game_object;
 public class Transform : Component {
     public Transform? Parent { get; }
     public Vector2 LocalPosition { get; set; } = Vector2.Zero();
-    public Rotation LocalRotation { get; set; } = Rotation.Normal();
+    public Rotation LocalRotation { get; set; } = Rotation.Identity();
     public float LocalScale { get; set; } = 1;
     public readonly List<Transform> children = new();
 
@@ -16,7 +16,7 @@ public class Transform : Component {
                 return LocalPosition;
             }
 
-            return Parent.WorldPosition + Vector2.RotatePointAroundPoint(LocalPosition * Parent.WorldScale, Vector2.Zero(), -Parent.WorldRotation.Value);
+            return Parent.WorldPosition + Vector2.RotatePointAroundPoint(LocalPosition * Parent.WorldScale, Vector2.Zero(), -Parent.WorldRotation.Degree);
         }
     }
     

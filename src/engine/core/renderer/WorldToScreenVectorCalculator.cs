@@ -27,6 +27,6 @@ public static class WorldToScreenVectorCalculator {
     }
 
     private static Vector2 ConvertToCameraPosition(Vector2 position, Camera camera) {
-        return Vector2.RotatePointAroundPoint(position, camera.Position, camera.Rotation.Value) - camera.Position;
+        return Vector2.RotatePointAroundPoint(position, camera.Position, camera.Rotation.Degree) - camera.Position;
     }
 }

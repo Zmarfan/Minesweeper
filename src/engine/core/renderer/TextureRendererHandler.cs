@@ -32,7 +32,7 @@ public class TextureRendererHandler {
         SDL.SDL_FRect destRect = WorldToScreenVectorCalculator.CalculateTextureDrawPosition(tr.Transform, texture.surface, _settings);
         Rotation rotation = tr.Transform.WorldRotation - _settings.camera.Rotation;
         SDL.SDL_SetTextureColorMod(texture.texture, tr.color.Rbyte, tr.color.Gbyte, tr.color.Bbyte);
-        SDL.SDL_RenderCopyExF(_renderer, texture.texture, IntPtr.Zero, ref destRect, rotation.Value, IntPtr.Zero, GetTextureFlipSettings(tr));
+        SDL.SDL_RenderCopyExF(_renderer, texture.texture, IntPtr.Zero, ref destRect, rotation.Degree, IntPtr.Zero, GetTextureFlipSettings(tr));
     }
     
     private unsafe StoredTexture GetTexture(TextureRenderer tr) {

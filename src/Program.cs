@@ -13,7 +13,7 @@ internal static class Program {
         GameObject root = GameObjectBuilder
             .Builder("rootObject")
             .SetLocalPosition(new Vector2(0, 0))
-            .SetLocalRotation(Rotation.Normal())
+            .SetLocalRotation(Rotation.Identity())
             .Build()
                 .AddChild("background")
                 .SetLocalPosition(new Vector2(0, 0))
@@ -166,7 +166,7 @@ internal static class Program {
                 .SetAltPositiveButton(Button.MIDDLE_MOUSE)
                 .Build(),
         };
-        
+
         Game game = new(new GameSettings("test game", 1200, 800, new MyCamera(), root, listeners, new List<string> { "layer1", "layer2", "layer3" }));
         game.Run();
     }

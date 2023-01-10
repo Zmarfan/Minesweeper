@@ -7,7 +7,7 @@ public class GameObjectBuilder {
     private readonly string _name;
     private Transform? _parent;
     private Vector2 _localPosition = Vector2.Zero();
-    private Rotation _localRotation = Rotation.Normal();
+    private Rotation _localRotation = Rotation.Identity();
     private float _localScale = 1f;
     private bool _isActive = true;
     private readonly List<ToggleComponent> _components = new();
