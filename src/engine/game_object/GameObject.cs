@@ -37,7 +37,7 @@ public class GameObject : Object {
     }
     
     public GameObjectBuilder AddSibling(string name) {
-        return GameObjectBuilder.Builder(name, Transform.Parent?.gameObject);
+        return GameObjectBuilder.Builder(name, Transform.Parent?.gameObject!);
     }
     
     public GameObjectBuilder AddChild(string name) {

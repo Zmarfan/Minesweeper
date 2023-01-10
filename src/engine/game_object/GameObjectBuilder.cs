@@ -12,7 +12,7 @@ public class GameObjectBuilder {
     private bool _isActive = true;
     private readonly List<ToggleComponent> _components = new();
 
-    public GameObjectBuilder(string name, Transform? parent) {
+    private GameObjectBuilder(string name, Transform? parent) {
         _name = name;
         _parent = parent;
     }
@@ -24,18 +24,17 @@ public class GameObjectBuilder {
         _components.ForEach(component => component.InitComponent(gameObject));
         return gameObject;
     }
-    
-    public static GameObjectBuilder Builder(string name) {
-        return new GameObjectBuilder(name, null);
-    }
-    
-    public static GameObjectBuilder Builder(string name, GameObject? parent) {
-        return new GameObjectBuilder(name, parent?.Transform);
+
+    public static GameObject Root() {
+        return new GameObjectBuilder("root", null).Build();
     }
 
-    public GameObjectBuilder SetParent(GameObject parent) {
+    public static GameObjectBuilder Builder(string name, GameObject parent) {
+        return new GameObjectBuilder(name, parent.Transform);
+    }
+
+    public void SetParent(GameObject parent) {
         _parent = parent.Transform;
-        return this;
     }
     
     public GameObjectBuilder SetLocalPosition(Vector2 localPosition) {
