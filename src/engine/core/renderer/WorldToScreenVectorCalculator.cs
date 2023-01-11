@@ -12,8 +12,8 @@ public static class WorldToScreenVectorCalculator {
         SDL.SDL_FRect rect = new() {
             x = screenPosition.x,
             y = screenPosition.y,
-            w = surface->w * transform.WorldScale * (1 / settings.camera.Size),
-            h = surface->h * transform.WorldScale * (1 / settings.camera.Size)
+            w = surface->w * transform.WorldScale.x * (1 / settings.camera.Size),
+            h = surface->h * transform.WorldScale.y * (1 / settings.camera.Size)
         };
         return rect;
     }
@@ -21,8 +21,8 @@ public static class WorldToScreenVectorCalculator {
     private static unsafe Vector2 CalculateScreenPosition(Transform transform, SDL.SDL_Surface* surface, GameSettings settings, float cameraSizeMod) {
         Vector2 cameraOffsetPosition = transform.WorldPosition - settings.camera.Position;
         return new Vector2(
-            settings.width / 2f + cameraOffsetPosition.x * cameraSizeMod - surface->w * transform.WorldScale / 2f * cameraSizeMod,
-            settings.height / 2f - cameraOffsetPosition.y * cameraSizeMod - surface->h * transform.WorldScale / 2f * cameraSizeMod
+            settings.width / 2f + cameraOffsetPosition.x * cameraSizeMod - surface->w * transform.WorldScale.x / 2f * cameraSizeMod,
+            settings.height / 2f - cameraOffsetPosition.y * cameraSizeMod - surface->h * transform.WorldScale.y / 2f * cameraSizeMod
         );
     }
 }

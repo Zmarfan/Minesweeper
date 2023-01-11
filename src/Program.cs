@@ -11,8 +11,8 @@ internal static class Program {
     private static void Main() {
         GameObject root = GameObjectBuilder.Root()
             .Transform.AddChild("background")
-            .SetLocalPosition(new Vector2(0, 0))
-            .SetLocalScale(12f)
+            .SetPosition(new Vector2(0, 0))
+            .SetScale(12f)
             .SetComponent(
                 TextureRendererBuilder
                     .Builder("src\\assets\\test\\background.png")
@@ -23,8 +23,8 @@ internal static class Program {
             .Build()
             .Transform.AddSibling("child1")
             .SetComponent(new MyTestScript(4.5f))
-            .SetLocalPosition(new Vector2(-600, 0))
-            .SetLocalScale(2f)
+            .SetPosition(new Vector2(-600, 0))
+            .SetScale(new Vector2(2f, 1f))
             .SetComponent(
                 TextureRendererBuilder
                     .Builder("src\\assets\\test\\5.png")
@@ -34,7 +34,7 @@ internal static class Program {
             )
             .Build()
                 .Transform.AddChild("child2Sibling1")
-                .SetLocalPosition(new Vector2(600, 400))
+                .SetPosition(new Vector2(600, 400))
                 .SetComponent(
                     TextureRendererBuilder
                         .Builder("src\\assets\\test\\4.png")
@@ -44,9 +44,9 @@ internal static class Program {
                 )
                 .Build()
                 .Transform.AddSibling("child2Sibling2")
-                .SetLocalPosition(new Vector2(600, -400))
-                .SetLocalScale(0.5f)
-                .SetLocalRotation(Rotation.UpsideDown())
+                .SetPosition(new Vector2(600, -400))
+                .SetScale(0.5f)
+                .SetRotation(Rotation.UpsideDown())
                 .SetComponent(
                     TextureRendererBuilder
                         .Builder("src\\assets\\test\\3.png")
@@ -56,8 +56,8 @@ internal static class Program {
                 )
                 .Build()
                     .Transform.AddChild("child2Sibling3")
-                    .SetLocalPosition(new Vector2(-1200, 0))
-                    .SetLocalRotation(Rotation.CounterClockwise())
+                    .SetPosition(new Vector2(-1200, 0))
+                    .SetRotation(Rotation.CounterClockwise())
                     .SetComponent(
                         TextureRendererBuilder
                             .Builder("src\\assets\\test\\2.png")
@@ -66,8 +66,8 @@ internal static class Program {
                     )
                     .Build()
                     .Transform.AddSibling("child2Sibling4")
-                    .SetLocalPosition(new Vector2(-1200, 800))
-                    .SetLocalRotation(Rotation.Clockwise())
+                    .SetPosition(new Vector2(-1200, 800))
+                    .SetRotation(Rotation.Clockwise())
                     .SetComponent(
                         TextureRendererBuilder
                             .Builder("src\\assets\\test\\1.png")

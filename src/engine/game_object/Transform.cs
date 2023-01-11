@@ -23,47 +23,25 @@ public class Transform : Component {
             SetDirty();
         }
     }
-    public float Scale {
-        get => _scale.x;
+    public Vector2 Scale {
+        get => _scale;
         set {
-            _scale = new Vector2(value, value);
+            _scale = value;
             SetDirty();
         }
     }
 
     public Vector2 WorldPosition => LocalToWorldMatrix.ConvertPoint(Vector2.Zero());
-    
-    public Rotation WorldRotation {
-        get {
-            if (Parent == null) {
-                return Rotation;
-            }
+    public Rotation WorldRotation => Parent == null ? Rotation : Parent.WorldRotation + Rotation;
+    public Vector2 WorldScale => Parent == null ? Scale : Parent.WorldScale * Scale;
 
-            return Parent.WorldRotation + Rotation;
-        }
-    }
-    
-    public float WorldScale {
-        get {
-            if (Parent == null) {
-                return Scale;
-            }
-
-            return Parent.WorldScale * Scale;
-        }
-    }
-    
     public TransformationMatrix LocalToWorldMatrix {
         get {
             if (!_isDirty) {
                 return _localToWorldMatrix;
             }
             
-            TransformationMatrix localToParentMatrix = TransformationMatrix.CreateLocalToParentMatrix(
-                Position, 
-                Rotation, 
-                new Vector2(Scale, Scale)
-            );
+            TransformationMatrix localToParentMatrix = TransformationMatrix.CreateLocalToParentMatrix(Position, Rotation, Scale);
             if (Parent == null) {
                 _localToWorldMatrix = localToParentMatrix;
             } 
@@ -95,7 +73,7 @@ public class Transform : Component {
     private bool _isDirty = true;
     private bool _isInverseDirty = true;
 
-    public Transform(Transform? parent, Vector2 position, Rotation rotation, float scale) {
+    public Transform(Transform? parent, Vector2 position, Rotation rotation, Vector2 scale) {
         Parent = parent;
         Position = position;
         Rotation = rotation;

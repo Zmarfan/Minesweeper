@@ -18,7 +18,7 @@ public readonly struct TransformationMatrix {
     }
 
     public static TransformationMatrix CreateLocalToParentMatrix(Vector2 position, Rotation rotation, Vector2 scale) {
-        return Translate(position) * Scale(scale) * Rotate(rotation);
+        return Translate(position) * Rotate(rotation) * Scale(scale);
     }
 
     public Vector2 ConvertPoint(Vector2 p) {

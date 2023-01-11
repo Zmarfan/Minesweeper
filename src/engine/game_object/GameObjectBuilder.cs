@@ -6,9 +6,9 @@ namespace Worms.engine.game_object;
 public class GameObjectBuilder {
     private readonly string _name;
     private Transform? _parent;
-    private Vector2 _localPosition = Vector2.Zero();
-    private Rotation _localRotation = Rotation.Identity();
-    private float _localScale = 1f;
+    private Vector2 _position = Vector2.Zero();
+    private Rotation _rotation = Rotation.Identity();
+    private Vector2 _scale = Vector2.One();
     private bool _isActive = true;
     private readonly List<ToggleComponent> _components = new();
 
@@ -18,7 +18,7 @@ public class GameObjectBuilder {
     }
 
     public GameObject Build() {
-        Transform transform = new(_parent, _localPosition, _localRotation, _localScale);
+        Transform transform = new(_parent, _position, _rotation, _scale);
         GameObject gameObject = new(_name, _isActive, transform, _components);
         transform.InitComponent(gameObject);
         _components.ForEach(component => component.InitComponent(gameObject));
@@ -37,18 +37,23 @@ public class GameObjectBuilder {
         _parent = parent;
     }
     
-    public GameObjectBuilder SetLocalPosition(Vector2 localPosition) {
-        _localPosition = localPosition;
+    public GameObjectBuilder SetPosition(Vector2 position) {
+        _position = position;
         return this;
     }
 
-    public GameObjectBuilder SetLocalRotation(Rotation localRotation) {
-        _localRotation = localRotation;
+    public GameObjectBuilder SetRotation(Rotation rotation) {
+        _rotation = rotation;
         return this;
     }
 
-    public GameObjectBuilder SetLocalScale(float localScale) {
-        _localScale = localScale;
+    public GameObjectBuilder SetScale(Vector2 scale) {
+        _scale = scale;
+        return this;
+    }
+    
+    public GameObjectBuilder SetScale(float scale) {
+        _scale = new Vector2(scale, scale);
         return this;
     }
 
