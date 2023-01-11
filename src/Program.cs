@@ -23,8 +23,9 @@ internal static class Program {
             )
             .Build()
             .AddSibling("child1")
-            .SetLocalPosition(new Vector2(0, 0))
-            .SetLocalScale(1f)
+            .SetComponent(new MyTestScript(4.5f))
+            .SetLocalPosition(new Vector2(-600, 0))
+            .SetLocalScale(2f)
             .SetComponent(
                 TextureRendererBuilder
                     .Builder("src\\assets\\test\\5.png")
@@ -35,7 +36,6 @@ internal static class Program {
             .Build()
                 .AddChild("child2Sibling1")
                 .SetLocalPosition(new Vector2(600, 400))
-                .SetLocalScale(2)
                 .SetComponent(
                     TextureRendererBuilder
                         .Builder("src\\assets\\test\\4.png")
@@ -46,9 +46,8 @@ internal static class Program {
                 .Build()
                 .AddSibling("child2Sibling2")
                 .SetLocalPosition(new Vector2(600, -400))
+                .SetLocalScale(0.5f)
                 .SetLocalRotation(Rotation.UpsideDown())
-                .SetLocalScale(2)
-                .SetComponent(new MyTestScript(4.5f))
                 .SetComponent(
                     TextureRendererBuilder
                         .Builder("src\\assets\\test\\3.png")
@@ -58,7 +57,6 @@ internal static class Program {
                 )
                 .Build()
                     .AddChild("child2Sibling3")
-                    .SetLocalScale(2)
                     .SetLocalPosition(new Vector2(-1200, 0))
                     .SetLocalRotation(Rotation.CounterClockwise())
                     .SetComponent(
@@ -69,7 +67,6 @@ internal static class Program {
                     )
                     .Build()
                     .AddSibling("child2Sibling4")
-                    .SetLocalScale(2)
                     .SetLocalPosition(new Vector2(-1200, 800))
                     .SetLocalRotation(Rotation.Clockwise())
                     .SetComponent(
@@ -81,68 +78,6 @@ internal static class Program {
                             .Build()
                     )
                     .Build()
-                .GetParent()
-            .GetParent()
-            .AddSibling("child1")
-                .SetLocalPosition(new Vector2(1200, 0))
-                .SetLocalScale(1f)
-                .SetLocalRotation(Rotation.UpsideDown())
-                .SetComponent(
-                    TextureRendererBuilder
-                        .Builder("src\\assets\\test\\5.png")
-                        .SetSortingLayer("layer1")
-                        .SetSortingOrder(0)
-                        .Build()
-                )
-                .Build()
-                    .AddChild("child2Sibling1")
-                    .SetLocalPosition(new Vector2(600, 400))
-                    .SetLocalScale(2)
-                    .SetComponent(
-                        TextureRendererBuilder
-                            .Builder("src\\assets\\test\\4.png")
-                            .SetSortingLayer("layer1")
-                            .SetSortingOrder(1)
-                            .Build()
-                    )
-                    .Build()
-                    .AddSibling("child2Sibling2")
-                    .SetLocalPosition(new Vector2(600, -400))
-                    .SetLocalRotation(Rotation.UpsideDown())
-                    .SetLocalScale(2)
-                    .SetComponent(new MyTestScript(4.5f))
-                    .SetComponent(
-                        TextureRendererBuilder
-                            .Builder("src\\assets\\test\\3.png")
-                            .SetSortingLayer("layer3")
-                            .SetFlipY(true)
-                            .Build()
-                    )
-                    .Build()
-                        .AddChild("child2Sibling3")
-                        .SetLocalScale(2)
-                        .SetLocalPosition(new Vector2(-1200, 0))
-                        .SetLocalRotation(Rotation.CounterClockwise())
-                        .SetComponent(
-                            TextureRendererBuilder
-                                .Builder("src\\assets\\test\\2.png")
-                                .SetFlipX(true)
-                                .Build()
-                        )
-                        .Build()
-                        .AddSibling("child2Sibling4")
-                        .SetLocalScale(2)
-                        .SetLocalPosition(new Vector2(-1200, 800))
-                        .SetLocalRotation(Rotation.Clockwise())
-                        .SetComponent(
-                            TextureRendererBuilder
-                                .Builder("src\\assets\\test\\1.png")
-                                .SetColor(new Color(0.25f, 1f, 0.25f))
-                                .SetFlipX(true)
-                                .SetFlipY(true)
-                                .Build()
-                        )
-                        .Build()
             .GetRoot();
 
         List<InputListener> listeners = new() {
@@ -162,7 +97,7 @@ internal static class Program {
                 .SetAltPositiveButton(Button.MIDDLE_MOUSE)
                 .Build(),
         };
-
+        
         Game game = new(new GameSettings("test game", 1200, 800, new MyCamera(), root, listeners, new List<string> { "layer1", "layer2", "layer3" }));
         game.Run();
     }

@@ -1,74 +1,109 @@
 ﻿namespace Worms.engine.data; 
 
 public readonly struct TransformationMatrix {
-    private readonly float _m00;
-    private readonly float _m10;
-    private readonly float _m20;
-    private readonly float _m01;
-    private readonly float _m11;
-    private readonly float _m21;
-    private const float M02 = 0f;
-    private const float M12 = 0f;
-    private const float M22 = 1f;
+    private static readonly float[,] IDENTITY_VALUES = {
+        { 1f, 0f, 0f },
+        { 0f, 1f, 0f },
+        { 0f, 0f, 1f }
+    };
+    
+    private readonly float[,] _values = IDENTITY_VALUES;
 
-    private TransformationMatrix(float m00, float m10, float m20, float m01, float m11, float m21) {
-        _m00 = m00;
-        _m10 = m10;
-        _m20 = m20;
-        _m01 = m01;
-        _m11 = m11;
-        _m21 = m21;
+    private TransformationMatrix(float[,] values) {
+        _values = values;
     }
     
     public static TransformationMatrix Identity() {
-        return new TransformationMatrix(1f, 0f, 0f, 0f, 1f, 0f);
+        return new TransformationMatrix(IDENTITY_VALUES);
     }
 
-    public static TransformationMatrix Create(
-        TransformationMatrix baseMatrix,
-        Vector2 position,
-        Rotation rotation,
-        Vector2 scale
-    ) {
-        TransformationMatrix matrix = CombineMatrix(baseMatrix, CreateMatrix(position, rotation, scale));
-        return matrix;
+    public static TransformationMatrix CreateLocalToParentMatrix(Vector2 position, Rotation rotation, Vector2 scale) {
+        return Translate(position) * Scale(scale) * Rotate(rotation);
     }
 
     public Vector2 ConvertPoint(Vector2 p) {
-        float x = _m00 * p.x + _m10 * p.y + _m20;
-        float y = _m01 * p.x + _m11 * p.y + _m21;
+        float x = MathF.CloseToIntToInt(_values[0, 0] * p.x + _values[1, 0] * p.y + _values[2, 0]);
+        float y = MathF.CloseToIntToInt(_values[0, 1] * p.x + _values[1, 1] * p.y + _values[2, 1]);
         return new Vector2(x, y);
     }
     
     public Vector2 ConvertVector(Vector2 v) {
-        float x = _m00 * v.x + _m10 * v.y;
-        float y = _m01 * v.x + _m11 * v.y;
+        float x = MathF.CloseToIntToInt(_values[0, 0] * v.x + _values[1, 0] * v.y);
+        float y = MathF.CloseToIntToInt(_values[0, 1] * v.x + _values[1, 1] * v.y);
         return new Vector2(x, y);
     }
 
-    private static TransformationMatrix CreateMatrix(Vector2 position, Rotation rotation, Vector2 scale) {
-        float cos = MathF.CloseToZeroToZero((float)Math.Cos(rotation.Radians));
-        float sin = MathF.CloseToZeroToZero((float)Math.Sin(rotation.Radians));
-        float m00 = scale.x * cos;
-        float m10 = -scale.y * sin;
-        float m20 = position.x;
-        float m01 = scale.x * sin;
-        float m11 = scale.y * cos;
-        float m21 = position.y;
-        return new TransformationMatrix(m00, m10, m20, m01, m11, m21);
+    public TransformationMatrix Inverse() {
+        float determinant = 1 / (
+            _values[0, 0] * (_values[1, 1] * _values[2, 2] - _values[2, 1] * _values[1, 2])
+            - _values[1, 0] * (_values[0, 1] * _values[2, 2] - _values[2, 1] * _values[0, 2])
+            - _values[2, 0] * (_values[0, 1] * _values[1, 2] - _values[1, 1] * _values[0, 2])
+        );
+        float[,] values = {
+            {
+                (_values[1, 1] * _values[2, 2] - _values[2, 1] * _values[1, 2]) / determinant, 
+                (_values[2, 1] * _values[0, 2] - _values[0, 1] * _values[2, 2]) / determinant,
+                (_values[0, 1] * _values[1, 2] - _values[1, 1] * _values[0, 2]) / determinant,
+            },
+            {
+                (_values[2, 0] * _values[1, 2] - _values[1, 0] * _values[2, 2]) / determinant,
+                (_values[0, 0] * _values[2, 2] - _values[2, 0] * _values[0, 2]) / determinant,
+                (_values[1, 0] * _values[0, 2] - _values[0, 0] * _values[1, 2]) / determinant
+            },
+            {
+                (_values[1, 0] * _values[2, 1] - _values[2, 0] * _values[1, 1]) / determinant,
+                (_values[2, 0] * _values[0, 1] - _values[0, 0] * _values[2, 1]) / determinant,
+                (_values[0, 0] * _values[1, 1] - _values[1, 0] * _values[0, 1]) / determinant
+            }
+        };
+        return determinant * new TransformationMatrix(values);
+    }
+
+    private static TransformationMatrix Translate(Vector2 position) {
+        return new TransformationMatrix(new[,] {
+            { 1f, 0f, 0f }, 
+            { 0f, 1f, 0f }, 
+            { position.x, position.y, 1f }
+        });
     }
     
-    private static TransformationMatrix CombineMatrix(TransformationMatrix b, TransformationMatrix c) {
-        float m00 = b._m00 * c._m00 + b._m10 * c._m01 + b._m20 * M02;
-        float m10 = b._m00 * c._m10 + b._m10 * c._m11 + b._m20 * M12;
-        float m20 = b._m00 * c._m20 + b._m10 * c._m21 + b._m20 * M22;
-        float m01 = b._m01 * c._m00 + b._m11 * c._m01 + b._m21 * M02;
-        float m11 = b._m01 * c._m10 + b._m11 * c._m11 + b._m21 * M12;
-        float m21 = b._m01 * c._m20 + b._m11 * c._m21 + b._m21 * M22;
-        return new TransformationMatrix(m00, m10, m20, m01, m11, m21);
+    private static TransformationMatrix Rotate(Rotation rotation) {
+        float cos = MathF.CloseToIntToInt((float)Math.Cos(rotation.Radians));
+        float sin = MathF.CloseToIntToInt((float)Math.Sin(rotation.Radians));
+        return new TransformationMatrix(new[,] {
+            { cos, -sin, 0f }, 
+            { sin, cos, 0f }, 
+            { 0f, 0f, 1f }
+        });
+    }
+
+    private static TransformationMatrix Scale(Vector2 scale) {
+        return new TransformationMatrix(new[,] { { scale.x, 0f, 0f }, { 0f, scale.y, 0f }, { 0f, 0f, 1f } });
+    }
+    
+    public static TransformationMatrix operator *(TransformationMatrix a, TransformationMatrix b) {
+        float[,] values = new float[3, 3];
+        for (int x = 0; x < a._values.GetLength(0); x++) {
+            for (int y = 0; y < a._values.GetLength(1); y++) {
+                values[x, y] = MathF.CloseToIntToInt(a._values[0, y] * b._values[x, 0] + a._values[1, y] * b._values[x, 1] + a._values[2, y] * b._values[x, 2]);
+            }
+        }
+
+        return new TransformationMatrix(values);
+    }
+    
+    public static TransformationMatrix operator *(float value, TransformationMatrix matrix) {
+        float[,] values = new float[3, 3];
+        for (int x = 0; x < matrix._values.GetLength(0); x++) {
+            for (int y = 0; y < matrix._values.GetLength(1); y++) {
+                values[x, y] = MathF.CloseToIntToInt(matrix._values[x, y] * value);
+            }
+        }
+
+        return new TransformationMatrix(values);
     }
 
     public override string ToString() {
-        return $"{_m00}, {_m10}, {_m20}\n{_m01}, {_m11}, {_m21}\n{M02}, {M12}, {M22}";
+        return $"{_values[0, 0]}, {_values[1, 0]}, {_values[2, 0]}\n{_values[0, 1]}, {_values[1, 1]}, {_values[2, 1]}\n{_values[0, 2]}, {_values[1, 2]}, {_values[2, 2]}";
     }
 }

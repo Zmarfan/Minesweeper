@@ -47,7 +47,7 @@ public class GameObject : Object {
     public void AddChild(GameObjectBuilder builder) {
         builder.SetParent(this);
         builder.Build();
-        GameObjectUpdateEvent?.Invoke();;
+        GameObjectUpdateEvent?.Invoke();
     }
 
     public T GetComponent<T>() where T : ToggleComponent {

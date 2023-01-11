@@ -19,14 +19,10 @@ public static class WorldToScreenVectorCalculator {
     }
 
     private static unsafe Vector2 CalculateScreenPosition(Transform transform, SDL.SDL_Surface* surface, GameSettings settings, float cameraSizeMod) {
-        Vector2 cameraOffsetPosition = ConvertToCameraPosition(transform.WorldPosition, settings.camera);
+        Vector2 cameraOffsetPosition = transform.WorldPosition - settings.camera.Position;
         return new Vector2(
             settings.width / 2f + cameraOffsetPosition.x * cameraSizeMod - surface->w * transform.WorldScale / 2f * cameraSizeMod,
             settings.height / 2f - cameraOffsetPosition.y * cameraSizeMod - surface->h * transform.WorldScale / 2f * cameraSizeMod
         );
-    }
-
-    private static Vector2 ConvertToCameraPosition(Vector2 position, Camera camera) {
-        return Vector2.RotatePointAroundPoint(position, camera.Position, camera.Rotation.Degree) - camera.Position;
     }
 }

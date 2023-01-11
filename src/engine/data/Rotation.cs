@@ -32,9 +32,13 @@ public struct Rotation {
     public static Rotation Mirror(Rotation a) {
         return new Rotation(a._degree + 180);
     }
+
+    public static Rotation FromDegrees(float degrees) {
+        return new Rotation(degrees);
+    }
     
-    public Rotation(float value) {
-        _degree = value % 360;
+    private Rotation(float degree) {
+        _degree = degree % 360;
     }
     
     public override string ToString() {
