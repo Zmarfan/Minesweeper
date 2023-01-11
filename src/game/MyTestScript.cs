@@ -11,8 +11,8 @@ public class MyTestScript : Script {
     }
 
     public override void Update(float deltaTime) {
-        Transform.LocalPosition += Input.GetAxis("horizontal") * _speed * 1000 * deltaTime;
-        Transform.LocalPosition += Input.GetAxis("vertical") * _speed * 1000 * deltaTime;
-        Transform.LocalRotation += Input.GetButton("action") ? _speed * 50 * deltaTime : 0;
+        Transform.Position += Input.GetAxis("horizontal") * _speed * 1000 * deltaTime;
+        Transform.Position += Input.GetAxis("vertical") * _speed * 1000 * deltaTime;
+        Transform.Rotation += Input.GetButton("action") ? _speed * 50 * deltaTime : 0;
     }
 }

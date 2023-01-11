@@ -2,7 +2,6 @@
 using Worms.engine.core.input.listener;
 using Worms.engine.data;
 using Worms.engine.game_object;
-using Worms.engine.game_object.components;
 using Worms.engine.game_object.components.texture_renderer;
 using Worms.game;
 
@@ -11,7 +10,7 @@ namespace Worms;
 internal static class Program {
     private static void Main() {
         GameObject root = GameObjectBuilder.Root()
-            .AddChild("background")
+            .Transform.AddChild("background")
             .SetLocalPosition(new Vector2(0, 0))
             .SetLocalScale(12f)
             .SetComponent(
@@ -22,7 +21,7 @@ internal static class Program {
                     .Build()
             )
             .Build()
-            .AddSibling("child1")
+            .Transform.AddSibling("child1")
             .SetComponent(new MyTestScript(4.5f))
             .SetLocalPosition(new Vector2(-600, 0))
             .SetLocalScale(2f)
@@ -34,7 +33,7 @@ internal static class Program {
                     .Build()
             )
             .Build()
-                .AddChild("child2Sibling1")
+                .Transform.AddChild("child2Sibling1")
                 .SetLocalPosition(new Vector2(600, 400))
                 .SetComponent(
                     TextureRendererBuilder
@@ -44,7 +43,7 @@ internal static class Program {
                         .Build()
                 )
                 .Build()
-                .AddSibling("child2Sibling2")
+                .Transform.AddSibling("child2Sibling2")
                 .SetLocalPosition(new Vector2(600, -400))
                 .SetLocalScale(0.5f)
                 .SetLocalRotation(Rotation.UpsideDown())
@@ -56,7 +55,7 @@ internal static class Program {
                         .Build()
                 )
                 .Build()
-                    .AddChild("child2Sibling3")
+                    .Transform.AddChild("child2Sibling3")
                     .SetLocalPosition(new Vector2(-1200, 0))
                     .SetLocalRotation(Rotation.CounterClockwise())
                     .SetComponent(
@@ -66,7 +65,7 @@ internal static class Program {
                             .Build()
                     )
                     .Build()
-                    .AddSibling("child2Sibling4")
+                    .Transform.AddSibling("child2Sibling4")
                     .SetLocalPosition(new Vector2(-1200, 800))
                     .SetLocalRotation(Rotation.Clockwise())
                     .SetComponent(
@@ -78,7 +77,7 @@ internal static class Program {
                             .Build()
                     )
                     .Build()
-            .GetRoot();
+            .Transform.GetRoot().gameObject;
 
         List<InputListener> listeners = new() {
             InputListenerBuilder.Builder("horizontal", Button.D)

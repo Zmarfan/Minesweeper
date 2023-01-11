@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Worms.engine.game_object;
+﻿using Worms.engine.game_object;
 using Worms.engine.game_object.components;
 using Worms.engine.game_object.components.texture_renderer;
 using Worms.engine.game_object.scripts;
@@ -13,14 +12,15 @@ public class GameObjectHandler {
     public List<TextureRenderer> AllActiveGameObjectTextureRenderers { get; private set; } = new();
     private List<GameObject> _allGameObjects = new();
 
-    private Queue<Object> _destroyObjects = new();
+    private readonly Queue<Object> _destroyObjects = new();
 
     private readonly GameObject _root;
 
     public GameObjectHandler(GameObject root) {
         _root = root;
         OnGameObjectChange();
-        GameObject.GameObjectUpdateEvent += OnGameObjectChange;
+        GameObject.GameObjectActiveEvent += OnGameObjectChange;
+        Transform.TransformHierarchyEvent += OnGameObjectChange;
         Object.ObjectDestroyEvent += OnObjectDestroy;
     }
 

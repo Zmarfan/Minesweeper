@@ -5,14 +5,14 @@ namespace Worms.engine.game_object;
 
 public class GameObject : Object {
     public delegate void GameObjectUpdate();
-    public static event GameObjectUpdate? GameObjectUpdateEvent;
+    public static event GameObjectUpdate? GameObjectActiveEvent;
     
     public string Name { get; set; }
 
     public bool IsActive {
         get => _isActive;
         set {
-            GameObjectUpdateEvent?.Invoke();;
+            GameObjectActiveEvent?.Invoke();;
             _isActive = value;
         }
     }
@@ -26,28 +26,6 @@ public class GameObject : Object {
         IsActive = isActive;
         Transform = transform;
         this.components = components;
-    }
-
-    public GameObject GetRoot() {
-        return Transform.Parent == null ? this : Transform.Parent.gameObject.GetRoot();
-    }
-    
-    public GameObject GetParent() {
-        return Transform.Parent!.gameObject;
-    }
-    
-    public GameObjectBuilder AddSibling(string name) {
-        return GameObjectBuilder.Builder(name, Transform.Parent?.gameObject!);
-    }
-    
-    public GameObjectBuilder AddChild(string name) {
-        return GameObjectBuilder.Builder(name, this);
-    }
-
-    public void AddChild(GameObjectBuilder builder) {
-        builder.SetParent(this);
-        builder.Build();
-        GameObjectUpdateEvent?.Invoke();
     }
 
     public T GetComponent<T>() where T : ToggleComponent {

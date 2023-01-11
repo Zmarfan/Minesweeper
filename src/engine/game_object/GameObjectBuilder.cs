@@ -33,8 +33,8 @@ public class GameObjectBuilder {
         return new GameObjectBuilder(name, parent.Transform);
     }
 
-    public void SetParent(GameObject parent) {
-        _parent = parent.Transform;
+    public void SetParent(Transform parent) {
+        _parent = parent;
     }
     
     public GameObjectBuilder SetLocalPosition(Vector2 localPosition) {
