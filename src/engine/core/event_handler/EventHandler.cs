@@ -36,19 +36,28 @@ public class EventHandler {
                     if (IsEnterFullScreen(e.key.keysym)) {
                         ToggleFullscreenEvent?.Invoke();
                     }
-                    KeyDownEvent?.Invoke(SdlInputCodeToButton.SCANCODE_TO_BUTTON[e.key.keysym.scancode]);
+
+                    if (SdlInputCodeToButton.SCANCODE_TO_BUTTON.ContainsKey(e.key.keysym.scancode)) {
+                        KeyDownEvent?.Invoke(SdlInputCodeToButton.SCANCODE_TO_BUTTON[e.key.keysym.scancode]);
+                    }
                     break;
                 }
                 case SDL.SDL_EventType.SDL_MOUSEBUTTONDOWN: {
-                    KeyDownEvent?.Invoke(SdlInputCodeToButton.MOUSE_BUTTON_TO_BUTTON[e.button.button]);
+                    if (SdlInputCodeToButton.MOUSE_BUTTON_TO_BUTTON.ContainsKey(e.button.button)) {
+                        KeyDownEvent?.Invoke(SdlInputCodeToButton.MOUSE_BUTTON_TO_BUTTON[e.button.button]);
+                    }
                     break;
                 }
                 case SDL.SDL_EventType.SDL_KEYUP: {
-                    KeyUpEvent?.Invoke(SdlInputCodeToButton.SCANCODE_TO_BUTTON[e.key.keysym.scancode]);
+                    if (SdlInputCodeToButton.SCANCODE_TO_BUTTON.ContainsKey(e.key.keysym.scancode)) {
+                        KeyUpEvent?.Invoke(SdlInputCodeToButton.SCANCODE_TO_BUTTON[e.key.keysym.scancode]);
+                    }
                     break;
                 }
                 case SDL.SDL_EventType.SDL_MOUSEBUTTONUP: {
-                    KeyUpEvent?.Invoke(SdlInputCodeToButton.MOUSE_BUTTON_TO_BUTTON[e.button.button]);
+                    if (SdlInputCodeToButton.MOUSE_BUTTON_TO_BUTTON.ContainsKey(e.button.button)) {
+                        KeyUpEvent?.Invoke(SdlInputCodeToButton.MOUSE_BUTTON_TO_BUTTON[e.button.button]);
+                    }
                     break;
                 }
                 case SDL.SDL_EventType.SDL_MOUSEMOTION: {

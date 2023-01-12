@@ -2,6 +2,7 @@
 
 public enum Button {
     SPACE,
+    RETURN,
     CTRL,
     SHIFT,
     CAPS_LOCK,

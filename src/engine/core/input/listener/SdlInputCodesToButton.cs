@@ -6,6 +6,7 @@ public static class SdlInputCodeToButton {
     public static readonly Dictionary<SDL.SDL_Scancode, Button> SCANCODE_TO_BUTTON = new() {
         { SDL.SDL_Scancode.SDL_SCANCODE_SPACE, Button.SPACE },
         { SDL.SDL_Scancode.SDL_SCANCODE_KP_SPACE, Button.SPACE },
+        { SDL.SDL_Scancode.SDL_SCANCODE_RETURN, Button.RETURN },
         { SDL.SDL_Scancode.SDL_SCANCODE_LCTRL, Button.CTRL },
         { SDL.SDL_Scancode.SDL_SCANCODE_RCTRL, Button.CTRL },
         { SDL.SDL_Scancode.SDL_SCANCODE_LSHIFT, Button.SHIFT },
