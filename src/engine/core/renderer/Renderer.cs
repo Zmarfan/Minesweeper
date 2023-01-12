@@ -41,7 +41,7 @@ public class Renderer {
     }
 
     public void Render() {
-        DrawBackground(DefaultDrawColor);
+        SetDrawColor(DefaultDrawColor);
         SDL.SDL_RenderClear(_renderer);
         _textureRendererHandler.RenderTextures(_gameObjectHandler.AllActiveGameObjectTextureRenderers);
         _gizmosRendererHandler.RenderGizmos(_gameObjectHandler.AllActiveGameObjectScripts);
@@ -60,7 +60,7 @@ public class Renderer {
         SDL.SDL_DestroyRenderer(_renderer);
     }
 
-    private void DrawBackground(Color c) {
+    private void SetDrawColor(Color c) {
         SDL.SDL_SetRenderDrawColor(_renderer, c.Rbyte, c.Gbyte, c.Bbyte, c.Abyte);
     }
 }

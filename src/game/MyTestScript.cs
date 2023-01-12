@@ -17,8 +17,4 @@ public class MyTestScript : Script {
         Transform.Position += Input.GetAxis("vertical") * _speed * 1000 * deltaTime;
         Transform.Rotation += Input.GetButton("action") ? _speed * 50 * deltaTime : 0;
     }
-
-    public override void OnDrawGizmos() {
-        Gizmos.DrawLine(Transform.Position, Transform.Position + new Vector2(-1000f, 1000f), new Color(1f, 0.5f, 0.75f));
-    }
 }

@@ -23,7 +23,9 @@ internal static class Program {
             .Build()
             .Transform.AddSibling("child1")
             .SetComponent(new MyTestScript(4.5f))
+            .SetComponent(new GizmoScript())
             .SetPosition(new Vector2(-600, 0))
+            .SetScale(new Vector2(2, 2))
             .SetComponent(
                 TextureRendererBuilder
                     .Builder("src\\assets\\test\\5.png")
@@ -34,6 +36,7 @@ internal static class Program {
             .Build()
                 .Transform.AddChild("child2Sibling1")
                 .SetPosition(new Vector2(600, 400))
+                .SetComponent(new GizmoScript())
                 .SetComponent(
                     TextureRendererBuilder
                         .Builder("src\\assets\\test\\4.png")
@@ -46,6 +49,7 @@ internal static class Program {
                 .SetPosition(new Vector2(600, -400))
                 .SetScale(0.5f)
                 .SetRotation(Rotation.UpsideDown())
+                .SetComponent(new GizmoScript())
                 .SetComponent(
                     TextureRendererBuilder
                         .Builder("src\\assets\\test\\3.png")
@@ -57,6 +61,7 @@ internal static class Program {
                     .Transform.AddChild("child2Sibling3")
                     .SetPosition(new Vector2(-1200, 0))
                     .SetRotation(Rotation.CounterClockwise())
+                    .SetComponent(new GizmoScript())
                     .SetComponent(
                         TextureRendererBuilder
                             .Builder("src\\assets\\test\\2.png")
@@ -67,6 +72,7 @@ internal static class Program {
                     .Transform.AddSibling("child2Sibling4")
                     .SetPosition(new Vector2(-1200, 800))
                     .SetRotation(Rotation.Clockwise())
+                    .SetComponent(new GizmoScript())
                     .SetComponent(
                         TextureRendererBuilder
                             .Builder("src\\assets\\test\\1.png")

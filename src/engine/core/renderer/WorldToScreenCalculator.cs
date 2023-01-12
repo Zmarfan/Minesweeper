@@ -11,6 +11,10 @@ public static class WorldToScreenCalculator {
         return new Vector2(settings.width / 2f + cameraOffsetPosition.x, settings.height / 2f - cameraOffsetPosition.y);
     }
     
+    public static Vector2 WorldToScreenVector(Vector2 worldVector, GameSettings settings) {
+        return worldVector * CameraSizeMod(settings);
+    }
+    
     public static unsafe SDL.SDL_FRect CalculateTextureDrawPosition(Transform transform, SDL.SDL_Surface* surface, GameSettings settings) {
         Vector2 screenPosition = CalculateTextureScreenPosition(transform, surface, settings);
         Vector2 textureDimensions = CalculateTextureDimensions(transform, surface, settings);

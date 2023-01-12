@@ -20,6 +20,23 @@ public readonly struct TransformationMatrix {
     public static TransformationMatrix CreateLocalToParentMatrix(Vector2 position, Rotation rotation, Vector2 scale) {
         return Translate(position) * Rotate(rotation) * Scale(scale);
     }
+    
+    public Vector2 GetTranslation() {
+        return new Vector2(_values[2, 0], _values[2, 1]);
+    }
+
+    public Vector2 GetScale() {
+        return new Vector2(
+            (float)Math.Sqrt(_values[0, 0] * _values[0, 0] + _values[0, 1] * _values[0, 1]),
+            (float)Math.Sqrt(_values[1, 0] * _values[1, 0] + _values[1, 1] * _values[1, 1])
+        );
+    }
+
+    public Rotation GetRotation() {
+        Rotation rotation = Rotation.FromRadians((float)Math.Acos(_values[0, 0] / GetScale().x));
+        rotation = Math.Sign(_values[0, 1]) == 1 ? Rotation.FromDegrees(360 - rotation.Degree) : rotation;
+        return rotation;
+    }
 
     public Vector2 ConvertPoint(Vector2 p) {
         float x = MathF.CloseToIntToInt(_values[0, 0] * p.x + _values[1, 0] * p.y + _values[2, 0]);
@@ -33,14 +50,6 @@ public readonly struct TransformationMatrix {
         return new Vector2(x, y);
     }
 
-    public Vector2 ConvertLocalPoint(Vector2 p) {
-        return ConvertPoint(p - GetTranslation());
-    }
-
-    private Vector2 GetTranslation() {
-        return new Vector2(_values[2, 0], _values[2, 1]);
-    }
-    
     public TransformationMatrix Inverse() {
         float determinant = 1 / (
             _values[0, 0] * (_values[1, 1] * _values[2, 2] - _values[2, 1] * _values[1, 2])
@@ -67,7 +76,7 @@ public readonly struct TransformationMatrix {
         return determinant * new TransformationMatrix(values);
     }
 
-    private static TransformationMatrix Translate(Vector2 position) {
+    public static TransformationMatrix Translate(Vector2 position) {
         return new TransformationMatrix(new[,] {
             { 1f, 0f, 0f }, 
             { 0f, 1f, 0f }, 

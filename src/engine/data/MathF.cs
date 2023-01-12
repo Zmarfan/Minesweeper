@@ -7,6 +7,10 @@ public static class MathF {
         return (float)(Math.PI * angle / 180);
     }
 
+    public static float RadiansToDegree(float radians) {
+        return (float)(180 / Math.PI * radians);
+    }
+
     public static float CloseToIntToInt(float value) {
         int nearestInt = (int)Math.Round(value, 0);
         return value - nearestInt < EPSILON && value - nearestInt > -EPSILON ? nearestInt : value;

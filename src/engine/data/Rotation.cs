@@ -37,6 +37,10 @@ public struct Rotation {
         return new Rotation(degrees);
     }
     
+    public static Rotation FromRadians(float radians) {
+        return new Rotation(MathF.RadiansToDegree(radians));
+    }
+    
     private Rotation(float degree) {
         _degree = degree % 360;
     }
