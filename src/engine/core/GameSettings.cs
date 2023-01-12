@@ -4,7 +4,8 @@ using Worms.engine.game_object;
 
 namespace Worms.engine.core; 
 
-public record GameSettings(string title, int width, int height, Camera camera, GameObject root, List<InputListener> inputListeners, List<string> sortLayers) {
+public record GameSettings(bool debug, string title, int width, int height, Camera camera, GameObject root, List<InputListener> inputListeners, List<string> sortLayers) {
+    public readonly bool debug = debug;
     public readonly string title = title;
     public int width = width;
     public int height = height;

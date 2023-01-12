@@ -10,8 +10,8 @@ public static class RendererHelper {
         float sinInv = (float)Math.Sin(-rotation.Radians);
         float cosInv = (float)Math.Cos(-rotation.Radians);
         
-        float x = 0;
-        float y = radius.y;
+        int x = 0;
+        int y = (int)radius.y;
  
         float d1 = radius.y * radius.y - radius.x * radius.x * radius.y + 0.25f * radius.x * radius.x;
         float dx = 2 * radius.y * radius.y * x;

@@ -3,12 +3,12 @@ using Worms.engine.data;
 
 namespace Worms.engine.core.gizmos; 
 
-public class GizmosCircle : GizmosObject {
+public class GizmosEllipsis : GizmosObject {
     private readonly Vector2 _center;
     private readonly Vector2 _radius;
     private readonly Rotation _rotation;
 
-    public GizmosCircle(Vector2 center, Vector2 radius, Rotation rotation, Color color) : base(color) {
+    public GizmosEllipsis(Vector2 center, Vector2 radius, Rotation rotation, Color color) : base(color) {
         _center = center;
         _radius = radius;
         _rotation = rotation;

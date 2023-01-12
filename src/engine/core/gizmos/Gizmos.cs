@@ -11,7 +11,19 @@ public static class Gizmos {
     }
     
     public static void DrawCircle(Vector2 center, float radius, Color color) {
-        GIZMOS_OBJECTS.Enqueue(new GizmosCircle(ToWorld(center), radius * matrix.GetScale(), matrix.GetRotation(), color));
+        GIZMOS_OBJECTS.Enqueue(new GizmosEllipsis(
+            ToWorld(center), 
+            radius * matrix.GetScale(), matrix.GetRotation(),
+            color
+        ));
+    }
+    
+    public static void DrawEllipsis(Vector2 center, Vector2 radius, Color color) {
+        GIZMOS_OBJECTS.Enqueue(new GizmosEllipsis(
+            ToWorld(center), 
+            radius * matrix.GetScale(), matrix.GetRotation(),
+            color
+        ));
     }
 
     private static Vector2 ToWorld(Vector2 position) {
