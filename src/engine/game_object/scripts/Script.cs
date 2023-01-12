@@ -17,4 +17,7 @@ public abstract class Script : ToggleComponent {
 
     public virtual void Update(float deltaTime) {
     }
+
+    public virtual void OnDrawGizmos() {
+    }
 }

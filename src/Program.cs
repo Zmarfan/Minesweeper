@@ -24,7 +24,6 @@ internal static class Program {
             .Transform.AddSibling("child1")
             .SetComponent(new MyTestScript(4.5f))
             .SetPosition(new Vector2(-600, 0))
-            .SetScale(new Vector2(2f, 1f))
             .SetComponent(
                 TextureRendererBuilder
                     .Builder("src\\assets\\test\\5.png")

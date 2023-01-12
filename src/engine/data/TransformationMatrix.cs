@@ -33,6 +33,14 @@ public readonly struct TransformationMatrix {
         return new Vector2(x, y);
     }
 
+    public Vector2 ConvertLocalPoint(Vector2 p) {
+        return ConvertPoint(p - GetTranslation());
+    }
+
+    private Vector2 GetTranslation() {
+        return new Vector2(_values[2, 0], _values[2, 1]);
+    }
+    
     public TransformationMatrix Inverse() {
         float determinant = 1 / (
             _values[0, 0] * (_values[1, 1] * _values[2, 2] - _values[2, 1] * _values[1, 2])
