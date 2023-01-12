@@ -10,6 +10,14 @@ public static class Gizmos {
         GIZMOS_OBJECTS.Enqueue(new GizmosLine(ToWorld(from), ToWorld(to), color));
     }
     
+    public static void DrawRay(Vector2 from, Vector2 direction, Color color) {
+        GIZMOS_OBJECTS.Enqueue(new GizmosLine(ToWorld(from), ToWorld(from + direction), color));
+    }
+
+    public static void DrawIcon(Vector2 center, Color color) {
+        GIZMOS_OBJECTS.Enqueue(new GizmoIcon(ToWorld(center), color));
+    }
+    
     public static void DrawCircle(Vector2 center, float radius, Color color) {
         GIZMOS_OBJECTS.Enqueue(new GizmosEllipsis(
             ToWorld(center), 
