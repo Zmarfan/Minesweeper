@@ -18,6 +18,15 @@ public class EventHandler {
     }
     
     public void HandleEvents() {
+        try {
+            HandleNewEvents();
+        }
+        catch (Exception e) {
+            Console.WriteLine($"There was an issue with the event handling this frame: {e}");
+        }
+    }
+
+    private void HandleNewEvents() {
         while (SDL.SDL_PollEvent(out SDL.SDL_Event e) == 1)
         {
             switch (e.type)
