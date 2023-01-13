@@ -1,8 +1,8 @@
 ﻿using SDL2;
+using Worms.engine.core.audio;
 using Worms.engine.core.input;
 using Worms.engine.core.renderer;
 using Worms.engine.core.update;
-using Worms.engine.data;
 using EventHandler = Worms.engine.core.event_handler.EventHandler;
 
 namespace Worms.engine.core; 
@@ -26,6 +26,7 @@ public class Game {
         _eventHandler.QuitEvent += () => _isRunning = false;
         _eventHandler.ToggleFullscreenEvent += _renderer.ToggleFullScreen;
         _updateHandler = new UpdateHandler(gameObjectHandler, settings.camera);
+        AudioHandler.Init(settings.audioSettings);
         Input.Init(_eventHandler, settings.inputListeners);
         
         _isRunning = true;
@@ -57,6 +58,7 @@ public class Game {
     }
     
     private void Clean() {
+        AudioHandler.Clean();
         _renderer.Clean();
         SDL.SDL_Quit();
     }

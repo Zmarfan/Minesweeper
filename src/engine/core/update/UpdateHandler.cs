@@ -25,12 +25,12 @@ public class UpdateHandler {
             try {
                 if (!script.HasRunAwake) {
                     script.Awake();
-                    script.HasRunAwake = true;
                 }
             }
             catch (Exception e) {
                 Console.WriteLine($"An exception occured in {script} during the Awake callback: {e}");
             }
+            script.HasRunAwake = true;
         });
     }
     
@@ -39,12 +39,12 @@ public class UpdateHandler {
             try {
                 if (script is { IsActive: true, HasRunStart: false }) {
                     script.Start();
-                    script.HasRunStart = true;
                 }
             }
             catch (Exception e) {
                 Console.WriteLine($"An exception occured in {script} during the Start callback: {e}");
             }
+            script.HasRunStart = true;
         });
     }
     

@@ -1,7 +1,9 @@
 ﻿using Worms.engine.core;
+using Worms.engine.core.audio;
 using Worms.engine.core.input.listener;
 using Worms.engine.data;
 using Worms.engine.game_object;
+using Worms.engine.game_object.components.audio_source;
 using Worms.engine.game_object.components.texture_renderer;
 using Worms.game;
 
@@ -102,7 +104,20 @@ internal static class Program {
                 .Build(),
         };
         
-        Game game = new(new GameSettings(true, "test game", 1200, 800, new MyCamera(), root, listeners, new List<string> { "layer1", "layer2", "layer3" }));
+        Game game = new(new GameSettings(
+            true, 
+            "test game",
+            1200, 
+            800, 
+            new MyCamera(),
+            root,
+            listeners, 
+            new List<string> { "layer1", "layer2", "layer3" },
+            new AudioSettings(Volume.Max(), new List<AudioChannel> {
+                new("effects", Volume.Max()),
+                new("music", Volume.Max()),
+            })
+        ));
         game.Run();
     }
 }

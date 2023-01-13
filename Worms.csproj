@@ -45,6 +45,10 @@
       <Content Include="src\assets\test\background.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="src\assets\test\test_sound1.wav" />
+      <Content Include="src\assets\test\test_sound1.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>
