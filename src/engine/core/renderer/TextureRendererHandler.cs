@@ -21,7 +21,12 @@ public class TextureRendererHandler {
     public void RenderTextures(IEnumerable<TextureRenderer> allActiveTextureRenderers) {
         foreach (TextureRenderer tr in allActiveTextureRenderers.OrderByDescending(tr => _sortLayers.IndexOf(tr.sortingLayer)).ThenByDescending(tr => tr.orderInLayer)) {
             if (tr.IsActive) {
-                RenderTexture(tr);
+                try {
+                    RenderTexture(tr);
+                }
+                catch (ArgumentException e) {
+                    Console.WriteLine(e);
+                }
             }
         }
     }
@@ -36,7 +41,12 @@ public class TextureRendererHandler {
     
     private unsafe StoredTexture GetTexture(TextureRenderer tr) {
         if (!_loadedTextures.TryGetValue(tr.textureSrc, out StoredTexture? texture)) {
-            texture = new StoredTexture((SDL.SDL_Surface *)SDL_image.IMG_Load(tr.textureSrc), SDL_image.IMG_LoadTexture(_renderer, tr.textureSrc));
+            IntPtr texturePtr = SDL_image.IMG_LoadTexture(_renderer, tr.textureSrc);
+            if (texturePtr == IntPtr.Zero) {
+                throw new ArgumentException($"Unable to load texture: {tr.textureSrc} due to: {SDL_image.IMG_GetError()}");
+            }
+            SDL.SDL_Surface * surface = (SDL.SDL_Surface *)SDL_image.IMG_Load(tr.textureSrc);
+            texture = new StoredTexture(surface, texturePtr);
             _loadedTextures.Add(tr.textureSrc, texture);
         }
 
