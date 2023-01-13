@@ -36,18 +36,19 @@ public class TextureRendererHandler {
 
         SDL.SDL_FRect destRect = WorldToScreenCalculator.CalculateTextureDrawPosition(tr.Transform, texture.surface, _settings);
         SDL.SDL_SetTextureColorMod(texture.texture, tr.color.Rbyte, tr.color.Gbyte, tr.color.Bbyte);
-        SDL.SDL_RenderCopyExF(_renderer, texture.texture, IntPtr.Zero, ref destRect, tr.Transform.WorldRotation.Degree, IntPtr.Zero, GetTextureFlipSettings(tr));
+        SDL.SDL_Rect srcRect = tr.texture.GetSrcRect(texture);
+        SDL.SDL_RenderCopyExF(_renderer, texture.texture, ref srcRect, ref destRect, tr.Transform.WorldRotation.Degree, IntPtr.Zero, GetTextureFlipSettings(tr));
     }
     
     private unsafe StoredTexture GetTexture(TextureRenderer tr) {
-        if (!_loadedTextures.TryGetValue(tr.textureSrc, out StoredTexture? texture)) {
-            IntPtr texturePtr = SDL_image.IMG_LoadTexture(_renderer, tr.textureSrc);
+        if (!_loadedTextures.TryGetValue(tr.texture.textureSrc, out StoredTexture? texture)) {
+            IntPtr texturePtr = SDL_image.IMG_LoadTexture(_renderer, tr.texture.textureSrc);
             if (texturePtr == IntPtr.Zero) {
-                throw new ArgumentException($"Unable to load texture: {tr.textureSrc} due to: {SDL_image.IMG_GetError()}");
+                throw new ArgumentException($"Unable to load texture: {tr.texture} due to: {SDL_image.IMG_GetError()}");
             }
-            SDL.SDL_Surface * surface = (SDL.SDL_Surface *)SDL_image.IMG_Load(tr.textureSrc);
+            SDL.SDL_Surface * surface = (SDL.SDL_Surface *)SDL_image.IMG_Load(tr.texture.textureSrc);
             texture = new StoredTexture(surface, texturePtr);
-            _loadedTextures.Add(tr.textureSrc, texture);
+            _loadedTextures.Add(tr.texture.textureSrc, texture);
         }
 
         return texture;

@@ -5,23 +5,23 @@ namespace Worms.engine.game_object.components.texture_renderer;
 
 public class TextureRendererBuilder {
     private bool _isActive = true;
-    private readonly string _textureSrc;
+    private readonly Texture _texture;
     private string _sortingLayer = TextureRendererHandler.DEFAULT_SORTING_LAYER;
     private int _sortOrder = 0;
     private Color _color = Color.White();
     private bool _flipX;
     private bool _flipY;
 
-    public TextureRendererBuilder(string textureSrc) {
-        _textureSrc = textureSrc;
+    public TextureRendererBuilder(Texture texture) {
+        _texture = texture;
     }
 
-    public static TextureRendererBuilder Builder(string textureSrc) {
-        return new TextureRendererBuilder(textureSrc);
+    public static TextureRendererBuilder Builder(Texture texture) {
+        return new TextureRendererBuilder(texture);
     }
 
     public TextureRenderer Build() {
-        return new TextureRenderer(_isActive, _textureSrc, _sortingLayer, _sortOrder, _color, _flipX, _flipY);
+        return new TextureRenderer(_isActive, _texture, _sortingLayer, _sortOrder, _color, _flipX, _flipY);
     }
     
     public TextureRendererBuilder SetIsActive(bool isActive) {

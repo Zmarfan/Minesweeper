@@ -3,7 +3,6 @@ using Worms.engine.core.audio;
 using Worms.engine.core.input.listener;
 using Worms.engine.data;
 using Worms.engine.game_object;
-using Worms.engine.game_object.components.audio_source;
 using Worms.engine.game_object.components.texture_renderer;
 using Worms.game;
 
@@ -17,7 +16,7 @@ internal static class Program {
             .SetScale(12f)
             .SetComponent(
                 TextureRendererBuilder
-                    .Builder("src\\assets\\test\\background.png")
+                    .Builder(Texture.CreateMultiple("src\\assets\\test\\background.png", 1, 1, 2, 2))
                     .SetSortingLayer("layer3")
                     .SetSortingOrder(0)
                     .Build()
@@ -30,7 +29,7 @@ internal static class Program {
             .SetScale(new Vector2(2, 2))
             .SetComponent(
                 TextureRendererBuilder
-                    .Builder("src\\assets\\test\\5.png")
+                    .Builder(Texture.CreateSingle("src\\assets\\test\\5.png"))
                     .SetSortingLayer("layer1")
                     .SetSortingOrder(0)
                     .Build()
@@ -41,7 +40,7 @@ internal static class Program {
                 .SetComponent(new GizmoScript())
                 .SetComponent(
                     TextureRendererBuilder
-                        .Builder("src\\assets\\test\\4.png")
+                        .Builder(Texture.CreateSingle("src\\assets\\test\\4.png"))
                         .SetSortingLayer("layer1")
                         .SetSortingOrder(1)
                         .Build()
@@ -54,7 +53,7 @@ internal static class Program {
                 .SetComponent(new GizmoScript())
             .SetComponent(
                     TextureRendererBuilder
-                        .Builder("src\\assets\\test\\3.png")
+                        .Builder(Texture.CreateSingle("src\\assets\\test\\3.png"))
                         .SetSortingLayer("layer3")
                         .SetFlipY(true)
                         .Build()
@@ -66,7 +65,7 @@ internal static class Program {
                     .SetComponent(new GizmoScript())
                     .SetComponent(
                         TextureRendererBuilder
-                            .Builder("src\\assets\\test\\2.png")
+                            .Builder(Texture.CreateSingle("src\\assets\\test\\2.png"))
                             .SetFlipX(true)
                             .Build()
                     )
@@ -77,7 +76,7 @@ internal static class Program {
                     .SetComponent(new GizmoScript())
                     .SetComponent(
                         TextureRendererBuilder
-                            .Builder("src\\assets\\test\\1.png")
+                            .Builder(Texture.CreateSingle("src\\assets\\test\\1.png"))
                             .SetColor(new Color(0.25f, 1f, 0.25f))
                             .SetFlipX(true)
                             .SetFlipY(true)

@@ -3,9 +3,7 @@
 namespace Worms.engine.game_object.components.texture_renderer;
 
 public class TextureRenderer : ToggleComponent {
-    private static readonly string ROOT_DIRECTORY = Directory.GetCurrentDirectory();
-    
-    public string textureSrc;
+    public Texture texture;
     public string sortingLayer;
     public int orderInLayer;
     public Color color;
@@ -14,14 +12,14 @@ public class TextureRenderer : ToggleComponent {
     
     public TextureRenderer(
         bool isActive,
-        string textureSrc,
+        Texture texture,
         string sortingLayer,
         int orderInLayer,
         Color color,
         bool flipX,
         bool flipY
     ) : base(isActive) {
-        this.textureSrc = $"{ROOT_DIRECTORY}\\{textureSrc}";
+        this.texture = texture;
         this.sortingLayer = sortingLayer;
         this.orderInLayer = orderInLayer;
         this.color = color;
