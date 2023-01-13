@@ -45,6 +45,9 @@ public class AudioHandler {
         }
 
         int track = SDL_mixer.Mix_PlayChannel(-1, _self._loadedSounds[audioSrc], 0);
+        if (track == -1) {
+            throw new Exception($"Unable to play another sound as all channels are occupied, increase? {SDL_mixer.Mix_GetError()}");
+        }
         SetChannelVolume(track, CalculateVolume(channel, audioVolume));
         SDL_mixer.Mix_ChannelFinished(_ => {
             _self._playingSounds.Remove(callerId);
@@ -106,7 +109,7 @@ public class AudioHandler {
     private static void LoadAudio(string audioSrc) {
         IntPtr chunk = SDL_mixer.Mix_LoadWAV(audioSrc);
         if (chunk == IntPtr.Zero) {
-            throw new Exception($"Unable to load the provided sound: {audioSrc} due to: {SDL_mixer.Mix_GetError()}");
+            throw new ArgumentException($"Unable to load the provided sound: {audioSrc} due to: {SDL_mixer.Mix_GetError()}");
         }
         _self._loadedSounds.Add(audioSrc, chunk);
     }
