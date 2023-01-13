@@ -1,6 +1,4 @@
-﻿using Worms.engine.core.gizmos;
-using Worms.engine.core.input;
-using Worms.engine.data;
+﻿using Worms.engine.core.input;
 using Worms.engine.game_object.scripts;
 
 namespace Worms.game; 

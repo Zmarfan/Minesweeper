@@ -56,9 +56,6 @@ public class AudioSource : Script {
     }
 
     public void Play() {
-        if (IsPlaying || IsPaused) {
-            return;
-        }
         AudioHandler.Play($"{ROOT_DIRECTORY}\\{audioSrc}", channel, GetPlayVolume(), _uniqueId, AudioFinished);
         IsPlaying = true;
         IsPaused = false;

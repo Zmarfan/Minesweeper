@@ -102,7 +102,6 @@ public class AudioHandler {
     }
 
     private static void SetChannelVolume(int channel, Volume volume) {
-        Console.WriteLine(volume);
         SDL_mixer.Mix_Volume(channel, (int)(SDL_mixer.MIX_MAX_VOLUME * volume.Percentage / 100f));
     }
     

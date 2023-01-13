@@ -24,6 +24,7 @@ internal static class Program {
             )
             .Build()
             .Transform.AddSibling("child1")
+            .SetComponent(new MyTestScript(4.5f))
             .SetComponent(new GizmoScript())
             .SetPosition(new Vector2(-600, 0))
             .SetScale(new Vector2(2, 2))
@@ -51,8 +52,7 @@ internal static class Program {
                 .SetScale(0.5f)
                 .SetRotation(Rotation.UpsideDown())
                 .SetComponent(new GizmoScript())
-                .SetComponent(new MyTestScript(4.5f))
-                .SetComponent(
+            .SetComponent(
                     TextureRendererBuilder
                         .Builder("src\\assets\\test\\3.png")
                         .SetSortingLayer("layer3")
