@@ -4,8 +4,6 @@ using Worms.engine.game_object.scripts;
 namespace Worms.engine.game_object.components.audio_source; 
 
 public class AudioSource : Script {
-    private static readonly string ROOT_DIRECTORY = Directory.GetCurrentDirectory();
-    
     public string audioSrc;
     public string channel;
     public bool Mute {
@@ -56,7 +54,7 @@ public class AudioSource : Script {
     }
 
     public void Play() {
-        AudioHandler.Play($"{ROOT_DIRECTORY}\\{audioSrc}", channel, GetPlayVolume(), _uniqueId, AudioFinished);
+        AudioHandler.Play(audioSrc, channel, GetPlayVolume(), _uniqueId, AudioFinished);
         IsPlaying = true;
         IsPaused = false;
     }

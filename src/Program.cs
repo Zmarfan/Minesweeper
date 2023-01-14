@@ -9,6 +9,8 @@ using Worms.game;
 namespace Worms;
 
 internal static class Program {
+    private static readonly string ROOT_DIRECTORY = Directory.GetCurrentDirectory();
+    
     private static void Main() {
         GameObject root = GameObjectBuilder.Root()
             .Transform.AddChild("background")
@@ -16,20 +18,26 @@ internal static class Program {
             .SetScale(12f)
             .SetComponent(
                 TextureRendererBuilder
-                    .Builder(Texture.CreateMultiple("src\\assets\\test\\background.png", 1, 1, 2, 2))
+                    .Builder(Texture.CreateMultiple(Path("background.png"), 1, 1, 2, 2))
                     .SetSortingLayer("layer3")
                     .SetSortingOrder(0)
                     .Build()
             )
             .Build()
-            .Transform.AddSibling("child1")
+            .Transform.AddSibling("animation")
+            .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(Path("animation_1.png"))).Build())
+            .SetComponent(new AnimationTestScript())
             .SetComponent(new MyTestScript(4.5f))
+            .SetScale(new Vector2(12, 12))
+            .SetPosition(new Vector2(-500, -500))
+            .Build()
+            .Transform.AddSibling("child1")
             .SetComponent(new GizmoScript())
             .SetPosition(new Vector2(-600, 0))
             .SetScale(new Vector2(2, 2))
             .SetComponent(
                 TextureRendererBuilder
-                    .Builder(Texture.CreateSingle("src\\assets\\test\\5.png"))
+                    .Builder(Texture.CreateSingle(Path("5.png")))
                     .SetSortingLayer("layer1")
                     .SetSortingOrder(0)
                     .Build()
@@ -40,7 +48,7 @@ internal static class Program {
                 .SetComponent(new GizmoScript())
                 .SetComponent(
                     TextureRendererBuilder
-                        .Builder(Texture.CreateSingle("src\\assets\\test\\4.png"))
+                        .Builder(Texture.CreateSingle(Path("4.png")))
                         .SetSortingLayer("layer1")
                         .SetSortingOrder(1)
                         .Build()
@@ -53,7 +61,7 @@ internal static class Program {
                 .SetComponent(new GizmoScript())
             .SetComponent(
                     TextureRendererBuilder
-                        .Builder(Texture.CreateSingle("src\\assets\\test\\3.png"))
+                        .Builder(Texture.CreateSingle(Path("3.png")))
                         .SetSortingLayer("layer3")
                         .SetFlipY(true)
                         .Build()
@@ -65,7 +73,7 @@ internal static class Program {
                     .SetComponent(new GizmoScript())
                     .SetComponent(
                         TextureRendererBuilder
-                            .Builder(Texture.CreateSingle("src\\assets\\test\\2.png"))
+                            .Builder(Texture.CreateSingle(Path("2.png")))
                             .SetFlipX(true)
                             .Build()
                     )
@@ -76,7 +84,7 @@ internal static class Program {
                     .SetComponent(new GizmoScript())
                     .SetComponent(
                         TextureRendererBuilder
-                            .Builder(Texture.CreateSingle("src\\assets\\test\\1.png"))
+                            .Builder(Texture.CreateSingle(Path("1.png")))
                             .SetColor(new Color(0.25f, 1f, 0.25f))
                             .SetFlipX(true)
                             .SetFlipY(true)
@@ -118,5 +126,9 @@ internal static class Program {
             })
         ));
         game.Run();
+    }
+
+    private static string Path(string path) {
+        return $"{ROOT_DIRECTORY}\\src\\assets\\test\\{path}";
     }
 }

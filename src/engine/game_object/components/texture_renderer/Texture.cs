@@ -1,19 +1,21 @@
 ﻿using SDL2;
 using Worms.engine.core.renderer;
+using Worms.engine.data;
 
 namespace Worms.engine.game_object.components.texture_renderer; 
 
 public readonly struct Texture {
-    private static readonly string ROOT_DIRECTORY = Directory.GetCurrentDirectory();
-    
     public readonly string textureSrc;
+    public readonly Vector2 textureScale;
     private readonly int _column;
     private readonly int _row;
     private readonly int _columnLength;
     private readonly int _rowLength;
 
+
     private Texture(string textureSrc, int column, int row, int columnLength, int rowLength) {
-        this.textureSrc = $"{ROOT_DIRECTORY}\\{textureSrc}";
+        this.textureSrc = textureSrc;
+        textureScale = new Vector2(1f / columnLength, 1f / rowLength);
         _column = column;
         _row = row;
         _columnLength = columnLength;

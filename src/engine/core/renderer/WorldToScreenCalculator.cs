@@ -2,6 +2,7 @@
 using Worms.engine.camera;
 using Worms.engine.data;
 using Worms.engine.game_object;
+using Worms.engine.game_object.components.texture_renderer;
 
 namespace Worms.engine.core.renderer; 
 
@@ -15,9 +16,9 @@ public static class WorldToScreenCalculator {
         return worldVector * CameraSizeMod(settings);
     }
     
-    public static unsafe SDL.SDL_FRect CalculateTextureDrawPosition(Transform transform, SDL.SDL_Surface* surface, GameSettings settings) {
-        Vector2 screenPosition = CalculateTextureScreenPosition(transform, surface, settings);
-        Vector2 textureDimensions = CalculateTextureDimensions(transform, surface, settings);
+    public static unsafe SDL.SDL_FRect CalculateTextureDrawPosition(TextureRenderer tr, SDL.SDL_Surface* surface, GameSettings settings) {
+        Vector2 screenPosition = CalculateTextureScreenPosition(tr, surface, settings);
+        Vector2 textureDimensions = CalculateTextureDimensions(tr, surface, settings);
         SDL.SDL_FRect rect = new() {
             x = screenPosition.x,
             y = screenPosition.y,
@@ -27,12 +28,12 @@ public static class WorldToScreenCalculator {
         return rect;
     }
 
-    private static unsafe Vector2 CalculateTextureScreenPosition(Transform transform, SDL.SDL_Surface* surface, GameSettings settings) {
-        return WorldToScreenPosition(transform.WorldPosition, settings) - CalculateTextureDimensions(transform, surface, settings) / 2f;
+    private static unsafe Vector2 CalculateTextureScreenPosition(TextureRenderer tr, SDL.SDL_Surface* surface, GameSettings settings) {
+        return WorldToScreenPosition(tr.Transform.WorldPosition, settings) - CalculateTextureDimensions(tr, surface, settings) / 2f;
     }
 
-    private static unsafe Vector2 CalculateTextureDimensions(Transform transform, SDL.SDL_Surface* surface, GameSettings settings) {
-        return new Vector2(surface->w * transform.WorldScale.x, surface->h * transform.WorldScale.y) * CameraSizeMod(settings);
+    private static unsafe Vector2 CalculateTextureDimensions(TextureRenderer tr, SDL.SDL_Surface* surface, GameSettings settings) {
+        return new Vector2(surface->w * tr.Transform.WorldScale.x, surface->h * tr.Transform.WorldScale.y) * CameraSizeMod(settings) * tr.texture.textureScale;
     }
     
     private static float CameraSizeMod(GameSettings settings) {

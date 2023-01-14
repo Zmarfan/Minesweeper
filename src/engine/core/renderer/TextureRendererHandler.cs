@@ -35,7 +35,7 @@ public class TextureRendererHandler {
         StoredTexture texture = GetTexture(tr);
 
         SDL.SDL_Rect srcRect = tr.texture.GetSrcRect(texture);
-        SDL.SDL_FRect destRect = WorldToScreenCalculator.CalculateTextureDrawPosition(tr.Transform, texture.surface, _settings);
+        SDL.SDL_FRect destRect = WorldToScreenCalculator.CalculateTextureDrawPosition(tr, texture.surface, _settings);
         SDL.SDL_SetTextureColorMod(texture.texture, tr.color.Rbyte, tr.color.Gbyte, tr.color.Bbyte);
         SDL.SDL_RenderCopyExF(_renderer, texture.texture, ref srcRect, ref destRect, tr.Transform.WorldRotation.Degree, IntPtr.Zero, GetTextureFlipSettings(tr));
     }
