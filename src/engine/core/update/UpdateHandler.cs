@@ -1,22 +1,26 @@
 ﻿using SDL2;
 using Worms.engine.camera;
 using Worms.engine.core.input;
-using Worms.engine.data;
 using Worms.engine.game_object.scripts;
 
 namespace Worms.engine.core.update; 
 
 public class UpdateHandler {
+    private const float FIXED_UPDATE_CYCLE_TIME = 0.02f;
+    
     private readonly Camera _camera;
     private readonly GameObjectHandler _gameObjectHandler;
     private ulong _now;
     private ulong _last;
+    private float _fixedUpdateAcc;
+    private float _deltaTime;
 
     public UpdateHandler(GameObjectHandler gameObjectHandler, Camera camera) {
         _gameObjectHandler = gameObjectHandler;
         _camera = camera;
         _now = SDL.SDL_GetPerformanceCounter();
         _last = 0;
+        _fixedUpdateAcc = 0;
         _camera.Awake();
     }
     
@@ -48,27 +52,53 @@ public class UpdateHandler {
         });
     }
     
-    public void Update() {
-        float deltaTime = GetDeltaTime();
-        Input.Update(deltaTime);
+    public void UpdateLoops() {
+        UpdateFrameTimeData();
+        while (_fixedUpdateAcc > FIXED_UPDATE_CYCLE_TIME) {
+            FixedUpdate();
+            _fixedUpdateAcc -= FIXED_UPDATE_CYCLE_TIME;
+        }
+        Update();
+    }
+
+    public void EndOfFrameCleanUp() {
+        _gameObjectHandler.DestroyObjects();
+        Input.FrameReset();
+    }
+    
+    private void FixedUpdate() {
         foreach (Script script in _gameObjectHandler.AllActiveGameObjectScripts) {
             try {
                 if (script.IsActive) {
-                    script.Update(deltaTime);
+                    script.FixedUpdate(FIXED_UPDATE_CYCLE_TIME);
+                }
+            }
+            catch (Exception e) {
+                Console.WriteLine($"An exception occured in {script} during the Fixed Update callback: {e}");
+            }
+        }
+    }
+    
+    private void Update() {
+        Input.Update(_deltaTime);
+        
+        foreach (Script script in _gameObjectHandler.AllActiveGameObjectScripts) {
+            try {
+                if (script.IsActive) {
+                    script.Update(_deltaTime);
                 }
             }
             catch (Exception e) {
                 Console.WriteLine($"An exception occured in {script} during the Update callback: {e}");
             }
         }
-        _camera.Update(deltaTime);
-        _gameObjectHandler.DestroyObjects();
-        Input.FrameReset();
+        _camera.Update(_deltaTime);
     }
-
-    private float GetDeltaTime() {
+    
+    private void UpdateFrameTimeData() {
         _last = _now;
         _now = SDL.SDL_GetPerformanceCounter();
-        return (float)(_now - _last) * 1000 / SDL.SDL_GetPerformanceFrequency() * 0.001f ;
+        _deltaTime = (float)(_now - _last) * 1000 / SDL.SDL_GetPerformanceFrequency() * 0.001f;
+        _fixedUpdateAcc += _deltaTime;
     }
 }

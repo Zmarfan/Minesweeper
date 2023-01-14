@@ -49,7 +49,8 @@ public class Game {
             _eventHandler.HandleEvents();
             _updateHandler.Awake();
             _updateHandler.Start();
-            _updateHandler.Update();
+            _updateHandler.UpdateLoops();
+            _updateHandler.EndOfFrameCleanUp();
             _renderer.Render();
         }
         catch (Exception e) {

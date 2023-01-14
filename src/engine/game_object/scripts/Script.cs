@@ -15,6 +15,9 @@ public abstract class Script : ToggleComponent {
     public virtual void Start() {
     }
 
+    public virtual void FixedUpdate(float deltaTime) {
+    }
+    
     public virtual void Update(float deltaTime) {
     }
 
