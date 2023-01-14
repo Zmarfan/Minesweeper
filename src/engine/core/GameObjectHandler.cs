@@ -10,7 +10,8 @@ public class GameObjectHandler {
     public List<Script> AllScripts { get; private set; } = new();
     public List<Script> AllActiveGameObjectScripts { get; private set; } = new();
     public List<TextureRenderer> AllActiveGameObjectTextureRenderers { get; private set; } = new();
-    private List<GameObject> _allGameObjects = new();
+    private HashSet<GameObject> _allGameObjects = new();
+    private HashSet<GameObject> _allActiveGameObjects = new();
 
     private readonly Queue<Object> _destroyObjects = new();
 
@@ -20,7 +21,7 @@ public class GameObjectHandler {
         _root = root;
         OnGameObjectChange();
         GameObject.GameObjectActiveEvent += OnGameObjectChange;
-        Transform.TransformHierarchyEvent += OnGameObjectChange;
+        Transform.GameObjectInstantiateEvent += OnGameObjectInstantiate;
         Object.ObjectDestroyEvent += OnObjectDestroy;
     }
 
@@ -42,22 +43,27 @@ public class GameObjectHandler {
     }
 
     private void OnGameObjectChange() {
-        List<ToggleComponent> allActive = GetAllComponents(true).ToList();
-
-        _allGameObjects = GetAllGameObjectsFromGameObject(_root, true).ToList();
-        AllActiveGameObjectTextureRenderers = allActive.OfType<TextureRenderer>().ToList();
+        _allGameObjects = GetAllGameObjectsFromGameObject(_root, false).ToHashSet();
+        _allActiveGameObjects = GetAllGameObjectsFromGameObject(_root, true).ToHashSet();
+        AllActiveGameObjectTextureRenderers = _allActiveGameObjects.SelectMany(gameObject => gameObject.components).OfType<TextureRenderer>().ToList();
         AllScripts = _allGameObjects.SelectMany(gameObject => gameObject.components).OfType<Script>().ToList();
-        AllActiveGameObjectScripts = allActive.OfType<Script>().ToList();
+        AllActiveGameObjectScripts = _allActiveGameObjects.SelectMany(gameObject => gameObject.components).OfType<Script>().ToList();
+    }
+
+    private void OnGameObjectInstantiate(GameObject gameObject) {
+        _allGameObjects.Add(gameObject);
+        if (gameObject.IsActive && _allActiveGameObjects.Contains(gameObject.Transform.Parent!.gameObject)) {
+            _allActiveGameObjects.Add(gameObject);
+            AllActiveGameObjectScripts.AddRange(gameObject.components.OfType<Script>());
+            AllActiveGameObjectTextureRenderers.AddRange(gameObject.components.OfType<TextureRenderer>());
+        }
+        AllScripts.AddRange(gameObject.components.OfType<Script>());
     }
 
     private void OnObjectDestroy(Object obj) {
         _destroyObjects.Enqueue(obj);
-    } 
-
-    private IEnumerable<ToggleComponent> GetAllComponents(bool active) {
-        return GetAllGameObjectsFromGameObject(_root, active).SelectMany(gameObject => gameObject.components);
     }
-    
+
     private static IEnumerable<GameObject> GetAllGameObjectsFromGameObject(GameObject gameObject, bool active) {
         if (!gameObject.IsActive && active) {
             return new List<GameObject>();

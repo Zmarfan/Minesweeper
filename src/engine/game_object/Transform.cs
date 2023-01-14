@@ -4,8 +4,8 @@ using Worms.engine.game_object.components;
 namespace Worms.engine.game_object; 
 
 public class Transform : Component {
-    public delegate void TransformUpdate();
-    public static event TransformUpdate? TransformHierarchyEvent;
+    public delegate void GameObjectInstantiate(GameObject gameObject);
+    public static event GameObjectInstantiate? GameObjectInstantiateEvent;
     
     public Transform? Parent { get; }
 
@@ -84,11 +84,7 @@ public class Transform : Component {
     public Transform GetRoot() {
         return Transform.Parent == null ? this : Transform.Parent.GetRoot();
     }
-    
-    public Transform GetParent() {
-        return Transform.Parent!;
-    }
-    
+
     public GameObjectBuilder AddSibling(string name) {
         return GameObjectBuilder.Builder(name, Parent?.gameObject!);
     }
@@ -97,10 +93,10 @@ public class Transform : Component {
         return GameObjectBuilder.Builder(name, gameObject);
     }
 
-    public void AddChild(GameObjectBuilder builder) {
+    public void Instantiate(GameObjectBuilder builder) {
         builder.SetParent(this);
-        builder.Build();
-        TransformHierarchyEvent?.Invoke();
+        GameObject go = builder.Build();
+        GameObjectInstantiateEvent?.Invoke(go);
     }
     
     private void SetChild(Transform child) {
