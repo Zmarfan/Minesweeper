@@ -14,7 +14,6 @@
 
     <ItemGroup>
       <Folder Include="src\assets\test" />
-      <Folder Include="src\engine\game_object\components\animation\controller" />
     </ItemGroup>
 
     <ItemGroup>
@@ -56,6 +55,10 @@
       </Content>
       <None Remove="src\assets\test\animation_1.png" />
       <Content Include="src\assets\test\animation_1.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\test\animation_2.png" />
+      <Content Include="src\assets\test\animation_2.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>

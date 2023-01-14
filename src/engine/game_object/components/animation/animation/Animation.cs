@@ -4,19 +4,22 @@ using Worms.engine.game_object.components.animation.composition;
 namespace Worms.engine.game_object.components.animation.animation; 
 
 public class Animation {
-    public readonly float stepLengthInSeconds;
-    public readonly bool loop;
+    public delegate void AnimationDelegate();
+
+    public event AnimationDelegate? OnStart;
+    public event AnimationDelegate? OnEnd;
+    
+    private readonly bool _loop;
     private readonly List<Composition> _compositions;
     private readonly int _animationStepLength;
 
     private readonly ClockTimer _timer;
     private int _lastStep = -1;
+    private bool _hasFinished = false;
     
     public Animation(float stepLengthInSeconds, bool loop, List<Composition> compositions) {
-        this.stepLengthInSeconds = stepLengthInSeconds;
-        this.loop = loop;
+        _loop = loop;
         _compositions = compositions;
-
         _animationStepLength = compositions.MaxBy(composition => composition.lastStateEndStep)?.lastStateEndStep ?? 0;
         _timer = new ClockTimer(stepLengthInSeconds * _animationStepLength);
     }
@@ -27,15 +30,28 @@ public class Animation {
         }
     }
 
+    public void Reset() {
+        _timer.Reset();
+        _hasFinished = false;
+    }
+
     public void Play(float deltaTime) {
+        if (_hasFinished) {
+            return;
+        }
+        
         int step = CalculateNextStep();
         _timer.Time += deltaTime;
         if (step == _lastStep) {
             return;
         }
         if (step > _animationStepLength) {
-            if (loop) {
+            OnEnd?.Invoke();
+            if (_loop) {
                 _timer.Reset();
+            }
+            else {
+                _hasFinished = true;
             }
             return;
         }
@@ -46,6 +62,9 @@ public class Animation {
     }
 
     private void RunStep(int step) {
+        if (step == 0) {
+            OnStart?.Invoke();
+        }
         foreach (Composition composition in _compositions) {
             composition.Run(step);
         }

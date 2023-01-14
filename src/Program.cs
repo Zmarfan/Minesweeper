@@ -3,6 +3,8 @@ using Worms.engine.core.audio;
 using Worms.engine.core.input.listener;
 using Worms.engine.data;
 using Worms.engine.game_object;
+using Worms.engine.game_object.components.animation.animation;
+using Worms.engine.game_object.components.animation.controller;
 using Worms.engine.game_object.components.texture_renderer;
 using Worms.game;
 
@@ -25,7 +27,15 @@ internal static class Program {
             )
             .Build()
             .Transform.AddSibling("animation")
-            .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(Path("animation_1.png"))).Build())
+            .SetComponent(TextureRendererBuilder.Builder(Texture.CreateMultiple(Path("animation_1.png"), 0, 0, 1, 19)).Build())
+            .SetComponent(
+                AnimationControllerBuilder
+                    .Builder()
+                    .AddAnimation("trigger1", AnimationFactory.CreateTextureAnimation(Path("animation_1.png"), 0.05f, false, 19))
+                    .AddAnimation("trigger2", AnimationFactory.CreateTextureAnimation(Path("animation_2.png"), 0.05f, false, 15))
+                    .AddAnimation("trigger3", AnimationFactory.CreateTextureAnimation(Path("animation_2.png"), 0.05f, false, 15, true))
+                    .Build()
+            )
             .SetComponent(new AnimationTestScript())
             .SetComponent(new MyTestScript(4.5f))
             .SetScale(new Vector2(12, 12))
@@ -109,6 +119,9 @@ internal static class Program {
             InputListenerBuilder.Builder("action", Button.RIGHT_MOUSE)
                 .SetAltPositiveButton(Button.MIDDLE_MOUSE)
                 .Build(),
+            InputListenerBuilder.Builder("animationTest1", Button.I).Build(),
+            InputListenerBuilder.Builder("animationTest2", Button.O).Build(),
+            InputListenerBuilder.Builder("animationTest3", Button.P).Build(),
         };
         
         Game game = new(new GameSettings(
