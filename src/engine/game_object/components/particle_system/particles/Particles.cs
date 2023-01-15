@@ -11,7 +11,6 @@ public class Particles {
     public readonly RangeZero startSize;
     public readonly Range<Rotation> startRotation;
     public readonly float flipRotation;
-    public readonly float gravityModifier;
     public readonly bool playOnAwake;
     public readonly int maxParticles;
     public readonly int seed;
@@ -26,7 +25,6 @@ public class Particles {
         RangeZero startSize, 
         Range<Rotation> startRotation, 
         float flipRotation, 
-        float gravityModifier, 
         bool playOnAwake, 
         int maxParticles, 
         int seed,
@@ -40,7 +38,6 @@ public class Particles {
         this.startSize = startSize;
         this.startRotation = startRotation;
         this.flipRotation = Math.Clamp(flipRotation, 0, 1);
-        this.gravityModifier = gravityModifier;
         this.playOnAwake = playOnAwake;
         this.maxParticles = Math.Max(maxParticles, 0);
         this.seed = seed;
