@@ -4,7 +4,7 @@ using Worms.engine.game_object.components;
 namespace Worms.engine.game_object; 
 
 public class GameObject : Object {
-    public delegate void GameObjectUpdate();
+    public delegate void GameObjectUpdate(GameObject gameObject);
     public static event GameObjectUpdate? GameObjectActiveEvent;
     
     public string Name { get; set; }
@@ -12,8 +12,8 @@ public class GameObject : Object {
     public bool IsActive {
         get => _isActive;
         set {
-            GameObjectActiveEvent?.Invoke();;
             _isActive = value;
+            GameObjectActiveEvent?.Invoke(this);
         }
     }
     private bool _isActive;

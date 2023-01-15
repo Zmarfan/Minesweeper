@@ -62,7 +62,7 @@ public class UpdateHandler {
     }
 
     public void EndOfFrameCleanUp() {
-        _gameObjectHandler.DestroyObjects();
+        _gameObjectHandler.EndOfFrameCleanup();
         Input.FrameReset();
     }
     
@@ -82,7 +82,7 @@ public class UpdateHandler {
     private void Update() {
         Input.Update(_deltaTime);
         
-        foreach (Script script in _gameObjectHandler.AllActiveGameObjectScripts) {
+        foreach (Script script in _gameObjectHandler.AllActiveGameObjectScripts.ToList()) {
             try {
                 if (script.IsActive) {
                     script.Update(_deltaTime);
