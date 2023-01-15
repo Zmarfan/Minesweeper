@@ -42,7 +42,7 @@ public struct Rotation {
     }
     
     private Rotation(float degree) {
-        _degree = degree % 360;
+        _degree = Math.Abs(degree % 360);
     }
     
     public override string ToString() {

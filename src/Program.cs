@@ -37,11 +37,12 @@ internal static class Program {
                         .Builder()
                         .SetDuration(8f)
                         .SetStartSize(new RangeZero(0.01f, 0.05f))
-                        .SetStartRotation(new RangeZero(0, 359))
+                        .SetStartRotation(new RangeZero(0, 25))
+                        .SetFlipRotation(0.5f)
                         .SetStartLifeTime(new RangeZero(3, 6))
                         .Build()
                     )
-                    .SetShape(new Shape(new SphereEmission(45, 0, Rotation.FromDegrees(359)), new RangeZero(10, 20), 0))
+                    .SetShape(new Shape(new SphereEmission(45, 0, Rotation.FromDegrees(359)), new RangeZero(10, 40)))
                     .Build())
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateMultiple(Path("animation_1.png"), 0, 0, 1, 19)).Build())
             .SetComponent(
@@ -134,6 +135,9 @@ internal static class Program {
                 .Build(),
             InputListenerBuilder.Builder("action", Button.RIGHT_MOUSE)
                 .SetAltPositiveButton(Button.MIDDLE_MOUSE)
+                .Build(),
+            InputListenerBuilder.Builder("cameraZoom", Button.NUM_1)
+                .SetNegativeButton(Button.NUM_2)
                 .Build(),
             InputListenerBuilder.Builder("animationTest1", Button.I).Build(),
             InputListenerBuilder.Builder("animationTest2", Button.O).Build(),

@@ -11,6 +11,7 @@ public class MyCamera : Camera {
     }
 
     public override void Update(float deltaTime) {
-        Position += Input.MouseDirection * 30f;
+        Position += Input.MouseDirection * 5f * Size;
+        Size += Input.GetAxis("cameraZoom").x * deltaTime * 3.5f;
     }
 }

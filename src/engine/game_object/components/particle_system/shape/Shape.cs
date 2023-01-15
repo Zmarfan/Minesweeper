@@ -7,7 +7,7 @@ public class Shape {
     private readonly RangeZero _startSpeed;
     private readonly float _randomizeDirection;
 
-    public Shape(IEmissionShape emissionShape, RangeZero startSpeed, float randomizeDirection) {
+    public Shape(IEmissionShape emissionShape, RangeZero startSpeed, float randomizeDirection = 0) {
         _emissionShape = emissionShape;
         _startSpeed = startSpeed;
         _randomizeDirection = Math.Clamp(randomizeDirection, 0, 1);

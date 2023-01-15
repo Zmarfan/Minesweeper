@@ -19,7 +19,7 @@ public class SphereEmission : IEmissionShape {
     }
 
     private Vector2 GetPointAlongCircle(Random random) {
-        float degree = (float)(random.NextDouble() * _arc.Degree);
-        return new Vector2((float)Math.Cos(degree), (float)Math.Sin(degree));
+        Rotation rotation = Rotation.FromDegrees((float)(random.NextDouble() * _arc.Degree));
+        return new Vector2((float)Math.Cos(rotation.Radians), (float)Math.Sin(rotation.Radians));
     }
 }
