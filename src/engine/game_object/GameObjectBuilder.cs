@@ -29,8 +29,8 @@ public class GameObjectBuilder {
         return new GameObjectBuilder("root", null).Build();
     }
 
-    public static GameObjectBuilder Builder(string name, GameObject parent) {
-        return new GameObjectBuilder(name, parent.Transform);
+    public static GameObjectBuilder Builder(string name, GameObject? parent = null) {
+        return new GameObjectBuilder(name, parent?.Transform);
     }
 
     public void SetParent(Transform parent) {

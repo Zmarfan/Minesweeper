@@ -1,4 +1,6 @@
-﻿using Worms.engine.game_object.components.particle_system.emission;
+﻿using Worms.engine.data;
+using Worms.engine.game_object.components.particle_system.emission;
+using Worms.engine.game_object.components.particle_system.particle;
 using Worms.engine.game_object.components.particle_system.particles;
 using Worms.engine.game_object.components.particle_system.renderer;
 using Worms.engine.game_object.components.particle_system.shape;
@@ -23,5 +25,8 @@ public class ParticleSystem : Script {
         _emission = emission;
         _shape = shape;
         _renderer = renderer;
+    }
+
+    public override void Update(float deltaTime) {
     }
 }
