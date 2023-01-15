@@ -7,9 +7,8 @@ public class ParticlesBuilder {
     private bool _loop = true;
     private RangeZero _startDelay = new(0f);
     private RangeZero _startLifeTime = new(5f);
-    private Range<float> _startSpeed = new(5f);
-    private RangeZero _startSize = new(0f);
-    private Range<Rotation> _startRotation = new(Rotation.Identity());
+    private RangeZero _startSize = new(1f);
+    private RangeZero _startRotation = new(Rotation.Identity().Degree);
     private float _flipRotation = 0f;
     private bool _playOnAwake = true;
     private int _maxParticles = 1000;
@@ -26,7 +25,6 @@ public class ParticlesBuilder {
             _loop,
             _startDelay,
             _startLifeTime,
-            _startSpeed,
             _startSize,
             _startRotation,
             _flipRotation,
@@ -56,18 +54,13 @@ public class ParticlesBuilder {
         _startLifeTime = range;
         return this;
     }
-    
-    public ParticlesBuilder SetStartSpeed(Range<float> range) {
-        _startSpeed = range;
-        return this;
-    }
-        
+
     public ParticlesBuilder SetStartSize(RangeZero range) {
         _startSize = range;
         return this;
     }
             
-    public ParticlesBuilder SetStartRotation(Range<Rotation> range) {
+    public ParticlesBuilder SetStartRotation(RangeZero range) {
         _startRotation = range;
         return this;
     }

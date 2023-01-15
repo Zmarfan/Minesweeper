@@ -9,11 +9,7 @@ public class LineEmission : IEmissionShape {
         _radius = radius;
     }
 
-    public Vector2 GetSpawnPosition() {
-        throw new NotImplementedException();
-    }
-
-    public Vector2 GetSpawnDirection() {
-        throw new NotImplementedException();
+    public Tuple<Vector2, Vector2> GetSpawnPositionAndDirection(Random random) {
+        return new Tuple<Vector2, Vector2>(new Vector2((float)(random.NextDouble() * _radius), 0), Vector2.Up());
     }
 }

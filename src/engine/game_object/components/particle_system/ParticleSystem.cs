@@ -13,6 +13,12 @@ public class ParticleSystem : Script {
     private readonly Emission _emission;
     private readonly Shape _shape;
     private readonly Renderer _renderer;
+
+    private bool _playing;
+    private Random _random;
+    private readonly ClockTimer _startDelayTimer;
+    private readonly ClockTimer _durationTimer;
+    private ClockTimer _rateOverTimeTimer;
     
     public ParticleSystem(
         Particles particles,
@@ -25,8 +31,95 @@ public class ParticleSystem : Script {
         _emission = emission;
         _shape = shape;
         _renderer = renderer;
+
+        _playing = particles.playOnAwake;
+        _random = new Random(particles.seed);
+        _startDelayTimer = new ClockTimer(particles.startDelay.GetRandom(_random));
+        _durationTimer = new ClockTimer(particles.duration);
+        _rateOverTimeTimer = CreateRateOverTimeTimer();
     }
 
-    public override void Update(float deltaTime) {
+    public void Play() {
+        _playing = true;
+    }
+
+    public void Pause() {
+        _playing = false;
+    }
+
+    public void Stop() {
+        _playing = false;
+        _startDelayTimer.Reset();
+        _durationTimer.Reset();
+        _rateOverTimeTimer.Reset();
+        _random = new Random(_particles.seed);
+    }
+
+    public override void FixedUpdate(float deltaTime) {
+        if (!_playing) {
+            return;
+        }
+
+        _startDelayTimer.Time += deltaTime;
+        if (!_startDelayTimer.Expired()) {
+            return;
+        }
+        
+        _durationTimer.Time += deltaTime;
+        _rateOverTimeTimer.Time += deltaTime;
+        if (_durationTimer.Expired()) {
+            HandleLoopOver();
+        }
+
+        if (!_durationTimer.Expired()) {
+            ExecuteFrame();
+        }
+    }
+
+    private void ExecuteFrame() {
+        if (_rateOverTimeTimer.Expired()) {
+            for (int i = 0; i < (int)_rateOverTimeTimer.Ratio(); i++) {
+                SpawnParticle();
+            }
+            _rateOverTimeTimer = CreateRateOverTimeTimer();
+        }
+        //bursts too
+    }
+
+    private void SpawnParticle() {
+        Tuple<Vector2, Vector2> positionAndDirection = _shape.GetSpawnPositionAndDirection(_random);
+        float startSize = _particles.startSize.GetRandom(_random);
+        Transform.Instantiate(ParticleFactory.ParticleBuilder(
+            positionAndDirection.Item1,
+            new Vector2(startSize, startSize),
+            _particles.CalculateInitialRotation(_random),
+            _particles.startLifeTime.GetRandom(_random), // CHANGE THIS LATER AS TO BE ABLE TO CHECK MAX PARTICLE COUNT
+            positionAndDirection.Item2,
+            _renderer
+        ));
+    }
+
+    private ClockTimer CreateRateOverTimeTimer() {
+        return new ClockTimer(1 / _emission.rateOverTime.GetRandom(_random));
+    }
+    
+    private void HandleLoopOver() {
+        if (_particles.loop) {
+            _durationTimer.Reset();
+            return;
+        }
+
+        switch (_particles.stopAction) {
+            case StopAction.NONE:
+                break;
+            case StopAction.DISABLE:
+                gameObject.IsActive = false;
+                break;
+            case StopAction.DESTROY:
+                gameObject.Destroy();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 }

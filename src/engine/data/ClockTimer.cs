@@ -16,8 +16,8 @@ public class ClockTimer {
     public float Duration { get; set; }
 
     public ClockTimer(float duration, float time = 0) {
-        if (duration <= 0) {
-            throw new Exception("Duration can not be 0 or less");
+        if (duration < 0) {
+            throw new Exception("Duration can not be less than 0");
         }
         Duration = duration;
         if (time < 0) {
