@@ -6,6 +6,7 @@ using Worms.engine.game_object;
 using Worms.engine.game_object.components.animation.animation;
 using Worms.engine.game_object.components.animation.controller;
 using Worms.engine.game_object.components.particle_system;
+using Worms.engine.game_object.components.particle_system.emission;
 using Worms.engine.game_object.components.particle_system.particles;
 using Worms.engine.game_object.components.particle_system.renderer;
 using Worms.engine.game_object.components.particle_system.shape;
@@ -33,6 +34,7 @@ internal static class Program {
             .Transform.AddSibling("animation")
             .SetComponent(ParticleSystemBuilder
                     .Builder(RendererBuilder.Builder(Texture.CreateSingle(Path("5.png"))).Build())
+                    .SetEmission(new Emission(new RangeZero(10), new List<EmissionBurst>()))
                     .SetParticles(ParticlesBuilder
                         .Builder()
                         .SetDuration(8f)

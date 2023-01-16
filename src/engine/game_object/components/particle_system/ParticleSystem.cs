@@ -13,6 +13,7 @@ public class ParticleSystem : Script {
     private readonly Emission _emission;
     private readonly Shape _shape;
     private readonly Renderer _renderer;
+    private Transform _particleHolder = null!;
 
     private bool _playing;
     private Random _random;
@@ -37,6 +38,10 @@ public class ParticleSystem : Script {
         _startDelayTimer = new ClockTimer(particles.startDelay.GetRandom(_random));
         _durationTimer = new ClockTimer(particles.duration);
         _rateOverTimeTimer = CreateRateOverTimeTimer();
+    }
+
+    public override void Awake() {
+        _particleHolder = Transform.Instantiate(GameObjectBuilder.Builder("particleHolder")).Transform;
     }
 
     public void Play() {
@@ -87,13 +92,17 @@ public class ParticleSystem : Script {
     }
 
     private void SpawnParticle() {
+        if (_particleHolder.children.Count >= _particles.maxParticles) {
+            return;
+        }
+        
         Tuple<Vector2, Vector2> positionAndDirection = _shape.GetSpawnPositionAndDirection(_random);
         float startSize = _particles.startSize.GetRandom(_random);
-        Transform.Instantiate(ParticleFactory.ParticleBuilder(
+        _particleHolder.Instantiate(ParticleFactory.ParticleBuilder(
             positionAndDirection.Item1,
             new Vector2(startSize, startSize),
             _particles.CalculateInitialRotation(_random),
-            _particles.startLifeTime.GetRandom(_random), // CHANGE THIS LATER AS TO BE ABLE TO CHECK MAX PARTICLE COUNT
+            _particles.startLifeTime.GetRandom(_random),
             positionAndDirection.Item2,
             _renderer
         ));

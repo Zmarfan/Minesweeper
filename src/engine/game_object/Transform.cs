@@ -93,10 +93,11 @@ public class Transform : Component {
         return GameObjectBuilder.Builder(name, gameObject);
     }
 
-    public void Instantiate(GameObjectBuilder builder) {
+    public GameObject Instantiate(GameObjectBuilder builder) {
         builder.SetParent(this);
         GameObject go = builder.Build();
         GameObjectInstantiateEvent?.Invoke(go);
+        return go;
     }
     
     private void SetChild(Transform child) {
