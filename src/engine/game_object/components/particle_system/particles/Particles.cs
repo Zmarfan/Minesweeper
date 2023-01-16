@@ -14,6 +14,7 @@ public class Particles {
     public readonly int maxParticles;
     public readonly int seed;
     public readonly StopAction stopAction;
+    public readonly Vector2 forceOverLifeTime;
 
     public Particles(
         float duration, 
@@ -26,7 +27,8 @@ public class Particles {
         bool playOnAwake, 
         int maxParticles, 
         int seed,
-        StopAction stopAction
+        StopAction stopAction,
+        Vector2 forceOverLifeTime
     ) {
         this.duration = Math.Max(duration, 0);
         this.loop = loop;
@@ -39,6 +41,7 @@ public class Particles {
         this.maxParticles = Math.Max(maxParticles, 0);
         this.seed = seed;
         this.stopAction = stopAction;
+        this.forceOverLifeTime = forceOverLifeTime;
     }
 
     public Rotation CalculateInitialRotation(Random random) {

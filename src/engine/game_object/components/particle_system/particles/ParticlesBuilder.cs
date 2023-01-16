@@ -14,6 +14,7 @@ public class ParticlesBuilder {
     private int _maxParticles = 1000;
     private int _seed = Guid.NewGuid().GetHashCode();
     private StopAction _stopAction = StopAction.NONE;
+    private Vector2 _forceOverLifeTime = Vector2.Zero();
 
     public static ParticlesBuilder Builder() {
         return new ParticlesBuilder();
@@ -31,7 +32,8 @@ public class ParticlesBuilder {
             _playOnAwake,
             _maxParticles,
             _seed,
-            _stopAction
+            _stopAction,
+            _forceOverLifeTime
         );
     }
 
@@ -87,6 +89,11 @@ public class ParticlesBuilder {
     
     public ParticlesBuilder SetStopAction(StopAction stopAction) {
         _stopAction = stopAction;
+        return this;
+    }
+
+    public ParticlesBuilder SetForceOverLifeTime(Vector2 force) {
+        _forceOverLifeTime = force;
         return this;
     }
 }

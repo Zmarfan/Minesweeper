@@ -11,6 +11,7 @@ public static class ParticleFactory {
         Rotation startRotation,
         float lifeTime,
         Vector2 moveDirection,
+        Vector2 force,
         Renderer renderer
     ) {
         return GameObjectBuilder
@@ -18,8 +19,7 @@ public static class ParticleFactory {
             .SetPosition(startPosition)
             .SetScale(startSize)
             .SetRotation(startRotation)
-            .SetComponent(new KillParticleScript(lifeTime))
-            .SetComponent(new MoveParticleScript(moveDirection))
+            .SetComponent(new MoveParticleScript(lifeTime, moveDirection, force))
             .SetComponent(new TextureRenderer(true, renderer.texture, renderer.sortingLayer, renderer.orderInLayer, Color.White(), renderer.flipX, renderer.flipY));
     }
 }

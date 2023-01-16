@@ -42,6 +42,7 @@ internal static class Program {
                     )
                     .SetParticles(ParticlesBuilder
                         .Builder()
+                        .SetForceOverLifeTime(new Vector2(0, -500f))
                         .SetDuration(5f)
                         .SetStartSize(new RangeZero(0.01f, 0.05f))
                         .SetStartRotation(new RangeZero(0, 25))
