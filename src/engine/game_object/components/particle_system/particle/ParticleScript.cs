@@ -3,13 +3,14 @@ using Worms.engine.game_object.scripts;
 
 namespace Worms.engine.game_object.components.particle_system.particle; 
 
-public class MoveParticleScript : Script {
+public class ParticleScript : Script {
+    private Vector2 _oldParentWorld;
     private readonly ClockTimer _lifeTimer;
     private readonly float _rotationVelocity;
     private Vector2 _direction;
     private readonly Vector2 _force;
     
-    public MoveParticleScript(float lifeTime, float rotationVelocity, Vector2 direction, Vector2 force) : base(true) {
+    public ParticleScript(float lifeTime, float rotationVelocity, Vector2 direction, Vector2 force) : base(true) {
         _lifeTimer = new ClockTimer(lifeTime);
         _rotationVelocity = rotationVelocity;
         _direction = direction;

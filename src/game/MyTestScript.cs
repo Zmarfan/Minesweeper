@@ -1,4 +1,5 @@
 ﻿using Worms.engine.core.input;
+using Worms.engine.data;
 using Worms.engine.game_object.scripts;
 
 namespace Worms.game; 
@@ -11,8 +12,8 @@ public class MyTestScript : Script {
     }
 
     public override void Update(float deltaTime) {
-        Transform.Position += Input.GetAxis("horizontal") * _speed * 1000 * deltaTime;
-        Transform.Position += Input.GetAxis("vertical") * _speed * 1000 * deltaTime;
-        Transform.Rotation += Input.GetButton("action") ? _speed * 50 * deltaTime : 0;
+        Transform.WorldPosition += Input.GetAxis("horizontal") * _speed * 1000 * deltaTime;
+        Transform.WorldPosition += Input.GetAxis("vertical") * _speed * 1000 * deltaTime;
+        Transform.WorldRotation += Input.GetButton("action") ? _speed * 50 * deltaTime : 0;
     }
 }

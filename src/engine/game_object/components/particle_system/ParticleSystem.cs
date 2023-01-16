@@ -130,9 +130,11 @@ public class ParticleSystem : Script {
             case StopAction.NONE:
                 break;
             case StopAction.DISABLE:
+                _particleHolder.gameObject.IsActive = false;
                 gameObject.IsActive = false;
                 break;
             case StopAction.DESTROY:
+                _particleHolder.gameObject.Destroy();
                 gameObject.Destroy();
                 break;
             default:

@@ -20,7 +20,7 @@ public static class ParticleFactory {
             .SetPosition(startPosition)
             .SetScale(startSize)
             .SetRotation(startRotation)
-            .SetComponent(new MoveParticleScript(lifeTime, rotationVelocity, moveDirection, force))
+            .SetComponent(new ParticleScript(lifeTime, rotationVelocity, moveDirection, force))
             .SetComponent(new TextureRenderer(true, renderer.texture, renderer.sortingLayer, renderer.orderInLayer, Color.White(), renderer.flipX, renderer.flipY));
     }
 }

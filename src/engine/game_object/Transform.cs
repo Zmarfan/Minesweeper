@@ -31,9 +31,20 @@ public class Transform : Component {
         }
     }
 
-    public Vector2 WorldPosition => LocalToWorldMatrix.ConvertPoint(Vector2.Zero());
-    public Rotation WorldRotation => Parent == null ? Rotation : Parent.WorldRotation + Rotation;
-    public Vector2 WorldScale => Parent == null ? Scale : Parent.WorldScale * Scale;
+    public Vector2 WorldPosition {
+        get => Parent!.LocalToWorldMatrix.ConvertPoint(Position);
+        set => Position = Parent!.WorldToLocalMatrix.ConvertPoint(value);
+    }
+
+    public Rotation WorldRotation {
+        get => Parent == null ? Rotation : Parent.WorldRotation + Rotation;
+        set => Rotation = Rotation - WorldRotation - value;
+    }
+
+    public Vector2 WorldScale {
+        get => Parent == null ? Scale : Parent.WorldScale * Scale;
+        set => Scale = value / Parent!.WorldScale;
+    }
 
     public TransformationMatrix LocalToWorldMatrix {
         get {
