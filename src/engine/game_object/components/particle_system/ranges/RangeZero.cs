@@ -1,24 +1,26 @@
-﻿namespace Worms.engine.game_object.components.particle_system; 
+﻿using Worms.engine.helper;
+
+namespace Worms.engine.game_object.components.particle_system.ranges; 
 
 public readonly struct RangeZero {
-    public readonly float min;
-    public readonly float max;
+    private readonly float _value1;
+    private readonly float _value2;
 
     public RangeZero(float value1, float value2) {
-        if (min < 0 || max < 0) {
+        if (value1 < 0 || value2 < 0) {
             throw new ArgumentException("The values provided can not be lower than zero");
         }
-        
-        min = Math.Min(value1, value2);
-        max = Math.Max(value1, value2);
+
+        _value1 = value1;
+        _value2 = value2;
     }
 
     public RangeZero(float constant) {
         if (constant < 0) {
             throw new ArgumentException("The constant provided can not be lower than zero");
         }
-        min = constant;
-        max = constant;
+        _value1 = constant;
+        _value2 = constant;
     }
 
     public static RangeZero Zero() {
@@ -26,6 +28,6 @@ public readonly struct RangeZero {
     }
 
     public float GetRandom(Random random) {
-        return (float)(random.NextDouble() * (max - min) + min);
+        return RandomUtil.GetRandomValueBetweenTwoValues(random, _value1, _value2);
     }
 }

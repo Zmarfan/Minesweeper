@@ -8,10 +8,12 @@ using Worms.engine.game_object.components.animation.controller;
 using Worms.engine.game_object.components.particle_system;
 using Worms.engine.game_object.components.particle_system.emission;
 using Worms.engine.game_object.components.particle_system.particles;
+using Worms.engine.game_object.components.particle_system.ranges;
 using Worms.engine.game_object.components.particle_system.renderer;
 using Worms.engine.game_object.components.particle_system.shape;
 using Worms.engine.game_object.components.texture_renderer;
 using Worms.game;
+using Range = Worms.engine.game_object.components.particle_system.ranges.Range;
 
 namespace Worms;
 
@@ -42,7 +44,8 @@ internal static class Program {
                     )
                     .SetParticles(ParticlesBuilder
                         .Builder()
-                        .SetForceOverLifeTime(new Vector2(0, -500f))
+                        .SetRotationVelocity(new Range(-100, 100))
+                        .SetForceOverLifeTime(new VectorRange(new Vector2(0, -500f)))
                         .SetDuration(5f)
                         .SetStartSize(new RangeZero(0.01f, 0.05f))
                         .SetStartRotation(new RangeZero(0, 25))

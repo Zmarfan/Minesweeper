@@ -109,7 +109,8 @@ public class ParticleSystem : Script {
             _particles.CalculateInitialRotation(_random),
             _particles.startLifeTime.GetRandom(_random),
             positionAndDirection.Item2,
-            _particles.forceOverLifeTime,
+            _particles.rotationVelocity.GetRandom(_random),
+            _particles.forceOverLifeTime.GetRandom(_random),
             _renderer
         ));
     }

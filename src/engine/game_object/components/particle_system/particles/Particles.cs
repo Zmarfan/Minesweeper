@@ -1,4 +1,6 @@
 ﻿using Worms.engine.data;
+using Worms.engine.game_object.components.particle_system.ranges;
+using Range = Worms.engine.game_object.components.particle_system.ranges.Range;
 
 namespace Worms.engine.game_object.components.particle_system.particles; 
 
@@ -14,7 +16,8 @@ public class Particles {
     public readonly int maxParticles;
     public readonly int seed;
     public readonly StopAction stopAction;
-    public readonly Vector2 forceOverLifeTime;
+    public readonly Range rotationVelocity;
+    public readonly VectorRange forceOverLifeTime;
 
     public Particles(
         float duration, 
@@ -28,7 +31,8 @@ public class Particles {
         int maxParticles, 
         int seed,
         StopAction stopAction,
-        Vector2 forceOverLifeTime
+        Range rotationVelocity,
+        VectorRange forceOverLifeTime
     ) {
         this.duration = Math.Max(duration, 0);
         this.loop = loop;
@@ -41,6 +45,7 @@ public class Particles {
         this.maxParticles = Math.Max(maxParticles, 0);
         this.seed = seed;
         this.stopAction = stopAction;
+        this.rotationVelocity = rotationVelocity;
         this.forceOverLifeTime = forceOverLifeTime;
     }
 

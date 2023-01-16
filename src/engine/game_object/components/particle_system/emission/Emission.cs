@@ -1,4 +1,6 @@
-﻿namespace Worms.engine.game_object.components.particle_system.emission; 
+﻿using Worms.engine.game_object.components.particle_system.ranges;
+
+namespace Worms.engine.game_object.components.particle_system.emission; 
 
 public class Emission {
     public readonly RangeZero rateOverTime;

@@ -1,4 +1,6 @@
 ﻿using Worms.engine.data;
+using Worms.engine.game_object.components.particle_system.ranges;
+using Range = Worms.engine.game_object.components.particle_system.ranges.Range;
 
 namespace Worms.engine.game_object.components.particle_system.particles; 
 
@@ -14,7 +16,8 @@ public class ParticlesBuilder {
     private int _maxParticles = 1000;
     private int _seed = Guid.NewGuid().GetHashCode();
     private StopAction _stopAction = StopAction.NONE;
-    private Vector2 _forceOverLifeTime = Vector2.Zero();
+    private Range _rotationVelocity = new(0);
+    private VectorRange _forceOverLifeTime = new(Vector2.Zero());
 
     public static ParticlesBuilder Builder() {
         return new ParticlesBuilder();
@@ -33,6 +36,7 @@ public class ParticlesBuilder {
             _maxParticles,
             _seed,
             _stopAction,
+            _rotationVelocity,
             _forceOverLifeTime
         );
     }
@@ -92,7 +96,12 @@ public class ParticlesBuilder {
         return this;
     }
 
-    public ParticlesBuilder SetForceOverLifeTime(Vector2 force) {
+    public ParticlesBuilder SetRotationVelocity(Range range) {
+        _rotationVelocity = range;
+        return this;
+    }
+    
+    public ParticlesBuilder SetForceOverLifeTime(VectorRange force) {
         _forceOverLifeTime = force;
         return this;
     }
