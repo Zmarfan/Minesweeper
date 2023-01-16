@@ -2,10 +2,18 @@
 
 public class Emission {
     public readonly RangeZero rateOverTime;
-    public readonly IEnumerable<EmissionBurst> bursts;
+    private readonly List<EmissionBurst> _bursts;
 
-    public Emission(RangeZero rateOverTime, IEnumerable<EmissionBurst> bursts) {
+    public Emission(RangeZero rateOverTime, List<EmissionBurst> bursts) {
         this.rateOverTime = rateOverTime;
-        this.bursts = bursts;
+        _bursts = bursts;
+    }
+
+    public int CalculateBurstAmount(float deltaTime, Random random) {
+        return _bursts.Sum(burst => burst.GetAmountOfParticlesToBurst(deltaTime, random));
+    }
+
+    public void Reset() {
+        _bursts.ForEach(burst => burst.Reset());
     }
 }

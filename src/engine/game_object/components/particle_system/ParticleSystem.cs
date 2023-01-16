@@ -54,6 +54,7 @@ public class ParticleSystem : Script {
 
     public void Stop() {
         _playing = false;
+        _emission.Reset();
         _startDelayTimer.Reset();
         _durationTimer.Reset();
         _rateOverTimeTimer.Reset();
@@ -77,18 +78,22 @@ public class ParticleSystem : Script {
         }
 
         if (!_durationTimer.Expired()) {
-            ExecuteFrame();
+            ExecuteFrame(deltaTime);
         }
     }
 
-    private void ExecuteFrame() {
+    private void ExecuteFrame(float deltaTime) {
         if (_rateOverTimeTimer.Expired()) {
             for (int i = 0; i < (int)_rateOverTimeTimer.Ratio(); i++) {
                 SpawnParticle();
             }
             _rateOverTimeTimer = CreateRateOverTimeTimer();
         }
-        //bursts too
+
+        int burstAmount = _emission.CalculateBurstAmount(deltaTime, _random);
+        for (int i = 0; i < burstAmount; i++) {
+            SpawnParticle();
+        }
     }
 
     private void SpawnParticle() {
@@ -115,6 +120,7 @@ public class ParticleSystem : Script {
     private void HandleLoopOver() {
         if (_particles.loop) {
             _durationTimer.Reset();
+            _emission.Reset();
             return;
         }
 

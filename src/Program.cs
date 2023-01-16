@@ -34,17 +34,22 @@ internal static class Program {
             .Transform.AddSibling("animation")
             .SetComponent(ParticleSystemBuilder
                     .Builder(RendererBuilder.Builder(Texture.CreateSingle(Path("5.png"))).Build())
-                    .SetEmission(new Emission(new RangeZero(10), new List<EmissionBurst>()))
+                    .SetEmission(EmissionBuilder
+                        .Builder()
+                        .SetRateOverTime(new RangeZero(3))
+                        .AddBurst(new EmissionBurst(2, new RangeZero(100), 1, 1, 1))
+                        .Build()
+                    )
                     .SetParticles(ParticlesBuilder
                         .Builder()
-                        .SetDuration(8f)
+                        .SetDuration(5f)
                         .SetStartSize(new RangeZero(0.01f, 0.05f))
                         .SetStartRotation(new RangeZero(0, 25))
                         .SetFlipRotation(0.5f)
                         .SetStartLifeTime(new RangeZero(3, 6))
                         .Build()
                     )
-                    .SetShape(new Shape(new SphereEmission(45, 0, Rotation.FromDegrees(359)), new RangeZero(10, 40)))
+                    .SetShape(new Shape(new SphereEmission(45, 1, Rotation.FromDegrees(359)), new RangeZero(10, 40)))
                     .Build())
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateMultiple(Path("animation_1.png"), 0, 0, 1, 19)).Build())
             .SetComponent(

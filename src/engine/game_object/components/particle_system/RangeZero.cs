@@ -21,6 +21,10 @@ public readonly struct RangeZero {
         max = constant;
     }
 
+    public static RangeZero Zero() {
+        return new RangeZero(0);
+    }
+
     public float GetRandom(Random random) {
         return (float)(random.NextDouble() * (max - min) + min);
     }
