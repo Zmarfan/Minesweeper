@@ -16,7 +16,7 @@ public class GizmosRendererHandler {
 
     public void RenderGizmos(List<Script> scripts) {
         foreach (Script script in scripts) {
-            Gizmos.matrix = script.Transform.LocalToWorldMatrix * TransformationMatrix.Translate(-script.Transform.LocalPosition);
+            Gizmos.matrix = TransformationMatrix.Identity();
             script.OnDrawGizmos();
             while (Gizmos.GIZMOS_OBJECTS.Count > 0) {
                 GizmosObject gizmos = Gizmos.GIZMOS_OBJECTS.Dequeue();
