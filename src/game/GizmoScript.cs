@@ -9,7 +9,10 @@ public class GizmoScript : Script {
     }
 
     public override void OnDrawGizmos() {
-        Gizmos.DrawRay(Transform.Position, Vector2.Up() * 1000f, new Color(1f, 0.5f, 0.75f));
+        Gizmos.DrawRay(Transform.Position, Transform.Up * 1000f, Color.GREEN);
+        Gizmos.DrawRay(Transform.Position, Transform.Right * 1000f, Color.BLUE);
+        Gizmos.DrawRay(Transform.Position, Transform.Left * 1000f, Color.BLACK);
+        Gizmos.DrawRay(Transform.Position, Transform.Down * 1000f, Color.WHITE);
         Gizmos.DrawCircle(Transform.Position, 500f, new Color(1f, 0.5f, 0.75f));
         Gizmos.DrawIcon(Transform.Position, new Color(1f, 1f, 0.75f));
     }

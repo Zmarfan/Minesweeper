@@ -5,7 +5,7 @@ namespace Worms.engine.camera;
 public abstract class Camera {
     public Vector2 Position { get; set; } = Vector2.Zero();
     public float Size { get; set; } = 1;
-    public Color defaultDrawColor = Color.Black();
+    public Color defaultDrawColor = Color.BLACK;
 
     public virtual void Awake() {
     }

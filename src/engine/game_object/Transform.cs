@@ -83,6 +83,11 @@ public class Transform : Component {
             return _worldToLocalMatrix;
         }
     }
+
+    public Vector2 Up => LocalToWorldMatrix.ConvertVector(Vector2.Up()).Normalized;
+    public Vector2 Down => LocalToWorldMatrix.ConvertVector(Vector2.Down()).Normalized;
+    public Vector2 Left => LocalToWorldMatrix.ConvertVector(Vector2.Left()).Normalized;
+    public Vector2 Right => LocalToWorldMatrix.ConvertVector(Vector2.Right()).Normalized;
     
     public readonly List<Transform> children = new();
     private Vector2 _localPosition;

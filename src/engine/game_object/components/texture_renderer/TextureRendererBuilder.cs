@@ -8,7 +8,7 @@ public class TextureRendererBuilder {
     private readonly Texture _texture;
     private string _sortingLayer = TextureRendererHandler.DEFAULT_SORTING_LAYER;
     private int _sortOrder = 0;
-    private Color _color = Color.White();
+    private Color _color = Color.WHITE;
     private bool _flipX;
     private bool _flipY;
 

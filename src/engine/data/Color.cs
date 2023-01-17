@@ -1,6 +1,12 @@
 ﻿namespace Worms.engine.data; 
 
 public struct Color {
+    public static readonly Color BLACK = new(0, 0, 0);
+    public static readonly Color WHITE = new(1, 1, 1);
+    public static readonly Color RED = new(1, 0, 0);
+    public static readonly Color GREEN = new(0, 1, 0);
+    public static readonly Color BLUE = new(0, 0, 1);
+    
     public float r;
     public float g;
     public float b;
@@ -11,14 +17,6 @@ public struct Color {
     public byte Bbyte => (byte)(b * byte.MaxValue);
     public byte Abyte => (byte)(a * byte.MaxValue);
 
-    public static Color White() {
-        return new Color(1, 1, 1);
-    }
-    
-    public static Color Black() {
-        return new Color(0, 0, 0, 1);
-    }
-    
     public Color(float r, float g, float b, float a) {
         this.r = r;
         this.g = g;

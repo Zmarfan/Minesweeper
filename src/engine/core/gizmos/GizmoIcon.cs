@@ -5,7 +5,7 @@ using Worms.engine.data;
 namespace Worms.engine.core.gizmos; 
 
 public class GizmoIcon : GizmosObject {
-    private static readonly Color BORDER_COLOR = Color.Black();
+    private static readonly Color BORDER_COLOR = Color.BLACK;
     private static readonly PixelType[,] TEMPLATE = {
         { PixelType.NONE, PixelType.NONE, PixelType.BORDER, PixelType.BORDER, PixelType.BORDER, PixelType.BORDER, PixelType.NONE, PixelType.NONE },
         { PixelType.NONE, PixelType.BORDER, PixelType.BORDER, PixelType.SOLID, PixelType.SOLID, PixelType.BORDER, PixelType.BORDER, PixelType.NONE },
