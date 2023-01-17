@@ -21,8 +21,8 @@ public class ParticleScript : Script {
     }
 
     public override void Awake() {
-        _parentOldPosition = Transform.Parent!.WorldPosition;
-        _parentOldRotation = Transform.Parent!.WorldRotation;
+        _parentOldPosition = Transform.Parent!.Position;
+        _parentOldRotation = Transform.Parent!.Rotation;
     }
 
     public override void Update(float deltaTime) {
@@ -37,12 +37,12 @@ public class ParticleScript : Script {
     }
 
     private void TransformPointToWorldSpace() {
-        Transform.WorldPosition += _parentOldPosition - Transform.Parent!.WorldPosition;
-        Transform.WorldPosition = RotatePoint(_parentOldPosition, Transform.Parent!.WorldRotation.Radians - _parentOldRotation.Radians, Transform.WorldPosition);
-        Transform.WorldRotation -= Transform.Parent!.WorldRotation - _parentOldRotation;
+        Transform.Position += _parentOldPosition - Transform.Parent!.Position;
+        Transform.Position = RotatePoint(_parentOldPosition, Transform.Parent!.Rotation.Radians - _parentOldRotation.Radians, Transform.Position);
+        Transform.Rotation -= Transform.Parent!.Rotation - _parentOldRotation;
         
-        _parentOldPosition = Transform.Parent!.WorldPosition;
-        _parentOldRotation = Transform.Parent!.WorldRotation;
+        _parentOldPosition = Transform.Parent!.Position;
+        _parentOldRotation = Transform.Parent!.Rotation;
     }
 
     private void HandleLifeTime(float deltaTime) {
@@ -53,7 +53,7 @@ public class ParticleScript : Script {
     }
 
     private void CalculateRotation(float deltaTime) {
-        Transform.Rotation += _rotationVelocity * deltaTime;
+        Transform.LocalRotation += _rotationVelocity * deltaTime;
     }
     
     private void CalculateDirectionByForce(float deltaTime) {
@@ -62,10 +62,10 @@ public class ParticleScript : Script {
     
     private void MoveAlongDirection(float deltaTime) {
         if (_localSpace) {
-            Transform.Position += _direction * deltaTime;
+            Transform.LocalPosition += _direction * deltaTime;
         }
         else {
-            Transform.WorldPosition += _direction * deltaTime;
+            Transform.Position += _direction * deltaTime;
         }
     }
     

@@ -29,11 +29,11 @@ public static class WorldToScreenCalculator {
     }
 
     private static unsafe Vector2 CalculateTextureScreenPosition(TextureRenderer tr, SDL.SDL_Surface* surface, GameSettings settings) {
-        return WorldToScreenPosition(tr.Transform.WorldPosition, settings) - CalculateTextureDimensions(tr, surface, settings) / 2f;
+        return WorldToScreenPosition(tr.Transform.Position, settings) - CalculateTextureDimensions(tr, surface, settings) / 2f;
     }
 
     private static unsafe Vector2 CalculateTextureDimensions(TextureRenderer tr, SDL.SDL_Surface* surface, GameSettings settings) {
-        return new Vector2(surface->w * tr.Transform.WorldScale.x, surface->h * tr.Transform.WorldScale.y) * CameraSizeMod(settings) * tr.texture.textureScale;
+        return new Vector2(surface->w * tr.Transform.Scale.x, surface->h * tr.Transform.Scale.y) * CameraSizeMod(settings) * tr.texture.textureScale;
     }
     
     private static float CameraSizeMod(GameSettings settings) {

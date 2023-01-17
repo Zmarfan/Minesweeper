@@ -9,50 +9,50 @@ public class Transform : Component {
     
     public Transform? Parent { get; }
 
+    public Vector2 LocalPosition {
+        get => _localPosition;
+        set {
+            if (_localPosition == value) {
+                return;
+            }
+            _localPosition = value;
+            SetDirty();
+        }
+    }
+    public Rotation LocalRotation {
+        get => _localRotation;
+        set {
+            if (_localRotation == value) {
+                return;
+            }
+            _localRotation = value;
+            SetDirty();
+        }
+    }
+    public Vector2 LocalScale {
+        get => _localScale;
+        set {
+            if (_localScale == value) {
+                return;
+            }
+            _localScale = value;
+            SetDirty();
+        }
+    }
+
     public Vector2 Position {
-        get => _position;
-        set {
-            if (_position == value) {
-                return;
-            }
-            _position = value;
-            SetDirty();
-        }
+        get => Parent!.LocalToWorldMatrix.ConvertPoint(LocalPosition);
+        set => LocalPosition = Parent!.WorldToLocalMatrix.ConvertPoint(value);
     }
+
     public Rotation Rotation {
-        get => _rotation;
-        set {
-            if (_rotation == value) {
-                return;
-            }
-            _rotation = value;
-            SetDirty();
-        }
+        get => Parent == null ? LocalRotation : Parent.Rotation + LocalRotation;
+        set => LocalRotation = value - Parent?.Rotation ?? Rotation.FromDegrees(0);
     }
+
     public Vector2 Scale {
-        get => _scale;
-        set {
-            if (_scale == value) {
-                return;
-            }
-            _scale = value;
-            SetDirty();
-        }
-    }
-
-    public Vector2 WorldPosition {
-        get => Parent!.LocalToWorldMatrix.ConvertPoint(Position);
-        set => Position = Parent!.WorldToLocalMatrix.ConvertPoint(value);
-    }
-
-    public Rotation WorldRotation {
-        get => Parent == null ? Rotation : Parent.WorldRotation + Rotation;
-        set => Rotation = value - Parent?.WorldRotation ?? Rotation.FromDegrees(0);
-    }
-
-    public Vector2 WorldScale {
-        get => Parent == null ? Scale : Parent.WorldScale * Scale;
-        set => Scale = value / Parent?.WorldScale ?? Vector2.One();
+        get => Parent == null ? LocalScale : Parent.Scale * LocalScale;
+        set => LocalScale = value / Parent?.Scale ?? Vector2.One();
     }
 
     public TransformationMatrix LocalToWorldMatrix {
@@ -61,7 +61,7 @@ public class Transform : Component {
                 return _localToWorldMatrix;
             }
             
-            TransformationMatrix localToParentMatrix = TransformationMatrix.CreateLocalToParentMatrix(Position, Rotation, Scale);
+            TransformationMatrix localToParentMatrix = TransformationMatrix.CreateLocalToParentMatrix(LocalPosition, LocalRotation, LocalScale);
             if (Parent == null) {
                 _localToWorldMatrix = localToParentMatrix;
             } 
@@ -85,19 +85,19 @@ public class Transform : Component {
     }
     
     public readonly List<Transform> children = new();
-    private Vector2 _position;
-    private Rotation _rotation;
-    private Vector2 _scale;
+    private Vector2 _localPosition;
+    private Rotation _localRotation;
+    private Vector2 _localScale;
     private TransformationMatrix _localToWorldMatrix = TransformationMatrix.Identity();
     private TransformationMatrix _worldToLocalMatrix = TransformationMatrix.Identity();
     private bool _isDirty = true;
     private bool _isInverseDirty = true;
 
-    public Transform(Transform? parent, Vector2 position, Rotation rotation, Vector2 scale) {
+    public Transform(Transform? parent, Vector2 localPosition, Rotation localRotation, Vector2 localScale) {
         Parent = parent;
-        Position = position;
-        Rotation = rotation;
-        Scale = scale;
+        LocalPosition = localPosition;
+        LocalRotation = localRotation;
+        LocalScale = localScale;
         parent?.SetChild(this);
     }
 
@@ -137,6 +137,6 @@ public class Transform : Component {
 
     public override string ToString() {
         string parentName = Parent?.gameObject.Name ?? "root";
-        return $"ParentName: {parentName}, LocalPosition: {Position}, WorldPosition: {WorldPosition}, LocalRotation: {Rotation}, WorldRotation: {WorldRotation}, LocalScale: {Scale}, WorldScale: {WorldScale}";
+        return $"ParentName: {parentName}, LocalPosition: {LocalPosition}, WorldPosition: {Position}, LocalRotation: {LocalRotation}, WorldRotation: {Rotation}, LocalScale: {LocalScale}, WorldScale: {Scale}";
     }
 }
