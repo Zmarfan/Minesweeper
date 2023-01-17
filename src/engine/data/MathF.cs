@@ -15,4 +15,8 @@ public static class MathF {
         int nearestInt = (int)Math.Round(value, 0);
         return value - nearestInt < EPSILON && value - nearestInt > -EPSILON ? nearestInt : value;
     }
+    
+    public static float Modulo(float x, float m) {
+        return (x % m + m) % m;
+    }
 }

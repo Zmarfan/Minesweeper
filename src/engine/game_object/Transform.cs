@@ -12,6 +12,9 @@ public class Transform : Component {
     public Vector2 Position {
         get => _position;
         set {
+            if (_position == value) {
+                return;
+            }
             _position = value;
             SetDirty();
         }
@@ -19,6 +22,9 @@ public class Transform : Component {
     public Rotation Rotation {
         get => _rotation;
         set {
+            if (_rotation == value) {
+                return;
+            }
             _rotation = value;
             SetDirty();
         }
@@ -26,6 +32,9 @@ public class Transform : Component {
     public Vector2 Scale {
         get => _scale;
         set {
+            if (_scale == value) {
+                return;
+            }
             _scale = value;
             SetDirty();
         }
@@ -38,12 +47,12 @@ public class Transform : Component {
 
     public Rotation WorldRotation {
         get => Parent == null ? Rotation : Parent.WorldRotation + Rotation;
-        set => Rotation = Rotation - WorldRotation - value;
+        set => Rotation = value - Parent?.WorldRotation ?? Rotation.FromDegrees(0);
     }
 
     public Vector2 WorldScale {
         get => Parent == null ? Scale : Parent.WorldScale * Scale;
-        set => Scale = value / Parent!.WorldScale;
+        set => Scale = value / Parent?.WorldScale ?? Vector2.One();
     }
 
     public TransformationMatrix LocalToWorldMatrix {

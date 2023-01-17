@@ -6,6 +6,7 @@ namespace Worms.engine.game_object.components.particle_system.particle;
 
 public static class ParticleFactory {
     public static GameObjectBuilder ParticleBuilder(
+        bool localSpace,
         Vector2 startPosition,
         Vector2 startSize,
         Rotation startRotation,
@@ -20,7 +21,7 @@ public static class ParticleFactory {
             .SetPosition(startPosition)
             .SetScale(startSize)
             .SetRotation(startRotation)
-            .SetComponent(new ParticleScript(lifeTime, rotationVelocity, moveDirection, force))
+            .SetComponent(new ParticleScript(localSpace, lifeTime, rotationVelocity, moveDirection, force))
             .SetComponent(new TextureRenderer(true, renderer.texture, renderer.sortingLayer, renderer.orderInLayer, Color.White(), renderer.flipX, renderer.flipY));
     }
 }

@@ -58,19 +58,19 @@ public readonly struct TransformationMatrix {
         );
         float[,] values = {
             {
-                (_values[1, 1] * _values[2, 2] - _values[2, 1] * _values[1, 2]) / determinant, 
-                (_values[2, 1] * _values[0, 2] - _values[0, 1] * _values[2, 2]) / determinant,
-                (_values[0, 1] * _values[1, 2] - _values[1, 1] * _values[0, 2]) / determinant,
+                _values[1, 1] * _values[2, 2] - _values[2, 1] * _values[1, 2], 
+                _values[2, 1] * _values[0, 2] - _values[0, 1] * _values[2, 2],
+                _values[0, 1] * _values[1, 2] - _values[1, 1] * _values[0, 2],
             },
             {
-                (_values[2, 0] * _values[1, 2] - _values[1, 0] * _values[2, 2]) / determinant,
-                (_values[0, 0] * _values[2, 2] - _values[2, 0] * _values[0, 2]) / determinant,
-                (_values[1, 0] * _values[0, 2] - _values[0, 0] * _values[1, 2]) / determinant
+                _values[2, 0] * _values[1, 2] - _values[1, 0] * _values[2, 2],
+                _values[0, 0] * _values[2, 2] - _values[2, 0] * _values[0, 2],
+                _values[1, 0] * _values[0, 2] - _values[0, 0] * _values[1, 2]
             },
             {
-                (_values[1, 0] * _values[2, 1] - _values[2, 0] * _values[1, 1]) / determinant,
-                (_values[2, 0] * _values[0, 1] - _values[0, 0] * _values[2, 1]) / determinant,
-                (_values[0, 0] * _values[1, 1] - _values[1, 0] * _values[0, 1]) / determinant
+                _values[1, 0] * _values[2, 1] - _values[2, 0] * _values[1, 1],
+                _values[2, 0] * _values[0, 1] - _values[0, 0] * _values[2, 1],
+                _values[0, 0] * _values[1, 1] - _values[1, 0] * _values[0, 1]
             }
         };
         return determinant * new TransformationMatrix(values);

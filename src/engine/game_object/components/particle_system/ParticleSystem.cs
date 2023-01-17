@@ -103,14 +103,17 @@ public class ParticleSystem : Script {
         
         Tuple<Vector2, Vector2> positionAndDirection = _shape.GetSpawnPositionAndDirection(_random);
         float startSize = _particles.startSize.GetRandom(_random);
+        Vector2 localForce = _particles.forceOverLifeTime.GetRandom(_random);
+        
         _particleHolder.Instantiate(ParticleFactory.ParticleBuilder(
+            _particles.localSpace,
             positionAndDirection.Item1,
             new Vector2(startSize, startSize),
             _particles.CalculateInitialRotation(_random),
             _particles.startLifeTime.GetRandom(_random),
-            positionAndDirection.Item2,
+            _particles.localSpace ? positionAndDirection.Item2 : Transform.LocalToWorldMatrix.ConvertVector(positionAndDirection.Item2),
             _particles.rotationVelocity.GetRandom(_random),
-            _particles.forceOverLifeTime.GetRandom(_random),
+            _particles.localSpace ? localForce : Transform.LocalToWorldMatrix.ConvertVector(localForce),
             _renderer
         ));
     }

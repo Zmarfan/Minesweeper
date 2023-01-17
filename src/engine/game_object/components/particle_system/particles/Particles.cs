@@ -5,6 +5,7 @@ using Range = Worms.engine.game_object.components.particle_system.ranges.Range;
 namespace Worms.engine.game_object.components.particle_system.particles; 
 
 public class Particles {
+    public readonly bool localSpace;
     public readonly float duration;
     public readonly bool loop;
     public readonly RangeZero startDelay;
@@ -20,6 +21,7 @@ public class Particles {
     public readonly VectorRange forceOverLifeTime;
 
     public Particles(
+        bool localSpace,
         float duration, 
         bool loop, 
         RangeZero startDelay, 
@@ -34,6 +36,7 @@ public class Particles {
         Range rotationVelocity,
         VectorRange forceOverLifeTime
     ) {
+        this.localSpace = localSpace;
         this.duration = Math.Max(duration, 0);
         this.loop = loop;
         this.startDelay = startDelay;

@@ -5,6 +5,7 @@ using Range = Worms.engine.game_object.components.particle_system.ranges.Range;
 namespace Worms.engine.game_object.components.particle_system.particles; 
 
 public class ParticlesBuilder {
+    private bool _localSpace = true;
     private float _duration = 5f;
     private bool _loop = true;
     private RangeZero _startDelay = new(0f);
@@ -25,6 +26,7 @@ public class ParticlesBuilder {
 
     public Particles Build() {
         return new Particles(
+            _localSpace,
             _duration,
             _loop,
             _startDelay,
@@ -41,6 +43,16 @@ public class ParticlesBuilder {
         );
     }
 
+    public ParticlesBuilder SetLocalSpace() {
+        _localSpace = true;
+        return this;
+    }
+    
+    public ParticlesBuilder SetWorldSpace() {
+        _localSpace = false;
+        return this;
+    }
+    
     public ParticlesBuilder SetDuration(float duration) {
         _duration = duration;
         return this;
