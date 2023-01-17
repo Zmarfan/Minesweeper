@@ -38,8 +38,7 @@ internal static class Program {
                     .Builder(RendererBuilder.Builder(Texture.CreateSingle(Path("5.png"))).Build())
                     .SetEmission(EmissionBuilder
                         .Builder()
-                        .SetRateOverTime(new RangeZero(10))
-                        .AddBurst(new EmissionBurst(2, new RangeZero(20), 10, 1, 1))
+                        .SetRateOverTime(new RangeZero(1))
                         .Build()
                     )
                     .SetParticles(ParticlesBuilder
@@ -51,12 +50,12 @@ internal static class Program {
                         .SetStartSize(new RangeZero(0.01f, 0.05f))
                         .SetStartRotation(new RangeZero(0, 25))
                         .SetFlipRotation(0.5f)
-                        .SetSeed(1)
                         .SetStartLifeTime(new RangeZero(3, 6))
                         .Build()
                     )
                     .SetShape(new Shape(new SphereEmission(50, 0, Rotation.FromDegrees(359)), new RangeZero(50)))
-                    .Build())
+                    .Build()
+            )
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateMultiple(Path("animation_1.png"), 0, 0, 1, 19)).Build())
             .SetComponent(
                 AnimationControllerBuilder

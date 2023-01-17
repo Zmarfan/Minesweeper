@@ -24,6 +24,10 @@ public class EmissionBurst {
         Reset();
     }
 
+    public EmissionBurst Clone() {
+        return new EmissionBurst(_startTimer.Duration, _count, _initCycles, _intervalTimer.Duration, _probability);
+    }
+
     public void Reset() {
         _cyclesLeftToRun = _initCycles;
         _startTimer.Reset();

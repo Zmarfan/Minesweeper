@@ -18,4 +18,11 @@ public class Emission {
     public void Reset() {
         _bursts.ForEach(burst => burst.Reset());
     }
+
+    public Emission Clone() {
+        return new Emission(
+            rateOverTime,
+            _bursts.Select(burst => burst.Clone()).ToList()
+        );
+    }
 }

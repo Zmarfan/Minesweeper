@@ -12,6 +12,7 @@ public class ParticleSystem : Script {
     private readonly Particles _particles;
     private readonly Emission _emission;
     private readonly Shape _shape;
+    private readonly ParticleSystemBuilder? _subSystem;
     private readonly Renderer _renderer;
     private Transform _particleHolder = null!;
 
@@ -26,11 +27,13 @@ public class ParticleSystem : Script {
         Emission emission,
         Shape shape,
         Renderer renderer,
+        ParticleSystemBuilder? subSystem,
         bool isActive
     ) : base(isActive) {
         _particles = particles;
         _emission = emission;
         _shape = shape;
+        _subSystem = subSystem;
         _renderer = renderer;
 
         _playing = particles.playOnAwake;
@@ -114,6 +117,7 @@ public class ParticleSystem : Script {
             _particles.localSpace ? positionAndDirection.Item2 : Transform.LocalToWorldMatrix.ConvertVector(positionAndDirection.Item2),
             _particles.rotationVelocity.GetRandom(_random),
             _particles.localSpace ? localForce : Transform.LocalToWorldMatrix.ConvertVector(localForce),
+            _subSystem,
             _renderer
         ));
     }

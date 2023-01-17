@@ -12,6 +12,7 @@ public class ParticleSystemBuilder {
     private Particles _particles = ParticlesBuilder.Builder().Build();
     private Emission _emission = new(new RangeZero(10f), new List<EmissionBurst>());
     private Shape _shape = new(new SphereEmission(10f, 0, Rotation.FromDegrees(359)), new RangeZero(5f), 0f);
+    private ParticleSystemBuilder? _subSystem = null;
     private readonly Renderer _renderer;
     private bool _isActive = true;
 
@@ -20,7 +21,14 @@ public class ParticleSystemBuilder {
     }
 
     public ParticleSystem Build() {
-        return new ParticleSystem(_particles, _emission, _shape, _renderer, _isActive);
+        return new ParticleSystem(
+            _particles,
+            _emission.Clone(),
+            _shape,
+            _renderer,
+            _subSystem,
+            _isActive
+        );
     }
     
     public static ParticleSystemBuilder Builder(Renderer renderer) {
@@ -39,6 +47,11 @@ public class ParticleSystemBuilder {
     
     public ParticleSystemBuilder SetShape(Shape shape) {
         _shape = shape;
+        return this;
+    }
+
+    public ParticleSystemBuilder SetSubSystem(ParticleSystemBuilder subSystem) {
+        _subSystem = subSystem;
         return this;
     }
     

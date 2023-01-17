@@ -1,4 +1,6 @@
 ﻿using Worms.engine.data;
+using Worms.engine.game_object.components.particle_system.emission;
+using Worms.engine.game_object.components.particle_system.ranges;
 using Worms.engine.game_object.components.particle_system.renderer;
 using Worms.engine.game_object.components.texture_renderer;
 
@@ -14,14 +16,21 @@ public static class ParticleFactory {
         Vector2 moveDirection,
         float rotationVelocity,
         Vector2 force,
+        ParticleSystemBuilder? subSystem,
         Renderer renderer
     ) {
-        return GameObjectBuilder
+        GameObjectBuilder builder = GameObjectBuilder
             .Builder("particle")
             .SetPosition(startPosition)
             .SetScale(startSize)
             .SetRotation(startRotation)
             .SetComponent(new ParticleScript(localSpace, lifeTime, rotationVelocity, moveDirection, force))
             .SetComponent(new TextureRenderer(true, renderer.texture, renderer.sortingLayer, renderer.orderInLayer, Color.WHITE, renderer.flipX, renderer.flipY));
+
+        if (subSystem != null) {
+            builder.SetComponent(subSystem.Build());
+        }
+
+        return builder;
     }
 }
