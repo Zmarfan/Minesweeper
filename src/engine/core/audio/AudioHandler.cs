@@ -49,11 +49,12 @@ public class AudioHandler {
             throw new Exception($"Unable to play another sound as all channels are occupied, increase? {SDL_mixer.Mix_GetError()}");
         }
         SetChannelVolume(track, CalculateVolume(channel, audioVolume));
-        SDL_mixer.Mix_ChannelFinished(_ => {
+        SDL_mixer.ChannelFinishedDelegate finishedCallback = _ => {
             _self._playingSounds.Remove(callerId);
             audioFinishCallback.Invoke();
-        });
-        _self._playingSounds.Add(callerId, new PlayingSound(track, channel, audioVolume));
+        };
+        SDL_mixer.Mix_ChannelFinished(finishedCallback);
+        _self._playingSounds.Add(callerId, new PlayingSound(track, channel, audioVolume, finishedCallback));
     }
 
     public static void Pause(string callerId) {

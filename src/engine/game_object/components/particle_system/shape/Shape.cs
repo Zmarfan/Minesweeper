@@ -5,10 +5,10 @@ namespace Worms.engine.game_object.components.particle_system.shape;
 
 public class Shape {
     private readonly IEmissionShape _emissionShape;
-    private readonly RangeZero _startSpeed;
+    private readonly VectorRange _startSpeed;
     private readonly float _randomizeDirection;
 
-    public Shape(IEmissionShape emissionShape, RangeZero startSpeed, float randomizeDirection = 0) {
+    public Shape(IEmissionShape emissionShape, VectorRange startSpeed, float randomizeDirection = 0) {
         _emissionShape = emissionShape;
         _startSpeed = startSpeed;
         _randomizeDirection = Math.Clamp(randomizeDirection, 0, 1);
