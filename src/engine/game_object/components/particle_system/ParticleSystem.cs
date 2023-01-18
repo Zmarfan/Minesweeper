@@ -1,4 +1,5 @@
 ﻿using Worms.engine.data;
+using Worms.engine.game_object.components.animation.animation;
 using Worms.engine.game_object.components.particle_system.emission;
 using Worms.engine.game_object.components.particle_system.particle;
 using Worms.engine.game_object.components.particle_system.particles;
@@ -13,6 +14,7 @@ public class ParticleSystem : Script {
     private readonly Emission _emission;
     private readonly Shape _shape;
     private readonly ParticleSystemBuilder? _subSystem;
+    private readonly Func<Animation>? _particleAnimationProvider;
     private readonly Renderer _renderer;
     private Transform _particleHolder = null!;
 
@@ -28,12 +30,14 @@ public class ParticleSystem : Script {
         Shape shape,
         Renderer renderer,
         ParticleSystemBuilder? subSystem,
+        Func<Animation>? particleAnimationProvider,
         bool isActive
     ) : base(isActive) {
         _particles = particles;
         _emission = emission;
         _shape = shape;
         _subSystem = subSystem;
+        _particleAnimationProvider = particleAnimationProvider;
         _renderer = renderer;
 
         _playing = particles.playOnAwake;
@@ -118,6 +122,7 @@ public class ParticleSystem : Script {
             _particles.rotationVelocity.GetRandom(_random),
             _particles.localSpace ? localForce : Transform.LocalToWorldMatrix.ConvertVector(localForce),
             _subSystem,
+            _particleAnimationProvider,
             _renderer
         ));
     }

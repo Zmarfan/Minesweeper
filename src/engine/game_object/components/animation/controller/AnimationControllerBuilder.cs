@@ -25,11 +25,8 @@ public class AnimationControllerBuilder {
         return this;
     }
 
-    public AnimationControllerBuilder SetStartAnimation(Animation animation) {
-        if (_animationsWithTriggers.All(entry => entry.Item2 != animation)) {
-            throw new ArgumentException("The start animation for the animation controller has to be one of the animation provided to it!");
-        }
-        _startAnimation = animation;
+    public AnimationControllerBuilder SetStartAnimation(int index) {
+        _startAnimation = _animationsWithTriggers[index].Item2;
         return this;
     }
 }

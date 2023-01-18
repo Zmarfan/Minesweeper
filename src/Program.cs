@@ -23,8 +23,6 @@ internal static class Program {
     private static void Main() {
         GameObject root = GameObjectBuilder.Root()
             .Transform.AddChild("background")
-            .SetPosition(new Vector2(0, 0))
-            .SetScale(12f)
             .SetComponent(
                 TextureRendererBuilder
                     .Builder(Texture.CreateMultiple(Path("background.png"), 1, 1, 2, 2))
@@ -35,24 +33,24 @@ internal static class Program {
             .Build()
             .Transform.AddSibling("animation")
             .SetComponent(ParticleSystemBuilder
-                    .Builder(RendererBuilder.Builder(Texture.CreateSingle(Path("5.png"))).Build())
+                    .Builder(RendererBuilder.Builder(Texture.CreateMultiple(Path("animation_1.png"), 0, 0, 1, 19)).Build())
                     .SetEmission(EmissionBuilder
                         .Builder()
                         .SetRateOverTime(new RangeZero(1))
+                        .AddBurst(new EmissionBurst(0, new RangeZero(50, 100), 1, 1, 1))
                         .Build()
                     )
                     .SetParticles(ParticlesBuilder
                         .Builder()
                         .SetWorldSpace()
                         .SetRotationVelocity(new Range(-100, 100))
-                        .SetForceOverLifeTime(new VectorRange(new Vector2(0, -500f)))
                         .SetDuration(5f)
-                        .SetStartSize(new RangeZero(0.01f, 0.05f))
                         .SetStartRotation(new RangeZero(0, 25))
                         .SetFlipRotation(0.5f)
                         .SetStartLifeTime(new RangeZero(3, 6))
                         .Build()
                     )
+                    .SetParticleAnimation(() => AnimationFactory.CreateTextureAnimation(Path("animation_1.png"), 0.05f, false, 19))
                     .SetShape(new Shape(new SphereEmission(50, 0, Rotation.FromDegrees(359)), new RangeZero(50)))
                     .Build()
             )
@@ -63,73 +61,13 @@ internal static class Program {
                     .AddAnimation("trigger1", AnimationFactory.CreateTextureAnimation(Path("animation_1.png"), 0.05f, false, 19))
                     .AddAnimation("trigger2", AnimationFactory.CreateTextureAnimation(Path("animation_2.png"), 0.05f, false, 15))
                     .AddAnimation("trigger3", AnimationFactory.CreateTextureAnimation(Path("animation_2.png"), 0.05f, false, 15, true))
+                    .SetStartAnimation(0)
                     .Build()
             )
             .SetComponent(new AnimationTestScript())
-            .SetScale(new Vector2(12, 12))
-            .SetPosition(new Vector2(-500, -500))
+            .SetPosition(new Vector2(-100, -100))
             .SetComponent(new MyTestScript(4.5f))
             .Build()
-            .Transform.AddSibling("child1")
-            .SetComponent(new GizmoScript())
-            .SetPosition(new Vector2(-600, 0))
-            .SetScale(new Vector2(2, 2))
-            .SetComponent(
-                TextureRendererBuilder
-                    .Builder(Texture.CreateSingle(Path("5.png")))
-                    .SetSortingLayer("layer1")
-                    .SetSortingOrder(0)
-                    .Build()
-            )
-            .Build()
-                .Transform.AddChild("child2Sibling1")
-                .SetPosition(new Vector2(600, 400))
-                .SetComponent(new GizmoScript())
-                .SetComponent(
-                    TextureRendererBuilder
-                        .Builder(Texture.CreateSingle(Path("4.png")))
-                        .SetSortingLayer("layer1")
-                        .SetSortingOrder(1)
-                        .Build()
-                )
-                .Build()
-                .Transform.AddSibling("child2Sibling2")
-                .SetPosition(new Vector2(600, -400))
-                .SetScale(0.5f)
-                .SetRotation(Rotation.UpsideDown())
-                .SetComponent(new GizmoScript())
-            .SetComponent(
-                    TextureRendererBuilder
-                        .Builder(Texture.CreateSingle(Path("3.png")))
-                        .SetSortingLayer("layer3")
-                        .SetFlipY(true)
-                        .Build()
-                )
-                .Build()
-                    .Transform.AddChild("child2Sibling3")
-                    .SetPosition(new Vector2(-1200, 0))
-                    .SetRotation(Rotation.CounterClockwise())
-                    .SetComponent(new GizmoScript())
-                    .SetComponent(
-                        TextureRendererBuilder
-                            .Builder(Texture.CreateSingle(Path("2.png")))
-                            .SetFlipX(true)
-                            .Build()
-                    )
-                    .Build()
-                    .Transform.AddSibling("child2Sibling4")
-                    .SetPosition(new Vector2(-1200, 800))
-                    .SetRotation(Rotation.Clockwise())
-                    .SetComponent(new GizmoScript())
-                    .SetComponent(
-                        TextureRendererBuilder
-                            .Builder(Texture.CreateSingle(Path("1.png")))
-                            .SetColor(new Color(0.25f, 1f, 0.25f))
-                            .SetFlipX(true)
-                            .SetFlipY(true)
-                            .Build()
-                    )
-                    .Build()
             .Transform.GetRoot().gameObject;
 
         List<InputListener> listeners = new() {

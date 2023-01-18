@@ -1,4 +1,6 @@
 ﻿using Worms.engine.data;
+using Worms.engine.game_object.components.animation.animation;
+using Worms.engine.game_object.components.animation.controller;
 using Worms.engine.game_object.components.particle_system.emission;
 using Worms.engine.game_object.components.particle_system.particles;
 using Worms.engine.game_object.components.particle_system.ranges;
@@ -13,6 +15,7 @@ public class ParticleSystemBuilder {
     private Emission _emission = new(new RangeZero(10f), new List<EmissionBurst>());
     private Shape _shape = new(new SphereEmission(10f, 0, Rotation.FromDegrees(359)), new RangeZero(5f), 0f);
     private ParticleSystemBuilder? _subSystem = null;
+    private Func<Animation>? _particleAnimationProvider = null; 
     private readonly Renderer _renderer;
     private bool _isActive = true;
 
@@ -27,6 +30,7 @@ public class ParticleSystemBuilder {
             _shape,
             _renderer,
             _subSystem,
+            _particleAnimationProvider,
             _isActive
         );
     }
@@ -52,6 +56,11 @@ public class ParticleSystemBuilder {
 
     public ParticleSystemBuilder SetSubSystem(ParticleSystemBuilder subSystem) {
         _subSystem = subSystem;
+        return this;
+    }
+
+    public ParticleSystemBuilder SetParticleAnimation(Func<Animation>? animationProvider) {
+        _particleAnimationProvider = animationProvider;
         return this;
     }
     
