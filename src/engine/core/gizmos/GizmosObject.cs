@@ -10,5 +10,5 @@ public abstract class GizmosObject {
         this.color = color;
     }
 
-    public abstract void Render(IntPtr renderer, GameSettings settings);
+    public abstract void Render(IntPtr renderer, TransformationMatrix worldToScreenMatrix);
 }

@@ -1,5 +1,6 @@
 ﻿using Worms.engine.core.renderer;
 using Worms.engine.data;
+using MathF = Worms.engine.data.MathF;
 
 namespace Worms.engine.core.gizmos; 
 
@@ -14,11 +15,13 @@ public class GizmosEllipsis : GizmosObject {
         _rotation = rotation;
     }
 
-    public override void Render(IntPtr renderer, GameSettings settings) {
+    public override void Render(IntPtr renderer, TransformationMatrix worldToScreenMatrix) {
+        Vector2 radius = worldToScreenMatrix.ConvertVector(_radius);
+        radius.Abs();
         RendererHelper.DrawEllipse(
             renderer,
-            WorldToScreenCalculator.WorldToScreenPosition(_center, settings),
-            WorldToScreenCalculator.WorldToScreenVector(_radius, settings),
+            worldToScreenMatrix.ConvertPoint(_center),
+            radius,
             _rotation
         );
     }

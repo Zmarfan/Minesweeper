@@ -23,9 +23,9 @@ public class GizmoIcon : GizmosObject {
         _center = center;
     }
 
-    public override void Render(IntPtr renderer, GameSettings settings) {
+    public override void Render(IntPtr renderer, TransformationMatrix worldToScreenMatrix) {
         SDL.SDL_GetRenderDrawColor(renderer, out byte r, out byte g, out byte b, out byte a);
-        Vector2 centerScreen = WorldToScreenCalculator.WorldToScreenPosition(_center, settings);
+        Vector2 centerScreen = worldToScreenMatrix.ConvertPoint(_center);
         for (int x = 0; x < TEMPLATE.GetLength(0); x++) {
             for (int y = 0; y < TEMPLATE.GetLength(1); y++) {
                 switch (TEMPLATE[x, y]) {

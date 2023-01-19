@@ -37,7 +37,7 @@ public class Renderer {
         _settings = settings;
         _gameObjectHandler = gameObjectHandler;
         _textureRendererHandler = new TextureRendererHandler(_renderer, settings);
-        _gizmosRendererHandler = new GizmosRendererHandler(_renderer, settings);
+        _gizmosRendererHandler = new GizmosRendererHandler(_renderer, settings.camera);
     }
 
     public void Render() {

@@ -17,6 +17,10 @@ public readonly struct TransformationMatrix {
         return new TransformationMatrix(IDENTITY_VALUES);
     }
 
+    public static TransformationMatrix CreateWorldToScreenMatrix(Vector2 position, Vector2 scale) {
+        return Translate(position) * RotateCameraYAxis() * Scale(scale);
+    }
+    
     public static TransformationMatrix CreateLocalToParentMatrix(Vector2 position, Rotation rotation, Vector2 scale) {
         return Translate(position) * Rotate(rotation) * Scale(scale);
     }
@@ -90,6 +94,16 @@ public readonly struct TransformationMatrix {
         return new TransformationMatrix(new[,] {
             { cos, -sin, 0f }, 
             { sin, cos, 0f }, 
+            { 0f, 0f, 1f }
+        });
+    }
+    
+    private static TransformationMatrix RotateCameraYAxis() {
+        float cos = MathF.CloseToIntToInt((float)Math.Cos(Rotation.FromDegrees(180).Radians));
+        float sin = MathF.CloseToIntToInt((float)Math.Sin(Rotation.FromDegrees(180).Radians));
+        return new TransformationMatrix(new[,] {
+            { 1, -sin, 0f }, 
+            { 0, cos, 0f }, 
             { 0f, 0f, 1f }
         });
     }

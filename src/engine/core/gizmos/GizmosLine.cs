@@ -14,9 +14,9 @@ public class GizmosLine : GizmosObject {
         _to = to;
     }
 
-    public override void Render(IntPtr renderer, GameSettings settings) {
-        Vector2 fromScreen = WorldToScreenCalculator.WorldToScreenPosition(_from, settings);
-        Vector2 toScreen = WorldToScreenCalculator.WorldToScreenPosition(_to, settings);
+    public override void Render(IntPtr renderer, TransformationMatrix worldToScreenMatrix) {
+        Vector2 fromScreen = worldToScreenMatrix.ConvertPoint(_from);
+        Vector2 toScreen = worldToScreenMatrix.ConvertPoint(_to);
         SDL.SDL_RenderDrawLineF(renderer, fromScreen.x, fromScreen.y, toScreen.x, toScreen.y);
     }
 }

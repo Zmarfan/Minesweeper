@@ -113,6 +113,11 @@ public struct Vector2 {
         }
     }
 
+    public void Abs() {
+        x = Math.Abs(x);
+        y = Math.Abs(y);
+    }
+    
     public override string ToString() {
         return $"x: {x}, y: {y}";
     }

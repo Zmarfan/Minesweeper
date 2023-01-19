@@ -20,6 +20,7 @@ public class Game {
             throw new Exception();
         }
 
+        settings.camera.Init(settings);
         GameObjectHandler gameObjectHandler = new(settings.root);
         _renderer = new Renderer(settings, gameObjectHandler);
         _eventHandler = new EventHandler(settings);

@@ -202,6 +202,7 @@ internal static class Program {
                 .SetPlayOnAwake(false)
                 .Build()
             )
+            .SetComponent(new GizmoScript())
             .SetComponent(
                 AnimationControllerBuilder
                     .Builder()

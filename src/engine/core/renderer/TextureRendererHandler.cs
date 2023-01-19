@@ -35,7 +35,7 @@ public class TextureRendererHandler {
         StoredTexture texture = GetTexture(tr);
 
         SDL.SDL_Rect srcRect = tr.texture.GetSrcRect(texture);
-        SDL.SDL_FRect destRect = WorldToScreenCalculator.CalculateTextureDrawPosition(tr, texture.surface, _settings);
+        SDL.SDL_FRect destRect = CalculateTextureDrawPosition(tr, texture.surface);
         SDL.SDL_SetTextureColorMod(texture.texture, tr.color.Rbyte, tr.color.Gbyte, tr.color.Bbyte);
         SDL.SDL_RenderCopyExF(_renderer, texture.texture, ref srcRect, ref destRect, tr.Transform.Rotation.Degree, IntPtr.Zero, GetTextureFlipSettings(tr));
     }
@@ -52,6 +52,28 @@ public class TextureRendererHandler {
         }
 
         return texture;
+    }
+    
+    private unsafe SDL.SDL_FRect CalculateTextureDrawPosition(TextureRenderer tr, SDL.SDL_Surface* surface) {
+        Vector2 screenPosition = CalculateTextureScreenPosition(tr, surface);
+        Vector2 textureDimensions = CalculateTextureDimensions(tr, surface);
+        SDL.SDL_FRect rect = new() {
+            x = screenPosition.x,
+            y = screenPosition.y,
+            w = textureDimensions.x,
+            h = textureDimensions.y
+        };
+        return rect;
+    }
+
+    private unsafe Vector2 CalculateTextureScreenPosition(TextureRenderer tr, SDL.SDL_Surface* surface) {
+        return _settings.camera.WorldToScreenMatrix.ConvertPoint(tr.Transform.Position) - CalculateTextureDimensions(tr, surface) / 2f;
+    }
+
+    private unsafe Vector2 CalculateTextureDimensions(TextureRenderer tr, SDL.SDL_Surface* surface) {
+        return _settings.camera.WorldToScreenMatrix.ConvertVector(
+            new Vector2(surface->w * tr.Transform.Scale.x, surface->h * tr.Transform.Scale.y * -1) * tr.texture.textureScale
+        );
     }
     
     private static SDL.SDL_RendererFlip GetTextureFlipSettings(TextureRenderer tr) {
