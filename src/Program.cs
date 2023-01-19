@@ -125,7 +125,7 @@ internal static class Program {
                 .SetLoop(false)
                 .SetDuration(6f)
                 .SetForceOverLifeTime(new VectorRange(Vector2.Up() * 50))
-                .SetStartLifeTime(new RangeZero(2f))
+                .SetStartLifeTime(new RangeZero(4f))
                 .Build()
             )
             .Build()

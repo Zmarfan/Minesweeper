@@ -1,4 +1,5 @@
 ﻿using SDL2;
+using Worms.engine.camera;
 using Worms.engine.core.input.listener;
 using Worms.engine.data;
 using EventHandler = Worms.engine.core.event_handler.EventHandler;
@@ -7,14 +8,23 @@ namespace Worms.engine.core.input;
 
 public class Input {
     private static Input _self = null!;
-    
+
+    public static Vector2 MouseWorldPosition =>
+        _gameSettings.camera.ScreenToWorldMatrix.ConvertPoint(new Vector2(
+            MouseScreenPosition.x * _gameSettings.width,
+            (1 - MouseScreenPosition.y) * _gameSettings.height)
+        );
+
     public static Vector2 MouseScreenPosition { get; private set; }
     public static Vector2 MouseDirection { get; private set; }
+    private static GameSettings _gameSettings = null!;
     
     private readonly Dictionary<string, InputListener> _listenersByName;
     private readonly Dictionary<Button, InputListener> _listenersByButton = new();
 
-    private Input(EventHandler eventHandler, List<InputListener> listeners) {
+    private Input(GameSettings settings, EventHandler eventHandler, List<InputListener> listeners) {
+        _gameSettings = settings;
+        
         _listenersByName = listeners.ToDictionary(l => l.name, l => l);
         listeners.ForEach(listener => {
             _listenersByButton.Add(listener.positiveButton, listener);
@@ -37,12 +47,12 @@ public class Input {
         };
     }
 
-    public static void Init(EventHandler eventHandler, List<InputListener> listeners) {
+    public static void Init(GameSettings settings, EventHandler eventHandler, List<InputListener> listeners) {
         if (_self != null) {
             throw new Exception("There can only be one input manager!");
         }
 
-        _self = new Input(eventHandler, listeners);
+        _self = new Input(settings, eventHandler, listeners);
     }
 
     public static void Update(float deltaTime) {

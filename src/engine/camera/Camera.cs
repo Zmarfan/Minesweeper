@@ -15,7 +15,7 @@ public abstract class Camera {
         get => _size;
         set {
             SetDirty();
-            _size = value;
+            _size = Math.Max(value, 0.01f);
         }
     }
     public Color defaultDrawColor = Color.BLACK;
