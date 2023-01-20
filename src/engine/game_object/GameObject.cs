@@ -12,11 +12,14 @@ public class GameObject : Object {
     public bool IsActive {
         get => _isActive;
         set {
+            bool changed = _isActive != value;
             _isActive = value;
-            GameObjectActiveEvent?.Invoke(this);
+            if (changed) {
+                GameObjectActiveEvent?.Invoke(this);
+            }
         }
     }
-    private bool _isActive;
+    private bool _isActive = true;
 
     public Transform Transform { get; }
     public readonly List<ToggleComponent> components;

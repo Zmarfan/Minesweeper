@@ -71,6 +71,6 @@ public class Animation {
     }
     
     private int CalculateNextStep() {
-        return (int)Math.Round(_timer.Ratio() * _animationStepLength);
+        return (int)(_timer.Ratio() * _animationStepLength);
     }
 }

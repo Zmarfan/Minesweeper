@@ -12,14 +12,14 @@ public class GameObjectHandler {
     public List<TextureRenderer> AllActiveGameObjectTextureRenderers { get; } = new();
 
     private readonly Queue<GameObject> _instantiatedGameObjects = new();
-    private readonly Queue<Object> _destroyObjects = new();
-    private readonly Queue<GameObject> _activeStatusChangedGameObjects = new();
+    private readonly HashSet<Object> _destroyObjects = new();
+    private readonly HashSet<GameObject> _activeStatusChangedGameObjects = new();
 
     public GameObjectHandler(GameObject root) {
         InstantiateGameObject(root);
         Transform.GameObjectInstantiateEvent += obj => _instantiatedGameObjects.Enqueue(obj);
-        Object.ObjectDestroyEvent += obj => _destroyObjects.Enqueue(obj);
-        GameObject.GameObjectActiveEvent += obj => _activeStatusChangedGameObjects.Enqueue(obj);
+        Object.ObjectDestroyEvent += obj => _destroyObjects.Add(obj);
+        GameObject.GameObjectActiveEvent += obj => _activeStatusChangedGameObjects.Add(obj);
     }
 
     public void EndOfFrameCleanup() {
@@ -27,10 +27,14 @@ public class GameObjectHandler {
             InstantiateGameObject(_instantiatedGameObjects.Dequeue());
         }
         while (_destroyObjects.Count > 0) {
-            DestroyObject(_destroyObjects.Dequeue());
+            Object obj = _destroyObjects.First();
+            DestroyObject(obj);
+            _destroyObjects.Remove(obj);
         }
         while (_activeStatusChangedGameObjects.Count > 0) {
-            ChangeActiveGameObject(_activeStatusChangedGameObjects.Dequeue());
+            GameObject obj = _activeStatusChangedGameObjects.First();
+            ChangeActiveGameObject(obj);
+            _activeStatusChangedGameObjects.Remove(obj);
         }
     }
     

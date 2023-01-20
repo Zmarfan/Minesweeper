@@ -82,7 +82,7 @@ public class UpdateHandler {
     private void Update() {
         Input.Update(_deltaTime);
         
-        foreach (Script script in _gameObjectHandler.AllActiveGameObjectScripts.ToList()) {
+        foreach (Script script in _gameObjectHandler.AllActiveGameObjectScripts) {
             try {
                 if (script.IsActive) {
                     script.Update(_deltaTime);
