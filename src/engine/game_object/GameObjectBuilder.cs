@@ -10,7 +10,7 @@ public class GameObjectBuilder {
     private Rotation _rotation = Rotation.Identity();
     private Vector2 _scale = Vector2.One();
     private bool _isActive = true;
-    private readonly List<ToggleComponent> _components = new();
+    private readonly List<Component> _components = new();
 
     private GameObjectBuilder(string name, Transform? parent) {
         _name = name;
@@ -18,9 +18,8 @@ public class GameObjectBuilder {
     }
 
     public GameObject Build() {
-        Transform transform = new(_parent, _position, _rotation, _scale);
-        GameObject gameObject = new(_name, _isActive, transform, _components);
-        transform.InitComponent(gameObject);
+        _components.Add(new Transform(_parent, _position, _rotation, _scale));
+        GameObject gameObject = new(_name, _isActive, _components);
         _components.ForEach(component => component.InitComponent(gameObject));
         return gameObject;
     }

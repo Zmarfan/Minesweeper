@@ -21,17 +21,24 @@ public class GameObject : Object {
     }
     private bool _isActive = true;
 
-    public Transform Transform { get; }
-    public readonly List<ToggleComponent> components;
+    public Transform Transform {
+        get {
+            if (_transform == null) {
+                _transform = GetComponent<Transform>();
+            }
+            return _transform;
+        }
+    }
+    public readonly List<Component> components;
+    private Transform? _transform;
     
-    public GameObject(string name, bool isActive, Transform transform, List<ToggleComponent> components) {
+    public GameObject(string name, bool isActive, List<Component> components) {
         Name = name;
         IsActive = isActive;
-        Transform = transform;
         this.components = components;
     }
 
-    public T GetComponent<T>() where T : ToggleComponent {
+    public T GetComponent<T>() where T : Component {
         try {
             return (T)components.First(static component => component is T);
         }
@@ -40,7 +47,7 @@ public class GameObject : Object {
         }
     }
     
-    public bool TryGetComponent<T>(out T component) where T : ToggleComponent {
+    public bool TryGetComponent<T>(out T component) where T : Component {
         if (!components.Any(static component => component is T)) {
             component = default!;
             return false;

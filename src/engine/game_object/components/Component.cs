@@ -8,11 +8,11 @@ public abstract class Component : Object {
         gameObject = gameObj;
     }
     
-    public T GetComponent<T>() where T : ToggleComponent {
+    public T GetComponent<T>() where T : Component {
         return gameObject.GetComponent<T>();
     }
     
-    public bool TryGetComponent<T>(out T component) where T : ToggleComponent {
+    public bool TryGetComponent<T>(out T component) where T : Component {
         return gameObject.TryGetComponent(out component);
     }
 }
