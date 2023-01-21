@@ -22,7 +22,7 @@ public class GameObjectHandler {
         GameObject.GameObjectActiveEvent += obj => _activeStatusChangedGameObjects.Add(obj);
     }
 
-    public void EndOfFrameCleanup() {
+    public void FrameCleanup() {
         while (_instantiatedGameObjects.Count > 0) {
             InstantiateGameObject(_instantiatedGameObjects.Dequeue());
         }
@@ -53,9 +53,21 @@ public class GameObjectHandler {
         List<GameObject> allGameObjects = GetAllGameObjectsFromGameObject(gameObject, false).ToList();
         List<GameObject> allActiveGameObjects = GetAllGameObjectsFromGameObject(gameObject, true).ToList();
         
-        AllActiveGameObjectTextureRenderers.AddRange(allActiveGameObjects.SelectMany(g => g.components).OfType<TextureRenderer>());
-        AllScripts.AddRange(allGameObjects.SelectMany(g => g.components).OfType<Script>());
-        AllActiveGameObjectScripts.AddRange(allActiveGameObjects.SelectMany(g => g.components).OfType<Script>());
+        AllActiveGameObjectTextureRenderers.AddRange(allActiveGameObjects
+            .SelectMany(g => g.components)
+            .Where(c => !AllActiveGameObjectTextureRenderers.Contains(c))
+            .OfType<TextureRenderer>()
+        );
+        AllScripts.AddRange(allGameObjects
+            .SelectMany(g => g.components)
+            .Where(c => !AllScripts.Contains(c))
+            .OfType<Script>()
+        );
+        AllActiveGameObjectScripts.AddRange(allActiveGameObjects
+            .SelectMany(g => g.components)
+            .Where(c => !AllActiveGameObjectScripts.Contains(c))
+            .OfType<Script>()
+        );
     }
 
     private void ChangeActiveGameObject(GameObject gameObject) {

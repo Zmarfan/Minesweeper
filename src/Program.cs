@@ -35,7 +35,7 @@ internal static class Program {
                 .Build()
             )
             .SetParticleAnimation(() =>
-                AnimationFactory.CreateTextureAnimation(Path("explosion/circle75.png"), 0.075f, false, 4))
+                AnimationFactory.CreateTextureAnimation(Path("explosion/circle75.png"), 0.05f, false, 4))
             .SetShape(new Shape(new LineEmission(0.01f), new VectorRange(Vector2.Zero())))
             .SetParticles(ParticlesBuilder
                 .Builder()
@@ -61,7 +61,7 @@ internal static class Program {
                 .Build()
             )
             .SetParticleAnimation(() =>
-                AnimationFactory.CreateTextureAnimation(Path("explosion/elipse75.png"), 0.075f, false, 10))
+                AnimationFactory.CreateTextureAnimation(Path("explosion/elipse75.png"), 0.05f, false, 10))
             .SetShape(new Shape(new LineEmission(0.01f), new VectorRange(Vector2.Zero())))
             .SetParticles(ParticlesBuilder
                 .Builder()
@@ -69,7 +69,7 @@ internal static class Program {
                 .SetWorldSpace()
                 .SetDuration(6f)
                 .SetMaxParticles(1)
-                .SetStartLifeTime(new RangeZero(0.8f))
+                .SetStartLifeTime(new RangeZero(0.5f))
                 .Build()
             )
             .Build()
@@ -87,7 +87,7 @@ internal static class Program {
                 .Build()
             )
             .SetParticleAnimation(() =>
-                AnimationFactory.CreateTextureAnimation(Path("explosion/expow.png"), 0.075f, false, 12))
+                AnimationFactory.CreateTextureAnimation(Path("explosion/expow.png"), 0.05f, false, 12))
             .SetShape(new Shape(new LineEmission(0.01f), new VectorRange(Vector2.Zero())))
             .SetParticles(ParticlesBuilder
                 .Builder()

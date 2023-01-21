@@ -1,4 +1,5 @@
-﻿using SDL2;
+﻿using System.Diagnostics;
+using SDL2;
 using Worms.engine.camera;
 using Worms.engine.core.input;
 using Worms.engine.game_object.scripts;
@@ -10,16 +11,12 @@ public class UpdateHandler {
     
     private readonly Camera _camera;
     private readonly GameObjectHandler _gameObjectHandler;
-    private ulong _now;
-    private ulong _last;
     private float _fixedUpdateAcc;
     private float _deltaTime;
 
     public UpdateHandler(GameObjectHandler gameObjectHandler, Camera camera) {
         _gameObjectHandler = gameObjectHandler;
         _camera = camera;
-        _now = SDL.SDL_GetPerformanceCounter();
-        _last = 0;
         _fixedUpdateAcc = 0;
         _camera.Awake();
     }
@@ -36,6 +33,7 @@ public class UpdateHandler {
             }
             script.HasRunAwake = true;
         });
+        _gameObjectHandler.FrameCleanup();
     }
     
     public void Start() {
@@ -50,22 +48,19 @@ public class UpdateHandler {
             }
             script.HasRunStart = true;
         });
+        _gameObjectHandler.FrameCleanup();
     }
     
-    public void UpdateLoops() {
-        UpdateFrameTimeData();
+    public void UpdateLoops(float deltaTime) {
+        UpdateFrameTimeData(deltaTime);
         while (_fixedUpdateAcc > FIXED_UPDATE_CYCLE_TIME) {
             FixedUpdate();
             _fixedUpdateAcc -= FIXED_UPDATE_CYCLE_TIME;
         }
         Update();
+        _gameObjectHandler.FrameCleanup();
     }
 
-    public void EndOfFrameCleanUp() {
-        _gameObjectHandler.EndOfFrameCleanup();
-        Input.FrameReset();
-    }
-    
     private void FixedUpdate() {
         foreach (Script script in _gameObjectHandler.AllActiveGameObjectScripts) {
             try {
@@ -95,10 +90,8 @@ public class UpdateHandler {
         _camera.Update(_deltaTime);
     }
     
-    private void UpdateFrameTimeData() {
-        _last = _now;
-        _now = SDL.SDL_GetPerformanceCounter();
-        _deltaTime = (float)(_now - _last) * 1000 / SDL.SDL_GetPerformanceFrequency() * 0.001f;
+    private void UpdateFrameTimeData(float deltaTime) {
+        _deltaTime = deltaTime;
         _fixedUpdateAcc += _deltaTime;
     }
 }

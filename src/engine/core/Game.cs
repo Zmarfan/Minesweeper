@@ -1,4 +1,5 @@
-﻿using SDL2;
+﻿using System.Diagnostics;
+using SDL2;
 using Worms.engine.core.audio;
 using Worms.engine.core.input;
 using Worms.engine.core.renderer;
@@ -14,6 +15,9 @@ public class Game {
     private readonly EventHandler _eventHandler;
     private readonly UpdateHandler _updateHandler;
     private readonly Renderer _renderer;
+    private readonly Stopwatch _actionFrameWatch = new();
+    private readonly Stopwatch _totalFrameWatch = new();
+    private float _deltaTime = 0;
 
     public Game(GameSettings settings) {
         if (SDL.SDL_Init(SDL.SDL_INIT_EVERYTHING) != 0) {
@@ -35,12 +39,15 @@ public class Game {
 
     public void Run() {
         while (_isRunning) {
-            ulong start = SDL.SDL_GetPerformanceCounter();
+            _totalFrameWatch.Restart();
             
+            _actionFrameWatch.Restart();
             RunFrame();
+            _actionFrameWatch.Stop();
     
-            double elapsedMs = (SDL.SDL_GetPerformanceCounter() - start) / (double)SDL.SDL_GetPerformanceFrequency() * 1000.0f;
-            SDL.SDL_Delay((uint)Math.Max(1000 / MAX_FPS - elapsedMs, 0));
+            SDL.SDL_Delay((uint)Math.Max(1000 / MAX_FPS - new TimeSpan(_actionFrameWatch.ElapsedTicks).TotalMilliseconds, 0));
+            _totalFrameWatch.Stop();
+            _deltaTime = (float)new TimeSpan(_totalFrameWatch.ElapsedTicks).TotalSeconds;
         }
         Clean();
     }
@@ -50,8 +57,8 @@ public class Game {
             _eventHandler.HandleEvents();
             _updateHandler.Awake();
             _updateHandler.Start();
-            _updateHandler.UpdateLoops();
-            _updateHandler.EndOfFrameCleanUp();
+            _updateHandler.UpdateLoops(_deltaTime);
+            Input.FrameReset();
             _renderer.Render();
         }
         catch (Exception e) {
