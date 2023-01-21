@@ -3,6 +3,7 @@ using SDL2;
 using Worms.engine.camera;
 using Worms.engine.core.input;
 using Worms.engine.game_object.scripts;
+using Worms.engine.logger;
 
 namespace Worms.engine.core.update; 
 
@@ -29,7 +30,7 @@ public class UpdateHandler {
                 }
             }
             catch (Exception e) {
-                Console.WriteLine($"An exception occured in {script} during the Awake callback: {e}");
+                Logger.Error(e, $"An exception occured in {script} during the Awake callback");
             }
             script.HasRunAwake = true;
         });
@@ -44,7 +45,7 @@ public class UpdateHandler {
                 }
             }
             catch (Exception e) {
-                Console.WriteLine($"An exception occured in {script} during the Start callback: {e}");
+                Logger.Error(e, $"An exception occured in {script} during the Start callback");
             }
             script.HasRunStart = true;
         });
@@ -69,7 +70,7 @@ public class UpdateHandler {
                 }
             }
             catch (Exception e) {
-                Console.WriteLine($"An exception occured in {script} during the Fixed Update callback: {e}");
+                Logger.Error(e, $"An exception occured in {script} during the Fixed Update callback");
             }
         }
     }
@@ -84,7 +85,7 @@ public class UpdateHandler {
                 }
             }
             catch (Exception e) {
-                Console.WriteLine($"An exception occured in {script} during the Update callback: {e}");
+                Logger.Error(e, $"An exception occured in {script} during the Update callback");
             }
         }
         _camera.Update(_deltaTime);

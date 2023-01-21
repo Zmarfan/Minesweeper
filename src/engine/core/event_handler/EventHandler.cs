@@ -1,6 +1,7 @@
 ﻿using SDL2;
 using Worms.engine.core.input.listener;
 using Worms.engine.data;
+using Worms.engine.logger;
 
 namespace Worms.engine.core.event_handler; 
 
@@ -22,7 +23,7 @@ public class EventHandler {
             HandleNewEvents();
         }
         catch (Exception e) {
-            Console.WriteLine($"There was an issue with the event handling this frame: {e}");
+            Logger.Error(e, "There was an issue with the event handling this frame");
         }
     }
 

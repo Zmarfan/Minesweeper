@@ -32,7 +32,12 @@ public class GameObject : Object {
     }
 
     public T GetComponent<T>() where T : ToggleComponent {
-        return (T)components.First(static component => component is T);
+        try {
+            return (T)components.First(static component => component is T);
+        }
+        catch (InvalidOperationException e) {
+            throw new Exception($"Unable to get component: {typeof(T)} from gameObject: {Name}");
+        }
     }
     
     public bool TryGetComponent<T>(out T component) where T : ToggleComponent {

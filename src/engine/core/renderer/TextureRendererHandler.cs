@@ -1,6 +1,7 @@
 ﻿using SDL2;
 using Worms.engine.data;
 using Worms.engine.game_object.components.texture_renderer;
+using Worms.engine.logger;
 
 namespace Worms.engine.core.renderer; 
 
@@ -25,7 +26,7 @@ public class TextureRendererHandler {
                     RenderTexture(tr);
                 }
                 catch (ArgumentException e) {
-                    Console.WriteLine(e);
+                    Logger.Error(e);
                 }
             }
         }

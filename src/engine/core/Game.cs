@@ -4,6 +4,7 @@ using Worms.engine.core.audio;
 using Worms.engine.core.input;
 using Worms.engine.core.renderer;
 using Worms.engine.core.update;
+using Worms.engine.logger;
 using EventHandler = Worms.engine.core.event_handler.EventHandler;
 
 namespace Worms.engine.core; 
@@ -62,7 +63,7 @@ public class Game {
             _renderer.Render();
         }
         catch (Exception e) {
-            Console.WriteLine($"An issue occured during this frame the exception was: {e}");
+            Logger.Error(e, "An issue occured during this frame");
         }
     }
     
