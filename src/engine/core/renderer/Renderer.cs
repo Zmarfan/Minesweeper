@@ -31,7 +31,6 @@ public class Renderer {
         if (_renderer == IntPtr.Zero) {
             throw new Exception();
         }
-        SDL.SDL_SetHint(SDL.SDL_HINT_RENDER_SCALE_QUALITY, "1" );
         SDL.SDL_SetRelativeMouseMode(SDL.SDL_bool.SDL_TRUE);
         
         _settings = settings;
