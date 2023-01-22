@@ -1,5 +1,6 @@
 ﻿using Worms.engine.core;
 using Worms.engine.core.audio;
+using Worms.engine.core.cursor;
 using Worms.engine.core.input.listener;
 using Worms.game.scenes;
 
@@ -37,9 +38,11 @@ internal static class Program {
                     .Build(),
                 InputListenerBuilder.Builder("animationTest1", Button.I).Build(),
                 InputListenerBuilder.Builder("animationTest2", Button.O).Build(),
-                InputListenerBuilder.Builder("animationTest3", Button.P).Build()
+                InputListenerBuilder.Builder("animationTest3", Button.P).Build(),
+                InputListenerBuilder.Builder("cursorToggle", Button.C).Build()
             )
             .AddSortLayers("layer1", "layer2", "layer3")
+            .SetCursorSettings(new CursorSettings(false, new CustomCursorSettings($"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\cursor.png")))
             .Build()
         );
 

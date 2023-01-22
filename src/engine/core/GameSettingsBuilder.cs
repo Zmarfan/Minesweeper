@@ -1,4 +1,5 @@
 ﻿using Worms.engine.core.audio;
+using Worms.engine.core.cursor;
 using Worms.engine.core.input.listener;
 using Worms.engine.scene;
 
@@ -13,6 +14,7 @@ public class GameSettingsBuilder {
     private readonly List<InputListener> _inputListeners = new();
     private readonly List<string> _sortLayers = new();
     private readonly AudioSettings _audioSettings;
+    private CursorSettings _cursorSettings = new(true, null);
 
     private GameSettingsBuilder(AudioSettings audioSettings) {
         _audioSettings = audioSettings;
@@ -23,7 +25,7 @@ public class GameSettingsBuilder {
     }
 
     public GameSettings Build() {
-        return new GameSettings(_debug, _title, _width, _height, _scenes, _inputListeners, _sortLayers, _audioSettings);
+        return new GameSettings(_debug, _title, _width, _height, _scenes, _inputListeners, _sortLayers, _audioSettings, _cursorSettings);
     }
 
     public GameSettingsBuilder SetDebugMode() {
@@ -71,6 +73,11 @@ public class GameSettingsBuilder {
             _sortLayers.Add(layer);
         }
 
+        return this;
+    }
+
+    public GameSettingsBuilder SetCursorSettings(CursorSettings settings) {
+        _cursorSettings = settings;
         return this;
     }
 }

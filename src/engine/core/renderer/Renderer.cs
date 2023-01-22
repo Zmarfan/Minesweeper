@@ -33,7 +33,6 @@ public class Renderer {
             throw new Exception();
         }
         SDL.SDL_SetWindowGrab(_window, SDL.SDL_bool.SDL_TRUE);
-        SDL.SDL_ShowCursor(SDL.SDL_DISABLE);
         
         _settings = settings;
         _sceneData = sceneData;

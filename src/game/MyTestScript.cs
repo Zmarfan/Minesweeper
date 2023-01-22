@@ -20,8 +20,6 @@ public class MyTestScript : Script {
     }
 
     public override void Update(float deltaTime) {
-        Transform.Position = Input.MouseWorldPosition;
-        
         if (Input.GetButtonDown("explosion")) {
             Transform.Instantiate(_explosion.Invoke().SetPosition(new Vector2(0, 100)));
             _audioSource.Restart();

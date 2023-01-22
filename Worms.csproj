@@ -89,6 +89,10 @@
       <Content Include="src\assets\test\explosion\Explosion1.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="src\assets\test\cursor.png" />
+      <Content Include="src\assets\test\cursor.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

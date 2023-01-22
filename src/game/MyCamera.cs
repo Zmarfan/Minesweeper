@@ -1,4 +1,5 @@
 ﻿using Worms.engine.camera;
+using Worms.engine.core.cursor;
 using Worms.engine.core.input;
 using Worms.engine.data;
 
@@ -11,7 +12,13 @@ public class MyCamera : Camera {
     }
 
     public override void Update(float deltaTime) {
-        // Position += Input.MouseDirection * 5f * Size;
+        if (Input.GetButtonDown("cursorToggle")) {
+            Cursor.SetActive(!Cursor.IsActive);
+        }
+
+        if (!Cursor.IsActive) {
+            Position += Input.MouseDirection * 5f * Size;
+        }
         Size += Input.GetAxis("cameraZoom").x * deltaTime;
     }
 }

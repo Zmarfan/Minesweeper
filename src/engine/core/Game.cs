@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using SDL2;
 using Worms.engine.core.audio;
+using Worms.engine.core.cursor;
 using Worms.engine.core.input;
 using Worms.engine.core.renderer;
 using Worms.engine.core.update;
@@ -40,6 +41,7 @@ public class Game {
         _eventHandler.ToggleFullscreenEvent += _renderer.ToggleFullScreen;
         AudioHandler.Init(settings.audioSettings);
         Input.Init(settings, _sceneData, _eventHandler, settings.inputListeners);
+        Cursor.Init(settings.cursorSettings);
         
         _isRunning = true;
     }
@@ -81,6 +83,7 @@ public class Game {
     }
     
     private void Clean() {
+        Cursor.Clean();
         AudioHandler.Clean();
         _renderer.Clean();
         SDL.SDL_Quit();
