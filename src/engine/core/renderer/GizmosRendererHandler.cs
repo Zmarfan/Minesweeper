@@ -1,18 +1,18 @@
 ﻿using SDL2;
-using Worms.engine.camera;
 using Worms.engine.core.gizmos;
 using Worms.engine.data;
 using Worms.engine.game_object.scripts;
+using Worms.engine.scene;
 
 namespace Worms.engine.core.renderer; 
 
 public class GizmosRendererHandler {
     private readonly IntPtr _renderer;
-    private readonly Camera _camera;
+    private readonly SceneData _sceneData;
 
-    public GizmosRendererHandler(nint renderer, Camera camera) {
+    public GizmosRendererHandler(nint renderer, SceneData sceneData) {
         _renderer = renderer;
-        _camera = camera;
+        _sceneData = sceneData;
     }
 
     public void RenderGizmos(List<Script> scripts) {
@@ -22,7 +22,7 @@ public class GizmosRendererHandler {
             while (Gizmos.GIZMOS_OBJECTS.Count > 0) {
                 GizmosObject gizmos = Gizmos.GIZMOS_OBJECTS.Dequeue();
                 SDL.SDL_SetRenderDrawColor(_renderer, gizmos.color.Rbyte, gizmos.color.Gbyte, gizmos.color.Bbyte, gizmos.color.Abyte);
-                gizmos.Render(_renderer, _camera.WorldToScreenMatrix);
+                gizmos.Render(_renderer, _sceneData.camera.WorldToScreenMatrix);
             }
         }
     }

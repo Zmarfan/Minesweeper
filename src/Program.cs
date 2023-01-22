@@ -13,6 +13,7 @@ using Worms.engine.game_object.components.particle_system.ranges;
 using Worms.engine.game_object.components.particle_system.renderer;
 using Worms.engine.game_object.components.particle_system.shape;
 using Worms.engine.game_object.components.texture_renderer;
+using Worms.engine.scene;
 using Worms.game;
 
 namespace Worms;
@@ -21,7 +22,56 @@ internal static class Program {
     private static readonly string ROOT_DIRECTORY = Directory.GetCurrentDirectory();
 
     private static void Main() {
-        Func<GameObjectBuilder> explosion = () => GameObjectBuilder.Builder("explosion")
+        List<InputListener> listeners = new() {
+            InputListenerBuilder.Builder("horizontal", Button.D)
+                .SetNegativeButton(Button.A)
+                .SetAltPositiveButton(Button.RIGHT)
+                .SetAltNegativeButton(Button.LEFT)
+                .SetSnap(false)
+                .Build(),
+            InputListenerBuilder.Builder("vertical", Button.W)
+                .SetNegativeButton(Button.S)
+                .SetAltPositiveButton(Button.UP)
+                .SetAltNegativeButton(Button.DOWN)
+                .SetAxis(InputAxis.Y_AXIS)
+                .Build(),
+            InputListenerBuilder.Builder("action", Button.RIGHT_MOUSE)
+                .SetAltPositiveButton(Button.MIDDLE_MOUSE)
+                .Build(),
+            InputListenerBuilder.Builder("explosion", Button.SPACE).Build(),
+            InputListenerBuilder.Builder("cameraZoom", Button.NUM_1)
+                .SetNegativeButton(Button.NUM_2)
+                .Build(),
+            InputListenerBuilder.Builder("animationTest1", Button.I).Build(),
+            InputListenerBuilder.Builder("animationTest2", Button.O).Build(),
+            InputListenerBuilder.Builder("animationTest3", Button.P).Build(),
+        };
+        
+        Game game = new(new GameSettings(
+            true, 
+            "test game",
+            1200, 
+            800,
+            new List<Scene> {
+                new("second", () => new MyCamera(), CreateScene2Root ),
+                new("main", () => new MyCamera(), CreateScene1Root )
+            },
+            listeners, 
+            new List<string> { "layer1", "layer2", "layer3" },
+            new AudioSettings(Volume.Max(), new List<AudioChannel> {
+                new("effects", Volume.Max()),
+                new("music", Volume.Max()),
+            })
+        ));
+        game.Run();
+    }
+
+    private static string Path(string path) {
+        return $"{ROOT_DIRECTORY}\\src\\assets\\test\\{path}";
+    }
+
+    private static GameObject CreateScene1Root() {
+                Func<GameObjectBuilder> explosion = () => GameObjectBuilder.Builder("explosion")
         .SetComponent(ParticleSystemBuilder
             .Builder(RendererBuilder
                 .Builder(Texture.CreateMultiple(Path("explosion/circle75.png"), 0, 0, 1, 4))
@@ -184,7 +234,7 @@ internal static class Program {
             .Build()
         );
         
-        GameObject root = GameObjectBuilder.Root()
+        return GameObjectBuilder.Root()
             .Transform.AddChild("background")
             .SetComponent(
                 TextureRendererBuilder
@@ -216,53 +266,17 @@ internal static class Program {
             .SetPosition(new Vector2(-100, -100))
             .SetComponent(new MyTestScript(explosion))
             .Build()
-            .Transform.AddSibling("explosion")
-            .Build()
             .Transform.GetRoot().gameObject;
-
-        List<InputListener> listeners = new() {
-            InputListenerBuilder.Builder("horizontal", Button.D)
-                .SetNegativeButton(Button.A)
-                .SetAltPositiveButton(Button.RIGHT)
-                .SetAltNegativeButton(Button.LEFT)
-                .SetSnap(false)
-                .Build(),
-            InputListenerBuilder.Builder("vertical", Button.W)
-                .SetNegativeButton(Button.S)
-                .SetAltPositiveButton(Button.UP)
-                .SetAltNegativeButton(Button.DOWN)
-                .SetAxis(InputAxis.Y_AXIS)
-                .Build(),
-            InputListenerBuilder.Builder("action", Button.RIGHT_MOUSE)
-                .SetAltPositiveButton(Button.MIDDLE_MOUSE)
-                .Build(),
-            InputListenerBuilder.Builder("explosion", Button.SPACE).Build(),
-            InputListenerBuilder.Builder("cameraZoom", Button.NUM_1)
-                .SetNegativeButton(Button.NUM_2)
-                .Build(),
-            InputListenerBuilder.Builder("animationTest1", Button.I).Build(),
-            InputListenerBuilder.Builder("animationTest2", Button.O).Build(),
-            InputListenerBuilder.Builder("animationTest3", Button.P).Build(),
-        };
-        
-        Game game = new(new GameSettings(
-            true, 
-            "test game",
-            1200, 
-            800, 
-            new MyCamera(),
-            root,
-            listeners, 
-            new List<string> { "layer1", "layer2", "layer3" },
-            new AudioSettings(Volume.Max(), new List<AudioChannel> {
-                new("effects", Volume.Max()),
-                new("music", Volume.Max()),
-            })
-        ));
-        game.Run();
     }
 
-    private static string Path(string path) {
-        return $"{ROOT_DIRECTORY}\\src\\assets\\test\\{path}";
+    private static GameObject CreateScene2Root() {
+        return GameObjectBuilder.Root()
+            .Transform.AddChild("child")
+            .SetComponent(new GizmoScript())
+            .SetComponent(TextureRendererBuilder
+                .Builder(Texture.CreateSingle(Path("1.png")))
+                .Build()
+            )
+            .Build();
     }
 }

@@ -4,26 +4,25 @@ using Worms.engine.camera;
 using Worms.engine.core.input;
 using Worms.engine.game_object.scripts;
 using Worms.engine.logger;
+using Worms.engine.scene;
 
 namespace Worms.engine.core.update; 
 
 public class UpdateHandler {
     private const float FIXED_UPDATE_CYCLE_TIME = 0.02f;
     
-    private readonly Camera _camera;
-    private readonly GameObjectHandler _gameObjectHandler;
+    private readonly SceneData _sceneData;
+    private GameObjectHandler GameObjectHandler => _sceneData.gameObjectHandler;
     private float _fixedUpdateAcc;
     private float _deltaTime;
 
-    public UpdateHandler(GameObjectHandler gameObjectHandler, Camera camera) {
-        _gameObjectHandler = gameObjectHandler;
-        _camera = camera;
+    public UpdateHandler(SceneData sceneData) {
+        _sceneData = sceneData;
         _fixedUpdateAcc = 0;
-        _camera.Awake();
     }
     
     public void Awake() {
-        _gameObjectHandler.AllScripts.ForEach(static script => {
+        GameObjectHandler.AllScripts.ForEach(static script => {
             try {
                 if (!script.HasRunAwake) {
                     script.Awake();
@@ -34,11 +33,11 @@ public class UpdateHandler {
             }
             script.HasRunAwake = true;
         });
-        _gameObjectHandler.FrameCleanup();
+        GameObjectHandler.FrameCleanup();
     }
     
     public void Start() {
-        _gameObjectHandler.AllActiveGameObjectScripts.ForEach(static script => {
+        GameObjectHandler.AllActiveGameObjectScripts.ForEach(static script => {
             try {
                 if (script is { IsActive: true, HasRunStart: false }) {
                     script.Start();
@@ -49,7 +48,7 @@ public class UpdateHandler {
             }
             script.HasRunStart = true;
         });
-        _gameObjectHandler.FrameCleanup();
+        GameObjectHandler.FrameCleanup();
     }
     
     public void UpdateLoops(float deltaTime) {
@@ -59,11 +58,11 @@ public class UpdateHandler {
             _fixedUpdateAcc -= FIXED_UPDATE_CYCLE_TIME;
         }
         Update();
-        _gameObjectHandler.FrameCleanup();
+        GameObjectHandler.FrameCleanup();
     }
 
     private void FixedUpdate() {
-        foreach (Script script in _gameObjectHandler.AllActiveGameObjectScripts) {
+        foreach (Script script in GameObjectHandler.AllActiveGameObjectScripts) {
             try {
                 if (script.IsActive) {
                     script.FixedUpdate(FIXED_UPDATE_CYCLE_TIME);
@@ -78,7 +77,7 @@ public class UpdateHandler {
     private void Update() {
         Input.Update(_deltaTime);
         
-        foreach (Script script in _gameObjectHandler.AllActiveGameObjectScripts) {
+        foreach (Script script in GameObjectHandler.AllActiveGameObjectScripts) {
             try {
                 if (script.IsActive) {
                     script.Update(_deltaTime);
@@ -88,7 +87,7 @@ public class UpdateHandler {
                 Logger.Error(e, $"An exception occured in {script} during the Update callback");
             }
         }
-        _camera.Update(_deltaTime);
+        _sceneData.camera.Update(_deltaTime);
     }
     
     private void UpdateFrameTimeData(float deltaTime) {

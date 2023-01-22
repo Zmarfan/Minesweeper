@@ -1,11 +1,24 @@
 ﻿using Worms.engine.core.gizmos;
+using Worms.engine.core.input;
 using Worms.engine.data;
 using Worms.engine.game_object.scripts;
+using Worms.engine.scene;
 
 namespace Worms.game; 
 
 public class GizmoScript : Script {
     public GizmoScript() : base(true) {
+    }
+
+    public override void Update(float deltaTime) {
+        if (Input.GetButtonDown("action")) {
+            if (SceneManager.ActiveScene == "main") {
+                SceneManager.LoadScene("second");
+            }
+            else {
+                SceneManager.LoadScene("main");
+            }
+        }
     }
 
     public override void OnDrawGizmos() {

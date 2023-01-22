@@ -2,6 +2,7 @@
 using Worms.engine.data;
 using Worms.engine.game_object.components.texture_renderer;
 using Worms.engine.logger;
+using Worms.engine.scene;
 
 namespace Worms.engine.core.renderer; 
 
@@ -9,13 +10,13 @@ public class TextureRendererHandler {
     public const string DEFAULT_SORTING_LAYER = "Default";
 
     private readonly IntPtr _renderer;
-    private readonly GameSettings _settings;
+    private readonly SceneData _sceneData;
     private readonly Dictionary<string, StoredTexture> _loadedTextures = new();
     private readonly List<string> _sortLayers = new() { DEFAULT_SORTING_LAYER };
 
-    public TextureRendererHandler(IntPtr renderer, GameSettings settings) {
+    public TextureRendererHandler(IntPtr renderer, GameSettings settings, SceneData sceneData) {
         _renderer = renderer;
-        _settings = settings;
+        _sceneData = sceneData;
         _sortLayers.AddRange(settings.sortLayers);
     }
 
@@ -68,11 +69,11 @@ public class TextureRendererHandler {
     }
 
     private unsafe Vector2 CalculateTextureScreenPosition(TextureRenderer tr, SDL.SDL_Surface* surface) {
-        return _settings.camera.WorldToScreenMatrix.ConvertPoint(tr.Transform.Position) - CalculateTextureDimensions(tr, surface) / 2f;
+        return _sceneData.camera.WorldToScreenMatrix.ConvertPoint(tr.Transform.Position) - CalculateTextureDimensions(tr, surface) / 2f;
     }
 
     private unsafe Vector2 CalculateTextureDimensions(TextureRenderer tr, SDL.SDL_Surface* surface) {
-        return _settings.camera.WorldToScreenMatrix.ConvertVector(
+        return _sceneData.camera.WorldToScreenMatrix.ConvertVector(
             new Vector2(surface->w * tr.Transform.Scale.x, surface->h * tr.Transform.Scale.y * -1) * tr.texture.textureScale
         );
     }

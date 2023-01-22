@@ -5,6 +5,7 @@ using Worms.engine.core.input;
 using Worms.engine.core.renderer;
 using Worms.engine.core.update;
 using Worms.engine.logger;
+using Worms.engine.scene;
 using EventHandler = Worms.engine.core.event_handler.EventHandler;
 
 namespace Worms.engine.core; 
@@ -20,20 +21,25 @@ public class Game {
     private readonly Stopwatch _totalFrameWatch = new();
     private float _deltaTime = 0;
 
+    private readonly SceneData _sceneData = new();
+    private readonly GameSettings _settings;
+
     public Game(GameSettings settings) {
+        _settings = settings;
+        
         if (SDL.SDL_Init(SDL.SDL_INIT_EVERYTHING) != 0) {
             throw new Exception();
         }
-
-        settings.camera.Init(settings);
-        GameObjectHandler gameObjectHandler = new(settings.root);
-        _renderer = new Renderer(settings, gameObjectHandler);
+        
+        SceneManager.Init(settings.scenes, LoadScene);
+        _updateHandler = new UpdateHandler(_sceneData);
+        
+        _renderer = new Renderer(settings, _sceneData);
         _eventHandler = new EventHandler(settings);
         _eventHandler.QuitEvent += () => _isRunning = false;
         _eventHandler.ToggleFullscreenEvent += _renderer.ToggleFullScreen;
-        _updateHandler = new UpdateHandler(gameObjectHandler, settings.camera);
         AudioHandler.Init(settings.audioSettings);
-        Input.Init(settings, _eventHandler, settings.inputListeners);
+        Input.Init(settings, _sceneData, _eventHandler, settings.inputListeners);
         
         _isRunning = true;
     }
@@ -65,6 +71,13 @@ public class Game {
         catch (Exception e) {
             Logger.Error(e, "An issue occured during this frame");
         }
+    }
+
+    private void LoadScene(Scene scene) {
+        _sceneData.camera = scene.CreateCamera();
+        _sceneData.camera.Init(_settings);
+        _sceneData.camera.Awake();
+        _sceneData.gameObjectHandler = new GameObjectHandler(scene.CreateWorldGameObjectRoot());
     }
     
     private void Clean() {

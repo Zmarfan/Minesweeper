@@ -1,5 +1,7 @@
 ﻿using SDL2;
+using Worms.engine.camera;
 using Worms.engine.data;
+using Worms.engine.scene;
 
 namespace Worms.engine.core.renderer; 
 
@@ -8,13 +10,12 @@ public class Renderer {
     private readonly IntPtr _renderer;
     private readonly TextureRendererHandler _textureRendererHandler;
     private readonly GizmosRendererHandler _gizmosRendererHandler;
+    private readonly SceneData _sceneData;
     private readonly GameSettings _settings;
-    private Color DefaultDrawColor => _settings.camera.defaultDrawColor;
+    private Color DefaultDrawColor => _sceneData.camera.defaultDrawColor;
     private bool _isFullscreen = false;
-
-    private readonly GameObjectHandler _gameObjectHandler;
     
-    public Renderer(GameSettings settings, GameObjectHandler gameObjectHandler) {
+    public Renderer(GameSettings settings, SceneData sceneData) {
         _window = SDL.SDL_CreateWindow(
             settings.title,
             SDL.SDL_WINDOWPOS_CENTERED, 
@@ -34,17 +35,17 @@ public class Renderer {
         SDL.SDL_SetRelativeMouseMode(SDL.SDL_bool.SDL_TRUE);
         
         _settings = settings;
-        _gameObjectHandler = gameObjectHandler;
-        _textureRendererHandler = new TextureRendererHandler(_renderer, settings);
-        _gizmosRendererHandler = new GizmosRendererHandler(_renderer, settings.camera);
+        _sceneData = sceneData;
+        _textureRendererHandler = new TextureRendererHandler(_renderer, settings, _sceneData);
+        _gizmosRendererHandler = new GizmosRendererHandler(_renderer, _sceneData);
     }
 
     public void Render() {
-        SetDrawColor(DefaultDrawColor);
+         SetDrawColor(DefaultDrawColor);
         SDL.SDL_RenderClear(_renderer);
-        _textureRendererHandler.RenderTextures(_gameObjectHandler.AllActiveGameObjectTextureRenderers);
+        _textureRendererHandler.RenderTextures(_sceneData.gameObjectHandler.AllActiveGameObjectTextureRenderers);
         if (_settings.debug) {
-            _gizmosRendererHandler.RenderGizmos(_gameObjectHandler.AllActiveGameObjectScripts);
+            _gizmosRendererHandler.RenderGizmos(_sceneData.gameObjectHandler.AllActiveGameObjectScripts);
         }
         SDL.SDL_RenderPresent(_renderer);
     }
