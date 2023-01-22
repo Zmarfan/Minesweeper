@@ -10,17 +10,6 @@ public class GizmoScript : Script {
     public GizmoScript() : base(true) {
     }
 
-    public override void Update(float deltaTime) {
-        if (Input.GetButtonDown("action")) {
-            if (SceneManager.ActiveScene == "main") {
-                SceneManager.LoadScene("second");
-            }
-            else {
-                SceneManager.LoadScene("main");
-            }
-        }
-    }
-
     public override void OnDrawGizmos() {
         Gizmos.DrawRay(Transform.Position, Transform.Up * 100f, Color.GREEN);
         Gizmos.DrawRay(Transform.Position, Transform.Right * 100f, Color.BLUE);

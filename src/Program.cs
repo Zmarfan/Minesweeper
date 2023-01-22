@@ -53,7 +53,6 @@ internal static class Program {
             1200, 
             800,
             new List<Scene> {
-                new("second", () => new MyCamera(), CreateScene2Root ),
                 new("main", () => new MyCamera(), CreateScene1Root )
             },
             listeners, 
@@ -175,7 +174,7 @@ internal static class Program {
                 .SetLoop(false)
                 .SetDuration(6f)
                 .SetForceOverLifeTime(new VectorRange(Vector2.Up() * 50))
-                .SetStartLifeTime(new RangeZero(4f))
+                .SetStartLifeTime(new RangeZero(2.5f))
                 .Build()
             )
             .Build()
@@ -267,16 +266,5 @@ internal static class Program {
             .SetComponent(new MyTestScript(explosion))
             .Build()
             .Transform.GetRoot().gameObject;
-    }
-
-    private static GameObject CreateScene2Root() {
-        return GameObjectBuilder.Root()
-            .Transform.AddChild("child")
-            .SetComponent(new GizmoScript())
-            .SetComponent(TextureRendererBuilder
-                .Builder(Texture.CreateSingle(Path("1.png")))
-                .Build()
-            )
-            .Build();
     }
 }
