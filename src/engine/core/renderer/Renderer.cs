@@ -32,7 +32,8 @@ public class Renderer {
         if (_renderer == IntPtr.Zero) {
             throw new Exception();
         }
-        SDL.SDL_SetRelativeMouseMode(SDL.SDL_bool.SDL_TRUE);
+        SDL.SDL_SetWindowGrab(_window, SDL.SDL_bool.SDL_TRUE);
+        SDL.SDL_ShowCursor(SDL.SDL_DISABLE);
         
         _settings = settings;
         _sceneData = sceneData;
