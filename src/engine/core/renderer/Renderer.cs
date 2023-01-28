@@ -43,9 +43,9 @@ public class Renderer {
     public void Render() {
          SetDrawColor(DefaultDrawColor);
         SDL.SDL_RenderClear(_renderer);
-        _textureRendererHandler.RenderTextures(_sceneData.gameObjectHandler.AllActiveGameObjectTextureRenderers);
+        _textureRendererHandler.RenderTextures(_sceneData.gameObjectHandler.objects);
         if (_settings.debug) {
-            _gizmosRendererHandler.RenderGizmos(_sceneData.gameObjectHandler.AllActiveGameObjectScripts);
+            _gizmosRendererHandler.RenderGizmos(_sceneData.gameObjectHandler.objects);
         }
         SDL.SDL_RenderPresent(_renderer);
     }

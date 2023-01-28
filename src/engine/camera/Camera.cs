@@ -25,11 +25,11 @@ public abstract class Camera {
             if (_oldScreenHeight != _settings.height || _oldScreenWidth != _settings.width) {
                 SetDirty();
             }
-            if (!_isDirty) {
+            if (!_isWorldDirty) {
                 return _worldToScreenMatrix;
             }
 
-            _isDirty = false;
+            _isWorldDirty = false;
             _worldToScreenMatrix = TransformationMatrix.CreateWorldToScreenMatrix(
                 new Vector2(_oldScreenWidth / 2f - _position.x, _oldScreenHeight / 2f + _position.y),
                 new Vector2(1 / _size, 1 / _size)
@@ -43,13 +43,31 @@ public abstract class Camera {
             if (_oldScreenHeight != _settings.height || _oldScreenWidth != _settings.width) {
                 SetDirty();
             }
-            if (!_isInverseDirty) {
+            if (!_isWorldInverseDirty) {
                 return _screenToWorldMatrix;
             }
 
-            _isInverseDirty = false;
+            _isWorldInverseDirty = false;
             _screenToWorldMatrix = WorldToScreenMatrix.Inverse();
             return _screenToWorldMatrix;
+        }
+    }
+    
+    public TransformationMatrix UiToScreenMatrix {
+        get {
+            if (_oldScreenHeight != _settings.height || _oldScreenWidth != _settings.width) {
+                SetDirty();
+            }
+            if (!_isUiDirty) {
+                return _uiToWorldMatrix;
+            }
+
+            _isUiDirty = false;
+            _uiToWorldMatrix = TransformationMatrix.CreateWorldToScreenMatrix(
+                new Vector2(_oldScreenWidth / 2f, _oldScreenHeight / 2f),
+                Vector2.One()
+            );
+            return _uiToWorldMatrix;
         }
     }
 
@@ -57,8 +75,10 @@ public abstract class Camera {
     private float _size = 1;
     private TransformationMatrix _worldToScreenMatrix = TransformationMatrix.Identity();
     private TransformationMatrix _screenToWorldMatrix = TransformationMatrix.Identity();
-    private bool _isDirty = true;
-    private bool _isInverseDirty = true;
+    private TransformationMatrix _uiToWorldMatrix = TransformationMatrix.Identity();
+    private bool _isWorldDirty = true;
+    private bool _isWorldInverseDirty = true;
+    private bool _isUiDirty = true;
     private GameSettings _settings = null!;
     private int _oldScreenWidth;
     private int _oldScreenHeight;
@@ -75,8 +95,9 @@ public abstract class Camera {
     }
     
     private void SetDirty() {
-        _isDirty = true;
-        _isInverseDirty = true;
+        _isWorldDirty = true;
+        _isWorldInverseDirty = true;
+        _isUiDirty = true;
         _oldScreenWidth = _settings.width;
         _oldScreenHeight = _settings.height;
     }

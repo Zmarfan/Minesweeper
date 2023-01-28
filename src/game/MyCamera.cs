@@ -17,7 +17,7 @@ public class MyCamera : Camera {
         }
 
         if (!Cursor.IsActive) {
-            Position += Input.MouseDirection * 5f * Size;
+            Position += Input.MouseDirection * 500f * Size * deltaTime;
         }
         Size += Input.GetAxis("cameraZoom").x * deltaTime;
     }

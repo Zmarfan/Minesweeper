@@ -1,5 +1,7 @@
 ﻿using SDL2;
+using Worms.engine.core.game_object_handler;
 using Worms.engine.data;
+using Worms.engine.game_object;
 using Worms.engine.game_object.components.texture_renderer;
 using Worms.engine.logger;
 using Worms.engine.scene;
@@ -20,24 +22,31 @@ public class TextureRendererHandler {
         _sortLayers.AddRange(settings.sortLayers);
     }
 
-    public void RenderTextures(IEnumerable<TextureRenderer> allActiveTextureRenderers) {
-        foreach (TextureRenderer tr in allActiveTextureRenderers.OrderByDescending(tr => _sortLayers.IndexOf(tr.sortingLayer)).ThenByDescending(tr => tr.orderInLayer)) {
-            if (tr.IsActive) {
-                try {
-                    RenderTexture(tr);
-                }
-                catch (ArgumentException e) {
-                    Logger.Error(e);
-                }
+    public void RenderTextures(Dictionary<GameObject, TrackObject> objects) {
+        IEnumerable<TextureRenderer> textureRenderers = objects
+            .Values
+            .Where(obj => obj.isActive)
+            .SelectMany(obj => obj.textureRenderers)
+            .Where(tr => tr.IsActive)
+            .OrderByDescending(tr => _sortLayers.IndexOf(tr.sortingLayer))
+            .ThenByDescending(tr => tr.orderInLayer);
+        
+        foreach (TextureRenderer tr in textureRenderers) {
+            try {
+                TransformationMatrix matrix = objects[tr.gameObject].isWorld ? _sceneData.camera.WorldToScreenMatrix : _sceneData.camera.UiToScreenMatrix;
+                RenderTexture(tr, matrix);
+            }
+            catch (ArgumentException e) {
+                Logger.Error(e);
             }
         }
     }
 
-    private unsafe void RenderTexture(TextureRenderer tr) {
+    private unsafe void RenderTexture(TextureRenderer tr, TransformationMatrix matrix) {
         StoredTexture texture = GetTexture(tr);
 
         SDL.SDL_Rect srcRect = tr.texture.GetSrcRect(texture);
-        SDL.SDL_FRect destRect = CalculateTextureDrawPosition(tr, texture.surface);
+        SDL.SDL_FRect destRect = CalculateTextureDrawPosition(tr, texture.surface, matrix);
         SDL.SDL_SetTextureColorMod(texture.texture, tr.color.Rbyte, tr.color.Gbyte, tr.color.Bbyte);
         SDL.SDL_RenderCopyExF(_renderer, texture.texture, ref srcRect, ref destRect, tr.Transform.Rotation.Degree, IntPtr.Zero, GetTextureFlipSettings(tr));
     }
@@ -56,9 +65,9 @@ public class TextureRendererHandler {
         return texture;
     }
     
-    private unsafe SDL.SDL_FRect CalculateTextureDrawPosition(TextureRenderer tr, SDL.SDL_Surface* surface) {
-        Vector2 screenPosition = CalculateTextureScreenPosition(tr, surface);
-        Vector2 textureDimensions = CalculateTextureDimensions(tr, surface);
+    private unsafe SDL.SDL_FRect CalculateTextureDrawPosition(TextureRenderer tr, SDL.SDL_Surface* surface, TransformationMatrix matrix) {
+        Vector2 screenPosition = CalculateTextureScreenPosition(tr, surface, matrix);
+        Vector2 textureDimensions = CalculateTextureDimensions(tr, surface, matrix);
         SDL.SDL_FRect rect = new() {
             x = screenPosition.x,
             y = screenPosition.y,
@@ -68,12 +77,12 @@ public class TextureRendererHandler {
         return rect;
     }
 
-    private unsafe Vector2 CalculateTextureScreenPosition(TextureRenderer tr, SDL.SDL_Surface* surface) {
-        return _sceneData.camera.WorldToScreenMatrix.ConvertPoint(tr.Transform.Position) - CalculateTextureDimensions(tr, surface) / 2f;
+    private unsafe Vector2 CalculateTextureScreenPosition(TextureRenderer tr, SDL.SDL_Surface* surface, TransformationMatrix matrix) {
+        return matrix.ConvertPoint(tr.Transform.Position) - CalculateTextureDimensions(tr, surface, matrix) / 2f;
     }
 
-    private unsafe Vector2 CalculateTextureDimensions(TextureRenderer tr, SDL.SDL_Surface* surface) {
-        return _sceneData.camera.WorldToScreenMatrix.ConvertVector(
+    private unsafe Vector2 CalculateTextureDimensions(TextureRenderer tr, SDL.SDL_Surface* surface, TransformationMatrix matrix) {
+        return matrix.ConvertVector(
             new Vector2(surface->w * tr.Transform.Scale.x, surface->h * tr.Transform.Scale.y * -1) * tr.texture.textureScale
         );
     }

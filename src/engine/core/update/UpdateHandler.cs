@@ -1,8 +1,6 @@
-﻿using System.Diagnostics;
-using SDL2;
-using Worms.engine.camera;
+﻿using Worms.engine.core.game_object_handler;
 using Worms.engine.core.input;
-using Worms.engine.game_object.scripts;
+using Worms.engine.game_object;
 using Worms.engine.logger;
 using Worms.engine.scene;
 
@@ -22,32 +20,40 @@ public class UpdateHandler {
     }
     
     public void Awake() {
-        GameObjectHandler.AllScripts.ForEach(static script => {
-            try {
-                if (!script.HasRunAwake) {
-                    script.Awake();
+        foreach ((GameObject _, TrackObject obj) in GameObjectHandler.objects) {
+            obj.scripts.ForEach(script => {
+                try {
+                    if (!script.HasRunAwake) {
+                        script.Awake();
+                    }
                 }
-            }
-            catch (Exception e) {
-                Logger.Error(e, $"An exception occured in {script} during the Awake callback");
-            }
-            script.HasRunAwake = true;
-        });
+                catch (Exception e) {
+                    Logger.Error(e, $"An exception occured in {script} during the Awake callback");
+                }
+                script.HasRunAwake = true;
+            });
+        }
         GameObjectHandler.FrameCleanup();
     }
     
     public void Start() {
-        GameObjectHandler.AllActiveGameObjectScripts.ForEach(static script => {
-            try {
-                if (script is { IsActive: true, HasRunStart: false }) {
-                    script.Start();
+        foreach ((GameObject _, TrackObject obj) in GameObjectHandler.objects) {
+            if (!obj.isActive) {
+                return;
+            }
+            
+            obj.scripts.ForEach(script => {
+                try {
+                    if (script is { IsActive: true, HasRunStart: false }) {
+                        script.Start();
+                    }
                 }
-            }
-            catch (Exception e) {
-                Logger.Error(e, $"An exception occured in {script} during the Start callback");
-            }
-            script.HasRunStart = true;
-        });
+                catch (Exception e) {
+                    Logger.Error(e, $"An exception occured in {script} during the Start callback");
+                }
+                script.HasRunStart = true;
+            });
+        }
         GameObjectHandler.FrameCleanup();
     }
     
@@ -62,31 +68,44 @@ public class UpdateHandler {
     }
 
     private void FixedUpdate() {
-        foreach (Script script in GameObjectHandler.AllActiveGameObjectScripts) {
-            try {
-                if (script.IsActive) {
-                    script.FixedUpdate(FIXED_UPDATE_CYCLE_TIME);
+        foreach ((GameObject _, TrackObject obj) in GameObjectHandler.objects) {
+            if (!obj.isActive) {
+                return;
+            }
+            
+            obj.scripts.ForEach(script => {
+                try {
+                    if (script.IsActive) {
+                        script.FixedUpdate(FIXED_UPDATE_CYCLE_TIME);
+                    }
                 }
-            }
-            catch (Exception e) {
-                Logger.Error(e, $"An exception occured in {script} during the Fixed Update callback");
-            }
+                catch (Exception e) {
+                    Logger.Error(e, $"An exception occured in {script} during the Fixed Update callback");
+                }
+            });
         }
     }
     
     private void Update() {
         Input.Update(_deltaTime);
         
-        foreach (Script script in GameObjectHandler.AllActiveGameObjectScripts) {
-            try {
-                if (script.IsActive) {
-                    script.Update(_deltaTime);
+        foreach ((GameObject _, TrackObject obj) in GameObjectHandler.objects) {
+            if (!obj.isActive) {
+                return;
+            }
+            
+            obj.scripts.ForEach(script => {
+                try {
+                    if (script.IsActive) {
+                        script.Update(_deltaTime);
+                    }
                 }
-            }
-            catch (Exception e) {
-                Logger.Error(e, $"An exception occured in {script} during the Update callback");
-            }
+                catch (Exception e) {
+                    Logger.Error(e, $"An exception occured in {script} during the Update callback");
+                }
+            });
         }
+
         _sceneData.camera.Update(_deltaTime);
     }
     

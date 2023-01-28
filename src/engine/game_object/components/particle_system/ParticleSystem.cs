@@ -68,7 +68,7 @@ public class ParticleSystem : Script {
         _random = new Random(_particles.seed);
     }
 
-    public override void FixedUpdate(float deltaTime) {
+    public override void Update(float deltaTime) {
         if (!_playing) {
             return;
         }

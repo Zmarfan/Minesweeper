@@ -2,6 +2,7 @@
 using SDL2;
 using Worms.engine.core.audio;
 using Worms.engine.core.cursor;
+using Worms.engine.core.game_object_handler;
 using Worms.engine.core.input;
 using Worms.engine.core.renderer;
 using Worms.engine.core.update;
@@ -79,7 +80,7 @@ public class Game {
         _sceneData.camera = scene.CreateCamera();
         _sceneData.camera.Init(_settings);
         _sceneData.camera.Awake();
-        _sceneData.gameObjectHandler = new GameObjectHandler(scene.CreateWorldGameObjectRoot());
+        _sceneData.gameObjectHandler = new GameObjectHandler(scene.CreateWorldGameObjectRoot(), scene.CreateSceneGameObjectRoot());
     }
     
     private void Clean() {

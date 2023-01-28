@@ -17,10 +17,10 @@ namespace Worms.game.scenes;
 
 public static class Scene1 {
     public static Scene GetScene() {
-        return new Scene("main", () => new MyCamera(), CreateRoot);
+        return new Scene("main", () => new MyCamera(), CreateWorldRoot, CreateScreenRoot);
     }
     
-    private static GameObject CreateRoot() {
+    private static GameObject CreateWorldRoot() {
         Func<GameObjectBuilder> explosion = () => GameObjectBuilder.Builder("explosion")
             .SetComponent(ParticleSystemBuilder
                 .Builder(RendererBuilder
@@ -218,7 +218,11 @@ public static class Scene1 {
             .Build()
             .Transform.GetRoot().gameObject;
     }
-        
+
+    private static GameObject CreateScreenRoot() {
+        return GameObjectBuilder.Root();
+    }
+    
     private static string Path(string path) {
         return $"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\{path}";
     }
