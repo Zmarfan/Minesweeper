@@ -10,6 +10,7 @@ using Worms.engine.game_object.components.particle_system.particles;
 using Worms.engine.game_object.components.particle_system.ranges;
 using Worms.engine.game_object.components.particle_system.renderer;
 using Worms.engine.game_object.components.particle_system.shape;
+using Worms.engine.game_object.components.screen_pivot;
 using Worms.engine.game_object.components.texture_renderer;
 using Worms.engine.scene;
 
@@ -220,7 +221,24 @@ public static class Scene1 {
     }
 
     private static GameObject CreateScreenRoot() {
-        return GameObjectBuilder.Root();
+        return GameObjectBuilder.Root()
+            .Transform.AddChild("bottom-left")
+            .SetComponent(new ScreenPivot(new Vector2(0, 0), true))
+            .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(Path("1.png"))).Build())
+            .Build()
+            .Transform.AddSibling("top-left")
+            .SetComponent(new ScreenPivot(new Vector2(0, 1), true))
+            .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(Path("2.png"))).Build())
+            .Build()
+            .Transform.AddSibling("top-right")
+            .SetComponent(new ScreenPivot(new Vector2(1, 1), true))
+            .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(Path("3.png"))).Build())
+            .Build()
+            .Transform.AddSibling("bottom-right")
+            .SetComponent(new ScreenPivot(new Vector2(1, 0), true))
+            .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(Path("4.png"))).Build())
+            .Build()
+            .Transform.GetRoot().gameObject;
     }
     
     private static string Path(string path) {

@@ -6,6 +6,7 @@ using Worms.engine.core.game_object_handler;
 using Worms.engine.core.input;
 using Worms.engine.core.renderer;
 using Worms.engine.core.update;
+using Worms.engine.core.window;
 using Worms.engine.logger;
 using Worms.engine.scene;
 using EventHandler = Worms.engine.core.event_handler.EventHandler;
@@ -42,6 +43,7 @@ public class Game {
         _eventHandler.ToggleFullscreenEvent += _renderer.ToggleFullScreen;
         AudioHandler.Init(settings.audioSettings);
         Input.Init(settings, _sceneData, _eventHandler, settings.inputListeners);
+        WindowManager.Init(settings);
         Cursor.Init(settings.cursorSettings);
         
         _isRunning = true;
