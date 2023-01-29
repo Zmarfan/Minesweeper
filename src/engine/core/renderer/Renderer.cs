@@ -1,5 +1,6 @@
 ﻿using SDL2;
 using Worms.engine.camera;
+using Worms.engine.core.window;
 using Worms.engine.data;
 using Worms.engine.scene;
 
@@ -33,6 +34,8 @@ public class Renderer {
             throw new Exception();
         }
         SDL.SDL_SetWindowGrab(_window, SDL.SDL_bool.SDL_TRUE);
+        
+        WindowManager.Init(_window, settings);
         
         _settings = settings;
         _sceneData = sceneData;

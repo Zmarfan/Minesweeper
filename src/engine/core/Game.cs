@@ -43,7 +43,6 @@ public class Game {
         _eventHandler.ToggleFullscreenEvent += _renderer.ToggleFullScreen;
         AudioHandler.Init(settings.audioSettings);
         Input.Init(settings, _sceneData, _eventHandler, settings.inputListeners);
-        WindowManager.Init(settings);
         Cursor.Init(settings.cursorSettings);
         
         _isRunning = true;
