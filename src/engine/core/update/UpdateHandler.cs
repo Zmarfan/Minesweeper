@@ -1,6 +1,7 @@
 ﻿using Worms.engine.core.game_object_handler;
 using Worms.engine.core.input;
 using Worms.engine.game_object;
+using Worms.engine.game_object.scripts;
 using Worms.engine.logger;
 using Worms.engine.scene;
 
@@ -21,7 +22,7 @@ public class UpdateHandler {
     
     public void Awake() {
         foreach ((GameObject _, TrackObject obj) in GameObjectHandler.objects) {
-            obj.scripts.ForEach(script => {
+            foreach (Script script in obj.Scripts) {
                 try {
                     if (!script.HasRunAwake) {
                         script.Awake();
@@ -31,7 +32,7 @@ public class UpdateHandler {
                     Logger.Error(e, $"An exception occured in {script} during the Awake callback");
                 }
                 script.HasRunAwake = true;
-            });
+            }
         }
         GameObjectHandler.FrameCleanup();
     }
@@ -42,7 +43,7 @@ public class UpdateHandler {
                 return;
             }
             
-            obj.scripts.ForEach(script => {
+            foreach (Script script in obj.Scripts) {
                 try {
                     if (script is { IsActive: true, HasRunStart: false }) {
                         script.Start();
@@ -52,7 +53,7 @@ public class UpdateHandler {
                     Logger.Error(e, $"An exception occured in {script} during the Start callback");
                 }
                 script.HasRunStart = true;
-            });
+            }
         }
         GameObjectHandler.FrameCleanup();
     }
@@ -76,7 +77,7 @@ public class UpdateHandler {
                 return;
             }
             
-            obj.scripts.ForEach(script => {
+            foreach (Script script in obj.Scripts) {
                 try {
                     if (script.IsActive) {
                         script.FixedUpdate(FIXED_UPDATE_CYCLE_TIME);
@@ -85,7 +86,7 @@ public class UpdateHandler {
                 catch (Exception e) {
                     Logger.Error(e, $"An exception occured in {script} during the Fixed Update callback");
                 }
-            });
+            }
         }
     }
     
@@ -95,7 +96,7 @@ public class UpdateHandler {
                 return;
             }
             
-            obj.scripts.ForEach(script => {
+            foreach (Script script in obj.Scripts) {
                 try {
                     if (script.IsActive) {
                         script.Update(_deltaTime);
@@ -104,7 +105,7 @@ public class UpdateHandler {
                 catch (Exception e) {
                     Logger.Error(e, $"An exception occured in {script} during the Update callback");
                 }
-            });
+            }
         }
 
         _sceneData.camera.Update(_deltaTime);

@@ -26,7 +26,7 @@ public class TextureRendererHandler {
         IEnumerable<TextureRenderer> textureRenderers = objects
             .Values
             .Where(obj => obj.isActive)
-            .SelectMany(obj => obj.textureRenderers)
+            .SelectMany(obj => obj.TextureRenderers)
             .Where(tr => tr.IsActive)
             .OrderByDescending(tr => _sortLayers.IndexOf(tr.sortingLayer))
             .ThenByDescending(tr => tr.orderInLayer);

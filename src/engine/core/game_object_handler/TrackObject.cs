@@ -8,8 +8,8 @@ public class TrackObject {
     public readonly bool isWorld;
     public bool isActive;
     public readonly List<ToggleComponent> toggleComponents = new();
-    public readonly List<TextureRenderer> textureRenderers = new();
-    public readonly List<Script> scripts = new();
+    public IEnumerable<TextureRenderer> TextureRenderers => toggleComponents.OfType<TextureRenderer>();
+    public IEnumerable<Script> Scripts => toggleComponents.OfType<Script>();
 
     public TrackObject(bool isWorld, bool isActive) {
         this.isWorld = isWorld;

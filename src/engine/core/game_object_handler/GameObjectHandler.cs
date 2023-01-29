@@ -59,8 +59,6 @@ public class GameObjectHandler {
             bool isWorld = obj.Transform.GetRoot() == _worldRoot.Transform;
             TrackObject trackObject = new(isWorld, allActiveGameObjects.Contains(obj));
             trackObject.toggleComponents.AddRange(obj.components.OfType<ToggleComponent>());
-            trackObject.textureRenderers.AddRange(obj.components.OfType<TextureRenderer>());
-            trackObject.scripts.AddRange(obj.components.OfType<Script>());
             objects.Add(obj, trackObject);
         });
     }
@@ -88,16 +86,7 @@ public class GameObjectHandler {
     
     private void DestroyComponent(ToggleComponent component) {
         component.gameObject.components.Remove(component);
-        
         objects[component.gameObject].toggleComponents.Remove(component);
-        switch (component) {
-            case Script script:
-                objects[script.gameObject].scripts.Remove(script);
-                break;
-            case TextureRenderer tr:
-                objects[tr.gameObject].textureRenderers.Remove(tr);
-                break;
-        }
     }
 
     private static IEnumerable<GameObject> GetAllGameObjectsFromGameObject(GameObject gameObject, bool active) {
