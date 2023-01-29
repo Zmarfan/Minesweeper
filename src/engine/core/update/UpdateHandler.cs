@@ -59,11 +59,14 @@ public class UpdateHandler {
     
     public void UpdateLoops(float deltaTime) {
         UpdateFrameTimeData(deltaTime);
+        Input.Update(_deltaTime);
         while (_fixedUpdateAcc > FIXED_UPDATE_CYCLE_TIME) {
             FixedUpdate();
+            GameObjectHandler.FrameCleanup();
             _fixedUpdateAcc -= FIXED_UPDATE_CYCLE_TIME;
         }
         Update();
+        Input.FrameReset();
         GameObjectHandler.FrameCleanup();
     }
 
@@ -87,8 +90,6 @@ public class UpdateHandler {
     }
     
     private void Update() {
-        Input.Update(_deltaTime);
-        
         foreach ((GameObject _, TrackObject obj) in GameObjectHandler.objects) {
             if (!obj.isActive) {
                 return;

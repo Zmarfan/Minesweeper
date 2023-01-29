@@ -69,7 +69,6 @@ public class Game {
             _updateHandler.Awake();
             _updateHandler.Start();
             _updateHandler.UpdateLoops(_deltaTime);
-            Input.FrameReset();
             _renderer.Render();
         }
         catch (Exception e) {
