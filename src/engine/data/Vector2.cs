@@ -118,6 +118,17 @@ public struct Vector2 {
         y = Math.Abs(y);
     }
     
+    public static Vector2 RotatePoint(Vector2 center, Rotation rotation, Vector2 point) {
+        float s = (float)Math.Sin(-rotation.Radians);
+        float c = (float)Math.Cos(-rotation.Radians);
+
+        point -= center;
+
+        Vector2 rotated = new(point.x * c - point.y * s, point.x * s + point.y * c);
+
+        return rotated + center;
+    }
+    
     public override string ToString() {
         return $"x: {x}, y: {y}";
     }

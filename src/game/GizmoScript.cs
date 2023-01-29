@@ -15,7 +15,7 @@ public class GizmoScript : Script {
         Gizmos.DrawRay(Transform.Position, Transform.Right * 100f, Color.BLUE);
         Gizmos.DrawRay(Transform.Position, Transform.Left * 100f, Color.BLACK);
         Gizmos.DrawRay(Transform.Position, Transform.Down * 100f, Color.WHITE);
-        Gizmos.DrawCircle(Transform.Position, 100f, new Color(1f, 0.5f, 0.75f));
+        Gizmos.DrawEllipsis(Transform.Position, new Vector2(100f, 50f), Transform.Rotation, new Color(1f, 0.5f, 0.75f));
         Gizmos.DrawIcon(Transform.Position, new Color(1f, 1f, 0.75f));
     }
 }

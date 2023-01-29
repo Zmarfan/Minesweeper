@@ -4,6 +4,7 @@ using Worms.engine.game_object;
 using Worms.engine.game_object.components.animation.animation;
 using Worms.engine.game_object.components.animation.controller;
 using Worms.engine.game_object.components.audio_source;
+using Worms.engine.game_object.components.colliders;
 using Worms.engine.game_object.components.particle_system;
 using Worms.engine.game_object.components.particle_system.emission;
 using Worms.engine.game_object.components.particle_system.particles;
@@ -187,6 +188,9 @@ public static class Scene1 {
         
         return GameObjectBuilder.Root()
             .Transform.AddChild("background")
+            .SetScale(2f)
+            .SetRotation(Rotation.FromDegrees(45))
+            .SetComponent(new BoxCollider(true, true, new Vector2(357f, 220f), Vector2.Zero()))
             .SetComponent(
                 TextureRendererBuilder
                     .Builder(Texture.CreateMultiple(Path("background.png"), 1, 1, 2, 2))

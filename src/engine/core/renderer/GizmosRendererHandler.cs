@@ -3,6 +3,7 @@ using Worms.engine.core.game_object_handler;
 using Worms.engine.core.gizmos;
 using Worms.engine.data;
 using Worms.engine.game_object;
+using Worms.engine.game_object.components;
 using Worms.engine.game_object.scripts;
 using Worms.engine.scene;
 
@@ -18,19 +19,19 @@ public class GizmosRendererHandler {
     }
 
     public void RenderGizmos(Dictionary<GameObject, TrackObject> objects) {
-        IEnumerable<Script> scripts = objects
+        IEnumerable<ToggleComponent> components = objects
             .Values
             .Where(obj => obj.isActive)
-            .SelectMany(obj => obj.scripts)
+            .SelectMany(obj => obj.toggleComponents)
             .Where(script => script.IsActive);
         
-        foreach (Script script in scripts) {
+        foreach (ToggleComponent component in components) {
             Gizmos.matrix = TransformationMatrix.Identity();
-            script.OnDrawGizmos();
+            component.OnDrawGizmos();
             while (Gizmos.GIZMOS_OBJECTS.Count > 0) {
                 GizmosObject gizmos = Gizmos.GIZMOS_OBJECTS.Dequeue();
                 SDL.SDL_SetRenderDrawColor(_renderer, gizmos.color.Rbyte, gizmos.color.Gbyte, gizmos.color.Bbyte, gizmos.color.Abyte);
-                gizmos.Render(_renderer, objects[script.gameObject].isWorld ? _sceneData.camera.WorldToScreenMatrix : _sceneData.camera.UiToScreenMatrix);
+                gizmos.Render(_renderer, objects[component.gameObject].isWorld ? _sceneData.camera.WorldToScreenMatrix : _sceneData.camera.UiToScreenMatrix);
             }
         }
     }

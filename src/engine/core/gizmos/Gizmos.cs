@@ -21,15 +21,26 @@ public static class Gizmos {
     public static void DrawCircle(Vector2 center, float radius, Color color) {
         GIZMOS_OBJECTS.Enqueue(new GizmosEllipsis(
             ToWorld(center), 
-            radius * matrix.GetScale(), matrix.GetRotation(),
+            radius * matrix.GetScale(), 
+            matrix.GetRotation(),
             color
         ));
     }
     
-    public static void DrawEllipsis(Vector2 center, Vector2 radius, Color color) {
+    public static void DrawEllipsis(Vector2 center, Vector2 radius, Rotation rotation, Color color) {
         GIZMOS_OBJECTS.Enqueue(new GizmosEllipsis(
             ToWorld(center), 
-            radius * matrix.GetScale(), matrix.GetRotation(),
+            radius * matrix.GetScale(), 
+            matrix.GetRotation() + rotation,
+            color
+        ));
+    }
+    
+    public static void DrawRectangle(Vector2 center, Vector2 size, Rotation rotation, Color color) {
+        GIZMOS_OBJECTS.Enqueue(new GizmosRectangle(
+            ToWorld(center), 
+            size * matrix.GetScale(), 
+            matrix.GetRotation() + rotation,
             color
         ));
     }

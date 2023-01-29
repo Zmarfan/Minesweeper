@@ -8,4 +8,7 @@ public abstract class ToggleComponent : Component {
     protected ToggleComponent(bool isActive) {
         IsActive = isActive;
     }
+    
+    public virtual void OnDrawGizmos() {
+    }
 }

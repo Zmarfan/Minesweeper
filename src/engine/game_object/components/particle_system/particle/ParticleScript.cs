@@ -38,7 +38,7 @@ public class ParticleScript : Script {
 
     private void TransformPointToWorldSpace() {
         Transform.Position += _parentOldPosition - Transform.Parent!.Position;
-        Transform.Position = RotatePoint(_parentOldPosition, Transform.Parent!.Rotation.Radians - _parentOldRotation.Radians, Transform.Position);
+        Transform.Position = Vector2.RotatePoint(_parentOldPosition, _parentOldRotation - Transform.Parent!.Rotation, Transform.Position);
         Transform.Rotation -= Transform.Parent!.Rotation - _parentOldRotation;
         
         _parentOldPosition = Transform.Parent!.Position;
@@ -67,17 +67,5 @@ public class ParticleScript : Script {
         else {
             Transform.Position += _direction * deltaTime;
         }
-    }
-    
-    Vector2 RotatePoint(Vector2 center, float radians, Vector2 point)
-    {
-        float s = (float)Math.Sin(radians);
-        float c = (float)Math.Cos(radians);
-
-        point -= center;
-
-        Vector2 rotated = new(point.x * c - point.y * s, point.x * s + point.y * c);
-
-        return rotated + center;
     }
 }
