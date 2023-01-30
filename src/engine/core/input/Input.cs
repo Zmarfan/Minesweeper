@@ -12,12 +12,17 @@ public class Input {
 
     public static Vector2 MouseWorldPosition =>
         _sceneData.camera.ScreenToWorldMatrix.ConvertPoint(new Vector2(
-            MouseScreenPosition.x * _gameSettings.width,
-            (1 - MouseScreenPosition.y) * _gameSettings.height)
+            _mouseScreenPosition.x * _gameSettings.width,
+            (1 - _mouseScreenPosition.y) * _gameSettings.height)
         );
 
-    public static Vector2 MouseScreenPosition { get; private set; }
+    public static Vector2 MouseCameraPosition =>
+        _sceneData.camera.ScreenToUiMatrix.ConvertPoint(
+            new Vector2(_mouseScreenPosition.x * _gameSettings.width, _gameSettings.height - _mouseScreenPosition.y * _gameSettings.height)
+        );
+
     public static Vector2 MouseDirection { get; private set; }
+    private static Vector2 _mouseScreenPosition = new(0, 1);
     private static GameSettings _gameSettings = null!;
     private static SceneData _sceneData = null!;
     
@@ -45,7 +50,7 @@ public class Input {
         eventHandler.KeyDownEvent += ButtonDownEventListener;
         eventHandler.KeyUpEvent += ButtonUpEventListener;
         eventHandler.MouseMovementEvent += (position, direction) => {
-            MouseScreenPosition = position;
+            _mouseScreenPosition = position;
             MouseDirection = direction;
         };
     }

@@ -42,7 +42,7 @@ public class GameObject : Object {
         try {
             return (T)components.First(static component => component is T);
         }
-        catch (InvalidOperationException e) {
+        catch (InvalidOperationException) {
             throw new Exception($"Unable to get component: {typeof(T)} from gameObject: {Name}");
         }
     }

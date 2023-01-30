@@ -190,7 +190,6 @@ public static class Scene1 {
             .Transform.AddChild("background")
             .SetScale(2f)
             .SetRotation(Rotation.FromDegrees(45))
-            .SetComponent(new BoxCollider(true, true, new Vector2(357f, 220f), Vector2.Zero()))
             .SetComponent(
                 TextureRendererBuilder
                     .Builder(Texture.CreateMultiple(Path("background.png"), 1, 1, 2, 2))
@@ -200,6 +199,8 @@ public static class Scene1 {
             )
             .Build()
             .Transform.AddSibling("animation")
+            .SetComponent(new TriggerScriptTest())
+            .SetComponent(new BoxCollider(true, true, new Vector2(60, 60), Vector2.Zero()))
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateMultiple(Path("animation_1.png"), 0, 0, 1, 19)).Build())
             .SetComponent(AudioSourceBuilder
                 .Builder(Path("explosion/Explosion1.wav"), "effects")
@@ -229,6 +230,8 @@ public static class Scene1 {
             .Transform.AddChild("bottom-left")
             .SetComponent(new ScreenPivot(new Vector2(0, 0), true))
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(Path("1.png"))).Build())
+            .SetComponent(new TriggerScriptTest())
+            .SetComponent(new BoxCollider(true, true, new Vector2(511f, 510f), Vector2.Zero()))
             .Build()
             .Transform.AddSibling("top-left")
             .SetComponent(new ScreenPivot(new Vector2(0, 1), true))

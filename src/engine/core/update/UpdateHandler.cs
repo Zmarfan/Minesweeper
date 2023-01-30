@@ -9,7 +9,8 @@ namespace Worms.engine.core.update;
 
 public class UpdateHandler {
     private const float FIXED_UPDATE_CYCLE_TIME = 0.02f;
-    
+
+    private readonly PhysicsUpdateHandler _physicsUpdateHandler;
     private readonly SceneData _sceneData;
     private GameObjectHandler GameObjectHandler => _sceneData.gameObjectHandler;
     private float _fixedUpdateAcc;
@@ -18,6 +19,7 @@ public class UpdateHandler {
     public UpdateHandler(SceneData sceneData) {
         _sceneData = sceneData;
         _fixedUpdateAcc = 0;
+        _physicsUpdateHandler = new PhysicsUpdateHandler(sceneData);
     }
     
     public void Awake() {
@@ -62,6 +64,7 @@ public class UpdateHandler {
         UpdateFrameTimeData(deltaTime);
         Input.Update(_deltaTime);
         while (_fixedUpdateAcc > FIXED_UPDATE_CYCLE_TIME) {
+            _physicsUpdateHandler.Update();
             FixedUpdate();
             GameObjectHandler.FrameCleanup();
             _fixedUpdateAcc -= FIXED_UPDATE_CYCLE_TIME;
