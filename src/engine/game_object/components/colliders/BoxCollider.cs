@@ -5,7 +5,6 @@ namespace Worms.engine.game_object.components.colliders;
 
 public class BoxCollider : Collider {
     public Vector2 size;
-    private Vector2 Center => Transform.Position + Transform.LocalToWorldMatrix.ConvertVector(offset);
     
     public BoxCollider(
         bool isActive, 

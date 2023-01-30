@@ -30,7 +30,7 @@ public class PhysicsUpdateHandler {
     private void UpdateMouseTriggers(TrackObject obj) {
         bool isInsideTrigger = obj.colliders
             .Where(collider => collider is { IsActive: true, isTrigger: true })
-            .Any(collider => collider.IsPointInside(GetMouseWorldPosition(obj)));
+            .Any(trigger => trigger.IsPointInside(GetMouseWorldPosition(obj)));
         
         if (!obj.MouseInsideTrigger && isInsideTrigger) {
             RunScriptsFunction(obj, static s => s.OnMouseEnter());
@@ -45,11 +45,11 @@ public class PhysicsUpdateHandler {
         obj.MouseInsideTrigger = isInsideTrigger;
     }
 
-    private Vector2 GetMouseWorldPosition(TrackObject trackObject) {
+    private static Vector2 GetMouseWorldPosition(TrackObject trackObject) {
         return trackObject.isWorld ? Input.MouseWorldPosition : Input.MouseCameraPosition;
     }
 
-    private void RunScriptsFunction(TrackObject obj, Action<Script> action) {
+    private static void RunScriptsFunction(TrackObject obj, Action<Script> action) {
         foreach (Script script in obj.Scripts) {
             if (script.IsActive) {
                 action.Invoke(script);
