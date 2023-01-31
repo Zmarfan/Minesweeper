@@ -30,6 +30,13 @@ public struct Color {
         this.b = b;
         a = 1f;
     }
+    
+    public Color(byte r, byte g, byte b, byte a) {
+        this.r = (float)r / byte.MaxValue;
+        this.g = (float)g / byte.MaxValue;
+        this.b = (float)b / byte.MaxValue;
+        this.a = (float)a / byte.MaxValue;
+    }
 
     public static Color Lerp(Color a, Color b, float t) {
         t = Math.Clamp(t, 0, 1);

@@ -9,7 +9,6 @@ namespace Worms.engine.core.renderer;
 public class Renderer {
     private readonly IntPtr _window;
     private readonly IntPtr _renderer;
-    private readonly TextureRendererHandler _textureRendererHandler;
     private readonly GizmosRendererHandler _gizmosRendererHandler;
     private readonly SceneData _sceneData;
     private readonly GameSettings _settings;
@@ -39,14 +38,14 @@ public class Renderer {
         
         _settings = settings;
         _sceneData = sceneData;
-        _textureRendererHandler = new TextureRendererHandler(_renderer, settings, _sceneData);
+        TextureRendererHandler.Init(_renderer, settings, _sceneData);
         _gizmosRendererHandler = new GizmosRendererHandler(_renderer, _sceneData);
     }
 
     public void Render() {
          SetDrawColor(DefaultDrawColor);
         SDL.SDL_RenderClear(_renderer);
-        _textureRendererHandler.RenderTextures(_sceneData.gameObjectHandler.objects);
+        TextureRendererHandler.RenderTextures(_sceneData.gameObjectHandler.objects);
         if (_settings.debug) {
             _gizmosRendererHandler.RenderGizmos(_sceneData.gameObjectHandler.objects);
         }
@@ -60,7 +59,7 @@ public class Renderer {
     }
     
     public void Clean() {
-        _textureRendererHandler.Clean();
+        TextureRendererHandler.Clean();
         SDL.SDL_DestroyWindow(_window);
         SDL.SDL_DestroyRenderer(_renderer);
     }

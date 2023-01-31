@@ -5,21 +5,26 @@ using Worms.engine.data;
 namespace Worms.engine.game_object.components.texture_renderer; 
 
 public readonly struct Texture {
-    public readonly string textureSrc;
+    public readonly string textureId;
     public readonly Vector2 textureScale;
+    public readonly unsafe SDL.SDL_Surface* surface;
+    public readonly Color[,] pixels;
     private readonly int _column;
     private readonly int _row;
     private readonly int _columnLength;
     private readonly int _rowLength;
 
-
-    private Texture(string textureSrc, int column, int row, int columnLength, int rowLength) {
-        this.textureSrc = textureSrc;
+    
+    private unsafe Texture(string textureSrc, int column, int row, int columnLength, int rowLength) {
+        textureId = textureSrc;
         textureScale = new Vector2(1f / columnLength, 1f / rowLength);
         _column = column;
         _row = row;
         _columnLength = columnLength;
         _rowLength = rowLength;
+        TextureRendererHandler.LoadImage(textureId, textureSrc, out SDL.SDL_Surface* surfaceData, out Color[,] pixelData);
+        surface = surfaceData;
+        pixels = pixelData;
     }
 
     public static Texture CreateSingle(string textureSrc) {
@@ -37,6 +42,6 @@ public readonly struct Texture {
     }
 
     public override string ToString() {
-        return $"Src: {textureSrc}, column: {_column} / {_columnLength}, row: {_row} / {_rowLength}";
+        return $"Src: {textureId}, column: {_column} / {_columnLength}, row: {_row} / {_rowLength}";
     }
 }

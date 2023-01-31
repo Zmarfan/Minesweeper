@@ -8,27 +8,38 @@ using Worms.engine.scene;
 
 namespace Worms.engine.core.renderer; 
 
-public class TextureRendererHandler {
+public static class TextureRendererHandler {
     public const string DEFAULT_SORTING_LAYER = "Default";
 
-    private readonly IntPtr _renderer;
-    private readonly SceneData _sceneData;
-    private readonly Dictionary<string, StoredTexture> _loadedTextures = new();
-    private readonly List<string> _sortLayers = new() { DEFAULT_SORTING_LAYER };
+    private static IntPtr _renderer;
+    private static SceneData _sceneData = null!;
+    private static readonly Dictionary<string, StoredTexture> LOADED_TEXTURES = new();
+    private static readonly List<string> SORT_LAYERS = new() { DEFAULT_SORTING_LAYER };
 
-    public TextureRendererHandler(IntPtr renderer, GameSettings settings, SceneData sceneData) {
+    public static void Init(IntPtr renderer, GameSettings settings, SceneData sceneData) {
         _renderer = renderer;
         _sceneData = sceneData;
-        _sortLayers.AddRange(settings.sortLayers);
+        SORT_LAYERS.AddRange(settings.sortLayers);
     }
 
-    public void RenderTextures(Dictionary<GameObject, TrackObject> objects) {
+    public static unsafe void LoadImage(string textureId, string textureSrc, out SDL.SDL_Surface* surface, out Color[,] pixels) {
+        if (LOADED_TEXTURES.TryGetValue(textureId, out StoredTexture? storedTexture)) {
+            pixels = storedTexture.pixels;
+            surface = storedTexture.surface;
+            return;
+        }
+
+        surface = (SDL.SDL_Surface*)SDL_image.IMG_Load(textureSrc);
+        pixels = TextureReaderUtils.ReadSurfacePixels(surface);
+    }
+
+    public static void RenderTextures(Dictionary<GameObject, TrackObject> objects) {
         IEnumerable<TextureRenderer> textureRenderers = objects
             .Values
             .Where(obj => obj.isActive)
             .SelectMany(obj => obj.TextureRenderers)
             .Where(tr => tr.IsActive)
-            .OrderByDescending(tr => _sortLayers.IndexOf(tr.sortingLayer))
+            .OrderByDescending(tr => SORT_LAYERS.IndexOf(tr.sortingLayer))
             .ThenByDescending(tr => tr.orderInLayer);
         
         foreach (TextureRenderer tr in textureRenderers) {
@@ -42,7 +53,7 @@ public class TextureRendererHandler {
         }
     }
 
-    private unsafe void RenderTexture(TextureRenderer tr, TransformationMatrix matrix) {
+    private static unsafe void RenderTexture(TextureRenderer tr, TransformationMatrix matrix) {
         StoredTexture texture = GetTexture(tr);
 
         SDL.SDL_Rect srcRect = tr.texture.GetSrcRect(texture);
@@ -51,21 +62,20 @@ public class TextureRendererHandler {
         SDL.SDL_RenderCopyExF(_renderer, texture.texture, ref srcRect, ref destRect, tr.Transform.Rotation.Degree, IntPtr.Zero, GetTextureFlipSettings(tr));
     }
     
-    private unsafe StoredTexture GetTexture(TextureRenderer tr) {
-        if (!_loadedTextures.TryGetValue(tr.texture.textureSrc, out StoredTexture? texture)) {
-            IntPtr texturePtr = SDL_image.IMG_LoadTexture(_renderer, tr.texture.textureSrc);
+    private static unsafe StoredTexture GetTexture(TextureRenderer tr) {
+        if (!LOADED_TEXTURES.TryGetValue(tr.texture.textureId, out StoredTexture? texture)) {
+            IntPtr texturePtr = SDL.SDL_CreateTextureFromSurface(_renderer, (IntPtr)tr.texture.surface);
             if (texturePtr == IntPtr.Zero) {
-                throw new ArgumentException($"Unable to load texture: {tr.texture} due to: {SDL_image.IMG_GetError()}");
+                throw new ArgumentException($"Unable to load texture: {tr.texture} due to: {SDL.SDL_GetError()}");
             }
-            SDL.SDL_Surface * surface = (SDL.SDL_Surface *)SDL_image.IMG_Load(tr.texture.textureSrc);
-            texture = new StoredTexture(surface, texturePtr);
-            _loadedTextures.Add(tr.texture.textureSrc, texture);
+            texture = new StoredTexture(tr.texture.surface, texturePtr, tr.texture.pixels);
+            LOADED_TEXTURES.Add(tr.texture.textureId, texture);
         }
 
         return texture;
     }
     
-    private unsafe SDL.SDL_FRect CalculateTextureDrawPosition(TextureRenderer tr, SDL.SDL_Surface* surface, TransformationMatrix matrix) {
+    private static unsafe SDL.SDL_FRect CalculateTextureDrawPosition(TextureRenderer tr, SDL.SDL_Surface* surface, TransformationMatrix matrix) {
         Vector2 screenPosition = CalculateTextureScreenPosition(tr, surface, matrix);
         Vector2 textureDimensions = CalculateTextureDimensions(tr, surface, matrix);
         SDL.SDL_FRect rect = new() {
@@ -77,11 +87,11 @@ public class TextureRendererHandler {
         return rect;
     }
 
-    private unsafe Vector2 CalculateTextureScreenPosition(TextureRenderer tr, SDL.SDL_Surface* surface, TransformationMatrix matrix) {
+    private static unsafe Vector2 CalculateTextureScreenPosition(TextureRenderer tr, SDL.SDL_Surface* surface, TransformationMatrix matrix) {
         return matrix.ConvertPoint(tr.Transform.Position) - CalculateTextureDimensions(tr, surface, matrix) / 2f;
     }
 
-    private unsafe Vector2 CalculateTextureDimensions(TextureRenderer tr, SDL.SDL_Surface* surface, TransformationMatrix matrix) {
+    private static unsafe Vector2 CalculateTextureDimensions(TextureRenderer tr, SDL.SDL_Surface* surface, TransformationMatrix matrix) {
         return matrix.ConvertVector(
             new Vector2(surface->w * tr.Transform.Scale.x, surface->h * tr.Transform.Scale.y * -1) * tr.texture.textureScale
         );
@@ -98,8 +108,8 @@ public class TextureRendererHandler {
         return flip;
     }
 
-    public unsafe void Clean() {
-        _loadedTextures.Values.ToList().ForEach(texture => {
+    public static unsafe void Clean() {
+        LOADED_TEXTURES.Values.ToList().ForEach(texture => {
             SDL.SDL_FreeSurface((nint)texture.surface);
             SDL.SDL_DestroyTexture(texture.texture);
         });
