@@ -31,7 +31,7 @@ public static class TextureRendererHandler {
         }
 
         surface = LoadSurfaceWithCorrectFormat(textureSrc);
-        pixels = TextureReaderUtils.ReadSurfacePixels(surface);
+        pixels = SurfaceReadWriteUtils.ReadSurfacePixels(surface);
     }
 
     public static void RenderTextures(Dictionary<GameObject, TrackObject> objects) {

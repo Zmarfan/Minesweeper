@@ -3,7 +3,7 @@ using Worms.engine.data;
 
 namespace Worms.engine.core.renderer; 
 
-public static class TextureReaderUtils {
+public static class SurfaceReadWriteUtils {
     public static unsafe Color[,] ReadSurfacePixels(SDL.SDL_Surface* surface) {
         Color[,] map = new Color[surface->w, surface->h];
         for (int x = 0; x < surface->w; x++) {
