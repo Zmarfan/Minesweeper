@@ -44,6 +44,10 @@ public static class Gizmos {
             color
         ));
     }
+    
+    public static void DrawPoint(Vector2 point, Color color) {
+        GIZMOS_OBJECTS.Enqueue(new GizmosPoint(ToWorld(point), color));
+    }
 
     private static Vector2 ToWorld(Vector2 position) {
         return matrix.ConvertPoint(position);
