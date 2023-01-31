@@ -9,6 +9,7 @@ using Worms.engine.scene;
 namespace Worms.engine.core.renderer; 
 
 public static class TextureRendererHandler {
+    private const string ACCEPTED_PIXEL_FORMAT = "SDL_PIXELFORMAT_ABGR8888";
     public const string DEFAULT_SORTING_LAYER = "Default";
 
     private static IntPtr _renderer;
@@ -29,7 +30,7 @@ public static class TextureRendererHandler {
             return;
         }
 
-        surface = (SDL.SDL_Surface*)SDL_image.IMG_Load(textureSrc);
+        surface = LoadSurfaceWithCorrectFormat(textureSrc);
         pixels = TextureReaderUtils.ReadSurfacePixels(surface);
     }
 
@@ -106,6 +107,17 @@ public static class TextureRendererHandler {
             flip |= SDL.SDL_RendererFlip.SDL_FLIP_VERTICAL;
         }
         return flip;
+    }
+    
+    private static unsafe SDL.SDL_Surface* LoadSurfaceWithCorrectFormat(string textureSrc) {
+        SDL.SDL_Surface* surface = (SDL.SDL_Surface*)SDL_image.IMG_Load(textureSrc);
+        if (SDL.SDL_GetPixelFormatName(((SDL.SDL_PixelFormat*)surface->format)->format) != ACCEPTED_PIXEL_FORMAT) {
+            SDL.SDL_Surface* convertedSurface = (SDL.SDL_Surface*)SDL.SDL_ConvertSurfaceFormat((nint)surface, SDL.SDL_PIXELFORMAT_ABGR8888, 0);
+            SDL.SDL_FreeSurface((nint)surface);
+            surface = convertedSurface;
+        }
+
+        return surface;
     }
 
     public static unsafe void Clean() {

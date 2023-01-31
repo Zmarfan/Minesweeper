@@ -14,6 +14,23 @@ public static class TextureReaderUtils {
         
         return map;
     }
+    
+    public static unsafe SDL.SDL_Surface* WriteSurfacePixels(Color[,] pixels) {
+        SDL.SDL_Surface* surface = (SDL.SDL_Surface*)SDL.SDL_CreateRGBSurfaceWithFormat(
+            0,
+            pixels.GetLength(0),
+            pixels.GetLength(1),
+            32,
+            SDL.SDL_PIXELFORMAT_ABGR8888
+        );
+        for (int x = 0; x < surface->w; x++) {
+            for (int y = 0; y < surface->h; y++) {
+                WritePixel(surface, pixels[x, y], x, y);
+            }
+        }
+
+        return surface;
+    }
 
     private static unsafe Color ReadPixel(SDL.SDL_Surface* surface, int x, int y) {
         byte bytesPerPixel = ((SDL.SDL_PixelFormat*)surface->format)->BytesPerPixel;
@@ -29,5 +46,27 @@ public static class TextureReaderUtils {
             4 => ((uint*)surface->pixels)[index],
             _ => throw new Exception($"Error when trying to read pixel data! bytesPerPixel: {bytesPerPixel}")
         };
+    }
+    
+    private static unsafe void WritePixel(SDL.SDL_Surface* surface, Color color, int x, int y) {
+        uint pixelData = SDL.SDL_MapRGBA(surface->format, color.Rbyte, color.Gbyte, color.Bbyte, color.Abyte);
+        byte bytesPerPixel = ((SDL.SDL_PixelFormat*)surface->format)->BytesPerPixel;
+        WritePixelData(surface, bytesPerPixel, pixelData, surface->w * y + x);
+    }
+    
+    private static unsafe void WritePixelData(SDL.SDL_Surface* surface, byte bytesPerPixel, uint pixelData, int index) {
+        switch (bytesPerPixel) {
+            case 1:
+                ((byte*)surface->pixels)[index] = (byte)pixelData;
+                break;
+            case 2:
+                ((ushort*)surface->pixels)[index] = (ushort)pixelData;
+                break;
+            case 4:
+                ((uint*)surface->pixels)[index] = pixelData;
+                break;
+            default:
+                throw new Exception($"Error when trying to write pixel data! bytesPerPixel: {bytesPerPixel}");
+        }
     }
 }
