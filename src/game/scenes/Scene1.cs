@@ -190,13 +190,10 @@ public static class Scene1 {
             .Transform.AddChild("background")
             .SetScale(2f)
             .SetRotation(Rotation.FromDegrees(45))
-            .SetComponent(
-                TextureRendererBuilder
-                    .Builder(Texture.CreateMultiple(Path("background.png"), 1, 1, 2, 2))
-                    .SetSortingLayer("layer3")
-                    .SetSortingOrder(0)
-                    .Build()
-            )
+            .SetComponent(new TriggerScriptTest())
+            .SetComponent(new TextureCollider(true, true, TextureRendererBuilder
+                .Builder(Texture.CreateMultiple(Path("background.png"), 1, 1, 2, 2))
+            ))
             .Build()
             .Transform.AddSibling("animation")
             .SetComponent(new TriggerScriptTest())

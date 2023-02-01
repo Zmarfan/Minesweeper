@@ -10,6 +10,7 @@ public class GameObjectHandler {
     public readonly Dictionary<GameObject, TrackObject> objects = new();
 
     private readonly Queue<GameObject> _instantiatedGameObjects = new();
+    private readonly HashSet<ToggleComponent> _addedGameObjectComponents = new();
     private readonly HashSet<Object> _destroyObjects = new();
     private readonly HashSet<GameObject> _activeStatusChangedGameObjects = new();
 
@@ -21,6 +22,7 @@ public class GameObjectHandler {
         InstantiateGameObject(worldRoot);
         InstantiateGameObject(screenRoot);
         Transform.GameObjectInstantiateEvent += obj => _instantiatedGameObjects.Enqueue(obj);
+        GameObject.GameObjectComponentAdd +=  component => _addedGameObjectComponents.Add(component);
         Object.ObjectDestroyEvent += obj => _destroyObjects.Add(obj);
         GameObject.GameObjectActiveEvent += obj => _activeStatusChangedGameObjects.Add(obj);
     }
@@ -28,6 +30,11 @@ public class GameObjectHandler {
     public void FrameCleanup() {
         while (_instantiatedGameObjects.Count > 0) {
             InstantiateGameObject(_instantiatedGameObjects.Dequeue());
+        }
+        while (_addedGameObjectComponents.Count > 0) {
+            ToggleComponent component = _addedGameObjectComponents.First();
+            InstantiateComponent(component);
+            _addedGameObjectComponents.Remove(component);
         }
         while (_destroyObjects.Count > 0) {
             Object obj = _destroyObjects.First();
@@ -61,6 +68,11 @@ public class GameObjectHandler {
             trackObject.toggleComponents.AddRange(obj.components.OfType<ToggleComponent>());
             objects.Add(obj, trackObject);
         });
+    }
+
+    private void InstantiateComponent(ToggleComponent component) {
+        component.gameObject.components.Add(component);
+        objects[component.gameObject].toggleComponents.Add(component);
     }
 
     private void ChangeActiveGameObject(GameObject gameObject) {

@@ -5,7 +5,9 @@ namespace Worms.engine.game_object;
 
 public class GameObject : Object {
     public delegate void GameObjectUpdate(GameObject gameObject);
+    public delegate void ComponentAdd(ToggleComponent component);
     public static event GameObjectUpdate? GameObjectActiveEvent;
+    public static event ComponentAdd? GameObjectComponentAdd;
     
     public string Name { get; set; }
 
@@ -57,6 +59,12 @@ public class GameObject : Object {
         return true;
     }
 
+    public T AddComponent<T>(T component) where T : ToggleComponent {
+        component.InitComponent(this);
+        GameObjectComponentAdd?.Invoke(component);
+        return component;
+    }
+    
     public override string ToString() {
         string componentsString = components.Count == 0 ? string.Empty : components
             .Select(component => $"{component}\n")

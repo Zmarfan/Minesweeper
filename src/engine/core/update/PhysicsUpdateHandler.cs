@@ -28,7 +28,7 @@ public class PhysicsUpdateHandler {
     }
 
     private void UpdateMouseTriggers(TrackObject obj) {
-        bool isInsideTrigger = obj.colliders
+        bool isInsideTrigger = obj.Colliders
             .Where(collider => collider is { IsActive: true, isTrigger: true })
             .Any(trigger => trigger.IsPointInside(GetMouseWorldPosition(obj)));
         

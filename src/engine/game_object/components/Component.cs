@@ -15,4 +15,8 @@ public abstract class Component : Object {
     public bool TryGetComponent<T>(out T component) where T : Component {
         return gameObject.TryGetComponent(out component);
     }
+    
+    public T AddComponent<T>(T component) where T : ToggleComponent {
+        return gameObject.AddComponent(component);
+    }
 }

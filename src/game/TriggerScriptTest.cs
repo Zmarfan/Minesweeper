@@ -11,12 +11,12 @@ public class TriggerScriptTest : Script {
     public TriggerScriptTest() : base(true) {
     }
 
-    public override void Awake() {
+    public override void Start() {
         _textureRenderer = GetComponent<TextureRenderer>();
     }
 
     public override void OnMouseEnter() {
-        _textureRenderer.color = Color.RED;
+        _textureRenderer.color = Color.TRANSPARENT;
     }
 
     public override void OnMouseExit() {

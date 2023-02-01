@@ -6,6 +6,7 @@ public struct Color {
     public static readonly Color RED = new(1, 0, 0);
     public static readonly Color GREEN = new(0, 1, 0);
     public static readonly Color BLUE = new(0, 0, 1);
+    public static readonly Color TRANSPARENT = new(0, 0, 0, 0);
     
     public float r;
     public float g;
