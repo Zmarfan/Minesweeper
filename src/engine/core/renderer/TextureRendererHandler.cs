@@ -59,8 +59,24 @@ public static class TextureRendererHandler {
 
         SDL.SDL_Rect srcRect = tr.texture.GetSrcRect(texture);
         SDL.SDL_FRect destRect = CalculateTextureDrawPosition(tr, texture.surface, matrix);
-        SDL.SDL_SetTextureColorMod(texture.texture, tr.color.Rbyte, tr.color.Gbyte, tr.color.Bbyte);
-        SDL.SDL_RenderCopyExF(_renderer, texture.texture, ref srcRect, ref destRect, tr.Transform.Rotation.Degree, IntPtr.Zero, GetTextureFlipSettings(tr));
+        if (SDL.SDL_SetTextureColorMod(texture.texture, tr.color.Rbyte, tr.color.Gbyte, tr.color.Bbyte) != 0) {
+            throw new Exception($"Unable to set texture color mod due to: {SDL.SDL_GetError()}");
+        }
+
+        if (SDL.SDL_SetTextureAlphaMod(texture.texture, tr.color.Abyte) != 0) {
+            throw new Exception($"Unable to set texture alpha mod due to: {SDL.SDL_GetError()}");
+        }
+
+        if (SDL.SDL_RenderCopyExF(
+            _renderer,
+            texture.texture,
+            ref srcRect,
+            ref destRect,
+            tr.Transform.Rotation.Degree, 
+            IntPtr.Zero, GetTextureFlipSettings(tr)
+        ) != 0) {
+            throw new Exception($"Unable to render texture to screen due to: {SDL.SDL_GetError()}");
+        }
     }
     
     private static unsafe StoredTexture GetTexture(TextureRenderer tr) {

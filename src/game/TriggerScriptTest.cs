@@ -16,7 +16,7 @@ public class TriggerScriptTest : Script {
     }
 
     public override void OnMouseEnter() {
-        _textureRenderer.color = Color.TRANSPARENT;
+        _textureRenderer.color = new Color(255, 255, 255, 128);
     }
 
     public override void OnMouseExit() {
