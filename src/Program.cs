@@ -13,6 +13,7 @@ internal static class Program {
                 new("effects", Volume.Max()),
                 new("music", Volume.Max()),
             }))
+            .SetDebugMode()
             .SetWindowWidth(1200)
             .SetWindowHeight(800)
             .AddScenes(Scene1.GetScene())

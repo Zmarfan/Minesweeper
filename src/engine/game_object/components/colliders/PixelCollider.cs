@@ -21,8 +21,6 @@ public class PixelCollider : Collider {
     }
 
     public override void OnDrawGizmos() {
-        foreach (Vector2 point in _pixels) {
-            Gizmos.DrawPoint(Transform.LocalToWorldMatrix.ConvertPoint(point + offset), GIZMO_COLOR);
-        }
+        Gizmos.DrawPoints(_pixels.Select(p => Transform.LocalToWorldMatrix.ConvertPoint(p + offset)), GIZMO_COLOR);
     }
 }

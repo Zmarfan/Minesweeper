@@ -45,11 +45,12 @@ public static class Gizmos {
         ));
     }
     
-    /// <summary>
-    /// This one is really slow if calling for many pixels per frame
-    /// </summary>
     public static void DrawPoint(Vector2 point, Color color) {
-        GIZMOS_OBJECTS.Enqueue(new GizmosPoint(ToWorld(point), color));
+        DrawPoints(new List<Vector2> { point }, color);
+    }
+
+    public static void DrawPoints(IEnumerable<Vector2> points, Color color) {
+        GIZMOS_OBJECTS.Enqueue(new GizmosPoints(points.Select(ToWorld), color));
     }
 
     private static Vector2 ToWorld(Vector2 position) {
