@@ -90,7 +90,7 @@ public static class TextureRendererHandler {
             if (SDL.SDL_SetTextureBlendMode(texturePtr, SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND) != 0) {
                 throw new Exception($"Unable to set texture blend mode, used for alpha mod, due to: {SDL.SDL_GetError()}");
             } 
-            texture = new StoredTexture(tr.texture.surface, texturePtr, tr.texture.pixels);
+            texture = new StoredTexture(tr.texture.surface, texturePtr, tr.texture.texturePixels);
             LOADED_TEXTURES.Add(tr.texture.textureId, texture);
         }
 

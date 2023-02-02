@@ -189,10 +189,10 @@ public static class Scene1 {
         return GameObjectBuilder.Root()
             .Transform.AddChild("pixelTest1")
             .SetComponent(new TriggerScriptTest())
-            .SetComponent(new TextureCollider(true, true, false, TextureRendererBuilder
+            .SetComponent(TextureColliderBuilder
                 .Builder(Texture.CreateSingle(Path("pixelTest7.png")))
-                .SetSortingOrder(4)
-            ))
+                .Build()
+            )
             .Build()
             .Transform.AddSibling("animation")
             .SetScale(2)  

@@ -4,7 +4,14 @@ using Worms.engine.data;
 namespace Worms.engine.game_object.components.colliders; 
 
 public class PixelCollider : Collider {
-    private readonly HashSet<Vector2> _pixels;
+    public HashSet<Vector2> Pixels {
+        get => _pixels;
+        set {
+            _pixels = value.Select(p => new Vector2((int)p.x, (int)p.y)).ToHashSet();
+        }
+    }
+
+    private HashSet<Vector2> _pixels = new();
 
     public PixelCollider(
         bool isActive,
@@ -12,7 +19,7 @@ public class PixelCollider : Collider {
         bool isTrigger,
         Vector2 offset
     ) : base(isActive, isTrigger, new Vector2((int)offset.x, (int)offset.y)) {
-        _pixels = pixels.Select(p => new Vector2((int)p.x, (int)p.y)).ToHashSet();
+        Pixels = pixels.ToHashSet();
     }
 
     public override bool IsPointInside(Vector2 p) {

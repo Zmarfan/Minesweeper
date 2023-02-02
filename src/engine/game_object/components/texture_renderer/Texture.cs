@@ -8,7 +8,8 @@ public readonly struct Texture {
     public readonly string textureId;
     public readonly Vector2 textureScale;
     public readonly unsafe SDL.SDL_Surface* surface;
-    public readonly Color[,] pixels;
+    public readonly Color[,] texturePixels;
+    public readonly Color[,] sectionPixels;
     private readonly int _column;
     private readonly int _row;
     private readonly int _columnLength;
@@ -24,7 +25,8 @@ public readonly struct Texture {
         _rowLength = rowLength;
         TextureRendererHandler.LoadImage(textureId, textureSrc, out SDL.SDL_Surface* surfaceData, out Color[,] pixelData);
         surface = surfaceData;
-        pixels = pixelData;
+        texturePixels = pixelData;
+        sectionPixels = CalculateSectionPixels();
     }
 
     public static Texture CreateSingle(string textureSrc) {
@@ -41,6 +43,26 @@ public readonly struct Texture {
         return new SDL.SDL_Rect { x = _column * w, y = _row * h, w = w, h = h };
     }
 
+    private unsafe Color[,] CalculateSectionPixels() {
+        if (_columnLength == 1 && _rowLength == 1) {
+            return texturePixels;
+        }
+        
+        int width = surface->w / _columnLength;
+        int height = surface->h / _rowLength;
+        int startWidth = width * _column;
+        int startHeight = height * _row;
+
+        Color[,] pixels = new Color[width, height];
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                pixels[x, y] = texturePixels[startWidth + x, startHeight + y];
+            }
+        }
+
+        return pixels;
+    }
+    
     public override string ToString() {
         return $"Src: {textureId}, column: {_column} / {_columnLength}, row: {_row} / {_rowLength}";
     }

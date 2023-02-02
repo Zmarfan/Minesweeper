@@ -5,13 +5,78 @@ using Worms.engine.game_object.scripts;
 namespace Worms.engine.game_object.components.colliders; 
 
 public class TextureCollider : Script {
+    public Texture Texture {
+        get => _textureRenderer.texture;
+        set {
+            _textureRenderer.texture = value;
+            _pixelCollider.Pixels = CalculateColliderPixels(EdgesOnly).ToHashSet();
+        }
+    }
+    public string SortingLayer {
+        get => _textureRenderer.sortingLayer;
+        set => _textureRenderer.sortingLayer = value;
+    }
+    public int OrderInLayer {
+        get => _textureRenderer.orderInLayer;
+        set => _textureRenderer.orderInLayer = value;
+    }
+    public Color Color {
+        get => _textureRenderer.color;
+        set => _textureRenderer.color = value;
+    }
+    public bool FlipX {
+        get => _textureRenderer.flipX;
+        set {
+            if (_textureRenderer.flipX == value) {
+                return;
+            }
+
+            _pixelCollider.Pixels = _pixelCollider.Pixels.Select(p => {
+                p.x = -p.x + EvenWidthOffset;
+                return p;
+            }).ToHashSet();
+            _textureRenderer.flipX = value;
+        }
+    }
+
+    public bool FlipY {
+        get => _textureRenderer.flipY;
+        set {
+            if (_textureRenderer.flipY == value) {
+                return;
+            }
+
+            _pixelCollider.Pixels = _pixelCollider.Pixels.Select(p => {
+                p.y = -p.y - EvenWidthOffset;
+                return p;
+            }).ToHashSet();
+            _textureRenderer.flipY = value;
+        }
+    }
+
+    public bool EdgesOnly {
+        get => _edgesOnly;
+        set {
+            if (value == _edgesOnly) {
+                return;
+            }
+            _edgesOnly = value;
+            _pixelCollider.Pixels = CalculateColliderPixels(value).ToHashSet();
+        }
+    }
+    
     private readonly TextureRenderer _textureRenderer;
     private readonly PixelCollider _pixelCollider;
+    private bool _edgesOnly;
     
-    public TextureCollider(bool isActive, bool isTrigger, bool edgesOnly, TextureRendererBuilder builder) : base(isActive) {
+    private int EvenWidthOffset => (_textureRenderer.texture.sectionPixels.GetLength(0) + 1) % 2;
+    private int EvenHeightOffset => (_textureRenderer.texture.sectionPixels.GetLength(0) + 1) % 2;
+    
+    public TextureCollider(bool isActive, bool isTrigger, bool edgesOnly, TextureRenderer tr) : base(isActive) {
         IsActive = isActive;
-        _textureRenderer = builder.SetIsActive(true).Build();
+        _textureRenderer = tr;
         _pixelCollider = new PixelCollider(true, CalculateColliderPixels(edgesOnly), isTrigger, Vector2.Zero());
+        _edgesOnly = edgesOnly;
     }
 
     public override void Awake() {
@@ -20,22 +85,20 @@ public class TextureCollider : Script {
     }
 
     private IEnumerable<Vector2> CalculateColliderPixels(bool edgesOnly) {
-        Color[,] colors = _textureRenderer.texture.pixels;
+        Color[,] colors = _textureRenderer.texture.sectionPixels;
         int width = colors.GetLength(0);
         int height = colors.GetLength(1);
-        int evenWidthOffset = (width + 1) % 2;
-        int evenHeightOffset = (height + 1) % 2;
         HashSet<Vector2> pixels = new();
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if (ShouldSetPixelAsCollider(colors, x, y, edgesOnly)) {
-                    pixels.Add(new Vector2(x - width / 2 + evenWidthOffset, -y + height / 2 - evenHeightOffset));
+                    pixels.Add(new Vector2(x - width / 2 + EvenWidthOffset, -y + height / 2 - EvenHeightOffset));
                 } 
             }
         }
 
-        return pixels;
+        return FormatPixels(pixels);
     }
 
     private bool ShouldSetPixelAsCollider(Color[,] colors, int x, int y, bool edgesOnly) {
@@ -58,6 +121,20 @@ public class TextureCollider : Script {
         return false;
     }
 
+    
+    private IEnumerable<Vector2> FormatPixels(HashSet<Vector2> pixels) {
+        return pixels.Select(p => {
+            if (_textureRenderer.flipX) {
+                p.x = -p.x + EvenWidthOffset;
+            }
+            if (_textureRenderer.flipY) {
+                p.y = -p.y - EvenWidthOffset;
+            }
+
+            return p;
+        });
+    }
+    
     private static bool IsAnEdgePixel(int x, int y, Color[,] colors) {
         return x == 0 || y == 0 || x == colors.GetLength(0) - 1 || y == colors.GetLength(1) - 1;
     }
