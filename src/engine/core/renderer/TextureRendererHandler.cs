@@ -73,7 +73,8 @@ public static class TextureRendererHandler {
             ref srcRect,
             ref destRect,
             tr.Transform.Rotation.Degree, 
-            IntPtr.Zero, GetTextureFlipSettings(tr)
+            IntPtr.Zero,
+            GetTextureFlipSettings(tr)
         ) != 0) {
             throw new Exception($"Unable to render texture to screen due to: {SDL.SDL_GetError()}");
         }
@@ -85,6 +86,10 @@ public static class TextureRendererHandler {
             if (texturePtr == IntPtr.Zero) {
                 throw new ArgumentException($"Unable to load texture: {tr.texture} due to: {SDL.SDL_GetError()}");
             }
+
+            if (SDL.SDL_SetTextureBlendMode(texturePtr, SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND) != 0) {
+                throw new Exception($"Unable to set texture blend mode, used for alpha mod, due to: {SDL.SDL_GetError()}");
+            } 
             texture = new StoredTexture(tr.texture.surface, texturePtr, tr.texture.pixels);
             LOADED_TEXTURES.Add(tr.texture.textureId, texture);
         }
@@ -105,13 +110,20 @@ public static class TextureRendererHandler {
     }
 
     private static unsafe Vector2 CalculateTextureScreenPosition(TextureRenderer tr, SDL.SDL_Surface* surface, TransformationMatrix matrix) {
-        return matrix.ConvertPoint(tr.Transform.Position) - CalculateTextureDimensions(tr, surface, matrix) / 2f;
+        return matrix.ConvertPoint(tr.Transform.Position) - CalculateTextureDimensions(tr, surface, matrix) / 2f + CalculatePixelPerfectOffset(tr, surface, matrix) / 2f;
     }
 
     private static unsafe Vector2 CalculateTextureDimensions(TextureRenderer tr, SDL.SDL_Surface* surface, TransformationMatrix matrix) {
         return matrix.ConvertVector(
             new Vector2(surface->w * tr.Transform.Scale.x, surface->h * tr.Transform.Scale.y * -1) * tr.texture.textureScale
         );
+    }
+    
+    private static unsafe Vector2 CalculatePixelPerfectOffset(TextureRenderer tr, SDL.SDL_Surface* surface, TransformationMatrix matrix) {
+        return matrix.ConvertVector(new Vector2(
+            (surface->w * tr.texture.textureScale.x + 1) % 2, 
+            (surface->h * tr.texture.textureScale.y + 1) % 2 * -1
+        ));
     }
     
     private static SDL.SDL_RendererFlip GetTextureFlipSettings(TextureRenderer tr) {

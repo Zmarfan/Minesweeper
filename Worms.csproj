@@ -42,9 +42,6 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
       <None Remove="src\assets\test\background.png" />
-      <Content Include="src\assets\test\background.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\test_sound1.wav" />
       <Content Include="src\assets\test\test_sound1.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -91,6 +88,34 @@
       </Content>
       <None Remove="src\assets\test\cursor.png" />
       <Content Include="src\assets\test\cursor.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\test\pixelTest2.png" />
+      <Content Include="src\assets\test\pixelTest2.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\test\pixelTest1.png" />
+      <Content Include="src\assets\test\pixelTest1.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\test\pixelTest3.png" />
+      <Content Include="src\assets\test\pixelTest3.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\test\pixelTest4.png" />
+      <Content Include="src\assets\test\pixelTest4.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\test\pixelTest5.png" />
+      <Content Include="src\assets\test\pixelTest5.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\test\pixelTest6.png" />
+      <Content Include="src\assets\test\pixelTest6.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\test\pixelTest7.png" />
+      <Content Include="src\assets\test\pixelTest7.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>

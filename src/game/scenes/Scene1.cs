@@ -187,15 +187,15 @@ public static class Scene1 {
         );
         
         return GameObjectBuilder.Root()
-            .Transform.AddChild("background")
-            .SetScale(2f)
-            .SetRotation(Rotation.FromDegrees(45))
+            .Transform.AddChild("pixelTest1")
             .SetComponent(new TriggerScriptTest())
-            .SetComponent(new TextureCollider(true, true, TextureRendererBuilder
-                .Builder(Texture.CreateMultiple(Path("background.png"), 1, 1, 2, 2))
+            .SetComponent(new TextureCollider(true, true, true, TextureRendererBuilder
+                .Builder(Texture.CreateSingle(Path("pixelTest7.png")))
+                .SetSortingOrder(4)
             ))
             .Build()
             .Transform.AddSibling("animation")
+            .SetScale(2)  
             .SetComponent(new TriggerScriptTest())
             .SetComponent(new CircleCollider(true, true, 30, Vector2.Zero()))
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateMultiple(Path("animation_1.png"), 0, 0, 1, 19)).Build())
@@ -226,22 +226,15 @@ public static class Scene1 {
         return GameObjectBuilder.Root()
             .Transform.AddChild("bottom-left")
             .SetComponent(new ScreenPivot(new Vector2(0, 0), true))
-            .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(Path("1.png"))).Build())
-            .SetComponent(new TriggerScriptTest())
-            .SetScale(new Vector2(1, 2f))
-            .SetComponent(new CircleCollider(true, true, 255, Vector2.Zero()))
             .Build()
             .Transform.AddSibling("top-left")
             .SetComponent(new ScreenPivot(new Vector2(0, 1), true))
-            .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(Path("2.png"))).Build())
             .Build()
             .Transform.AddSibling("top-right")
             .SetComponent(new ScreenPivot(new Vector2(1, 1), true))
-            .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(Path("3.png"))).Build())
             .Build()
             .Transform.AddSibling("bottom-right")
             .SetComponent(new ScreenPivot(new Vector2(1, 0), true))
-            .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(Path("4.png"))).Build())
             .Build()
             .Transform.GetRoot().gameObject;
     }

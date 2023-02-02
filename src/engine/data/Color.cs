@@ -39,6 +39,8 @@ public struct Color {
         this.a = (float)a / byte.MaxValue;
     }
 
+    public bool IsOpaque => Abyte == byte.MaxValue;
+    
     public static Color Lerp(Color a, Color b, float t) {
         t = Math.Clamp(t, 0, 1);
         return new Color(a.r + (b.r - a.r) * t, a.g + (b.g - a.g) * t, a.b + (b.b - a.b) * t, a.a + (b.a - a.a) * t);
