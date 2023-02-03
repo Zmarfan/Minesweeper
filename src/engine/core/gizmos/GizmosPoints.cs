@@ -13,7 +13,7 @@ public class GizmosPoints : GizmosObject {
     public override void Render(IntPtr renderer, TransformationMatrix worldToScreenMatrix) {
         SDL.SDL_FPoint[] formattedPoints = _points
             .Select(worldToScreenMatrix.ConvertPoint)
-            .Select(p => new SDL.SDL_FPoint() { x = p.x, y = p.y })
+            .Select(p => new SDL.SDL_FPoint { x = p.x, y = p.y })
             .ToArray();
         if (SDL.SDL_RenderDrawPointsF(renderer, formattedPoints, formattedPoints.Length) != 0) {
             throw new Exception($"Unable to draw gizmo points due to: {SDL.SDL_GetError()}");

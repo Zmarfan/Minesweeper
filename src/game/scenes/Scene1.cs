@@ -195,7 +195,6 @@ public static class Scene1 {
             )
             .Build()
             .Transform.AddSibling("animation")
-            .SetScale(2)  
             .SetComponent(new TriggerScriptTest())
             .SetComponent(new CircleCollider(true, true, 30, Vector2.Zero()))
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateMultiple(Path("animation_1.png"), 0, 0, 1, 19)).Build())

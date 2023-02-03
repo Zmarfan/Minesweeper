@@ -23,8 +23,8 @@ public static class TextureRendererHandler {
         SORT_LAYERS.AddRange(settings.sortLayers);
     }
 
-    public static unsafe void LoadImage(string textureId, string textureSrc, out SDL.SDL_Surface* surface, out Color[,] pixels) {
-        if (LOADED_TEXTURES.TryGetValue(textureId, out StoredTexture? storedTexture)) {
+    public static unsafe void LoadImageFromFile(string textureSrc, out SDL.SDL_Surface* surface, out Color[,] pixels) {
+        if (LOADED_TEXTURES.TryGetValue(textureSrc, out StoredTexture? storedTexture)) {
             pixels = storedTexture.pixels;
             surface = storedTexture.surface;
             return;
@@ -32,6 +32,17 @@ public static class TextureRendererHandler {
 
         surface = LoadSurfaceWithCorrectFormat(textureSrc);
         pixels = SurfaceReadWriteUtils.ReadSurfacePixels(surface);
+    }
+
+    public static unsafe void LoadImageFromPixels(Color[,] pixels, out SDL.SDL_Surface* surface) {
+        surface = SurfaceReadWriteUtils.WriteSurfacePixels(pixels);
+    }
+    
+    public static void RemoveLoadedTexture(string textureId) {
+        if (LOADED_TEXTURES.TryGetValue(textureId, out StoredTexture? storedTexture)) {
+            SDL.SDL_DestroyTexture(storedTexture.texture);
+        }
+        LOADED_TEXTURES.Remove(textureId);
     }
 
     public static void RenderTextures(Dictionary<GameObject, TrackObject> objects) {

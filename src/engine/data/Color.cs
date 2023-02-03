@@ -53,4 +53,12 @@ public struct Color {
     public override string ToString() {
         return $"r: {r}, g: {g}, b: {b}, a: {a}";
     }
+    
+    public static bool operator ==(Color c1, Color c2) {
+        return c1.Rbyte == c2.Rbyte && c1.Gbyte == c2.Gbyte && c1.Bbyte == c2.Bbyte && c1.Abyte == c2.Abyte;
+    }
+
+    public static bool operator !=(Color c1, Color c2) {
+        return !(c1 == c2);
+    }
 }

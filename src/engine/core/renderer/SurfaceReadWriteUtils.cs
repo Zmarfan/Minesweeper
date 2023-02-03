@@ -31,6 +31,16 @@ public static class SurfaceReadWriteUtils {
 
         return surface;
     }
+    
+    public static unsafe void AlterSurfacePixels(SDL.SDL_Surface* surface, Color[,] oldPixels, Color[,] pixels) {
+        for (int x = 0; x < surface->w; x++) {
+            for (int y = 0; y < surface->h; y++) {
+                if (oldPixels[x, y] != pixels[x, y]) {
+                    WritePixel(surface, pixels[x, y], x, y);
+                }
+            }
+        }
+    }
 
     private static unsafe Color ReadPixel(SDL.SDL_Surface* surface, int x, int y) {
         byte bytesPerPixel = ((SDL.SDL_PixelFormat*)surface->format)->BytesPerPixel;

@@ -1,4 +1,6 @@
-﻿using Worms.engine.data;
+﻿using System.Diagnostics;
+using Worms.engine.core.input;
+using Worms.engine.data;
 using Worms.engine.game_object.components.texture_renderer;
 using Worms.engine.game_object.scripts;
 
@@ -9,7 +11,11 @@ public class TextureCollider : Script {
         get => _textureRenderer.texture;
         set {
             _textureRenderer.texture = value;
+            Stopwatch stopwatch = new();
+            stopwatch.Start();
             _pixelCollider.Pixels = CalculateColliderPixels(EdgesOnly).ToHashSet();
+            stopwatch.Stop();
+            Console.WriteLine($"collider: {stopwatch.ElapsedMilliseconds / 1000f}");
         }
     }
     public string SortingLayer {
@@ -69,8 +75,8 @@ public class TextureCollider : Script {
     private readonly PixelCollider _pixelCollider;
     private bool _edgesOnly;
     
-    private int EvenWidthOffset => (_textureRenderer.texture.sectionPixels.GetLength(0) + 1) % 2;
-    private int EvenHeightOffset => (_textureRenderer.texture.sectionPixels.GetLength(0) + 1) % 2;
+    private int EvenWidthOffset => (_textureRenderer.texture.SectionPixels.GetLength(0) + 1) % 2;
+    private int EvenHeightOffset => (_textureRenderer.texture.SectionPixels.GetLength(1) + 1) % 2;
     
     public TextureCollider(bool isActive, bool isTrigger, bool edgesOnly, TextureRenderer tr) : base(isActive) {
         IsActive = isActive;
@@ -84,8 +90,27 @@ public class TextureCollider : Script {
         AddComponent(_pixelCollider);
     }
 
+    public override void Update(float deltaTime) {
+        if (Input.GetButtonDown("alterTexture")) {
+            Color[,] newPixels = (Color[,])_textureRenderer.texture.SectionPixels.Clone();
+            for (int x = 100; x < 200; x++) {
+                for (int y = 100; y < 200; y++) {
+                    newPixels[x, y] = Color.TRANSPARENT;
+                }
+            }
+
+            Stopwatch stopwatch = new();
+            stopwatch.Start();
+            Texture texture = Texture;
+            texture.Alter(newPixels);
+            Texture = texture;
+            stopwatch.Stop();
+            Console.WriteLine($"total: {stopwatch.ElapsedMilliseconds / 1000f}");
+        }
+    }
+
     private IEnumerable<Vector2> CalculateColliderPixels(bool edgesOnly) {
-        Color[,] colors = _textureRenderer.texture.sectionPixels;
+        Color[,] colors = _textureRenderer.texture.SectionPixels;
         int width = colors.GetLength(0);
         int height = colors.GetLength(1);
         HashSet<Vector2> pixels = new();
