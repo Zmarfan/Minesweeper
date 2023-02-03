@@ -69,15 +69,8 @@ public struct Texture {
 
     public unsafe void Alter(Color[,] pixels) {
         _sectionPixels = null;
-        Stopwatch stopwatch = new();
-        stopwatch.Start();
         SurfaceReadWriteUtils.AlterSurfacePixels(surface, texturePixels, pixels);
-        stopwatch.Stop();
-        Console.WriteLine($"alter: {stopwatch.ElapsedMilliseconds / 1000f}"); 
-        stopwatch.Restart();
         TextureRendererHandler.RemoveLoadedTexture(textureId);
-        stopwatch.Stop();
-        Console.WriteLine($"remove: {stopwatch.ElapsedMilliseconds / 1000f}"); 
         texturePixels = pixels;
         textureId = Guid.NewGuid().ToString();
     }

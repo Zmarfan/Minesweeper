@@ -7,7 +7,6 @@ namespace Worms.engine.game_object.components.colliders;
 public class TextureColliderBuilder {
     private bool _isActive = true;
     private bool _isTrigger = true;
-    private bool _edgesOnly = true;
     private readonly Texture _texture;
     private string _sortingLayer = TextureRendererHandler.DEFAULT_SORTING_LAYER;
     private int _sortOrder = 0;
@@ -27,7 +26,6 @@ public class TextureColliderBuilder {
         return new TextureCollider(
             _isActive,
             _isTrigger,
-            _edgesOnly,
             new TextureRenderer(true, _texture, _sortingLayer, _sortOrder, _color, _flipX, _flipY)
         );
     }
@@ -41,12 +39,7 @@ public class TextureColliderBuilder {
         _isTrigger = isTrigger;
         return this;
     }
-    
-    public TextureColliderBuilder SetEdgesOnly(bool edgesOnly) {
-        _edgesOnly = edgesOnly;
-        return this;
-    }
-    
+
     public TextureColliderBuilder SetSortingLayer(string sortingLayer) {
         _sortingLayer = sortingLayer;
         return this;
