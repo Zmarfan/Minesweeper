@@ -11,8 +11,8 @@ public class TextureColliderBuilder {
     private string _sortingLayer = TextureRendererHandler.DEFAULT_SORTING_LAYER;
     private int _sortOrder = 0;
     private Color _color = Color.WHITE;
-    private bool _flipX;
-    private bool _flipY;
+    private bool _flipX = false;
+    private bool _flipY = false;
 
     public TextureColliderBuilder(Texture texture) {
         _texture = texture;

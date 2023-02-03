@@ -28,10 +28,18 @@ public class TextureCollider : Script {
     }
     public bool FlipX {
         get => _textureRenderer.flipX;
+        set {
+            _textureRenderer.flipX = value;
+            _pixelCollider.FlipX = value;
+        }
     }
 
     public bool FlipY {
         get => _textureRenderer.flipY;
+        set {
+            _textureRenderer.flipY = value;
+            _pixelCollider.FlipY = value;
+        }
     }
 
     private readonly TextureRenderer _textureRenderer;
@@ -41,7 +49,7 @@ public class TextureCollider : Script {
     public TextureCollider(bool isActive, bool isTrigger, TextureRenderer tr) : base(isActive) {
         IsActive = isActive;
         _textureRenderer = tr;
-        _pixelCollider = new PixelCollider(true, tr.texture.SectionPixels, isTrigger, Vector2.Zero());
+        _pixelCollider = new PixelCollider(true, tr.texture.SectionPixels, tr.flipX, tr.flipY, isTrigger, Vector2.Zero());
     }
 
     public override void Awake() {
