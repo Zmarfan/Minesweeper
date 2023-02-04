@@ -30,7 +30,7 @@ public class TextureCollider : Script {
         get => _textureRenderer.flipX;
         set {
             _textureRenderer.flipX = value;
-            _pixelCollider.FlipX = value;
+            _pixelCollider.flipX = value;
         }
     }
 
@@ -38,7 +38,7 @@ public class TextureCollider : Script {
         get => _textureRenderer.flipY;
         set {
             _textureRenderer.flipY = value;
-            _pixelCollider.FlipY = value;
+            _pixelCollider.flipY = value;
         }
     }
 
