@@ -5,6 +5,9 @@ using Worms.engine.data;
 namespace Worms.engine.game_object.components.colliders; 
 
 public class PixelCollider : Collider {
+    private const int NORMAL_CHECK_DEPTH = 4;
+    private const int MIN_SURROUNDING_PIXELS_FOR_VALID_NORMAL = 16;
+    
     public Color[,] pixels;
 
     public bool flipX;
@@ -46,5 +49,28 @@ public class PixelCollider : Collider {
     
     private int CalculateYPixel(float y) {
         return FlipYSign * ((int)Math.Round(y) - (int)offset.y) + Height / 2 - EvenHeightOffset;
+    }
+
+    private Vector2 CalculateNormal(int pixelX, int pixelY) {
+        Vector2 point = new(pixelX, -pixelY);
+        Vector2 inverseNormal = Vector2.Zero();
+        int surroundingPixels = 0;
+        
+        for (int x = Math.Max(pixelX - NORMAL_CHECK_DEPTH, 0); x <= Math.Min(pixelX + NORMAL_CHECK_DEPTH, Width - 1); x++) {
+            for (int y = Math.Max(pixelY - NORMAL_CHECK_DEPTH, 0); y <= Math.Min(pixelY + NORMAL_CHECK_DEPTH, Height - 1); y++) {
+                if (!pixels[x, y].IsOpaque || (x == pixelX && y == pixelY)) {
+                    continue;
+                }
+
+                surroundingPixels++;
+                inverseNormal += new Vector2(x, -y) - point;
+            }
+        }
+
+        if (surroundingPixels < MIN_SURROUNDING_PIXELS_FOR_VALID_NORMAL) {
+            return Vector2.Zero();
+        }
+
+        return -inverseNormal;
     }
 }
