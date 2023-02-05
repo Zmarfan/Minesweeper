@@ -1,4 +1,5 @@
-﻿using Worms.engine.data;
+﻿using Worms.engine.core.update;
+using Worms.engine.data;
 
 namespace Worms.engine.game_object.components.colliders; 
 
@@ -16,4 +17,5 @@ public abstract class Collider : ToggleComponent {
     }
 
     public abstract bool IsPointInside(Vector2 p);
+    public abstract Vector2? Raycast(Vector2 origin, Vector2 direction);
 }

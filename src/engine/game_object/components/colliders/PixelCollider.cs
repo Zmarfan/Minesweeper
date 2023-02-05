@@ -46,7 +46,11 @@ public class PixelCollider : Collider {
     private int CalculateXPixel(float x) {
         return FlipXSign * ((int)Math.Round(x) - (int)offset.x) + Width / 2 - EvenWidthOffset;
     }
-    
+
+    public override Vector2? Raycast(Vector2 origin, Vector2 direction) {
+        return null;
+    }
+
     private int CalculateYPixel(float y) {
         return FlipYSign * ((int)Math.Round(y) - (int)offset.y) + Height / 2 - EvenHeightOffset;
     }

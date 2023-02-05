@@ -15,6 +15,7 @@ public class PhysicsUpdateHandler {
 
     public PhysicsUpdateHandler(SceneData sceneData) {
         _sceneData = sceneData;
+        Physics.Init(sceneData);
     }
 
     public void Update() {

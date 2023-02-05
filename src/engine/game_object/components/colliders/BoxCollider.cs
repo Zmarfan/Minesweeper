@@ -24,6 +24,10 @@ public class BoxCollider : Collider {
         return p.x >= minX && p.x <= maxX && p.y >= minY && p.y <= maxY;
     }
 
+    public override Vector2? Raycast(Vector2 origin, Vector2 direction) {
+        return null;
+    }
+
     public override void OnDrawGizmos() {
         Gizmos.DrawRectangle(Center, size * Transform.Scale, Transform.Rotation, GIZMO_COLOR);
     }

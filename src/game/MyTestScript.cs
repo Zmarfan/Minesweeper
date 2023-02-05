@@ -1,4 +1,6 @@
-﻿using Worms.engine.core.input;
+﻿using Worms.engine.core.gizmos;
+using Worms.engine.core.input;
+using Worms.engine.core.update;
 using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.audio_source;
@@ -10,6 +12,8 @@ public class MyTestScript : Script {
     private readonly float _speed = 4.5f;
     private readonly Func<GameObjectBuilder> _explosion;
     private AudioSource _audioSource = null!;
+    
+    private Vector2? rayCastHitPosition = null;
     
     public MyTestScript(Func<GameObjectBuilder> explosion) : base(true) {
         _explosion = explosion;
@@ -28,5 +32,19 @@ public class MyTestScript : Script {
         Transform.Position += Input.GetAxis("horizontal") * _speed * 100 * deltaTime;
         Transform.Position += Input.GetAxis("vertical") * _speed * 100 * deltaTime;
         Transform.Rotation += Input.GetButton("action") ? _speed * 50 * deltaTime : 0;
+        
+        if (Physics.Raycast(Transform.Position, Input.MouseWorldPosition - Transform.Position, float.MaxValue, out RaycastHit? hit)) {
+            rayCastHitPosition = hit!.Value.point;
+        }
+        else {
+            rayCastHitPosition = null;
+        }
+    }
+
+    public override void OnDrawGizmos() {
+        Gizmos.DrawRay(Transform.Position, Input.MouseWorldPosition - Transform.Position, Color.WHITE);
+        if (rayCastHitPosition.HasValue) {
+            Gizmos.DrawIcon(rayCastHitPosition.Value, Color.BLUE);
+        }
     }
 }
