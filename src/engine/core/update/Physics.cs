@@ -24,17 +24,19 @@ public class Physics {
         _self = new Physics(sceneData);
     }
 
+    public static bool Raycast(Vector2 origin, Vector2 direction, out RaycastHit? hit) {
+        return Raycast(origin, direction, 5000f, out hit);
+    }
+
     public static bool Raycast(Vector2 origin, Vector2 direction, float maxDistance, out RaycastHit? hit) {
+        direction = direction.Normalized * maxDistance;
         List<RaycastHit> hits = new();
         foreach ((GameObject _, TrackObject obj) in _self.GameObjectHandler.objects) {
             if (!obj.isActive) {
                 continue;
             }
 
-            hits.AddRange(
-                CalculateRaycastHitsOnColliders(origin, direction, obj.Colliders)
-                    .Where(h => h.distance <= maxDistance)
-            );
+            hits.AddRange(CalculateRaycastHitsOnColliders(origin, direction, obj.Colliders));
         }
 
         if (hits.Count == 0) {
@@ -49,17 +51,15 @@ public class Physics {
     private static IEnumerable<RaycastHit> CalculateRaycastHitsOnColliders(Vector2 origin, Vector2 direction, IEnumerable<Collider> colliders) {
         return colliders
             .Where(c => c is { IsActive: true, isTrigger: false })
-            .Select(c => CalculateRaycastHit(origin, direction, c))
-            .Where(c => c.HasValue)
-            .Select(c => c!.Value);
+            .SelectMany(c => CalculateRaycastHit(origin, direction, c));
     }
 
-    private static RaycastHit? CalculateRaycastHit(Vector2 origin, Vector2 direction, Collider collider) {
+    private static IEnumerable<RaycastHit> CalculateRaycastHit(Vector2 origin, Vector2 direction, Collider collider) {
         ColliderHit? hit = collider.Raycast(origin, direction);
         if (hit == null) {
-            return null;
+            return new List<RaycastHit>();
         }
 
-        return new RaycastHit(collider, (hit.point - origin).Magnitude, hit.normal, hit.point, collider.Transform);
+        return new List<RaycastHit> { new(collider, (hit.point - origin).Magnitude, hit.normal, hit.point, collider.Transform) };
     }
 }

@@ -18,7 +18,7 @@ public static class PhysicsUtils {
 
         float u = Vector2.Cross(p2 - p1, origin - p1) / denominator;
         float t = Vector2.Cross(direction, origin - p1) / denominator;
-        if (u < 0 || t is < 0 or > 1) {
+        if (u is < 0 or > 1 || t is < 0 or > 1) {
             intersection = null;
             return false;
         }

@@ -35,7 +35,7 @@ public class CircleCollider : Collider {
             return null;
         }
         float t = (float)(-b - Math.Sqrt(det)) / (2 * a);
-        if (t >= 0) {
+        if (t is >= 0 and <= 1) {
             Vector2 circlePoint = origin + direction * t;
             return new ColliderHit(
                 Transform.LocalToWorldMatrix.ConvertPoint(circlePoint),
