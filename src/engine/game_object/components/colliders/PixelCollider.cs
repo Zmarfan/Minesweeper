@@ -36,24 +36,32 @@ public class PixelCollider : Collider {
 
     public override bool IsPointInside(Vector2 p) {
         p = Transform.WorldToLocalMatrix.ConvertPoint(p);
-        int pixelX = CalculateXPixel(p.x);
-        int pixelY = CalculateYPixel(p.y);
-        if (pixelX < 0 || pixelY < 0 || pixelX >= Width || pixelY >= Height) {
+        Vector2 pixel = LocalToPixel(p);
+        if (!PixelIsInTexture(pixel)) {
             return false;
         }
-        return pixels[pixelX, pixelY].IsOpaque;
+        return pixels[(int)pixel.x, (int)pixel.y].IsOpaque;
     }
-
-    private int CalculateXPixel(float x) {
-        return FlipXSign * ((int)Math.Round(x) - (int)offset.x) + Width / 2 - EvenWidthOffset;
-    }
-
+    
     public override ColliderHit? Raycast(Vector2 origin, Vector2 direction) {
-        return null;
-    }
+        origin = Transform.WorldToLocalMatrix.ConvertPoint(origin);
+        Vector2 to = origin + Transform.WorldToLocalMatrix.ConvertVector(direction);
+        origin = LocalToPixel(origin);
+        to = LocalToPixel(to);
 
-    private int CalculateYPixel(float y) {
-        return FlipYSign * ((int)Math.Round(y) - (int)offset.y) + Height / 2 - EvenHeightOffset;
+        if (PixelIsInTexture(origin) && pixels[(int)origin.x, (int)origin.y].IsOpaque) {
+            return null;
+        }
+        
+        Vector2? pixel = CalculatePointLineHits((int)origin.x, (int)origin.y, (int)to.x, (int)to.y);
+        if (!pixel.HasValue) {
+            return null;
+        }
+
+        return new ColliderHit(
+            Transform.LocalToWorldMatrix.ConvertPoint(PixelToLocal(pixel.Value)),
+            Transform.LocalToWorldMatrix.ConvertVector(CalculateNormal((int)pixel.Value.x, (int)pixel.Value.y)).Normalized
+        );
     }
 
     private Vector2 CalculateNormal(int pixelX, int pixelY) {
@@ -77,5 +85,75 @@ public class PixelCollider : Collider {
         }
 
         return -inverseNormal;
+    }
+
+    private bool PixelIsInTexture(Vector2 pixel) {
+        return pixel.x >= 0 && pixel.x < Width && pixel.y >= 0 && pixel.y < Height;
+    }
+    
+    private Vector2 LocalToPixel(Vector2 p) {
+        return new Vector2(
+            FlipXSign * ((int)Math.Round(p.x) - (int)offset.x) + Width / 2 - EvenWidthOffset,
+            FlipYSign * ((int)Math.Round(p.y) - (int)offset.y) + Height / 2 - EvenHeightOffset
+        );
+    }
+    
+    private Vector2 PixelToLocal(Vector2 p) {
+        return new Vector2(
+            FlipXSign * (p.x - Width / 2f + EvenWidthOffset) + offset.x,
+            FlipYSign * (p.y - Height / 2f + EvenHeightOffset) + offset.y
+        );
+    }
+    
+    private Vector2? CalculatePointLineHits(int x, int y, int x2, int y2) {
+        int w = x2 - x;
+        int h = y2 - y;
+        int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
+        dx1 = w switch {
+            < 0 => -1,
+            > 0 => 1,
+            _ => dx1
+        };
+        dy1 = h switch {
+            < 0 => -1,
+            > 0 => 1,
+            _ => dy1
+        };
+        dx2 = w switch {
+            < 0 => -1,
+            > 0 => 1,
+            _ => dx2
+        };
+
+        int longest = Math.Abs(w) ;
+        int shortest = Math.Abs(h) ;
+        
+        if (!(longest > shortest)) {
+            longest = Math.Abs(h) ;
+            shortest = Math.Abs(w) ;
+            dy2 = h switch {
+                < 0 => -1,
+                > 0 => 1,
+                _ => dy2
+            };
+            dx2 = 0;            
+        }
+        int numerator = longest >> 1 ;
+        for (int i = 0; i <= longest; i++) {
+            if (PixelIsInTexture(new Vector2(x, y)) && pixels[x, y].IsOpaque) {
+                return new Vector2(x, y);
+            }
+            numerator += shortest;
+            if (!(numerator < longest)) {
+                numerator -= longest;
+                x += dx1;
+                y += dy1;
+            } else {
+                x += dx2;
+                y += dy2;
+            }
+        }
+
+        return null;
     }
 }

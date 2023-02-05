@@ -191,6 +191,7 @@ public static class Scene1 {
             .SetComponent(new TriggerScriptTest())
             .SetComponent(TextureColliderBuilder
                 .Builder(Texture.CreateSingle(Path("pixelTest7.png")))
+                .SetIsTrigger(false)
                 .Build()
             )
             .Build()
