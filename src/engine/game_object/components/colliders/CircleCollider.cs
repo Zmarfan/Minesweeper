@@ -20,7 +20,7 @@ public class CircleCollider : Collider {
         return (Transform.WorldToLocalMatrix.ConvertPoint(p) - offset).SqrMagnitude <= radius * radius;
     }
 
-    public override Vector2? Raycast(Vector2 origin, Vector2 direction) {
+    public override ColliderHit? Raycast(Vector2 origin, Vector2 direction) {
         origin = Transform.WorldToLocalMatrix.ConvertPoint(origin);
         direction = Transform.WorldToLocalMatrix.ConvertVector(direction);
 
@@ -36,7 +36,11 @@ public class CircleCollider : Collider {
         }
         float t = (float)(-b - Math.Sqrt(det)) / (2 * a);
         if (t >= 0) {
-            return Transform.LocalToWorldMatrix.ConvertPoint(origin + direction * t);
+            Vector2 circlePoint = origin + direction * t;
+            return new ColliderHit(
+                Transform.LocalToWorldMatrix.ConvertPoint(circlePoint),
+                Transform.LocalToWorldMatrix.ConvertVector(circlePoint - offset).Normalized
+            );
         }
 
         return null;

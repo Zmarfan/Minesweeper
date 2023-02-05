@@ -26,7 +26,7 @@ public class BoxCollider : Collider {
         return p.x >= BottomLeft.x && p.x <= TopRight.x && p.y >= BottomLeft.y && p.y <= TopRight.y;
     }
 
-    public override Vector2? Raycast(Vector2 origin, Vector2 direction) {
+    public override ColliderHit? Raycast(Vector2 origin, Vector2 direction) {
         if (IsPointInside(origin)) {
             return null;
         }
@@ -34,31 +34,35 @@ public class BoxCollider : Collider {
         origin = Transform.WorldToLocalMatrix.ConvertPoint(origin);
         direction = Transform.WorldToLocalMatrix.ConvertVector(direction);
 
-        List<Vector2> intersectionPoints = CalculateIntersectionPoints(origin, direction);
-        if (intersectionPoints.Count == 0) {
+        List<Tuple<Vector2, Vector2>> pointsWithNormals = CalculateIntersectionPoints(origin, direction);
+        if (pointsWithNormals.Count == 0) {
             return null;
         }
 
-        return Transform.LocalToWorldMatrix.ConvertPoint(intersectionPoints.MinBy(p => (p - origin).SqrMagnitude));
+        Tuple<Vector2, Vector2> bestHit = pointsWithNormals.MinBy(p => (p.Item1 - origin).SqrMagnitude)!;
+        return new ColliderHit(
+            Transform.LocalToWorldMatrix.ConvertPoint(bestHit.Item1),
+            Transform.LocalToWorldMatrix.ConvertVector(bestHit.Item2).Normalized
+        );
     }
 
     public override void OnDrawGizmos() {
         Gizmos.DrawRectangle(Center, size * Transform.Scale, Transform.Rotation, GIZMO_COLOR);
     }
     
-    private List<Vector2> CalculateIntersectionPoints(Vector2 origin, Vector2 direction) {
-        List<Vector2> points = new();
+    private List<Tuple<Vector2, Vector2>> CalculateIntersectionPoints(Vector2 origin, Vector2 direction) {
+        List<Tuple<Vector2, Vector2>> points = new();
         if (PhysicsUtils.LineIntersection(origin, direction, BottomLeft, TopLeft, out Vector2? p1)) {
-            points.Add(p1!.Value);
+            points.Add(new Tuple<Vector2, Vector2>(p1!.Value, Vector2.Left()));
         }
         if (PhysicsUtils.LineIntersection(origin, direction, BottomLeft, BottomRight, out Vector2? p2)) {
-            points.Add(p2!.Value);
+            points.Add(new Tuple<Vector2, Vector2>(p2!.Value, Vector2.Down()));
         }
         if (PhysicsUtils.LineIntersection(origin, direction, TopLeft, TopRight, out Vector2? p3)) {
-            points.Add(p3!.Value);
+            points.Add(new Tuple<Vector2, Vector2>(p3!.Value, Vector2.Up()));
         }
         if (PhysicsUtils.LineIntersection(origin, direction, BottomRight, TopRight, out Vector2? p4)) {
-            points.Add(p4!.Value);
+            points.Add(new Tuple<Vector2, Vector2>(p4!.Value, Vector2.Right()));
         }
 
         return points;

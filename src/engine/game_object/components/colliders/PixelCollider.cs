@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Worms.engine.core.gizmos;
+using Worms.engine.core.update;
 using Worms.engine.data;
 
 namespace Worms.engine.game_object.components.colliders; 
@@ -47,7 +48,7 @@ public class PixelCollider : Collider {
         return FlipXSign * ((int)Math.Round(x) - (int)offset.x) + Width / 2 - EvenWidthOffset;
     }
 
-    public override Vector2? Raycast(Vector2 origin, Vector2 direction) {
+    public override ColliderHit? Raycast(Vector2 origin, Vector2 direction) {
         return null;
     }
 

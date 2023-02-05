@@ -17,5 +17,5 @@ public abstract class Collider : ToggleComponent {
     }
 
     public abstract bool IsPointInside(Vector2 p);
-    public abstract Vector2? Raycast(Vector2 origin, Vector2 direction);
+    public abstract ColliderHit? Raycast(Vector2 origin, Vector2 direction);
 }

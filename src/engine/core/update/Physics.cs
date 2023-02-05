@@ -55,11 +55,11 @@ public class Physics {
     }
 
     private static RaycastHit? CalculateRaycastHit(Vector2 origin, Vector2 direction, Collider collider) {
-        Vector2? hit = collider.Raycast(origin, direction);
-        if (!hit.HasValue) {
+        ColliderHit? hit = collider.Raycast(origin, direction);
+        if (hit == null) {
             return null;
         }
 
-        return new RaycastHit(collider, (hit.Value - origin).Magnitude, Vector2.Up(), hit.Value, collider.Transform);
+        return new RaycastHit(collider, (hit.point - origin).Magnitude, hit.normal, hit.point, collider.Transform);
     }
 }

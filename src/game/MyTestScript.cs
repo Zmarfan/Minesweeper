@@ -13,7 +13,7 @@ public class MyTestScript : Script {
     private readonly Func<GameObjectBuilder> _explosion;
     private AudioSource _audioSource = null!;
     
-    private Vector2? rayCastHitPosition = null;
+    private RaycastHit? hit = null;
     
     public MyTestScript(Func<GameObjectBuilder> explosion) : base(true) {
         _explosion = explosion;
@@ -32,19 +32,15 @@ public class MyTestScript : Script {
         Transform.Position += Input.GetAxis("horizontal") * _speed * 100 * deltaTime;
         Transform.Position += Input.GetAxis("vertical") * _speed * 100 * deltaTime;
         Transform.Rotation += Input.GetButton("action") ? _speed * 50 * deltaTime : 0;
-        
-        if (Physics.Raycast(Transform.Position, Input.MouseWorldPosition - Transform.Position, float.MaxValue, out RaycastHit? hit)) {
-            rayCastHitPosition = hit!.Value.point;
-        }
-        else {
-            rayCastHitPosition = null;
-        }
+
+        Physics.Raycast(Transform.Position, Input.MouseWorldPosition - Transform.Position, float.MaxValue, out hit);
     }
 
     public override void OnDrawGizmos() {
         Gizmos.DrawRay(Transform.Position, Input.MouseWorldPosition - Transform.Position, Color.WHITE);
-        if (rayCastHitPosition.HasValue) {
-            Gizmos.DrawIcon(rayCastHitPosition.Value, Color.BLUE);
+        if (hit.HasValue) {
+            Gizmos.DrawIcon(hit.Value.point, Color.BLUE);
+            Gizmos.DrawRay(hit.Value.point, hit.Value.normal * 50f, Color.ORANGE);
         }
     }
 }
