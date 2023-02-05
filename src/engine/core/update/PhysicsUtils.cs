@@ -16,12 +16,13 @@ public static class PhysicsUtils {
             return false;
         }
 
+        float u = Vector2.Cross(p2 - p1, origin - p1) / denominator;
         float t = Vector2.Cross(direction, origin - p1) / denominator;
-        if (t is < 0 or > 1) {
+        if (u < 0 || t is < 0 or > 1) {
             intersection = null;
             return false;
         }
-        intersection = p1 + t * (p2 - p1);
+        intersection = origin + u * direction;
         return true;
     }
 }
