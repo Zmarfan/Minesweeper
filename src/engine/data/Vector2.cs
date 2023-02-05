@@ -65,6 +65,10 @@ public struct Vector2 {
         return lhs.x * rhs.x + lhs.y * rhs.y;
     }
     
+    public static float Cross(Vector2 lhs, Vector2 rhs) {
+        return lhs.x * rhs.y - rhs.x * lhs.y;
+    }
+    
     public static float Distance(Vector2 a, Vector2 b) {
         float num = a.x - b.x;
         float num2 = a.y - b.y;
