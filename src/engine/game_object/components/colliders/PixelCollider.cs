@@ -58,23 +58,23 @@ public class PixelCollider : Collider {
 
         return new ColliderHit(
             Transform.LocalToWorldMatrix.ConvertPoint(PixelToLocal(pixel.Value)),
-            Transform.LocalToWorldMatrix.ConvertVector(CalculateNormal(pixel.Value.x, pixel.Value.y)).Normalized
+            Transform.LocalToWorldMatrix.ConvertVector(CalculateNormal(pixel.Value)).Normalized
         );
     }
 
-    private Vector2 CalculateNormal(int pixelX, int pixelY) {
-        Vector2 point = new(pixelX, -pixelY);
-        Vector2 inverseNormal = Vector2.Zero();
+    private Vector2 CalculateNormal(Vector2Int pixel) {
+        Vector2 point = new(pixel.x, -pixel.y);
+        Vector2 normal = Vector2.Zero();
         int surroundingPixels = 0;
         
-        for (int x = Math.Max(pixelX - NORMAL_CHECK_DEPTH, 0); x <= Math.Min(pixelX + NORMAL_CHECK_DEPTH, Width - 1); x++) {
-            for (int y = Math.Max(pixelY - NORMAL_CHECK_DEPTH, 0); y <= Math.Min(pixelY + NORMAL_CHECK_DEPTH, Height - 1); y++) {
-                if (!pixels[x, y].IsOpaque || (x == pixelX && y == pixelY)) {
+        for (int x = Math.Max(pixel.x - NORMAL_CHECK_DEPTH, 0); x <= Math.Min(pixel.x + NORMAL_CHECK_DEPTH, Width - 1); x++) {
+            for (int y = Math.Max(pixel.y - NORMAL_CHECK_DEPTH, 0); y <= Math.Min(pixel.y + NORMAL_CHECK_DEPTH, Height - 1); y++) {
+                if (!pixels[x, y].IsOpaque || (x == pixel.x && y == pixel.y)) {
                     continue;
                 }
 
                 surroundingPixels++;
-                inverseNormal += new Vector2(x, -y) - point;
+                normal += point - new Vector2(x, -y);
             }
         }
 
@@ -82,7 +82,7 @@ public class PixelCollider : Collider {
             return Vector2.Zero();
         }
 
-        return -inverseNormal;
+        return normal;
     }
 
     private bool PixelIsInTexture(Vector2Int pixel) {
