@@ -34,37 +34,17 @@ public class BoxCollider : Collider {
         origin = Transform.WorldToLocalMatrix.ConvertPoint(origin);
         direction = Transform.WorldToLocalMatrix.ConvertVector(direction);
 
-        List<Tuple<Vector2, Vector2>> pointsWithNormals = CalculateIntersectionPoints(origin, direction);
-        if (pointsWithNormals.Count == 0) {
-            return null;
+        if (PhysicsUtils.LineBoxIntersectionWithNormal(BottomLeft, TopLeft, TopRight, BottomRight, origin, direction, out Tuple<Vector2, Vector2> value)) {
+            return new ColliderHit(
+                Transform.LocalToWorldMatrix.ConvertPoint(value.Item1),
+                Transform.LocalToWorldMatrix.ConvertVector(value.Item2).Normalized
+            );
         }
 
-        Tuple<Vector2, Vector2> bestHit = pointsWithNormals.MinBy(p => (p.Item1 - origin).SqrMagnitude)!;
-        return new ColliderHit(
-            Transform.LocalToWorldMatrix.ConvertPoint(bestHit.Item1),
-            Transform.LocalToWorldMatrix.ConvertVector(bestHit.Item2).Normalized
-        );
+        return null;
     }
 
     public override void OnDrawGizmos() {
         Gizmos.DrawRectangle(Center, size * Transform.Scale, Transform.Rotation, GIZMO_COLOR);
-    }
-    
-    private List<Tuple<Vector2, Vector2>> CalculateIntersectionPoints(Vector2 origin, Vector2 direction) {
-        List<Tuple<Vector2, Vector2>> points = new();
-        if (PhysicsUtils.LineIntersection(origin, direction, BottomLeft, TopLeft, out Vector2 p1)) {
-            points.Add(new Tuple<Vector2, Vector2>(p1, Vector2.Left()));
-        }
-        if (PhysicsUtils.LineIntersection(origin, direction, BottomLeft, BottomRight, out Vector2 p2)) {
-            points.Add(new Tuple<Vector2, Vector2>(p2, Vector2.Down()));
-        }
-        if (PhysicsUtils.LineIntersection(origin, direction, TopLeft, TopRight, out Vector2 p3)) {
-            points.Add(new Tuple<Vector2, Vector2>(p3, Vector2.Up()));
-        }
-        if (PhysicsUtils.LineIntersection(origin, direction, BottomRight, TopRight, out Vector2 p4)) {
-            points.Add(new Tuple<Vector2, Vector2>(p4, Vector2.Right()));
-        }
-
-        return points;
     }
 }
