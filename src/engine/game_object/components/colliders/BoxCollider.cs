@@ -52,17 +52,17 @@ public class BoxCollider : Collider {
     
     private List<Tuple<Vector2, Vector2>> CalculateIntersectionPoints(Vector2 origin, Vector2 direction) {
         List<Tuple<Vector2, Vector2>> points = new();
-        if (PhysicsUtils.LineIntersection(origin, direction, BottomLeft, TopLeft, out Vector2? p1)) {
-            points.Add(new Tuple<Vector2, Vector2>(p1!.Value, Vector2.Left()));
+        if (PhysicsUtils.LineIntersection(origin, direction, BottomLeft, TopLeft, out Vector2 p1)) {
+            points.Add(new Tuple<Vector2, Vector2>(p1, Vector2.Left()));
         }
-        if (PhysicsUtils.LineIntersection(origin, direction, BottomLeft, BottomRight, out Vector2? p2)) {
-            points.Add(new Tuple<Vector2, Vector2>(p2!.Value, Vector2.Down()));
+        if (PhysicsUtils.LineIntersection(origin, direction, BottomLeft, BottomRight, out Vector2 p2)) {
+            points.Add(new Tuple<Vector2, Vector2>(p2, Vector2.Down()));
         }
-        if (PhysicsUtils.LineIntersection(origin, direction, TopLeft, TopRight, out Vector2? p3)) {
-            points.Add(new Tuple<Vector2, Vector2>(p3!.Value, Vector2.Up()));
+        if (PhysicsUtils.LineIntersection(origin, direction, TopLeft, TopRight, out Vector2 p3)) {
+            points.Add(new Tuple<Vector2, Vector2>(p3, Vector2.Up()));
         }
-        if (PhysicsUtils.LineIntersection(origin, direction, BottomRight, TopRight, out Vector2? p4)) {
-            points.Add(new Tuple<Vector2, Vector2>(p4!.Value, Vector2.Right()));
+        if (PhysicsUtils.LineIntersection(origin, direction, BottomRight, TopRight, out Vector2 p4)) {
+            points.Add(new Tuple<Vector2, Vector2>(p4, Vector2.Right()));
         }
 
         return points;

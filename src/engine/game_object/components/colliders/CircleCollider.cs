@@ -23,23 +23,10 @@ public class CircleCollider : Collider {
     public override ColliderHit? Raycast(Vector2 origin, Vector2 direction) {
         origin = Transform.WorldToLocalMatrix.ConvertPoint(origin);
         direction = Transform.WorldToLocalMatrix.ConvertVector(direction);
-
-        Vector2 toCircle = origin - offset;
-        float a = Vector2.Dot(direction, direction);
-        float b = 2 * Vector2.Dot(toCircle, direction);
-        float c = Vector2.Dot(toCircle, toCircle) - radius * radius;
-
-        float det = b * b - 4 * a * c;
-        
-        if (det <= 0) {
-            return null;
-        }
-        float t = (float)(-b - Math.Sqrt(det)) / (2 * a);
-        if (t is >= 0 and <= 1) {
-            Vector2 circlePoint = origin + direction * t;
+        if (PhysicsUtils.LineCircleIntersection(origin, direction, offset, radius, out Vector2 intersection)) {
             return new ColliderHit(
-                Transform.LocalToWorldMatrix.ConvertPoint(circlePoint),
-                Transform.LocalToWorldMatrix.ConvertVector(circlePoint - offset).Normalized
+                Transform.LocalToWorldMatrix.ConvertPoint(intersection),
+                Transform.LocalToWorldMatrix.ConvertVector(intersection - offset).Normalized
             );
         }
 
