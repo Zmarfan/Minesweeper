@@ -47,7 +47,7 @@ public class PhysicsUpdateHandler {
     }
     
     private void UpdateColliderTriggers(TrackObject obj) {
-        HashSet<GameObject> gameObjectsInTrigger = new();
+        HashSet<Collider> collidersInTrigger = new();
         foreach (Collider collider in obj.Colliders) {
             if (collider is not { IsActive: true, isTrigger: true }) {
                 continue;
@@ -59,23 +59,24 @@ public class PhysicsUpdateHandler {
                 }
 
                 foreach (Collider checkCollider in checkObj.Colliders) {
-                    if (collider is not { IsActive: true, isTrigger: false }) {
+                    if (checkCollider is not { IsActive: true, isTrigger: false }) {
                         continue;
                     }
 
                     if (DoCollidersIntersect(collider, checkCollider)) {
-                        gameObjectsInTrigger.Add(collider.gameObject);
+                        collidersInTrigger.Add(checkCollider);
                     }
                 }
             }
         }
 
-        obj.GameObjectsInsideTrigger = gameObjectsInTrigger;
+        FireObjectTriggerEvents(obj, collidersInTrigger);
+        obj.CollidersInsideTrigger = collidersInTrigger;
     }
 
     private static bool DoCollidersIntersect(Collider c1, Collider c2) {
         return c1 switch {
-            BoxCollider when c2 is BoxCollider => TriggerIntersectUtils.DoesBoxOnBoxOverlap(c1, c2),
+            BoxCollider box1 when c2 is BoxCollider box2 => TriggerIntersectUtils.DoesBoxOnBoxOverlap(box1, box2),
             CircleCollider when c2 is CircleCollider => TriggerIntersectUtils.DoesCircleOnCircleOverlap(c1, c2),
             PixelCollider when c2 is PixelCollider => TriggerIntersectUtils.DoesPixelOnPixelOverlap(c1, c2),
             BoxCollider when c2 is CircleCollider => TriggerIntersectUtils.DoesBoxOnCircleOverlap(c1, c2),
@@ -88,6 +89,21 @@ public class PhysicsUpdateHandler {
         };
     }
 
+    private static void FireObjectTriggerEvents(TrackObject obj, IReadOnlySet<Collider> collidersInTrigger) {
+        foreach (Collider collider in obj.CollidersInsideTrigger) {
+            if (collidersInTrigger.Contains(collider)) {
+                RunScriptsFunction(obj, script => script.OnTriggerStay(collider));
+            }
+            else {
+                RunScriptsFunction(obj, script => script.OnTriggerExit(collider));
+            }
+        }
+
+        foreach (Collider collider in collidersInTrigger.Except(obj.CollidersInsideTrigger)) {
+            RunScriptsFunction(obj, script => script.OnTriggerEnter(collider));
+        }
+    }
+    
     private static Vector2 GetMouseWorldPosition(TrackObject trackObject) {
         return trackObject.isWorld ? Input.MouseWorldPosition : Input.MouseCameraPosition;
     }

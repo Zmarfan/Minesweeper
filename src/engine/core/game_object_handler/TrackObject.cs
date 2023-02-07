@@ -17,7 +17,7 @@ public class TrackObject {
     public IEnumerable<Script> Scripts => toggleComponents.OfType<Script>();
 
     public bool MouseInsideTrigger { get; set; } = false;
-    public HashSet<GameObject> GameObjectsInsideTrigger { get; set; } = new();
+    public HashSet<Collider> CollidersInsideTrigger { get; set; } = new();
     
     public TrackObject(bool isWorld, bool isActive) {
         this.isWorld = isWorld;

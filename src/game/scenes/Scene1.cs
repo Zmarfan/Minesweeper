@@ -10,6 +10,7 @@ using Worms.engine.game_object.components.particle_system.particles;
 using Worms.engine.game_object.components.particle_system.ranges;
 using Worms.engine.game_object.components.particle_system.renderer;
 using Worms.engine.game_object.components.particle_system.shape;
+using Worms.engine.game_object.components.physics;
 using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.components.screen_pivot;
 using Worms.engine.game_object.components.texture_renderer;
@@ -203,17 +204,13 @@ public static class Scene1 {
             .SetPosition(new Vector2(-200, 100))
             .SetComponent(new CircleCollider(true, false, 150f, Vector2.Zero()))
             .Build()
-            .Transform.AddSibling("circleCollider3")
-            .SetPosition(new Vector2(200, 100))
-            .SetComponent(new BoxCollider(true, false, new Vector2(100f, 100f), Vector2.Zero()))
-            .Build()
             .Transform.AddSibling("circleCollider4")
             .SetPosition(new Vector2(100, 100))
             .SetComponent(new CircleCollider(true, false, 120, Vector2.Zero()))
             .Build()
             .Transform.AddSibling("animation")
             .SetComponent(new TriggerScriptTest())
-            .SetComponent(new CircleCollider(true, true, 30, Vector2.Zero()))
+            .SetComponent(new BoxCollider(true, true, new Vector2(100, 100), Vector2.Zero()))
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateMultiple(Path("animation_1.png"), 0, 0, 1, 19)).Build())
             .SetComponent(AudioSourceBuilder
                 .Builder(Path("explosion/Explosion1.wav"), "effects")
@@ -222,6 +219,7 @@ public static class Scene1 {
                 .Build()
             )
             .SetComponent(new GizmoScript())
+            .SetComponent(new RigidBody())
             .SetComponent(
                 AnimationControllerBuilder
                     .Builder()

@@ -5,6 +5,7 @@ using Worms.engine.core.update.physics;
 using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.audio_source;
+using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.scripts;
 
 namespace Worms.game; 
@@ -36,6 +37,14 @@ public class MyTestScript : Script {
 
         Vector2 direction = Input.MouseWorldPosition - Transform.Position;
         Physics.Raycast(Transform.Position, Input.MouseWorldPosition - Transform.Position, direction.Magnitude, out _hit);
+    }
+
+    public override void OnTriggerEnter(Collider collider) {
+        Console.WriteLine($"enter: {collider.gameObject.Name}");
+    }
+
+    public override void OnTriggerExit(Collider collider) {
+        Console.WriteLine($"exit: {collider.gameObject.Name}");
     }
 
     public override void OnDrawGizmos() {

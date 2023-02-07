@@ -1,4 +1,5 @@
 ﻿using Worms.engine.game_object.components;
+using Worms.engine.game_object.components.physics.colliders;
 
 namespace Worms.engine.game_object.scripts; 
 
@@ -21,6 +22,15 @@ public abstract class Script : ToggleComponent {
     public virtual void Update(float deltaTime) {
     }
 
+    public virtual void OnTriggerEnter(Collider collider) {
+    }
+
+    public virtual void OnTriggerStay(Collider collider) {
+    }
+
+    public virtual void OnTriggerExit(Collider collider) {
+    }
+    
     public virtual void OnMouseEnter() {
     }
 
