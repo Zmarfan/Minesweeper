@@ -32,57 +32,31 @@ public static class PhysicsUtils {
     }
 
     public static bool LineBoxIntersectionWithNormal(
-        Vector2 bottomLeft,
-        Vector2 topLeft,
-        Vector2 topRight,
-        Vector2 bottomRight,
+        List<Vector2> corners,
         Vector2 origin,
         Vector2 direction,
-        out Tuple<Vector2, Vector2> value
+        out Tuple<Vector2, Vector2> pointAndNormal
     ) {
-        value = new Tuple<Vector2, Vector2>(Vector2.Zero(), Vector2.Zero());
-        Tuple<Vector2, Vector2>? hit = CalculateBoxIntersectionPointWithNormal(
-            bottomLeft,
-            topLeft,
-            topRight,
-            bottomRight,
-            origin,
-            direction
-        );
-        if (hit == null) {
+        Tuple<Vector2, Vector2>? best = null;
+        int fromIndex = corners.Count - 1;
+        for (int i = 0; i < corners.Count; i++) {
+            if (LineLineIntersection(origin, direction, corners[fromIndex], corners[i], out Vector2 p)) {
+                Vector2 edgeDirection = corners[i] - corners[fromIndex];
+                Vector2 normal = new(-edgeDirection.y, edgeDirection.x);
+                Tuple<Vector2, Vector2> hit = new(p, normal);
+                best = best == null || (origin - best.Item1).SqrMagnitude > (origin - hit.Item1).SqrMagnitude ? hit : best; 
+            }
+            
+            fromIndex = i;
+        }
+
+        if (best == null) {
+            pointAndNormal = new Tuple<Vector2, Vector2>(Vector2.Zero(), Vector2.Zero());
             return false;
         }
 
-        value = hit;
+        pointAndNormal = best;
         return true;
-    }
-    
-    private static Tuple<Vector2, Vector2>? CalculateBoxIntersectionPointWithNormal(
-        Vector2 bottomLeft,
-        Vector2 topLeft,
-        Vector2 topRight,
-        Vector2 bottomRight,
-        Vector2 origin,
-        Vector2 direction
-    ) {
-        Tuple<Vector2, Vector2>? best = null;
-        if (LineLineIntersection(origin, direction, bottomLeft, topLeft, out Vector2 p1)) {
-            best = new Tuple<Vector2, Vector2>(p1, Vector2.Left());
-        }
-        if (LineLineIntersection(origin, direction, bottomLeft, bottomRight, out Vector2 p2)) {
-            Tuple<Vector2, Vector2> hit = new(p2, Vector2.Down());
-            best = best == null || best.Item1.SqrMagnitude > hit.Item1.SqrMagnitude ? hit : best; 
-        }
-        if (LineLineIntersection(origin, direction, topLeft, topRight, out Vector2 p3)) {
-            Tuple<Vector2, Vector2> hit = new(p3, Vector2.Up());
-            best = best == null || best.Item1.SqrMagnitude > hit.Item1.SqrMagnitude ? hit : best; 
-        }
-        if (LineLineIntersection(origin, direction, bottomRight, topRight, out Vector2 p4)) {
-            Tuple<Vector2, Vector2> hit = new(p4, Vector2.Right());
-            best = best == null || best.Item1.SqrMagnitude > hit.Item1.SqrMagnitude ? hit : best; 
-        }
-
-        return best;
     }
     
     private static bool LineLineIntersection(

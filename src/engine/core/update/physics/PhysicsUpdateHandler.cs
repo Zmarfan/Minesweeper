@@ -2,6 +2,7 @@
 using Worms.engine.core.input;
 using Worms.engine.data;
 using Worms.engine.game_object;
+using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.scripts;
 using Worms.engine.scene;
 
@@ -23,6 +24,7 @@ public class PhysicsUpdateHandler {
             }
             
             UpdateMouseTriggers(obj);
+            UpdateColliderTriggers(obj);
         }
     }
 
@@ -42,6 +44,48 @@ public class PhysicsUpdateHandler {
         }
 
         obj.MouseInsideTrigger = isInsideTrigger;
+    }
+    
+    private void UpdateColliderTriggers(TrackObject obj) {
+        HashSet<GameObject> gameObjectsInTrigger = new();
+        foreach (Collider collider in obj.Colliders) {
+            if (collider is not { IsActive: true, isTrigger: true }) {
+                continue;
+            }
+
+            foreach ((GameObject _, TrackObject checkObj) in GameObjectHandler.objects) {
+                if (!obj.isActive || (obj.RigidBody == null && checkObj.RigidBody == null)) {
+                    continue;
+                }
+
+                foreach (Collider checkCollider in checkObj.Colliders) {
+                    if (collider is not { IsActive: true, isTrigger: false }) {
+                        continue;
+                    }
+
+                    if (DoCollidersIntersect(collider, checkCollider)) {
+                        gameObjectsInTrigger.Add(collider.gameObject);
+                    }
+                }
+            }
+        }
+
+        obj.GameObjectsInsideTrigger = gameObjectsInTrigger;
+    }
+
+    private static bool DoCollidersIntersect(Collider c1, Collider c2) {
+        return c1 switch {
+            BoxCollider when c2 is BoxCollider => TriggerIntersectUtils.DoesBoxOnBoxOverlap(c1, c2),
+            CircleCollider when c2 is CircleCollider => TriggerIntersectUtils.DoesCircleOnCircleOverlap(c1, c2),
+            PixelCollider when c2 is PixelCollider => TriggerIntersectUtils.DoesPixelOnPixelOverlap(c1, c2),
+            BoxCollider when c2 is CircleCollider => TriggerIntersectUtils.DoesBoxOnCircleOverlap(c1, c2),
+            BoxCollider when c2 is PixelCollider => TriggerIntersectUtils.DoesBoxOnPixelOverlap(c1, c2),
+            CircleCollider when c2 is PixelCollider => TriggerIntersectUtils.DoesCircleOnPixelOverlap(c1, c2),
+            PixelCollider when c2 is CircleCollider => TriggerIntersectUtils.DoesCircleOnPixelOverlap(c2, c1),
+            CircleCollider when c2 is BoxCollider => TriggerIntersectUtils.DoesBoxOnCircleOverlap(c2, c1),
+            PixelCollider when c2 is BoxCollider => TriggerIntersectUtils.DoesBoxOnPixelOverlap(c2, c1),
+            _ => throw new Exception($"The collider types: {c1} and {c2} are not supported in the physics trigger system!")
+        };
     }
 
     private static Vector2 GetMouseWorldPosition(TrackObject trackObject) {

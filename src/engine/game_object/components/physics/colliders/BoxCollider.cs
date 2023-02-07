@@ -7,10 +7,15 @@ namespace Worms.engine.game_object.components.physics.colliders;
 public class BoxCollider : Collider {
     public Vector2 size;
 
-    private Vector2 TopLeft => new(offset.x - size.x / 2, offset.y + size.y / 2);
-    private Vector2 TopRight => new(offset.x + size.x / 2, offset.y + size.y / 2);
-    private Vector2 BottomLeft => new(offset.x - size.x / 2, offset.y - size.y / 2);
-    private Vector2 BottomRight => new(offset.x + size.x / 2, offset.y - size.y / 2);
+    private List<Vector2> Corners => new() {
+        new Vector2(offset.x - size.x / 2, offset.y - size.y / 2),
+        new Vector2(offset.x - size.x / 2, offset.y + size.y / 2),
+        new Vector2(offset.x + size.x / 2, offset.y + size.y / 2),
+        new Vector2(offset.x + size.x / 2, offset.y - size.y / 2)
+    };
+
+    private Vector2 BottomLeft => Corners[0];
+    private Vector2 TopRight => Corners[2];
 
     public BoxCollider(
         bool isActive, 
@@ -34,7 +39,7 @@ public class BoxCollider : Collider {
         origin = Transform.WorldToLocalMatrix.ConvertPoint(origin);
         direction = Transform.WorldToLocalMatrix.ConvertVector(direction);
 
-        if (PhysicsUtils.LineBoxIntersectionWithNormal(BottomLeft, TopLeft, TopRight, BottomRight, origin, direction, out Tuple<Vector2, Vector2> value)) {
+        if (PhysicsUtils.LineBoxIntersectionWithNormal(Corners, origin, direction, out Tuple<Vector2, Vector2> value)) {
             return new ColliderHit(
                 Transform.LocalToWorldMatrix.ConvertPoint(value.Item1),
                 Transform.LocalToWorldMatrix.ConvertVector(value.Item2).Normalized

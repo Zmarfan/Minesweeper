@@ -65,9 +65,9 @@ public class UpdateHandler {
         UpdateFrameTimeData(deltaTime);
         Input.Update(_deltaTime);
         while (_fixedUpdateAcc > FIXED_UPDATE_CYCLE_TIME) {
-            _physicsUpdateHandler.Update();
             FixedUpdate();
             GameObjectHandler.FrameCleanup();
+            _physicsUpdateHandler.Update();
             _fixedUpdateAcc -= FIXED_UPDATE_CYCLE_TIME;
         }
         Update();

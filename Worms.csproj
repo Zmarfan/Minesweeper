@@ -14,7 +14,6 @@
 
     <ItemGroup>
       <Folder Include="src\assets\test" />
-      <Folder Include="src\engine\game_object\components\physics" />
     </ItemGroup>
 
     <ItemGroup>
