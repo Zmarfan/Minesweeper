@@ -1,16 +1,28 @@
 ﻿using Worms.engine.data;
+using Worms.engine.game_object.components;
 using Worms.engine.game_object.components.physics.colliders;
 
 namespace Worms.engine.core.update.physics; 
 
 public static class TriggerIntersectUtils {
+    private const int CIRCLE_TO_POLYGON_POINT_COUNT = 15;
+    
     public static bool DoesBoxOnBoxOverlap(BoxCollider c1, BoxCollider c2) {
         return c1.Transform.Rotation == c2.Transform.Rotation
             ? DoRectanglesOverlap(c1, c2)
             : DoConvexPolygonsOverlap(c1.WorldCorners, c2.WorldCorners);
     }
 
-    public static bool DoesCircleOnCircleOverlap(Collider c1, Collider c2) {
+    public static bool DoesCircleOnCircleOverlap(CircleCollider c1, CircleCollider c2) {
+        if (IsScaleUniform(c1) && IsScaleUniform(c2)) {
+            return DoCirclesOverlap(c1.Center, c2.Center, c1.radius * c1.Transform.Scale.x, c2.radius * c2.Transform.Scale.x);
+        }
+
+        // We first do a check to see if total bounding circles overlap to avoid unnecessary checking if they don't
+        if (DoCirclesOverlap(c1.Center, c2.Center, c1.BoundingRadius, c2.BoundingRadius)) {
+            return DoCircleEllipseOverlap(c1, c2);
+        }
+
         return false;
     }
 
@@ -69,5 +81,41 @@ public static class TriggerIntersectUtils {
             min = projected < min ? projected : min;
             max = projected > max ? projected : max;
         }
+    }
+
+    private static bool DoCirclesOverlap(
+        Vector2 c1Center,
+        Vector2 c2Center,
+        float c1Radius,
+        float c2Radius
+    ) {
+        Vector2 distance = c1Center - c2Center;
+        float radiusSum = c1Radius + c2Radius;
+        return distance.x * distance.x + distance.y * distance.y <= radiusSum * radiusSum;
+    }
+    
+    // This check is an approximation and NOT exact mathematically. Ellipses are weird and hard, no fun ):
+    // Here we transform one of the ellipses to a convex polygon and then we check if the circle intersect it 
+    private static bool DoCircleEllipseOverlap(CircleCollider c1, CircleCollider c2) {
+        if (c1.IsPointInside(c2.Center) || c2.IsPointInside(c1.Center)) {
+            return true;
+        }
+
+        List<Vector2> ellipsePoints = c2.GetCircleAsPoints(CIRCLE_TO_POLYGON_POINT_COUNT);
+        int fromIndex = ellipsePoints.Count - 1;
+        for (int toIndex = 0; toIndex < ellipsePoints.Count; toIndex++) {
+            Vector2 origin = c1.Transform.WorldToLocalMatrix.ConvertPoint(ellipsePoints[fromIndex]);
+            Vector2 direction = c1.Transform.WorldToLocalMatrix.ConvertPoint(ellipsePoints[toIndex]) - origin;
+            if (PhysicsUtils.LineCircleIntersection(origin, direction, c1.offset, c1.radius, out _)) {
+                return true;
+            }
+            fromIndex = toIndex;
+        }
+        
+        return false;
+    }
+    
+    private static bool IsScaleUniform(Component c) {
+        return Math.Abs(c.Transform.Scale.x - c.Transform.Scale.y) < 0.001f;
     }
 }
