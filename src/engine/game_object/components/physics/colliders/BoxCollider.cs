@@ -15,8 +15,8 @@ public class BoxCollider : Collider {
         new Vector2(offset.x + size.x / 2, offset.y - size.y / 2)
     };
 
-    private Vector2 BottomLeft => LocalCorners[0];
-    private Vector2 TopRight => LocalCorners[2];
+    public Vector2 BottomLeftLocal => LocalCorners[0];
+    public Vector2 TopRightLocal => LocalCorners[2];
 
     public BoxCollider(
         bool isActive, 
@@ -29,7 +29,7 @@ public class BoxCollider : Collider {
 
     public override bool IsPointInside(Vector2 p) {
         p = Transform.WorldToLocalMatrix.ConvertPoint(p);
-        return p.x >= BottomLeft.x && p.x <= TopRight.x && p.y >= BottomLeft.y && p.y <= TopRight.y;
+        return p.x >= BottomLeftLocal.x && p.x <= TopRightLocal.x && p.y >= BottomLeftLocal.y && p.y <= TopRightLocal.y;
     }
 
     public override ColliderHit? Raycast(Vector2 origin, Vector2 direction) {

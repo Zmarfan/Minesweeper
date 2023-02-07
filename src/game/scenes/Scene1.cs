@@ -199,6 +199,7 @@ public static class Scene1 {
             .Transform.AddSibling("circleCollider1")
             .SetPosition(new Vector2(200, 100))
             .SetComponent(new BoxCollider(true, false, new Vector2(200f, 200f), Vector2.Zero()))
+            .SetRotation(Rotation.FromDegrees(45))
             .Build()
             .Transform.AddSibling("circleCollider2")
             .SetPosition(new Vector2(-200, 100))
