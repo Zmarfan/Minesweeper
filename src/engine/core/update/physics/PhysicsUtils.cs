@@ -1,6 +1,6 @@
 ﻿using Worms.engine.data;
 
-namespace Worms.engine.core.update; 
+namespace Worms.engine.core.update.physics; 
 
 public static class PhysicsUtils {
     public static bool LineCircleIntersection(

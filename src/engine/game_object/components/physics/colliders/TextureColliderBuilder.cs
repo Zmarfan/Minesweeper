@@ -2,7 +2,7 @@
 using Worms.engine.data;
 using Worms.engine.game_object.components.texture_renderer;
 
-namespace Worms.engine.game_object.components.colliders; 
+namespace Worms.engine.game_object.components.physics.colliders; 
 
 public class TextureColliderBuilder {
     private bool _isActive = true;

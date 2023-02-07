@@ -1,8 +1,8 @@
 ﻿using Worms.engine.core.gizmos;
-using Worms.engine.core.update;
+using Worms.engine.core.update.physics;
 using Worms.engine.data;
 
-namespace Worms.engine.game_object.components.colliders; 
+namespace Worms.engine.game_object.components.physics.colliders; 
 
 public class BoxCollider : Collider {
     public Vector2 size;

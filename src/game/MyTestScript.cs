@@ -1,6 +1,7 @@
 ﻿using Worms.engine.core.gizmos;
 using Worms.engine.core.input;
 using Worms.engine.core.update;
+using Worms.engine.core.update.physics;
 using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.audio_source;

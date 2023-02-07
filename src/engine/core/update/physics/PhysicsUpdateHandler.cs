@@ -2,12 +2,10 @@
 using Worms.engine.core.input;
 using Worms.engine.data;
 using Worms.engine.game_object;
-using Worms.engine.game_object.components.colliders;
 using Worms.engine.game_object.scripts;
-using Worms.engine.logger;
 using Worms.engine.scene;
 
-namespace Worms.engine.core.update; 
+namespace Worms.engine.core.update.physics; 
 
 public class PhysicsUpdateHandler {
     private readonly SceneData _sceneData;

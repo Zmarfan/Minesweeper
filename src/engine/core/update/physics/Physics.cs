@@ -1,10 +1,10 @@
 ﻿using Worms.engine.core.game_object_handler;
 using Worms.engine.data;
 using Worms.engine.game_object;
-using Worms.engine.game_object.components.colliders;
+using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.scene;
 
-namespace Worms.engine.core.update; 
+namespace Worms.engine.core.update.physics; 
 
 public class Physics {
     private static Physics _self = null!;

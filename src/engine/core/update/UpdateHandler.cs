@@ -1,5 +1,6 @@
 ﻿using Worms.engine.core.game_object_handler;
 using Worms.engine.core.input;
+using Worms.engine.core.update.physics;
 using Worms.engine.game_object;
 using Worms.engine.game_object.scripts;
 using Worms.engine.logger;

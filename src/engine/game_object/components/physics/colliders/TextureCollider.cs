@@ -1,10 +1,9 @@
-﻿using System.Diagnostics;
-using Worms.engine.core.input;
+﻿using Worms.engine.core.input;
 using Worms.engine.data;
 using Worms.engine.game_object.components.texture_renderer;
 using Worms.engine.game_object.scripts;
 
-namespace Worms.engine.game_object.components.colliders; 
+namespace Worms.engine.game_object.components.physics.colliders; 
 
 public class TextureCollider : Script {
     public Texture Texture {

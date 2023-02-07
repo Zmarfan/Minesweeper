@@ -1,7 +1,7 @@
-﻿using Worms.engine.core.update;
+﻿using Worms.engine.core.update.physics;
 using Worms.engine.data;
 
-namespace Worms.engine.game_object.components.colliders; 
+namespace Worms.engine.game_object.components.physics.colliders; 
 
 public abstract class Collider : ToggleComponent {
     public static readonly Color GIZMO_COLOR = new(0.1059f, 0.949f, 0.3294f);
