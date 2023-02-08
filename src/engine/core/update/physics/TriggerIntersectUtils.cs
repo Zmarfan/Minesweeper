@@ -18,7 +18,6 @@ public static class TriggerIntersectUtils {
             return DoCirclesOverlap(c1.Center, c2.Center, c1.radius * c1.Transform.Scale.x, c2.radius * c2.Transform.Scale.x);
         }
 
-        // We first do a check to see if total bounding boxes overlap to avoid unnecessary checking if they don't
         if (DoBoundingBoxesOverlap(c1, c2)) {
             // This check is an approximation and NOT exact mathematically. Ellipses are weird and hard, no fun ):
             // Here we transform one of the ellipses to a convex polygon and then we check if the circle intersect it 
@@ -29,21 +28,25 @@ public static class TriggerIntersectUtils {
     }
 
     public static bool DoesPixelOnPixelOverlap(PixelCollider c1, PixelCollider c2) {
-        if (!DoBoundingBoxesOverlap(c1, c2)) {
+        PixelCollider looper = c1.Width * c1.Height < c2.Width * c2.Height ? c1 : c2;
+        PixelCollider checker = looper == c1 ? c2 : c1;
+
+        return DoesPixelOnColliderOverlap(looper, checker);
+    }
+
+    public static bool DoesPixelOnColliderOverlap(PixelCollider pixel, Collider collider) {
+        if (!DoBoundingBoxesOverlap(pixel, collider)) {
             return false;
         }
         
-        PixelCollider looper = c1.Width * c1.Height < c2.Width * c2.Height ? c1 : c2;
-        PixelCollider checker = looper == c1 ? c2 : c1;
-        
-        for (int x = 0; x < looper.Width; x++) {
-            for (int y = 0; y < looper.Height; y++) {
-                if (!looper.pixels[x, y].IsOpaque) {
+        for (int x = 0; x < pixel.Width; x++) {
+            for (int y = 0; y < pixel.Height; y++) {
+                if (!pixel.pixels[x, y].IsOpaque) {
                     continue;
                 }
 
-                Vector2 world = looper.Transform.LocalToWorldMatrix.ConvertPoint(looper.PixelToLocal(new Vector2Int(x, y)));
-                if (checker.IsPointInside(world)) {
+                Vector2 world = pixel.Transform.LocalToWorldMatrix.ConvertPoint(pixel.PixelToLocal(new Vector2Int(x, y)));
+                if (collider.IsPointInside(world)) {
                     return true;
                 }
             }
@@ -54,14 +57,6 @@ public static class TriggerIntersectUtils {
 
     public static bool DoesBoxOnCircleOverlap(CircleCollider c1, BoxCollider c2) {
         return DoBoundingBoxesOverlap(c1, c2) && DoCirclePolygonOverlap(c1, c2, c2.WorldCorners);
-    }
-
-    public static bool DoesBoxOnPixelOverlap(Collider c1, Collider c2) {
-        return false;
-    }
-
-    public static bool DoesCircleOnPixelOverlap(Collider c1, Collider c2) {
-        return false;
     }
 
     private static bool DoBoundingBoxesOverlap(Collider c1, Collider c2) {

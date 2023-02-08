@@ -80,11 +80,11 @@ public class PhysicsUpdateHandler {
             CircleCollider circle1 when c2 is CircleCollider circle2 => TriggerIntersectUtils.DoesCircleOnCircleOverlap(circle1, circle2),
             PixelCollider p1 when c2 is PixelCollider p2 => TriggerIntersectUtils.DoesPixelOnPixelOverlap(p1, p2),
             BoxCollider box when c2 is CircleCollider circle => TriggerIntersectUtils.DoesBoxOnCircleOverlap(circle, box),
-            BoxCollider when c2 is PixelCollider => TriggerIntersectUtils.DoesBoxOnPixelOverlap(c1, c2),
-            CircleCollider when c2 is PixelCollider => TriggerIntersectUtils.DoesCircleOnPixelOverlap(c1, c2),
-            PixelCollider when c2 is CircleCollider => TriggerIntersectUtils.DoesCircleOnPixelOverlap(c2, c1),
+            BoxCollider box when c2 is PixelCollider pixel => TriggerIntersectUtils.DoesPixelOnColliderOverlap(pixel, box),
+            CircleCollider circle when c2 is PixelCollider pixel => TriggerIntersectUtils.DoesPixelOnColliderOverlap(pixel, circle),
+            PixelCollider pixel when c2 is CircleCollider circle => TriggerIntersectUtils.DoesPixelOnColliderOverlap(pixel, circle),
             CircleCollider circle when c2 is BoxCollider box => TriggerIntersectUtils.DoesBoxOnCircleOverlap(circle, box),
-            PixelCollider when c2 is BoxCollider => TriggerIntersectUtils.DoesBoxOnPixelOverlap(c2, c1),
+            PixelCollider pixel when c2 is BoxCollider box => TriggerIntersectUtils.DoesPixelOnColliderOverlap(pixel, box),
             _ => throw new Exception($"The collider types: {c1} and {c2} are not supported in the physics trigger system!")
         };
     }

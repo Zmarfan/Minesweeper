@@ -25,7 +25,7 @@ public class AnimationController : Script {
         _currentAnimation.Reset();
     }
     
-    public override void Awake() {
+    public override void Start() {
         foreach ((string _, Animation animation) in _animationsByTriggers) {
             animation.Init(gameObject);
         }
