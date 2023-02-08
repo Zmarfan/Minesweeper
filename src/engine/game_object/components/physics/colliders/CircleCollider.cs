@@ -29,10 +29,13 @@ public class CircleCollider : Collider {
         return points;
     }
 
-    public override Tuple<Vector2, Vector2> GetWorldBoundingBox() {
-        Vector2 bottomLeft = Transform.LocalToWorldMatrix.ConvertPoint(offset + new Vector2(-radius, -radius));
-        Vector2 topRight = Transform.LocalToWorldMatrix.ConvertPoint(offset + new Vector2(radius, radius));
-        return new Tuple<Vector2, Vector2>(bottomLeft, topRight);
+    public override List<Vector2> GetLocalCorners() {
+        return new List<Vector2> {
+            offset + new Vector2(-radius, -radius),
+            offset + new Vector2(-radius, radius),
+            offset + new Vector2(radius, radius),
+            offset + new Vector2(radius, -radius)
+        };
     }
 
     public override bool IsPointInside(Vector2 p) {
@@ -53,14 +56,16 @@ public class CircleCollider : Collider {
     }
 
     public override void OnDrawGizmos() {
-        List<Vector2> points = GetCircleAsPoints(15);
+        Gizmos.DrawEllipsis(Center, radius * Transform.Scale, Transform.Rotation, GIZMO_COLOR);
+        base.OnDrawGizmos();
+    }
+
+    private void DrawAsPolygon() {
+        List<Vector2> points = GetCircleAsPoints(TriggerIntersectUtils.CIRCLE_TO_POLYGON_POINT_COUNT);
         int from = points.Count - 1;
         for (int i = 0; i < points.Count; i++) {
             Gizmos.DrawLine(points[from], points[i], Color.BLUE);
             from = i;
         }
-        
-        Gizmos.DrawEllipsis(Center, radius * Transform.Scale, Transform.Rotation, GIZMO_COLOR);
-        base.OnDrawGizmos();
     }
 }

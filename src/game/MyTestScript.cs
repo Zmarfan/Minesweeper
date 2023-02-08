@@ -6,6 +6,7 @@ using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.audio_source;
 using Worms.engine.game_object.components.physics.colliders;
+using Worms.engine.game_object.components.texture_renderer;
 using Worms.engine.game_object.scripts;
 
 namespace Worms.game; 
@@ -16,7 +17,7 @@ public class MyTestScript : Script {
     private AudioSource _audioSource = null!;
     
     private RaycastHit? _hit = null;
-    
+
     public MyTestScript(Func<GameObjectBuilder> explosion) : base(true) {
         _explosion = explosion;
     }
@@ -42,7 +43,7 @@ public class MyTestScript : Script {
     public override void OnTriggerEnter(Collider collider) {
         Console.WriteLine($"enter: {collider.gameObject.Name}");
     }
-
+    
     public override void OnTriggerExit(Collider collider) {
         Console.WriteLine($"exit: {collider.gameObject.Name}");
     }

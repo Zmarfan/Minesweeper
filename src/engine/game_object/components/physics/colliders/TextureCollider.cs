@@ -48,7 +48,7 @@ public class TextureCollider : Script {
     public TextureCollider(bool isActive, ColliderState state, TextureRenderer tr) : base(isActive) {
         IsActive = isActive;
         _textureRenderer = tr;
-        _pixelCollider = new PixelCollider(true, tr.texture.SectionPixels, tr.flipX, tr.flipY, state, Vector2Int.Zero());
+        _pixelCollider = new PixelCollider(true, tr.texture.SectionPixels, tr.flipX, tr.flipY, state);
     }
 
     public override void Awake() {

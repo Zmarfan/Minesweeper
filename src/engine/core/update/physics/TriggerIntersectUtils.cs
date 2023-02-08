@@ -5,7 +5,7 @@ using Worms.engine.game_object.components.physics.colliders;
 namespace Worms.engine.core.update.physics; 
 
 public static class TriggerIntersectUtils {
-    private const int CIRCLE_TO_POLYGON_POINT_COUNT = 15;
+    public const int CIRCLE_TO_POLYGON_POINT_COUNT = 15;
     
     public static bool DoesBoxOnBoxOverlap(BoxCollider c1, BoxCollider c2) {
         return c1.Transform.Rotation == c2.Transform.Rotation
@@ -39,8 +39,17 @@ public static class TriggerIntersectUtils {
             return false;
         }
         
-        for (int x = 0; x < pixel.Width; x++) {
-            for (int y = 0; y < pixel.Height; y++) {
+        Tuple<Vector2, Vector2> box = CalculateBoundingBox(
+            collider.GetLocalCorners()
+                .Select(c => collider.Transform.LocalToWorldMatrix.ConvertPoint(c))
+                .Select(c => pixel.Transform.WorldToLocalMatrix.ConvertPoint(c))
+                .Select(pixel.LocalToPixel)
+                .Select(c => new Vector2(c.x, c.y))
+                .ToList()
+        );
+
+        for (int x = (int)Math.Max(box.Item1.x, 0); x < Math.Min(box.Item2.x, pixel.Width); x++) {
+            for (int y = (int)Math.Max(box.Item1.y, 0); y < Math.Min(box.Item2.y, pixel.Height); y++) {
                 if (!pixel.pixels[x, y].IsOpaque) {
                     continue;
                 }
@@ -60,8 +69,12 @@ public static class TriggerIntersectUtils {
     }
 
     private static bool DoBoundingBoxesOverlap(Collider c1, Collider c2) {
-        Tuple<Vector2, Vector2> bounding1 = c1.GetWorldBoundingBox();
-        Tuple<Vector2, Vector2> bounding2 = c2.GetWorldBoundingBox();
+        Tuple<Vector2, Vector2> bounding1 = CalculateBoundingBox(
+            c1.GetLocalCorners().Select(c => c1.Transform.LocalToWorldMatrix.ConvertPoint(c)).ToList()
+        );
+        Tuple<Vector2, Vector2> bounding2 = CalculateBoundingBox(
+            c2.GetLocalCorners().Select(c => c2.Transform.LocalToWorldMatrix.ConvertPoint(c)).ToList()
+        );
         return DoRectanglesOverlap(bounding1.Item1, bounding1.Item2, bounding2.Item1, bounding2.Item2);
     }
     
@@ -141,5 +154,13 @@ public static class TriggerIntersectUtils {
     
     private static bool IsScaleUniform(Component c) {
         return Math.Abs(c.Transform.Scale.x - c.Transform.Scale.y) < 0.001f;
+    }
+
+    private static Tuple<Vector2, Vector2> CalculateBoundingBox(IReadOnlyCollection<Vector2> corners) {
+        float minX = corners.MinBy(c => c.x).x;
+        float minY = corners.MinBy(c => c.y).y;
+        float maxX = corners.MaxBy(c => c.x).x;
+        float maxY = corners.MaxBy(c => c.y).y;
+        return new Tuple<Vector2, Vector2>(new Vector2(minX, minY), new Vector2(maxX, maxY));
     }
 }

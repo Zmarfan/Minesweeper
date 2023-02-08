@@ -17,12 +17,20 @@ public abstract class Collider : ToggleComponent {
         this.offset = offset;
     }
 
-    public abstract Tuple<Vector2, Vector2> GetWorldBoundingBox();
+    public abstract List<Vector2> GetLocalCorners();
     public abstract bool IsPointInside(Vector2 p);
     public abstract ColliderHit? Raycast(Vector2 origin, Vector2 direction);
 
     public override void OnDrawGizmos() {
-        Tuple<Vector2, Vector2> boundingBox = GetWorldBoundingBox();
-        Gizmos.DrawLine(boundingBox.Item1, boundingBox.Item2, new Color(0.25f, 0.67f, 0.9f));
+    }
+
+    private void DrawBoundingBox() {
+        List<Vector2> corners = GetLocalCorners().Select(c => Transform.LocalToWorldMatrix.ConvertPoint(c)).ToList();
+
+        int fromIndex = corners.Count - 1;
+        for (int toIndex = 0; toIndex < corners.Count; toIndex++) {
+            Gizmos.DrawLine(corners[fromIndex], corners[toIndex], new Color(0.25f, 0.67f, 0.9f));
+            fromIndex = toIndex;
+        }
     }
 }

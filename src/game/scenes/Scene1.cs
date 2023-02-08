@@ -192,7 +192,7 @@ public static class Scene1 {
             .SetComponent(new TriggerScriptTest())
             .SetComponent(TextureColliderBuilder
                 .Builder(Texture.CreateSingle(Path("pixelTest7.png")))
-                .SetState(ColliderState.COLLIDER)
+                .SetState(ColliderState.TRIGGERING_COLLIDER)
                 .Build()
             )
             .Build()
@@ -213,7 +213,7 @@ public static class Scene1 {
             .Transform.AddSibling("animation")
             .SetComponent(new TriggerScriptTest())
             .SetComponent(TextureColliderBuilder
-                .Builder(Texture.CreateMultiple(Path("animation_1.png"), 0, 0, 1, 19))
+                .Builder(Texture.CreateSingle(Path("1.png")))
                 .Build()
             )
             .SetComponent(AudioSourceBuilder
@@ -223,16 +223,16 @@ public static class Scene1 {
                 .Build()
             )
             .SetComponent(new RigidBody())
-            .SetComponent(
-                AnimationControllerBuilder
-                    .Builder()
-                    .AddAnimation("trigger1", AnimationFactory.CreateTextureAnimation(Path("animation_1.png"), 0.05f, false, 19))
-                    .AddAnimation("trigger2", AnimationFactory.CreateTextureAnimation(Path("animation_2.png"), 0.05f, false, 15))
-                    .AddAnimation("trigger3", AnimationFactory.CreateTextureAnimation(Path("animation_2.png"), 0.05f, false, 15, true))
-                    .SetStartAnimation(0)
-                    .Build()
-            )
-            .SetComponent(new AnimationTestScript())
+            // .SetComponent(
+            //     AnimationControllerBuilder
+            //         .Builder()
+            //         .AddAnimation("trigger1", AnimationFactory.CreateTextureAnimation(Path("animation_1.png"), 0.05f, false, 19))
+            //         .AddAnimation("trigger2", AnimationFactory.CreateTextureAnimation(Path("animation_2.png"), 0.05f, false, 15))
+            //         .AddAnimation("trigger3", AnimationFactory.CreateTextureAnimation(Path("animation_2.png"), 0.05f, false, 15, true))
+            //         .SetStartAnimation(0)
+            //         .Build()
+            // )
+            // .SetComponent(new AnimationTestScript())
             .SetPosition(new Vector2(-100, -100))
             .SetComponent(new MyTestScript(explosion))
             .Build()
