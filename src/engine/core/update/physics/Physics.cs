@@ -50,7 +50,7 @@ public class Physics {
 
     private static IEnumerable<RaycastHit> CalculateRaycastHitsOnColliders(Vector2 origin, Vector2 direction, IEnumerable<Collider> colliders) {
         return colliders
-            .Where(c => c is { IsActive: true, isTrigger: false })
+            .Where(c => c.IsActive && c.state != ColliderState.TRIGGER)
             .SelectMany(c => CalculateRaycastHit(origin, direction, c));
     }
 

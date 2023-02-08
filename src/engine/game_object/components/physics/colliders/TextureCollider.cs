@@ -45,10 +45,10 @@ public class TextureCollider : Script {
     private readonly PixelCollider _pixelCollider;
     private Random _random = new();
     
-    public TextureCollider(bool isActive, bool isTrigger, TextureRenderer tr) : base(isActive) {
+    public TextureCollider(bool isActive, ColliderState state, TextureRenderer tr) : base(isActive) {
         IsActive = isActive;
         _textureRenderer = tr;
-        _pixelCollider = new PixelCollider(true, tr.texture.SectionPixels, tr.flipX, tr.flipY, isTrigger, Vector2Int.Zero());
+        _pixelCollider = new PixelCollider(true, tr.texture.SectionPixels, tr.flipX, tr.flipY, state, Vector2Int.Zero());
     }
 
     public override void Awake() {

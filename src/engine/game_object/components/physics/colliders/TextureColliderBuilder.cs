@@ -6,7 +6,7 @@ namespace Worms.engine.game_object.components.physics.colliders;
 
 public class TextureColliderBuilder {
     private bool _isActive = true;
-    private bool _isTrigger = true;
+    private ColliderState _state = ColliderState.TRIGGER;
     private readonly Texture _texture;
     private string _sortingLayer = TextureRendererHandler.DEFAULT_SORTING_LAYER;
     private int _sortOrder = 0;
@@ -25,7 +25,7 @@ public class TextureColliderBuilder {
     public TextureCollider Build() {
         return new TextureCollider(
             _isActive,
-            _isTrigger,
+            _state,
             new TextureRenderer(true, _texture, _sortingLayer, _sortOrder, _color, _flipX, _flipY)
         );
     }
@@ -35,8 +35,8 @@ public class TextureColliderBuilder {
         return this;
     }
     
-    public TextureColliderBuilder SetIsTrigger(bool isTrigger) {
-        _isTrigger = isTrigger;
+    public TextureColliderBuilder SetState(ColliderState state) {
+        _state = state;
         return this;
     }
 

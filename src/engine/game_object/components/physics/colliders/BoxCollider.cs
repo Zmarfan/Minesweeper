@@ -20,11 +20,20 @@ public class BoxCollider : Collider {
 
     public BoxCollider(
         bool isActive, 
-        bool isTrigger,
+        ColliderState state,
         Vector2 size,
         Vector2 offset
-    ) : base(isActive, isTrigger, offset) {
+    ) : base(isActive, state, offset) {
         this.size = size;
+    }
+
+    public override Tuple<Vector2, Vector2> GetWorldBoundingBox() {
+        List<Vector2> worldCorners = WorldCorners;
+        float minX = worldCorners.MinBy(p => p.x).x;
+        float minY = worldCorners.MinBy(p => p.y).y;
+        float maxX = worldCorners.MaxBy(p => p.x).x;
+        float maxY = worldCorners.MaxBy(p => p.y).y;
+        return new Tuple<Vector2, Vector2>(new Vector2(minX, minY), new Vector2(maxX, maxY));
     }
 
     public override bool IsPointInside(Vector2 p) {
@@ -52,5 +61,6 @@ public class BoxCollider : Collider {
 
     public override void OnDrawGizmos() {
         Gizmos.DrawRectangle(Center, size * Transform.Scale, Transform.Rotation, GIZMO_COLOR);
+        base.OnDrawGizmos();
     }
 }

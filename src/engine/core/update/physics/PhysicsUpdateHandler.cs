@@ -30,7 +30,7 @@ public class PhysicsUpdateHandler {
 
     private void UpdateMouseTriggers(TrackObject obj) {
         bool isInsideTrigger = obj.Colliders
-            .Where(collider => collider is { IsActive: true, isTrigger: true })
+            .Where(collider => collider is { IsActive: true, state: ColliderState.TRIGGER })
             .Any(trigger => trigger.IsPointInside(GetMouseWorldPosition(obj)));
         
         if (!obj.MouseInsideTrigger && isInsideTrigger) {
@@ -49,7 +49,7 @@ public class PhysicsUpdateHandler {
     private void UpdateColliderTriggers(TrackObject obj) {
         HashSet<Collider> collidersInTrigger = new();
         foreach (Collider collider in obj.Colliders) {
-            if (collider is not { IsActive: true, isTrigger: true }) {
+            if (collider is not { IsActive: true, state: ColliderState.TRIGGER }) {
                 continue;
             }
 
@@ -59,7 +59,7 @@ public class PhysicsUpdateHandler {
                 }
 
                 foreach (Collider checkCollider in checkObj.Colliders) {
-                    if (checkCollider is not { IsActive: true, isTrigger: false }) {
+                    if (!checkCollider.IsActive || checkCollider.state != ColliderState.TRIGGERING_COLLIDER) {
                         continue;
                     }
 

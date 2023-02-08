@@ -9,8 +9,8 @@ public static class TriggerIntersectUtils {
     
     public static bool DoesBoxOnBoxOverlap(BoxCollider c1, BoxCollider c2) {
         return c1.Transform.Rotation == c2.Transform.Rotation
-            ? DoRectanglesOverlap(c1, c2)
-            : DoConvexPolygonsOverlap(c1.WorldCorners, c2.WorldCorners);
+            ? DoSameRotationBoxesOverlap(c1, c2)
+            : DoBoundingBoxesOverlap(c1, c2) && DoConvexPolygonsOverlap(c1.WorldCorners, c2.WorldCorners);
     }
 
     public static bool DoesCircleOnCircleOverlap(CircleCollider c1, CircleCollider c2) {
@@ -18,8 +18,8 @@ public static class TriggerIntersectUtils {
             return DoCirclesOverlap(c1.Center, c2.Center, c1.radius * c1.Transform.Scale.x, c2.radius * c2.Transform.Scale.x);
         }
 
-        // We first do a check to see if total bounding circles overlap to avoid unnecessary checking if they don't
-        if (DoCirclesOverlap(c1.Center, c2.Center, c1.BoundingRadius, c2.BoundingRadius)) {
+        // We first do a check to see if total bounding boxes overlap to avoid unnecessary checking if they don't
+        if (DoBoundingBoxesOverlap(c1, c2)) {
             // This check is an approximation and NOT exact mathematically. Ellipses are weird and hard, no fun ):
             // Here we transform one of the ellipses to a convex polygon and then we check if the circle intersect it 
             return DoCirclePolygonOverlap(c1, c2, c2.GetCircleAsPoints(CIRCLE_TO_POLYGON_POINT_COUNT));
@@ -29,6 +29,10 @@ public static class TriggerIntersectUtils {
     }
 
     public static bool DoesPixelOnPixelOverlap(PixelCollider c1, PixelCollider c2) {
+        if (!DoBoundingBoxesOverlap(c1, c2)) {
+            return false;
+        }
+        
         PixelCollider looper = c1.Width * c1.Height < c2.Width * c2.Height ? c1 : c2;
         PixelCollider checker = looper == c1 ? c2 : c1;
         
@@ -49,7 +53,7 @@ public static class TriggerIntersectUtils {
     }
 
     public static bool DoesBoxOnCircleOverlap(CircleCollider c1, BoxCollider c2) {
-        return DoCirclePolygonOverlap(c1, c2, c2.WorldCorners);
+        return DoBoundingBoxesOverlap(c1, c2) && DoCirclePolygonOverlap(c1, c2, c2.WorldCorners);
     }
 
     public static bool DoesBoxOnPixelOverlap(Collider c1, Collider c2) {
@@ -59,18 +63,28 @@ public static class TriggerIntersectUtils {
     public static bool DoesCircleOnPixelOverlap(Collider c1, Collider c2) {
         return false;
     }
+
+    private static bool DoBoundingBoxesOverlap(Collider c1, Collider c2) {
+        Tuple<Vector2, Vector2> bounding1 = c1.GetWorldBoundingBox();
+        Tuple<Vector2, Vector2> bounding2 = c2.GetWorldBoundingBox();
+        return DoRectanglesOverlap(bounding1.Item1, bounding1.Item2, bounding2.Item1, bounding2.Item2);
+    }
     
-    private static bool DoRectanglesOverlap(BoxCollider c1, BoxCollider c2) {
+    private static bool DoSameRotationBoxesOverlap(BoxCollider c1, BoxCollider c2) {
         Vector2 c2BottomLeft = c1.Transform.WorldToLocalMatrix.ConvertPoint(
             c2.Transform.LocalToWorldMatrix.ConvertPoint(c2.BottomLeftLocal)
         );
         Vector2 c2TopRight = c1.Transform.WorldToLocalMatrix.ConvertPoint(
             c2.Transform.LocalToWorldMatrix.ConvertPoint(c2.TopRightLocal)
         );
-        return c1.BottomLeftLocal.x < c2TopRight.x
-               && c1.TopRightLocal.x > c2BottomLeft.x
-               && c1.BottomLeftLocal.y < c2TopRight.y
-               && c1.TopRightLocal.y > c2BottomLeft.y;
+        return DoRectanglesOverlap(c1.BottomLeftLocal, c1.TopRightLocal, c2BottomLeft, c2TopRight);
+    }
+
+    private static bool DoRectanglesOverlap(Vector2 bottomLeft1, Vector2 topRight1, Vector2 bottomLeft2, Vector2 topRight2) {
+        return bottomLeft1.x < topRight2.x
+               && topRight1.x > bottomLeft2.x
+               && bottomLeft1.y < topRight2.y
+               && topRight1.y > bottomLeft2.y;
     }
     
     private static bool DoConvexPolygonsOverlap(List<Vector2> c1Points, List<Vector2> c2Points) {

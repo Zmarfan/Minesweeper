@@ -24,12 +24,28 @@ public class PixelCollider : Collider {
         Color[,] pixels,
         bool flipX,
         bool flipY,
-        bool isTrigger,
+        ColliderState state,
         Vector2Int offset
-    ) : base(isActive, isTrigger, new Vector2(offset.x, offset.y)) {
+    ) : base(isActive, state, new Vector2(offset.x, offset.y)) {
         this.flipX = flipX;
         this.flipY = flipY;
         this.pixels = pixels;
+    }
+
+    public override Tuple<Vector2, Vector2> GetWorldBoundingBox() {
+        List<Vector2> corners = new() {
+            PixelToLocal(new Vector2Int(0, 0)),
+            PixelToLocal(new Vector2Int(Width - 1, 0)),
+            PixelToLocal(new Vector2Int(0, Height - 1)),
+            PixelToLocal(new Vector2Int(Width - 1, Height - 1))
+        };
+        corners = corners.Select(p => Transform.LocalToWorldMatrix.ConvertPoint(p)).ToList();
+        
+        float minX = corners.MinBy(p => p.x).x;
+        float minY = corners.MinBy(p => p.y).y;
+        float maxX = corners.MaxBy(p => p.x).x;
+        float maxY = corners.MaxBy(p => p.y).y;
+        return new Tuple<Vector2, Vector2>(new Vector2(minX, minY), new Vector2(maxX, maxY));
     }
 
     public override bool IsPointInside(Vector2 p) {

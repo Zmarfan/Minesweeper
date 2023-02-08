@@ -11,10 +11,10 @@ public class CircleCollider : Collider {
     
     public CircleCollider(
         bool isActive, 
-        bool isTrigger,
+        ColliderState state,
         float radius,
         Vector2 offset
-    ) : base(isActive, isTrigger, offset) {
+    ) : base(isActive, state, offset) {
         this.radius = radius;
     }
 
@@ -29,6 +29,12 @@ public class CircleCollider : Collider {
         }
 
         return points;
+    }
+
+    public override Tuple<Vector2, Vector2> GetWorldBoundingBox() {
+        Vector2 bottomLeft = Transform.LocalToWorldMatrix.ConvertPoint(offset + new Vector2(-radius, -radius));
+        Vector2 topRight = Transform.LocalToWorldMatrix.ConvertPoint(offset + new Vector2(radius, radius));
+        return new Tuple<Vector2, Vector2>(bottomLeft, topRight);
     }
 
     public override bool IsPointInside(Vector2 p) {
@@ -57,5 +63,6 @@ public class CircleCollider : Collider {
         }
         
         Gizmos.DrawEllipsis(Center, radius * Transform.Scale, Transform.Rotation, GIZMO_COLOR);
+        base.OnDrawGizmos();
     }
 }
