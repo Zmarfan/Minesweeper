@@ -20,18 +20,36 @@ public static class TriggerIntersectUtils {
 
         // We first do a check to see if total bounding circles overlap to avoid unnecessary checking if they don't
         if (DoCirclesOverlap(c1.Center, c2.Center, c1.BoundingRadius, c2.BoundingRadius)) {
-            return DoCircleEllipseOverlap(c1, c2);
+            // This check is an approximation and NOT exact mathematically. Ellipses are weird and hard, no fun ):
+            // Here we transform one of the ellipses to a convex polygon and then we check if the circle intersect it 
+            return DoCirclePolygonOverlap(c1, c2, c2.GetCircleAsPoints(CIRCLE_TO_POLYGON_POINT_COUNT));
         }
 
         return false;
     }
 
-    public static bool DoesPixelOnPixelOverlap(Collider c1, Collider c2) {
+    public static bool DoesPixelOnPixelOverlap(PixelCollider c1, PixelCollider c2) {
+        PixelCollider looper = c1.Width * c1.Height < c2.Width * c2.Height ? c1 : c2;
+        PixelCollider checker = looper == c1 ? c2 : c1;
+        
+        for (int x = 0; x < looper.Width; x++) {
+            for (int y = 0; y < looper.Height; y++) {
+                if (!looper.pixels[x, y].IsOpaque) {
+                    continue;
+                }
+
+                Vector2 world = looper.Transform.LocalToWorldMatrix.ConvertPoint(looper.PixelToLocal(new Vector2Int(x, y)));
+                if (checker.IsPointInside(world)) {
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 
-    public static bool DoesBoxOnCircleOverlap(Collider c1, Collider c2) {
-        return false;
+    public static bool DoesBoxOnCircleOverlap(CircleCollider c1, BoxCollider c2) {
+        return DoCirclePolygonOverlap(c1, c2, c2.WorldCorners);
     }
 
     public static bool DoesBoxOnPixelOverlap(Collider c1, Collider c2) {
@@ -93,19 +111,16 @@ public static class TriggerIntersectUtils {
         float radiusSum = c1Radius + c2Radius;
         return distance.x * distance.x + distance.y * distance.y <= radiusSum * radiusSum;
     }
-    
-    // This check is an approximation and NOT exact mathematically. Ellipses are weird and hard, no fun ):
-    // Here we transform one of the ellipses to a convex polygon and then we check if the circle intersect it 
-    private static bool DoCircleEllipseOverlap(CircleCollider c1, CircleCollider c2) {
+
+    private static bool DoCirclePolygonOverlap(CircleCollider c1, Collider c2, IReadOnlyList<Vector2> c2Points) {
         if (c1.IsPointInside(c2.Center) || c2.IsPointInside(c1.Center)) {
             return true;
         }
 
-        List<Vector2> ellipsePoints = c2.GetCircleAsPoints(CIRCLE_TO_POLYGON_POINT_COUNT);
-        int fromIndex = ellipsePoints.Count - 1;
-        for (int toIndex = 0; toIndex < ellipsePoints.Count; toIndex++) {
-            Vector2 origin = c1.Transform.WorldToLocalMatrix.ConvertPoint(ellipsePoints[fromIndex]);
-            Vector2 direction = c1.Transform.WorldToLocalMatrix.ConvertPoint(ellipsePoints[toIndex]) - origin;
+        int fromIndex = c2Points.Count - 1;
+        for (int toIndex = 0; toIndex < c2Points.Count; toIndex++) {
+            Vector2 origin = c1.Transform.WorldToLocalMatrix.ConvertPoint(c2Points[fromIndex]);
+            Vector2 direction = c1.Transform.WorldToLocalMatrix.ConvertPoint(c2Points[toIndex]) - origin;
             if (PhysicsUtils.LineCircleIntersection(origin, direction, c1.offset, c1.radius, out _)) {
                 return true;
             }

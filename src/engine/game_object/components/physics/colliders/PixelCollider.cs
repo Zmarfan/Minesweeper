@@ -11,8 +11,8 @@ public class PixelCollider : Collider {
 
     public bool flipX;
     public bool flipY; 
-    private int Width => pixels.GetLength(0);
-    private int Height => pixels.GetLength(1);
+    public int Width => pixels.GetLength(0);
+    public int Height => pixels.GetLength(1);
     private int EvenWidthOffset => (Width + (flipX ? 0 : 1)) % 2;
     private int EvenHeightOffset => (Height + (flipY ? 0 : 1)) % 2;
 
@@ -60,6 +60,20 @@ public class PixelCollider : Collider {
         );
     }
 
+    public Vector2Int LocalToPixel(Vector2 p) {
+        return new Vector2Int(
+            FlipXSign * ((int)Math.Round(p.x) - (int)offset.x) + Width / 2 - EvenWidthOffset,
+            FlipYSign * ((int)Math.Round(p.y) - (int)offset.y) + Height / 2 - EvenHeightOffset
+        );
+    }
+    
+    public Vector2 PixelToLocal(Vector2Int p) {
+        return new Vector2(
+            FlipXSign * (p.x - Width / 2f + EvenWidthOffset) + offset.x,
+            FlipYSign * (p.y - Height / 2f + EvenHeightOffset) + offset.y
+        );
+    }
+    
     private Vector2 CalculateNormal(Vector2Int pixel) {
         Vector2 point = new(pixel.x, -pixel.y);
         Vector2 normal = Vector2.Zero();
@@ -86,21 +100,7 @@ public class PixelCollider : Collider {
     private bool PixelIsInTexture(Vector2Int pixel) {
         return pixel.x >= 0 && pixel.x < Width && pixel.y >= 0 && pixel.y < Height;
     }
-    
-    private Vector2Int LocalToPixel(Vector2 p) {
-        return new Vector2Int(
-            FlipXSign * ((int)Math.Round(p.x) - (int)offset.x) + Width / 2 - EvenWidthOffset,
-            FlipYSign * ((int)Math.Round(p.y) - (int)offset.y) + Height / 2 - EvenHeightOffset
-        );
-    }
-    
-    private Vector2 PixelToLocal(Vector2Int p) {
-        return new Vector2(
-            FlipXSign * (p.x - Width / 2f + EvenWidthOffset) + offset.x,
-            FlipYSign * (p.y - Height / 2f + EvenHeightOffset) + offset.y
-        );
-    }
-    
+
     private Vector2Int? CalculatePointLineHits(Vector2Int p1, Vector2Int p2) {
         Vector2Int dimensions = p2 - p1;
         int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;

@@ -49,6 +49,13 @@ public class CircleCollider : Collider {
     }
 
     public override void OnDrawGizmos() {
+        List<Vector2> points = GetCircleAsPoints(15);
+        int from = points.Count - 1;
+        for (int i = 0; i < points.Count; i++) {
+            Gizmos.DrawLine(points[from], points[i], Color.BLUE);
+            from = i;
+        }
+        
         Gizmos.DrawEllipsis(Center, radius * Transform.Scale, Transform.Rotation, GIZMO_COLOR);
     }
 }

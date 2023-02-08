@@ -198,7 +198,7 @@ public static class Scene1 {
             .Build()
             .Transform.AddSibling("circleCollider1")
             .SetPosition(new Vector2(200, 100))
-            .SetComponent(new CircleCollider(true, false,  100, Vector2.Zero()))
+            .SetComponent(new BoxCollider(true, false,  new Vector2(200, 200), Vector2.Zero()))
             .SetRotation(Rotation.FromDegrees(0))
             .SetScale(new Vector2(1, 2))
             .Build()
@@ -212,16 +212,16 @@ public static class Scene1 {
             .Build()
             .Transform.AddSibling("animation")
             .SetComponent(new TriggerScriptTest())
-            .SetScale(new Vector2(3, 1))
-            .SetComponent(new CircleCollider(true, true, 50, Vector2.Zero()))
-            .SetComponent(TextureRendererBuilder.Builder(Texture.CreateMultiple(Path("animation_1.png"), 0, 0, 1, 19)).Build())
+            .SetComponent(TextureColliderBuilder
+                .Builder(Texture.CreateMultiple(Path("animation_1.png"), 0, 0, 1, 19))
+                .Build()
+            )
             .SetComponent(AudioSourceBuilder
                 .Builder(Path("explosion/Explosion1.wav"), "effects")
                 .SetVolume(Volume.FromPercentage(10))
                 .SetPlayOnAwake(false)
                 .Build()
             )
-            .SetComponent(new GizmoScript())
             .SetComponent(new RigidBody())
             .SetComponent(
                 AnimationControllerBuilder
