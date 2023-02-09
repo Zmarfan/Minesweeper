@@ -27,13 +27,6 @@ public static class TriggerIntersectUtils {
         return false;
     }
 
-    public static bool DoesPixelOnPixelOverlap(PixelCollider c1, PixelCollider c2) {
-        PixelCollider looper = c1.Width * c1.Height < c2.Width * c2.Height ? c1 : c2;
-        PixelCollider checker = looper == c1 ? c2 : c1;
-
-        return DoesPixelOnColliderOverlap(looper, checker);
-    }
-
     public static bool DoesPixelOnColliderOverlap(PixelCollider pixel, Collider collider) {
         if (!DoBoundingBoxesOverlap(pixel, collider)) {
             return false;

@@ -78,13 +78,10 @@ public class PhysicsUpdateHandler {
         return c1 switch {
             BoxCollider box1 when c2 is BoxCollider box2 => TriggerIntersectUtils.DoesBoxOnBoxOverlap(box1, box2),
             CircleCollider circle1 when c2 is CircleCollider circle2 => TriggerIntersectUtils.DoesCircleOnCircleOverlap(circle1, circle2),
-            PixelCollider p1 when c2 is PixelCollider p2 => TriggerIntersectUtils.DoesPixelOnPixelOverlap(p1, p2),
+            PixelCollider p1 => TriggerIntersectUtils.DoesPixelOnColliderOverlap(p1, c2),
             BoxCollider box when c2 is CircleCollider circle => TriggerIntersectUtils.DoesBoxOnCircleOverlap(circle, box),
-            BoxCollider box when c2 is PixelCollider pixel => TriggerIntersectUtils.DoesPixelOnColliderOverlap(pixel, box),
-            CircleCollider circle when c2 is PixelCollider pixel => TriggerIntersectUtils.DoesPixelOnColliderOverlap(pixel, circle),
-            PixelCollider pixel when c2 is CircleCollider circle => TriggerIntersectUtils.DoesPixelOnColliderOverlap(pixel, circle),
             CircleCollider circle when c2 is BoxCollider box => TriggerIntersectUtils.DoesBoxOnCircleOverlap(circle, box),
-            PixelCollider pixel when c2 is BoxCollider box => TriggerIntersectUtils.DoesPixelOnColliderOverlap(pixel, box),
+            not null when c2 is PixelCollider p2 => TriggerIntersectUtils.DoesPixelOnColliderOverlap(p2, c1),
             _ => throw new Exception($"The collider types: {c1} and {c2} are not supported in the physics trigger system!")
         };
     }
