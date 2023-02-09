@@ -38,15 +38,8 @@ public static class TriggerIntersectUtils {
         if (!DoBoundingBoxesOverlap(pixel, collider)) {
             return false;
         }
-        
-        Tuple<Vector2, Vector2> box = CalculateBoundingBox(
-            collider.GetLocalCorners()
-                .Select(c => collider.Transform.LocalToWorldMatrix.ConvertPoint(c))
-                .Select(c => pixel.Transform.WorldToLocalMatrix.ConvertPoint(c))
-                .Select(pixel.LocalToPixel)
-                .Select(c => new Vector2(c.x, c.y))
-                .ToList()
-        );
+
+        Tuple<Vector2, Vector2> box = CalculatePixelTextureBoundingBox(pixel, collider);
 
         for (int x = (int)Math.Max(box.Item1.x, 0); x < Math.Min(box.Item2.x, pixel.Width); x++) {
             for (int y = (int)Math.Max(box.Item1.y, 0); y < Math.Min(box.Item2.y, pixel.Height); y++) {
@@ -62,6 +55,17 @@ public static class TriggerIntersectUtils {
         }
 
         return false;
+    }
+
+    private static Tuple<Vector2, Vector2> CalculatePixelTextureBoundingBox(PixelCollider pixel, Collider collider) {
+        return CalculateBoundingBox(
+            collider.GetLocalCorners()
+                .Select(c => collider.Transform.LocalToWorldMatrix.ConvertPoint(c))
+                .Select(c => pixel.Transform.WorldToLocalMatrix.ConvertPoint(c))
+                .Select(pixel.LocalToPixel)
+                .Select(c => new Vector2(c.x, c.y))
+                .ToList()
+        );
     }
 
     public static bool DoesBoxOnCircleOverlap(CircleCollider c1, BoxCollider c2) {
