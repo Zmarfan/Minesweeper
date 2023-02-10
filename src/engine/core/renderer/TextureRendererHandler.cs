@@ -9,7 +9,6 @@ using Worms.engine.scene;
 namespace Worms.engine.core.renderer; 
 
 public static class TextureRendererHandler {
-    private const string ACCEPTED_PIXEL_FORMAT = "SDL_PIXELFORMAT_ABGR8888";
     public const string DEFAULT_SORTING_LAYER = "Default";
 
     private static IntPtr _renderer;
@@ -30,7 +29,7 @@ public static class TextureRendererHandler {
             return;
         }
 
-        surface = LoadSurfaceWithCorrectFormat(textureSrc);
+        surface = SurfaceReadWriteUtils.LoadSurfaceFromFile(textureSrc);
         pixels = SurfaceReadWriteUtils.ReadSurfacePixels(surface);
     }
 
@@ -93,14 +92,7 @@ public static class TextureRendererHandler {
     
     private static unsafe StoredTexture GetTexture(TextureRenderer tr) {
         if (!LOADED_TEXTURES.TryGetValue(tr.texture.textureId, out StoredTexture? texture)) {
-            IntPtr texturePtr = SDL.SDL_CreateTextureFromSurface(_renderer, (IntPtr)tr.texture.surface);
-            if (texturePtr == IntPtr.Zero) {
-                throw new ArgumentException($"Unable to load texture: {tr.texture} due to: {SDL.SDL_GetError()}");
-            }
-
-            if (SDL.SDL_SetTextureBlendMode(texturePtr, SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND) != 0) {
-                throw new Exception($"Unable to set texture blend mode, used for alpha mod, due to: {SDL.SDL_GetError()}");
-            } 
+            IntPtr texturePtr = SurfaceReadWriteUtils.SurfaceToTexture(_renderer, (IntPtr)tr.texture.surface);
             texture = new StoredTexture(tr.texture.surface, texturePtr, tr.texture.texturePixels);
             LOADED_TEXTURES.Add(tr.texture.textureId, texture);
         }
@@ -146,17 +138,6 @@ public static class TextureRendererHandler {
             flip |= SDL.SDL_RendererFlip.SDL_FLIP_VERTICAL;
         }
         return flip;
-    }
-    
-    private static unsafe SDL.SDL_Surface* LoadSurfaceWithCorrectFormat(string textureSrc) {
-        SDL.SDL_Surface* surface = (SDL.SDL_Surface*)SDL_image.IMG_Load(textureSrc);
-        if (SDL.SDL_GetPixelFormatName(((SDL.SDL_PixelFormat*)surface->format)->format) != ACCEPTED_PIXEL_FORMAT) {
-            SDL.SDL_Surface* convertedSurface = (SDL.SDL_Surface*)SDL.SDL_ConvertSurfaceFormat((nint)surface, SDL.SDL_PIXELFORMAT_ABGR8888, 0);
-            SDL.SDL_FreeSurface((nint)surface);
-            surface = convertedSurface;
-        }
-
-        return surface;
     }
 
     public static unsafe void Clean() {

@@ -2,6 +2,7 @@
 using Worms.engine.core.audio;
 using Worms.engine.core.cursor;
 using Worms.engine.core.input.listener;
+using Worms.engine.core.renderer.font;
 using Worms.game.scenes;
 
 namespace Worms;
@@ -45,6 +46,8 @@ internal static class Program {
             )
             .AddSortLayers("layer1", "layer2", "layer3")
             .SetCursorSettings(new CursorSettings(false, new CustomCursorSettings($"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\cursor.png")))
+            .AddFont(new FontDefinition($"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\Vanilla Caramel.ttf", "myFont"))
+            .AddFont(new FontDefinition($"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\Consolas.ttf", "Consolas"))
             .Build()
         );
 

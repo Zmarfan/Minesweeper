@@ -1,5 +1,6 @@
 ﻿using SDL2;
 using Worms.engine.camera;
+using Worms.engine.core.renderer.font;
 using Worms.engine.core.window;
 using Worms.engine.data;
 using Worms.engine.scene;
@@ -9,6 +10,7 @@ namespace Worms.engine.core.renderer;
 public class Renderer {
     private readonly IntPtr _window;
     private readonly IntPtr _renderer;
+    private readonly FontHandler _fontHandler;
     private readonly GizmosRendererHandler _gizmosRendererHandler;
     private readonly SceneData _sceneData;
     private readonly GameSettings _settings;
@@ -24,6 +26,7 @@ public class Renderer {
             settings.height,
             SDL.SDL_WindowFlags.SDL_WINDOW_SHOWN
         );
+        SDL.SDL_SetHint( SDL.SDL_HINT_RENDER_SCALE_QUALITY, "1" );
         if (_window == IntPtr.Zero) {
             throw new Exception();
         }
@@ -39,6 +42,7 @@ public class Renderer {
         _settings = settings;
         _sceneData = sceneData;
         TextureRendererHandler.Init(_renderer, settings, _sceneData);
+        _fontHandler = new FontHandler(_renderer, settings.fontDefinitions);
         _gizmosRendererHandler = new GizmosRendererHandler(_renderer, _sceneData);
     }
 
@@ -49,6 +53,9 @@ public class Renderer {
         if (_settings.debug) {
             _gizmosRendererHandler.RenderGizmos(_sceneData.gameObjectHandler.objects);
         }
+
+        // SDL.SDL_RenderCopy(_renderer, _fontHandler._fonts["myFont"]._textureAtlas, IntPtr.Zero, IntPtr.Zero);
+        SDL.SDL_RenderCopy(_renderer, _fontHandler._fonts["Consolas"]._textureAtlas, IntPtr.Zero, IntPtr.Zero);
         SDL.SDL_RenderPresent(_renderer);
     }
 

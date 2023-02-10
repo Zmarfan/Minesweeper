@@ -13,10 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="src\assets\test" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Remove="src\assets\test\test.jpg" />
     </ItemGroup>
 
@@ -116,6 +112,18 @@
       </Content>
       <None Remove="src\assets\test\pixelTest7.png" />
       <Content Include="src\assets\test\pixelTest7.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\test\Vanilla Caramel.ttf" />
+      <Content Include="src\assets\test\Vanilla Caramel.ttf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\font\missing_character.png" />
+      <Content Include="src\assets\font\missing_character.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\test\Consolas.ttf" />
+      <Content Include="src\assets\test\Consolas.ttf">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>

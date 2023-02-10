@@ -4,6 +4,35 @@ using Worms.engine.data;
 namespace Worms.engine.core.renderer; 
 
 public static class SurfaceReadWriteUtils {
+    private const string ACCEPTED_PIXEL_FORMAT = "SDL_PIXELFORMAT_ABGR8888";
+    
+    public static IntPtr SurfaceToTexture(IntPtr renderer, IntPtr surface) {
+        IntPtr texture = SDL.SDL_CreateTextureFromSurface(renderer, surface);
+        if (texture == IntPtr.Zero) {
+            throw new ArgumentException($"Unable to load surface due to: {SDL.SDL_GetError()}");
+        }
+
+        if (SDL.SDL_SetTextureBlendMode(texture, SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND) != 0) {
+            throw new Exception($"Unable to set texture blend mode, used for alpha mod, due to: {SDL.SDL_GetError()}");
+        }
+
+        return texture;
+    }
+    
+    public static unsafe SDL.SDL_Surface* LoadSurfaceFromFile(string textureSrc) {
+        SDL.SDL_Surface* surface = (SDL.SDL_Surface*)SDL_image.IMG_Load(textureSrc);
+        FormatSurface(ref surface);
+        return surface;
+    }
+
+    public static unsafe void FormatSurface(ref SDL.SDL_Surface* surface) {
+        if (SDL.SDL_GetPixelFormatName(((SDL.SDL_PixelFormat*)surface->format)->format) != ACCEPTED_PIXEL_FORMAT) {
+            SDL.SDL_Surface* convertedSurface = (SDL.SDL_Surface*)SDL.SDL_ConvertSurfaceFormat((nint)surface, SDL.SDL_PIXELFORMAT_ABGR8888, 0);
+            SDL.SDL_FreeSurface((nint)surface);
+            surface = convertedSurface;
+        }
+    }
+    
     public static unsafe Color[,] ReadSurfacePixels(SDL.SDL_Surface* surface) {
         Color[,] map = new Color[surface->w, surface->h];
         for (int x = 0; x < surface->w; x++) {
