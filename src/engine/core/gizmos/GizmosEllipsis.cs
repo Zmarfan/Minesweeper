@@ -18,7 +18,7 @@ public class GizmosEllipsis : GizmosObject {
     public override void Render(IntPtr renderer, TransformationMatrix worldToScreenMatrix) {
         Vector2 radius = worldToScreenMatrix.ConvertVector(_radius);
         radius.Abs();
-        RendererHelper.DrawEllipse(
+        GizmoRendererHelper.DrawEllipse(
             renderer,
             worldToScreenMatrix.ConvertPoint(_center),
             radius,

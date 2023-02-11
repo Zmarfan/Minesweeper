@@ -7,17 +7,18 @@ using Worms.engine.scene;
 
 namespace Worms.engine.core.renderer; 
 
-public class Renderer {
+public class GameRenderer {
     private readonly IntPtr _window;
     private readonly IntPtr _renderer;
     private readonly FontHandler _fontHandler;
+    private readonly RendererHandler _rendererHandler;
     private readonly GizmosRendererHandler _gizmosRendererHandler;
     private readonly SceneData _sceneData;
     private readonly GameSettings _settings;
     private Color DefaultDrawColor => _sceneData.camera.defaultDrawColor;
     private bool _isFullscreen = false;
     
-    public Renderer(GameSettings settings, SceneData sceneData) {
+    public GameRenderer(GameSettings settings, SceneData sceneData) {
         _window = SDL.SDL_CreateWindow(
             settings.title,
             SDL.SDL_WINDOWPOS_CENTERED, 
@@ -41,7 +42,7 @@ public class Renderer {
         
         _settings = settings;
         _sceneData = sceneData;
-        TextureRendererHandler.Init(_renderer, settings, _sceneData);
+        _rendererHandler = new RendererHandler(_renderer, settings, _sceneData);
         _fontHandler = new FontHandler(_renderer, settings.fontDefinitions);
         _gizmosRendererHandler = new GizmosRendererHandler(_renderer, _sceneData);
     }
@@ -49,13 +50,14 @@ public class Renderer {
     public void Render() {
          SetDrawColor(DefaultDrawColor);
         SDL.SDL_RenderClear(_renderer);
-        TextureRendererHandler.RenderTextures(_sceneData.gameObjectHandler.objects);
+        _rendererHandler.Render(_sceneData.gameObjectHandler.objects);
         if (_settings.debug) {
             _gizmosRendererHandler.RenderGizmos(_sceneData.gameObjectHandler.objects);
         }
 
         // SDL.SDL_RenderCopy(_renderer, _fontHandler._fonts["myFont"]._textureAtlas, IntPtr.Zero, IntPtr.Zero);
-        SDL.SDL_RenderCopy(_renderer, _fontHandler._fonts["Consolas"]._textureAtlas, IntPtr.Zero, IntPtr.Zero);
+        // SDL.SDL_RenderCopy(_renderer, _fontHandler._fonts["Consolas"].textureAtlas, IntPtr.Zero, IntPtr.Zero);
+        SDL.SDL_RenderCopy(_renderer, _fontHandler._fonts["times"].textureAtlas, IntPtr.Zero, IntPtr.Zero);
         SDL.SDL_RenderPresent(_renderer);
     }
 
@@ -66,7 +68,7 @@ public class Renderer {
     }
     
     public void Clean() {
-        TextureRendererHandler.Clean();
+        TextureStorage.Clean();
         SDL.SDL_DestroyWindow(_window);
         SDL.SDL_DestroyRenderer(_renderer);
     }

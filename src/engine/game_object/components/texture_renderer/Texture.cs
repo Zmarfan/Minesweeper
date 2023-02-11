@@ -33,7 +33,7 @@ public struct Texture {
         _row = row;
         _columnLength = columnLength;
         _rowLength = rowLength;
-        TextureRendererHandler.LoadImageFromFile(textureSrc, out SDL.SDL_Surface* surfaceData, out Color[,] pixelData);
+        TextureStorage.LoadImageFromFile(textureSrc, out SDL.SDL_Surface* surfaceData, out Color[,] pixelData);
         surface = surfaceData;
         texturePixels = pixelData;
     }
@@ -45,8 +45,7 @@ public struct Texture {
         _row = row;
         _columnLength = columnLength;
         _rowLength = rowLength;
-        TextureRendererHandler.LoadImageFromPixels(pixels, out SDL.SDL_Surface* surfaceData);
-        surface = surfaceData;
+        surface = SurfaceReadWriteUtils.WriteSurfacePixels(pixels);
         texturePixels = pixels;
     }
 
@@ -70,7 +69,7 @@ public struct Texture {
     public unsafe void Alter(Color[,] pixels) {
         _sectionPixels = null;
         SurfaceReadWriteUtils.AlterSurfacePixels(surface, texturePixels, pixels);
-        TextureRendererHandler.RemoveLoadedTexture(textureId);
+        TextureStorage.RemoveLoadedTexture(textureId);
         texturePixels = pixels;
         textureId = Guid.NewGuid().ToString();
     }

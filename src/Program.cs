@@ -48,6 +48,7 @@ internal static class Program {
             .SetCursorSettings(new CursorSettings(false, new CustomCursorSettings($"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\cursor.png")))
             .AddFont(new FontDefinition($"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\Vanilla Caramel.ttf", "myFont"))
             .AddFont(new FontDefinition($"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\Consolas.ttf", "Consolas"))
+            .AddFont(new FontDefinition($"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\times-new-roman.ttf", "times"))
             .Build()
         );
 

@@ -19,7 +19,7 @@ public class Game {
     private bool _isRunning;
     private readonly EventHandler _eventHandler;
     private readonly UpdateHandler _updateHandler;
-    private readonly Renderer _renderer;
+    private readonly GameRenderer _gameRenderer;
     private readonly Stopwatch _actionFrameWatch = new();
     private readonly Stopwatch _totalFrameWatch = new();
     private float _deltaTime = 0;
@@ -37,10 +37,10 @@ public class Game {
         SceneManager.Init(settings.scenes, LoadScene);
         _updateHandler = new UpdateHandler(_sceneData);
         
-        _renderer = new Renderer(settings, _sceneData);
+        _gameRenderer = new GameRenderer(settings, _sceneData);
         _eventHandler = new EventHandler(settings);
         _eventHandler.QuitEvent += () => _isRunning = false;
-        _eventHandler.ToggleFullscreenEvent += _renderer.ToggleFullScreen;
+        _eventHandler.ToggleFullscreenEvent += _gameRenderer.ToggleFullScreen;
         AudioHandler.Init(settings.audioSettings);
         Input.Init(settings, _sceneData, _eventHandler, settings.inputListeners);
         Cursor.Init(settings.cursorSettings);
@@ -69,7 +69,7 @@ public class Game {
             _updateHandler.Awake();
             _updateHandler.Start();
             _updateHandler.UpdateLoops(_deltaTime);
-            _renderer.Render();
+            _gameRenderer.Render();
         }
         catch (Exception e) {
             Logger.Error(e, "An issue occured during this frame");
@@ -86,7 +86,7 @@ public class Game {
     private void Clean() {
         Cursor.Clean();
         AudioHandler.Clean();
-        _renderer.Clean();
+        _gameRenderer.Clean();
         SDL.SDL_Quit();
     }
 }

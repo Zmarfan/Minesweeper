@@ -3,7 +3,7 @@ using Worms.engine.data;
 
 namespace Worms.engine.core.renderer; 
 
-public static class RendererHelper {
+public static class GizmoRendererHelper {
     public static void DrawEllipse(IntPtr renderer, Vector2 center, Vector2 radius, Rotation rotation) {
         float sin = (float)Math.Sin(rotation.Radians);
         float cos = (float)Math.Cos(rotation.Radians);

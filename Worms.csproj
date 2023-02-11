@@ -126,6 +126,10 @@
       <Content Include="src\assets\test\Consolas.ttf">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="src\assets\test\times-new-roman.ttf" />
+      <Content Include="src\assets\test\times-new-roman.ttf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

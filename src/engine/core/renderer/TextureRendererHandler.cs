@@ -1,71 +1,12 @@
 ﻿using SDL2;
-using Worms.engine.core.game_object_handler;
 using Worms.engine.data;
-using Worms.engine.game_object;
 using Worms.engine.game_object.components.texture_renderer;
-using Worms.engine.logger;
-using Worms.engine.scene;
 
 namespace Worms.engine.core.renderer; 
 
 public static class TextureRendererHandler {
-    public const string DEFAULT_SORTING_LAYER = "Default";
-
-    private static IntPtr _renderer;
-    private static SceneData _sceneData = null!;
-    private static readonly Dictionary<string, StoredTexture> LOADED_TEXTURES = new();
-    private static readonly List<string> SORT_LAYERS = new() { DEFAULT_SORTING_LAYER };
-
-    public static void Init(IntPtr renderer, GameSettings settings, SceneData sceneData) {
-        _renderer = renderer;
-        _sceneData = sceneData;
-        SORT_LAYERS.AddRange(settings.sortLayers);
-    }
-
-    public static unsafe void LoadImageFromFile(string textureSrc, out SDL.SDL_Surface* surface, out Color[,] pixels) {
-        if (LOADED_TEXTURES.TryGetValue(textureSrc, out StoredTexture? storedTexture)) {
-            pixels = storedTexture.pixels;
-            surface = storedTexture.surface;
-            return;
-        }
-
-        surface = SurfaceReadWriteUtils.LoadSurfaceFromFile(textureSrc);
-        pixels = SurfaceReadWriteUtils.ReadSurfacePixels(surface);
-    }
-
-    public static unsafe void LoadImageFromPixels(Color[,] pixels, out SDL.SDL_Surface* surface) {
-        surface = SurfaceReadWriteUtils.WriteSurfacePixels(pixels);
-    }
-    
-    public static void RemoveLoadedTexture(string textureId) {
-        if (LOADED_TEXTURES.TryGetValue(textureId, out StoredTexture? storedTexture)) {
-            SDL.SDL_DestroyTexture(storedTexture.texture);
-        }
-        LOADED_TEXTURES.Remove(textureId);
-    }
-
-    public static void RenderTextures(Dictionary<GameObject, TrackObject> objects) {
-        IEnumerable<TextureRenderer> textureRenderers = objects
-            .Values
-            .Where(obj => obj.isActive)
-            .SelectMany(obj => obj.TextureRenderers)
-            .Where(tr => tr.IsActive)
-            .OrderByDescending(tr => SORT_LAYERS.IndexOf(tr.sortingLayer))
-            .ThenByDescending(tr => tr.orderInLayer);
-        
-        foreach (TextureRenderer tr in textureRenderers) {
-            try {
-                TransformationMatrix matrix = objects[tr.gameObject].isWorld ? _sceneData.camera.WorldToScreenMatrix : _sceneData.camera.UiToScreenMatrix;
-                RenderTexture(tr, matrix);
-            }
-            catch (ArgumentException e) {
-                Logger.Error(e);
-            }
-        }
-    }
-
-    private static unsafe void RenderTexture(TextureRenderer tr, TransformationMatrix matrix) {
-        StoredTexture texture = GetTexture(tr);
+    public static unsafe void RenderTexture(IntPtr renderer, TextureRenderer tr, TransformationMatrix matrix) {
+        StoredTexture texture = TextureStorage.GetAndCacheTexture(renderer, tr.texture);
 
         SDL.SDL_Rect srcRect = tr.texture.GetSrcRect(texture);
         SDL.SDL_FRect destRect = CalculateTextureDrawPosition(tr, texture.surface, matrix);
@@ -78,7 +19,7 @@ public static class TextureRendererHandler {
         }
 
         if (SDL.SDL_RenderCopyExF(
-            _renderer,
+            renderer,
             texture.texture,
             ref srcRect,
             ref destRect,
@@ -89,17 +30,7 @@ public static class TextureRendererHandler {
             throw new Exception($"Unable to render texture to screen due to: {SDL.SDL_GetError()}");
         }
     }
-    
-    private static unsafe StoredTexture GetTexture(TextureRenderer tr) {
-        if (!LOADED_TEXTURES.TryGetValue(tr.texture.textureId, out StoredTexture? texture)) {
-            IntPtr texturePtr = SurfaceReadWriteUtils.SurfaceToTexture(_renderer, (IntPtr)tr.texture.surface);
-            texture = new StoredTexture(tr.texture.surface, texturePtr, tr.texture.texturePixels);
-            LOADED_TEXTURES.Add(tr.texture.textureId, texture);
-        }
 
-        return texture;
-    }
-    
     private static unsafe SDL.SDL_FRect CalculateTextureDrawPosition(TextureRenderer tr, SDL.SDL_Surface* surface, TransformationMatrix matrix) {
         Vector2 screenPosition = CalculateTextureScreenPosition(tr, surface, matrix);
         Vector2 textureDimensions = CalculateTextureDimensions(tr, surface, matrix);
@@ -138,12 +69,5 @@ public static class TextureRendererHandler {
             flip |= SDL.SDL_RendererFlip.SDL_FLIP_VERTICAL;
         }
         return flip;
-    }
-
-    public static unsafe void Clean() {
-        LOADED_TEXTURES.Values.ToList().ForEach(texture => {
-            SDL.SDL_FreeSurface((nint)texture.surface);
-            SDL.SDL_DestroyTexture(texture.texture);
-        });
     }
 }

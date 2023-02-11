@@ -6,7 +6,7 @@ namespace Worms.engine.game_object.components.texture_renderer;
 public class TextureRendererBuilder {
     private bool _isActive = true;
     private readonly Texture _texture;
-    private string _sortingLayer = TextureRendererHandler.DEFAULT_SORTING_LAYER;
+    private string _sortingLayer = RendererHandler.DEFAULT_SORTING_LAYER;
     private int _sortOrder = 0;
     private Color _color = Color.WHITE;
     private bool _flipX;
