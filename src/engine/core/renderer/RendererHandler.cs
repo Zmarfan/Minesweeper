@@ -2,7 +2,8 @@
 using Worms.engine.core.game_object_handler;
 using Worms.engine.data;
 using Worms.engine.game_object;
-using Worms.engine.game_object.components.texture_renderer;
+using Worms.engine.game_object.components.rendering;
+using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.engine.logger;
 using Worms.engine.scene;
 
@@ -22,7 +23,7 @@ public class RendererHandler {
     }
 
     public void Render(Dictionary<GameObject, TrackObject> objects) {
-        IEnumerable<TextureRenderer> textureRenderers = objects
+        IEnumerable<RenderComponent> renderComponents = objects
             .Values
             .Where(obj => obj.isActive)
             .SelectMany(obj => obj.TextureRenderers)
@@ -30,10 +31,12 @@ public class RendererHandler {
             .OrderByDescending(tr => _sortLayers.IndexOf(tr.sortingLayer))
             .ThenByDescending(tr => tr.orderInLayer);
         
-        foreach (TextureRenderer tr in textureRenderers) {
+        foreach (RenderComponent renderComponent in renderComponents) {
             try {
-                TransformationMatrix matrix = objects[tr.gameObject].isWorld ? _sceneData.camera.WorldToScreenMatrix : _sceneData.camera.UiToScreenMatrix;
-                TextureRendererHandler.RenderTexture(_renderer, tr, matrix);
+                TransformationMatrix matrix = objects[renderComponent.gameObject].isWorld ? _sceneData.camera.WorldToScreenMatrix : _sceneData.camera.UiToScreenMatrix;
+                if (renderComponent is TextureRenderer tr) {
+                    TextureRendererHandler.RenderTexture(_renderer, tr, matrix);
+                }
             }
             catch (ArgumentException e) {
                 Logger.Error(e);

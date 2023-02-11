@@ -1,6 +1,5 @@
 ﻿using Worms.engine.game_object;
 using Worms.engine.game_object.components;
-using Worms.engine.game_object.components.texture_renderer;
 using Worms.engine.game_object.scripts;
 using Object = Worms.engine.game_object.Object;
 

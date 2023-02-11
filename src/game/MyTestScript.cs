@@ -6,7 +6,6 @@ using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.audio_source;
 using Worms.engine.game_object.components.physics.colliders;
-using Worms.engine.game_object.components.texture_renderer;
 using Worms.engine.game_object.scripts;
 
 namespace Worms.game; 

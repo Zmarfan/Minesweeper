@@ -1,7 +1,7 @@
 ﻿using Worms.engine.core.renderer;
 using Worms.engine.data;
 
-namespace Worms.engine.game_object.components.texture_renderer; 
+namespace Worms.engine.game_object.components.rendering.texture_renderer; 
 
 public class TextureRendererBuilder {
     private bool _isActive = true;

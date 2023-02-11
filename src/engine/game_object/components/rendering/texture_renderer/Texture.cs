@@ -1,9 +1,8 @@
-﻿using System.Diagnostics;
-using SDL2;
+﻿using SDL2;
 using Worms.engine.core.renderer;
 using Worms.engine.data;
 
-namespace Worms.engine.game_object.components.texture_renderer; 
+namespace Worms.engine.game_object.components.rendering.texture_renderer; 
 
 public struct Texture {
     public Color[,] SectionPixels {

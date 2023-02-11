@@ -2,7 +2,8 @@
 using Worms.engine.game_object.components;
 using Worms.engine.game_object.components.physics;
 using Worms.engine.game_object.components.physics.colliders;
-using Worms.engine.game_object.components.texture_renderer;
+using Worms.engine.game_object.components.rendering;
+using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.engine.game_object.scripts;
 
 namespace Worms.engine.core.game_object_handler; 
@@ -13,7 +14,7 @@ public class TrackObject {
     public readonly List<ToggleComponent> toggleComponents = new();
     public RigidBody? RigidBody => toggleComponents.OfType<RigidBody>().FirstOrDefault();
     public IEnumerable<Collider> Colliders => toggleComponents.OfType<Collider>();
-    public IEnumerable<TextureRenderer> TextureRenderers => toggleComponents.OfType<TextureRenderer>();
+    public IEnumerable<RenderComponent> TextureRenderers => toggleComponents.OfType<RenderComponent>();
     public IEnumerable<Script> Scripts => toggleComponents.OfType<Script>();
 
     public bool MouseInsideTrigger { get; set; } = false;
