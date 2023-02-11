@@ -12,6 +12,7 @@ using Worms.engine.game_object.components.particle_system.renderer;
 using Worms.engine.game_object.components.particle_system.shape;
 using Worms.engine.game_object.components.physics;
 using Worms.engine.game_object.components.physics.colliders;
+using Worms.engine.game_object.components.rendering.text_renderer;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.engine.game_object.components.screen_pivot;
 using Worms.engine.scene;
@@ -202,7 +203,7 @@ public static class Scene1 {
             .SetRotation(Rotation.FromDegrees(0))
             .SetScale(new Vector2(1, 2))
             .Build()
-            .Transform.AddSibling("circleCollider2")
+            .Transform.AddSibling("text")
             .SetPosition(new Vector2(-200, 100))
             .SetComponent(new CircleCollider(true, ColliderState.TRIGGERING_COLLIDER, 150f, Vector2.Zero()))
             .Build()
@@ -220,6 +221,13 @@ public static class Scene1 {
                 .Builder(Path("explosion/Explosion1.wav"), "effects")
                 .SetVolume(Volume.FromPercentage(10))
                 .SetPlayOnAwake(false)
+                .Build()
+            )
+            .SetComponent(TextRendererBuilder
+                .Builder()
+                .SetText("hej lite text. Även lite öh, §")
+                .SetFont("times")
+                .SetSortingOrder(-100)
                 .Build()
             )
             .SetComponent(new RigidBody())

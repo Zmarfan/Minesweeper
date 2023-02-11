@@ -42,8 +42,8 @@ public class GameRenderer {
         
         _settings = settings;
         _sceneData = sceneData;
-        _rendererHandler = new RendererHandler(_renderer, settings, _sceneData);
         _fontHandler = new FontHandler(_renderer, settings.fontDefinitions);
+        _rendererHandler = new RendererHandler(_renderer, _fontHandler, settings, _sceneData);
         _gizmosRendererHandler = new GizmosRendererHandler(_renderer, _sceneData);
     }
 
@@ -55,9 +55,6 @@ public class GameRenderer {
             _gizmosRendererHandler.RenderGizmos(_sceneData.gameObjectHandler.objects);
         }
 
-        // SDL.SDL_RenderCopy(_renderer, _fontHandler._fonts["myFont"]._textureAtlas, IntPtr.Zero, IntPtr.Zero);
-        // SDL.SDL_RenderCopy(_renderer, _fontHandler._fonts["Consolas"].textureAtlas, IntPtr.Zero, IntPtr.Zero);
-        SDL.SDL_RenderCopy(_renderer, _fontHandler._fonts["times"].textureAtlas, IntPtr.Zero, IntPtr.Zero);
         SDL.SDL_RenderPresent(_renderer);
     }
 
@@ -68,6 +65,7 @@ public class GameRenderer {
     }
     
     public void Clean() {
+        _fontHandler.Clean();
         TextureStorage.Clean();
         SDL.SDL_DestroyWindow(_window);
         SDL.SDL_DestroyRenderer(_renderer);

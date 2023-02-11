@@ -4,7 +4,7 @@ using Worms.engine.data;
 namespace Worms.engine.core.renderer.font; 
 
 public class Font {
-    private const int ATLAS_SIZE = 1024;
+    public const int ATLAS_SIZE = 1024;
     private const int FONT_SIZE = 55;
     private const char START_CHAR = ' ';
     private const char END_CHAR = 'ÿ';
@@ -20,6 +20,7 @@ public class Font {
     
     private readonly IntPtr _ttfFont;
     public readonly Dictionary<char, CharacterInfo> characters = new();
+    public readonly int maxCharHeight;
     public readonly IntPtr textureAtlas;
 
     public unsafe Font(IntPtr renderer, string fontSrc, SDL.SDL_Surface* missingCharacter) {
@@ -30,23 +31,21 @@ public class Font {
 
         textureAtlas = CreateTextureAtlas(renderer, missingCharacter);
         CalculateSupportedCharacterKerning();
+        maxCharHeight = characters.Values.MaxBy(c => c.dimension.y)!.dimension.y;
     }
 
     private unsafe nint CreateTextureAtlas(IntPtr renderer, SDL.SDL_Surface* missingCharacter) {
         SDL.SDL_Surface* atlas = (SDL.SDL_Surface*)SDL.SDL_CreateRGBSurfaceWithFormat(0, ATLAS_SIZE, ATLAS_SIZE, 32, SDL.SDL_PIXELFORMAT_ABGR8888);
         
         SDL.SDL_Rect destination = new() { x = 0, y = 0 };
-        foreach (uint c in SUPPORTED_CHARACTERS) {
+        foreach (char c in SUPPORTED_CHARACTERS) {
             TryAddGlyphToAtlas(c, ref atlas, ref destination);
         }
 
-        destination.w = missingCharacter->w;
-        destination.h = missingCharacter->h;
-        AddGlyphToAtlas(ref destination, ref missingCharacter, ref atlas);
         return SurfaceReadWriteUtils.SurfaceToTexture(renderer, (IntPtr)atlas);
     }
 
-    private unsafe void TryAddGlyphToAtlas(uint c, ref SDL.SDL_Surface* atlas, ref SDL.SDL_Rect destination) {
+    private unsafe void TryAddGlyphToAtlas(char c, ref SDL.SDL_Surface* atlas, ref SDL.SDL_Rect destination) {
         if (SDL_ttf.TTF_GlyphIsProvided32(_ttfFont, c) == 0) {
             return;
         }
@@ -56,19 +55,21 @@ public class Font {
             return;
         }
         SurfaceReadWriteUtils.FormatSurface(ref glyph);
-        if (!SurfaceHasContent(glyph)) {
+        if (c != ' ' && !SurfaceHasContent(glyph)) {
             return;
         }
         
-        SDL_ttf.TTF_SizeUTF8(_ttfFont, ((char)c).ToString(), out destination.w, out destination.h);
+        SDL_ttf.TTF_SizeUTF8(_ttfFont, c.ToString(), out destination.w, out destination.h);
 
-        AddGlyphToAtlas(ref destination, ref glyph, ref atlas);
+        characters.Add(c, new CharacterInfo(c, destination));
+        if (SDL.SDL_BlitSurface((IntPtr)glyph, IntPtr.Zero, (IntPtr)atlas, ref destination) != 0) {
+            throw new Exception($"Unable to blit char due to: {SDL.SDL_GetError()})");
+        }
+        destination = CalculateNewDestination(destination);
         SDL.SDL_FreeSurface((IntPtr)glyph);
-        
-        characters.Add((char)c, new CharacterInfo((char)c, destination));
     }
 
-    private static unsafe void AddGlyphToAtlas(ref SDL.SDL_Rect destination, ref SDL.SDL_Surface* glyph, ref SDL.SDL_Surface* atlas) {
+    private static SDL.SDL_Rect CalculateNewDestination(SDL.SDL_Rect destination) {
         if (destination.x + destination.w >= ATLAS_SIZE) {
             destination.x = 0;
             destination.y += destination.h + 1;
@@ -77,12 +78,9 @@ public class Font {
                 throw new Exception($"Not all characters in font can fit in texture atlas!");
             }
         }
-
-        if (SDL.SDL_BlitSurface((IntPtr)glyph, IntPtr.Zero, (IntPtr)atlas, ref destination) != 0) {
-            throw new Exception($"Unable to blit char due to: {SDL.SDL_GetError()})");
-        }
         
         destination.x += destination.w;
+        return destination;
     }
     
     private static unsafe bool SurfaceHasContent(SDL.SDL_Surface* surface) {

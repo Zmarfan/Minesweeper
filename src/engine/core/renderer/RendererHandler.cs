@@ -1,8 +1,10 @@
 ﻿using SDL2;
 using Worms.engine.core.game_object_handler;
+using Worms.engine.core.renderer.font;
 using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.rendering;
+using Worms.engine.game_object.components.rendering.text_renderer;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.engine.logger;
 using Worms.engine.scene;
@@ -13,11 +15,13 @@ public class RendererHandler {
     public const string DEFAULT_SORTING_LAYER = "Default";
 
     private readonly IntPtr _renderer;
+    private readonly FontHandler _fontHandler;
     private readonly SceneData _sceneData;
     private readonly List<string> _sortLayers = new() { DEFAULT_SORTING_LAYER };
 
-    public RendererHandler(IntPtr renderer, GameSettings settings, SceneData sceneData) {
+    public RendererHandler(IntPtr renderer, FontHandler fontHandler, GameSettings settings, SceneData sceneData) {
         _renderer = renderer;
+        _fontHandler = fontHandler;
         _sceneData = sceneData;
         _sortLayers.AddRange(settings.sortLayers);
     }
@@ -34,8 +38,13 @@ public class RendererHandler {
         foreach (RenderComponent renderComponent in renderComponents) {
             try {
                 TransformationMatrix matrix = objects[renderComponent.gameObject].isWorld ? _sceneData.camera.WorldToScreenMatrix : _sceneData.camera.UiToScreenMatrix;
-                if (renderComponent is TextureRenderer tr) {
-                    TextureRendererHandler.RenderTexture(_renderer, tr, matrix);
+                switch (renderComponent) {
+                    case TextureRenderer texture:
+                        TextureRendererHandler.RenderTexture(_renderer, texture, matrix);
+                        break;
+                    case TextRenderer text:
+                        TextRendererHandler.RenderText(_renderer, _sceneData.camera, _fontHandler.fonts[text.font], text, matrix);
+                        break;
                 }
             }
             catch (ArgumentException e) {
