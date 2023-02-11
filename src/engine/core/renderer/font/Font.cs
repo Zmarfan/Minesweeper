@@ -5,7 +5,7 @@ namespace Worms.engine.core.renderer.font;
 
 public class Font {
     public const int ATLAS_SIZE = 1024;
-    private const int FONT_SIZE = 55;
+    public const int FONT_SIZE = 55;
     private const char START_CHAR = ' ';
     private const char END_CHAR = 'ÿ';
 
