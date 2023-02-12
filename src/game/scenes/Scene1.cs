@@ -225,8 +225,10 @@ public static class Scene1 {
             )
             .SetComponent(TextRendererBuilder
                 .Builder()
-                .SetText("hej lite text. Även lite öh, §")
-                .SetFont("times")
+                .SetText("Lorem aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ipsum dolor sit amet, consectetur\n\n adipiscing aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa elit. Ut porttitor purus in nisi maximus suscipit. Proin nulla orci, scelerisque in tempus eget, vehicula non enim. In ut augue iaculis, elementum ligula nec, tincidunt magna. Suspendisse vel ex vitae orci sollicitudin pulvinar. Sed tempus lorem sollicitudin accumsan luctus. Maecenas vitae tincidunt est. Fusce pulvinar, tellus ut hendrerit luctus, lacus lorem varius elit, nec accumsan mauris dolor vel lorem. Duis tincidunt porta sollicitudin. Ut imperdiet luctus placerat. Pellentesque vel nibh vel felis semper pulvinar. Nullam malesuada malesuada justo, in vehicula tellus commodo in. Nam rhoncus tristique faucibus.")
+                .SetFont("Consolas")
+                .SetSize(55)
+                .SetWidth(800)
                 .SetSortingOrder(-100)
                 .Build()
             )

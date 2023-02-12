@@ -10,10 +10,10 @@ public class Font {
     private const char END_CHAR = 'ÿ';
 
     private static readonly SDL.SDL_Color DEFAULT_GLYPH_COLOR = new() { r = byte.MaxValue, g = byte.MaxValue, b = byte.MaxValue, a = byte.MaxValue };
-    private static readonly List<uint> SUPPORTED_CHARACTERS = new(); 
+    private static readonly List<char> SUPPORTED_CHARACTERS = new(); 
     
     static Font() {
-        for (uint c = START_CHAR; c <= END_CHAR; c++) {
+        for (char c = START_CHAR; c <= END_CHAR; c++) {
             SUPPORTED_CHARACTERS.Add(c);
         }
     }
@@ -23,18 +23,18 @@ public class Font {
     public readonly int maxCharHeight;
     public readonly IntPtr textureAtlas;
 
-    public unsafe Font(IntPtr renderer, string fontSrc, SDL.SDL_Surface* missingCharacter) {
+    public Font(IntPtr renderer, string fontSrc) {
         _ttfFont = SDL_ttf.TTF_OpenFont(fontSrc, FONT_SIZE);
         if (_ttfFont == IntPtr.Zero) {
             throw new ArgumentException($"Unable to load font: {fontSrc} due to: {SDL_ttf.TTF_GetError()}");
         }
 
-        textureAtlas = CreateTextureAtlas(renderer, missingCharacter);
+        textureAtlas = CreateTextureAtlas(renderer);
         CalculateSupportedCharacterKerning();
         maxCharHeight = characters.Values.MaxBy(c => c.dimension.y)!.dimension.y;
     }
 
-    private unsafe nint CreateTextureAtlas(IntPtr renderer, SDL.SDL_Surface* missingCharacter) {
+    private unsafe nint CreateTextureAtlas(IntPtr renderer) {
         SDL.SDL_Surface* atlas = (SDL.SDL_Surface*)SDL.SDL_CreateRGBSurfaceWithFormat(0, ATLAS_SIZE, ATLAS_SIZE, 32, SDL.SDL_PIXELFORMAT_ABGR8888);
         
         SDL.SDL_Rect destination = new() { x = 0, y = 0 };

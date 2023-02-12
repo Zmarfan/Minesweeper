@@ -1,4 +1,5 @@
-﻿using Worms.engine.data;
+﻿using Worms.engine.core.gizmos;
+using Worms.engine.data;
 
 namespace Worms.engine.game_object.components.rendering.text_renderer; 
 
@@ -46,5 +47,13 @@ public class TextRenderer : RenderComponent {
         this.characterSpacing = characterSpacing;
         this.lineSpacing = lineSpacing;
         this.wordSpacing = wordSpacing;
+    }
+
+    public override void OnDrawGizmos() {
+        Vector2 corner = Transform.LocalToWorldMatrix.ConvertPoint(new Vector2(width, 0));
+        Vector2 downVector = Transform.LocalToWorldMatrix.ConvertVector(Vector2.Down()).Normalized * 50;
+        Gizmos.DrawLine(Transform.Position, corner, Color.RED);
+        Gizmos.DrawRay(Transform.Position, downVector, Color.RED);
+        Gizmos.DrawRay(corner, downVector, Color.RED);
     }
 }
