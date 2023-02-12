@@ -26,45 +26,23 @@ public static class TextRendererHandler {
         }
     }
 
-    private static SDL.SDL_Vertex[] CreateTextVertices(Camera camera, Font font, TextRenderer tr, TransformationMatrix matrix) {
+    private static SDL.SDL_Vertex[] CreateTextVertices(
+        Camera camera,
+        Font font,
+        TextRenderer tr,
+        TransformationMatrix matrix
+    ) {
+        List<string> lines = TextFormatter.FormatText(tr.text, tr.width, font);
         Vector2 drawPosition = matrix.ConvertPoint(tr.Transform.Position);
         Vector2 origin = drawPosition;
         float sizeModifier = 1 / camera.Size * tr.size / Font.FONT_SIZE;
         SDL.SDL_Color color = new() { r = tr.color.Rbyte, g = tr.color.Gbyte, b = tr.color.Bbyte, a = tr.color.Abyte };
 
-        StringBuilder line = new();
-        float lineWidth = 0;
-        StringBuilder word = new();
-        float wordWidth = 0;
         List<SDL.SDL_Vertex> vertices = new();
-        for (int i = 0; i < tr.text.Length; i++) {
-            char c = font.characters.ContainsKey(tr.text[i]) || tr.text[i] == '\n' ? tr.text[i] : '.';
-            
-            if (c == '\n') {
-                if (lineWidth + wordWidth >= tr.width * sizeModifier) {
-                    
-                    vertices.AddRange(CreateVerticesForLine(
-                        line.ToString(),
-                        drawPosition,
-                        origin,
-                        tr.Transform.Rotation,
-                        sizeModifier,
-                        color,
-                        font
-                    ));
-                    
-                    lineWidth = 0;
-                    line.Clear();
-                    drawPosition.y += font.maxCharHeight * sizeModifier;
-                }
-                else if (lineWidth != 0) {
-                    line.Append(' ');
-                }
-
-                line.Append(word);
-                
+        foreach (string line in lines) {
+            if (line != string.Empty) {
                 vertices.AddRange(CreateVerticesForLine(
-                    line.ToString(),
+                    line,
                     drawPosition,
                     origin,
                     tr.Transform.Rotation,
@@ -72,96 +50,9 @@ public static class TextRendererHandler {
                     color,
                     font
                 ));
-                
-                wordWidth = 0;
-                lineWidth = 0;
-                line.Clear();
-                word.Clear();
-                drawPosition.y += font.maxCharHeight * sizeModifier;
-                continue;
             }
-
-            CharacterInfo info = font.characters[c];
-            if (c != ' ') {
-                wordWidth += info.dimension.x * sizeModifier;
-            }
-
-            if (wordWidth >= tr.width * sizeModifier) {
-                if (lineWidth != 0) {
-                    vertices.AddRange(CreateVerticesForLine(
-                        line.ToString(),
-                        drawPosition,
-                        origin,
-                        tr.Transform.Rotation,
-                        sizeModifier,
-                        color,
-                        font
-                    ));
-
-                    lineWidth = 0;
-                    line.Clear();
-                    drawPosition.y += font.maxCharHeight * sizeModifier;
-                }
-                
-                vertices.AddRange(CreateVerticesForLine(
-                    word.ToString(),
-                    drawPosition,
-                    origin,
-                    tr.Transform.Rotation,
-                    sizeModifier,
-                    color,
-                    font
-                ));
-                
-                wordWidth = info.dimension.x * sizeModifier;
-                word.Clear();
-                word.Append(c);
-                drawPosition.y += font.maxCharHeight * sizeModifier;
-                continue;
-            }
-
-            if (c != ' ') {
-                word.Append(c);
-            }
-            
-            if (c == ' ' || i == tr.text.Length - 1) {
-                if (lineWidth + wordWidth >= tr.width * sizeModifier) {
-                    
-                    vertices.AddRange(CreateVerticesForLine(
-                        line.ToString(),
-                        drawPosition,
-                        origin,
-                        tr.Transform.Rotation,
-                        sizeModifier,
-                        color,
-                        font
-                    ));
-                    
-                    lineWidth = 0;
-                    line.Clear();
-                    drawPosition.y += font.maxCharHeight * sizeModifier;
-                }
-                else if (lineWidth != 0) {
-                    line.Append(' ');
-                    lineWidth += font.characters[' '].dimension.x * sizeModifier;
-                }
-
-                line.Append(word);
-                lineWidth += wordWidth;
-                wordWidth = 0;
-                word.Clear();
-            }
+            drawPosition.y += font.maxCharHeight * sizeModifier;
         }
-
-        vertices.AddRange(CreateVerticesForLine(
-            line.ToString(),
-            drawPosition,
-            origin,
-            tr.Transform.Rotation,
-            sizeModifier,
-            color,
-            font
-        ));
         
         return vertices.ToArray();
     }
@@ -169,21 +60,19 @@ public static class TextRendererHandler {
     private static IEnumerable<SDL.SDL_Vertex> CreateVerticesForLine(
         string line,
         Vector2 drawPosition,
-        Vector2 pivot,
+        Vector2 origin,
         Rotation rotation,
         float sizeModifier,
         SDL.SDL_Color color,
         Font font
     ) {
         List<SDL.SDL_Vertex> vertices = new();
-        foreach (char c in line) {
-            CharacterInfo info = font.characters[c];
-
+        foreach (CharacterInfo info in line.Select(c => font.characters[c])) {
             vertices.AddRange(CreateCharacterVertices(
                 CalculateVertexPositions(drawPosition, info, font, sizeModifier),
                 color,
                 info,
-                pivot,
+                origin,
                 rotation
             ));
             drawPosition.x += info.dimension.x * sizeModifier;
@@ -192,15 +81,15 @@ public static class TextRendererHandler {
         return vertices;
     }
 
-    private static List<SDL.SDL_Vertex> CreateCharacterVertices(
+    private static IEnumerable<SDL.SDL_Vertex> CreateCharacterVertices(
         IEnumerable<Vector2> vertexPositions,
         SDL.SDL_Color color,
         CharacterInfo info,
-        Vector2 pivot,
+        Vector2 origin,
         Rotation rotation
     ) {
         return vertexPositions
-            .Select(pos => RotateVertexPoint(pos, pivot, rotation))
+            .Select(pos => RotateVertexPoint(pos, origin, rotation))
             .Select((pos, i) => new SDL.SDL_Vertex { position = pos, color = color, tex_coord = info.textureCoords[i] })
             .ToList();
     }
