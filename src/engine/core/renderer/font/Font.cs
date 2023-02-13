@@ -50,7 +50,7 @@ public class Font {
             return;
         }
             
-        SDL.SDL_Surface* glyph = (SDL.SDL_Surface*)SDL_ttf.TTF_RenderGlyph32_Blended(_ttfFont, c, DEFAULT_GLYPH_COLOR);
+        SDL.SDL_Surface* glyph = (SDL.SDL_Surface*)SDL_ttf.TTF_RenderGlyph32_Solid(_ttfFont, c, DEFAULT_GLYPH_COLOR);
         if ((IntPtr)glyph == IntPtr.Zero) {
             return;
         }

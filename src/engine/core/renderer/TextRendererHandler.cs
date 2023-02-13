@@ -39,6 +39,7 @@ public static class TextRendererHandler {
         Vector2 origin = drawPosition;
         float sizeModifier = 1 / camera.Size * tr.size / Font.FONT_SIZE;
         SDL.SDL_Color color = new() { r = tr.color.Rbyte, g = tr.color.Gbyte, b = tr.color.Bbyte, a = tr.color.Abyte };
+        Vector2 boldPosition = new(drawPosition.x + 2 * sizeModifier, drawPosition.y);
 
         List<SDL.SDL_Vertex> vertices = new();
         foreach (string line in lines) {
@@ -52,8 +53,20 @@ public static class TextRendererHandler {
                     color,
                     font
                 ));
+                if (tr.bold) {
+                    vertices.AddRange(CreateVerticesForLine(
+                        line,
+                        boldPosition,
+                        origin,
+                        tr,
+                        sizeModifier,
+                        color,
+                        font
+                    ));
+                }
             }
             drawPosition.y += font.maxCharHeight * sizeModifier;
+            boldPosition.y += font.maxCharHeight * sizeModifier;
         }
         
         return vertices.ToArray();
