@@ -6,6 +6,18 @@ using Worms.engine.data;
 namespace Worms.engine.game_object.components.rendering.text_renderer; 
 
 public class TextRenderer : RenderComponent {
+    public override Color Color {
+        get => _color;
+        set {
+            if (_color == value) {
+                return;
+            }
+
+            _lines = null;
+            _color = value;
+        }
+    }
+
     public string Text {
         get => _text;
         set {
@@ -59,6 +71,7 @@ public class TextRenderer : RenderComponent {
 
     public IEnumerable<string> Lines => _lines!;
 
+    private Color _color;
     private string _text;
     private string _font;
     private int _width;
@@ -106,7 +119,7 @@ public class TextRenderer : RenderComponent {
 
     private SDL.SDL_Vertex[] CreateVertices(Font font) {
         List<string> lines = _lines!;
-        SDL.SDL_Color vertexColor = new() { r = color.Rbyte, g = color.Gbyte, b = color.Bbyte, a = color.Abyte };
+        SDL.SDL_Color vertexColor = new() { r = Color.Rbyte, g = Color.Gbyte, b = Color.Bbyte, a = Color.Abyte };
 
         List<SDL.SDL_Vertex> vertices = new();
         foreach (string line in lines.Where(line => line != string.Empty)) {

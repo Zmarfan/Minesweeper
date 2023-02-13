@@ -15,7 +15,7 @@ public static class TextRendererHandler {
     public static void RenderText(IntPtr renderer, Camera camera, Font font, TextRenderer tr, TransformationMatrix matrix) {
         tr.RefreshDataIfNeeded(font);
         
-        float sizeModifier = 1 / camera.Size * tr.Size / Font.FONT_SIZE;
+        Vector2 sizeModifier = 1 / camera.Size * tr.Size / Font.FONT_SIZE * tr.Transform.Scale;
         UpdateVertexPositions(tr, sizeModifier, font, matrix.ConvertPoint(tr.Transform.Position));
 
         if (SDL.SDL_RenderGeometry(
@@ -32,7 +32,7 @@ public static class TextRendererHandler {
 
     private static void UpdateVertexPositions(
         TextRenderer tr,
-        float sizeModifier,
+        Vector2 sizeModifier,
         Font font,
         Vector2 origin
     ) {
@@ -44,11 +44,11 @@ public static class TextRendererHandler {
                 foreach (SDL.SDL_FPoint point in CalculateVertexPositions(drawPosition, info, font, sizeModifier, tr, origin)) {
                     tr.Vertices[vertexIndex++].position = point;
                 }
-                drawPosition.x += info.dimension.x * sizeModifier;
+                drawPosition.x += info.dimension.x * sizeModifier.x;
             }
 
             drawPosition.x = origin.x;
-            drawPosition.y += font.maxCharHeight * sizeModifier;
+            drawPosition.y += font.maxCharHeight * sizeModifier.y;
         }
     }
 
@@ -56,17 +56,17 @@ public static class TextRendererHandler {
         Vector2 topLeftPosition,
         CharacterInfo info,
         Font font,
-        float sizeModifier,
+        Vector2 sizeModifier,
         TextRenderer tr,
         Vector2 origin
     ) {
-        float charMaxHeightDiff = (font.maxCharHeight - info.dimension.y) * sizeModifier;
-        float italicsOffset = tr.italics ? ITALICS_OFFSET * sizeModifier : 0;
+        float charMaxHeightDiff = (font.maxCharHeight - info.dimension.y) * sizeModifier.y;
+        float italicsOffset = tr.italics ? ITALICS_OFFSET * sizeModifier.x : 0;
         return new List<Vector2> {
             new(topLeftPosition.x + italicsOffset, topLeftPosition.y + charMaxHeightDiff),
-            new(topLeftPosition.x + info.dimension.x * sizeModifier + italicsOffset, topLeftPosition.y + charMaxHeightDiff),
-            new(topLeftPosition.x, topLeftPosition.y + font.maxCharHeight * sizeModifier),
-            new(topLeftPosition.x + info.dimension.x * sizeModifier, topLeftPosition.y + font.maxCharHeight * sizeModifier)
+            new(topLeftPosition.x + info.dimension.x * sizeModifier.x + italicsOffset, topLeftPosition.y + charMaxHeightDiff),
+            new(topLeftPosition.x, topLeftPosition.y + font.maxCharHeight * sizeModifier.y),
+            new(topLeftPosition.x + info.dimension.x * sizeModifier.x, topLeftPosition.y + font.maxCharHeight * sizeModifier.y)
         }.Select(pos => RotateVertexPoint(pos, origin, tr.Transform.Rotation));
     }
     

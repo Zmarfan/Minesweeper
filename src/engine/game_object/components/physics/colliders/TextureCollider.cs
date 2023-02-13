@@ -22,8 +22,8 @@ public class TextureCollider : Script {
         set => _textureRenderer.orderInLayer = value;
     }
     public Color Color {
-        get => _textureRenderer.color;
-        set => _textureRenderer.color = value;
+        get => _textureRenderer.Color;
+        set => _textureRenderer.Color = value;
     }
     public bool FlipX {
         get => _textureRenderer.flipX;

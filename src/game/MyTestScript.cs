@@ -32,7 +32,7 @@ public class MyTestScript : Script {
         if (Input.GetButtonDown("explosion")) {
             Transform.Instantiate(_explosion.Invoke().SetPosition(new Vector2(0, 100)));
             _audioSource.Restart();
-            Transform.Scale *= 2;
+            _textRenderer.italics = true;
         }
         
         Transform.Position += Input.GetAxis("horizontal") * _speed * 100 * deltaTime;
