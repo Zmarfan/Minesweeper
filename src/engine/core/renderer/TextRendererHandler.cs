@@ -16,16 +16,15 @@ public static class TextRendererHandler {
         tr.RefreshDataIfNeeded(font);
         
         float sizeModifier = 1 / camera.Size * tr.Size / Font.FONT_SIZE;
-        UpdateVertexPositions(tr, sizeModifier, font, matrix);
-        int[] indices = CreateIndicesFromVertices(tr.Vertices.Length);
+        UpdateVertexPositions(tr, sizeModifier, font, matrix.ConvertPoint(tr.Transform.Position));
 
         if (SDL.SDL_RenderGeometry(
             renderer,
             font.textureAtlas,
             tr.Vertices,
             tr.Vertices.Length,
-            indices,
-            indices.Length
+            tr.Indices,
+            tr.Indices.Length
         ) != 0) {
             throw new Exception($"Unable to render character due to: {SDL.SDL_GetError()}");
         }
@@ -35,10 +34,9 @@ public static class TextRendererHandler {
         TextRenderer tr,
         float sizeModifier,
         Font font,
-        TransformationMatrix matrix
+        Vector2 origin
     ) {
-        Vector2 drawPosition = matrix.ConvertPoint(tr.Transform.Position);
-        Vector2 origin = drawPosition;
+        Vector2 drawPosition = origin;
 
         int vertexIndex = 0;
         foreach (string line in tr.Lines.Where(line => line != string.Empty)) {
@@ -79,21 +77,5 @@ public static class TextRendererHandler {
 
         Vector2 rotated = Vector2.RotatePointAroundPoint(position, pivot, rotation.Degree);
         return new SDL.SDL_FPoint { x = rotated.x, y = rotated.y };
-    }
-    
-    private static int[] CreateIndicesFromVertices(int totalVertices) {
-        int totalCharacters = totalVertices / 4;
-        int[] indices = new int[totalCharacters * 6];
-        for (int i = 0; i < totalCharacters; i++) {
-            int first = i * 4;
-            indices[i * 6] = first;
-            indices[i * 6 + 1] = first + 1;
-            indices[i * 6 + 2] = first + 2;
-            indices[i * 6 + 3] = first + 2;
-            indices[i * 6 + 4] = first + 1;
-            indices[i * 6 + 5] = first + 3;
-        }
-
-        return indices;
     }
 }

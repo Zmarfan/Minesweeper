@@ -57,16 +57,16 @@ public class TextRenderer : RenderComponent {
     public int lineSpacing;
     public int wordSpacing;
 
-    public List<string> Lines => _lines!;
-    public SDL.SDL_Vertex[] Vertices => _vertices!;
-    
+    public IEnumerable<string> Lines => _lines!;
+
     private string _text;
     private string _font;
     private int _width;
     private int _size;
 
     private List<string>? _lines = null;
-    private SDL.SDL_Vertex[] _vertices = null!;
+    public SDL.SDL_Vertex[] Vertices { get; private set; } = null!;
+    public int[] Indices { get; private set; } = null!;
     
     public TextRenderer(
         bool isActive,
@@ -84,10 +84,10 @@ public class TextRenderer : RenderComponent {
         int lineSpacing,
         int wordSpacing
     ) : base(isActive, sortingLayer, orderInLayer, color) {
-        Text = text;
-        Font = font;
-        Width = width;
-        Size = size;
+        _text = text;
+        _font = font;
+        _width = width;
+        _size = size;
         this.bold = bold;
         this.italics = italics;
         this.alignment = alignment;
@@ -99,7 +99,8 @@ public class TextRenderer : RenderComponent {
     public void RefreshDataIfNeeded(Font font) {
         if (_lines == null) {
             _lines = TextFormatter.FormatText(_text, _width, _size, font);
-            _vertices = CreateVertices(font);
+            Vertices = CreateVertices(font);
+            Indices = CreateIndices();
         }
     }
 
@@ -126,6 +127,22 @@ public class TextRenderer : RenderComponent {
             });
     }
 
+    private int[] CreateIndices() {
+        int totalCharacters = Vertices.Length / 4;
+        int[] indices = new int[totalCharacters * 6];
+        for (int i = 0; i < totalCharacters; i++) {
+            int first = i * 4;
+            indices[i * 6] = first;
+            indices[i * 6 + 1] = first + 1;
+            indices[i * 6 + 2] = first + 2;
+            indices[i * 6 + 3] = first + 2;
+            indices[i * 6 + 4] = first + 1;
+            indices[i * 6 + 5] = first + 3;
+        }
+
+        return indices;
+    }
+    
     public override void OnDrawGizmos() {
         Vector2 corner = Transform.LocalToWorldMatrix.ConvertPoint(new Vector2(Width, 0));
         Vector2 downVector = Transform.LocalToWorldMatrix.ConvertVector(Vector2.Down()).Normalized * 50;

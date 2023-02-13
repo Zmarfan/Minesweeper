@@ -6,6 +6,7 @@ using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.audio_source;
 using Worms.engine.game_object.components.physics.colliders;
+using Worms.engine.game_object.components.rendering.text_renderer;
 using Worms.engine.game_object.scripts;
 
 namespace Worms.game; 
@@ -14,7 +15,8 @@ public class MyTestScript : Script {
     private readonly float _speed = 4.5f;
     private readonly Func<GameObjectBuilder> _explosion;
     private AudioSource _audioSource = null!;
-    
+
+    private TextRenderer _textRenderer = null!;
     private RaycastHit? _hit = null;
 
     public MyTestScript(Func<GameObjectBuilder> explosion) : base(true) {
@@ -23,12 +25,14 @@ public class MyTestScript : Script {
 
     public override void Awake() {
         _audioSource = GetComponent<AudioSource>();
+        _textRenderer = GetComponent<TextRenderer>();
     }
 
     public override void Update(float deltaTime) {
         if (Input.GetButtonDown("explosion")) {
             Transform.Instantiate(_explosion.Invoke().SetPosition(new Vector2(0, 100)));
             _audioSource.Restart();
+            Transform.Scale *= 2;
         }
         
         Transform.Position += Input.GetAxis("horizontal") * _speed * 100 * deltaTime;
