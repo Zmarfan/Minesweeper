@@ -4,13 +4,11 @@ using Worms.engine.data;
 namespace Worms.engine.core.renderer.font; 
 
 public class CharacterInfo {
-    public readonly char character;
     public Vector2Int dimension;
     public readonly Dictionary<char, int> kerningByCharacter = new();
     public readonly SDL.SDL_FPoint[] textureCoords;
 
-    public CharacterInfo(char character, SDL.SDL_Rect rect) {
-        this.character = character;
+    public CharacterInfo(SDL.SDL_Rect rect) {
         dimension = new Vector2Int(rect.w, rect.h);
         Vector2 topLeft = new(
             Math.Clamp(rect.x / (float)Font.ATLAS_SIZE, 0, 1), 

@@ -61,7 +61,7 @@ public class Font {
         
         SDL_ttf.TTF_SizeUTF8(_ttfFont, c.ToString(), out destination.w, out destination.h);
 
-        characters.Add(c, new CharacterInfo(c, destination));
+        characters.Add(c, new CharacterInfo(destination));
         if (SDL.SDL_BlitSurface((IntPtr)glyph, IntPtr.Zero, (IntPtr)atlas, ref destination) != 0) {
             throw new Exception($"Unable to blit char due to: {SDL.SDL_GetError()})");
         }
