@@ -11,6 +11,7 @@ namespace Worms.engine.core.renderer;
 
 public static class TextRendererHandler {
     private const int ITALICS_OFFSET = 20;
+    private const int BOLD_OFFSET = 3;
     
     public static void RenderText(IntPtr renderer, Camera camera, Font font, TextRenderer tr, TransformationMatrix matrix) {
         tr.RefreshDataIfNeeded(font);
@@ -18,15 +19,9 @@ public static class TextRendererHandler {
         Vector2 sizeModifier = 1 / camera.Size * tr.Size / Font.FONT_SIZE * tr.Transform.Scale;
         UpdateVertexPositions(tr, sizeModifier, font, matrix.ConvertPoint(tr.Transform.Position));
 
-        if (SDL.SDL_RenderGeometry(
-            renderer,
-            font.textureAtlas,
-            tr.Vertices,
-            tr.Vertices.Length,
-            tr.Indices,
-            tr.Indices.Length
-        ) != 0) {
-            throw new Exception($"Unable to render character due to: {SDL.SDL_GetError()}");
+        RenderTextGeometry(renderer, tr, font);
+        if (tr.bold) {
+            RenderBoldText(renderer, tr, font, sizeModifier);
         }
     }
 
@@ -39,12 +34,14 @@ public static class TextRendererHandler {
         Vector2 drawPosition = origin;
 
         int vertexIndex = 0;
-        foreach (string line in tr.Lines.Where(line => line != string.Empty)) {
-            foreach (CharacterInfo info in line.Select(c => font.characters[c])) {
-                foreach (SDL.SDL_FPoint point in CalculateVertexPositions(drawPosition, info, font, sizeModifier, tr, origin)) {
-                    tr.Vertices[vertexIndex++].position = point;
+        foreach (string line in tr.Lines) {
+            if (line != string.Empty) {
+                foreach (CharacterInfo info in line.Select(c => font.characters[c])) {
+                    foreach (SDL.SDL_FPoint point in CalculateVertexPositions(drawPosition, info, font, sizeModifier, tr, origin)) {
+                        tr.Vertices[vertexIndex++].position = point;
+                    }
+                    drawPosition.x += info.dimension.x * sizeModifier.x;
                 }
-                drawPosition.x += info.dimension.x * sizeModifier.x;
             }
 
             drawPosition.x = origin.x;
@@ -77,5 +74,31 @@ public static class TextRendererHandler {
 
         Vector2 rotated = Vector2.RotatePointAroundPoint(position, pivot, rotation.Degree);
         return new SDL.SDL_FPoint { x = rotated.x, y = rotated.y };
+    }
+    
+    private static void RenderBoldText(nint renderer, TextRenderer tr, Font font, Vector2 sizeModifier) {
+        Vector2 direction = new Vector2(
+            tr.Vertices[1].position.x - tr.Vertices[0].position.x,
+            tr.Vertices[1].position.y - tr.Vertices[0].position.y
+        ).Normalized * BOLD_OFFSET * sizeModifier;
+        for (int i = 0; i < tr.Vertices.Length; i++) {
+            SDL.SDL_FPoint p = tr.Vertices[i].position;
+            tr.Vertices[i].position = new SDL.SDL_FPoint { x = p.x + direction.x, y = p.y + direction.y };
+        }
+        
+        RenderTextGeometry(renderer, tr, font);
+    }
+    
+    private static void RenderTextGeometry(IntPtr renderer, TextRenderer tr, Font font) {
+        if (SDL.SDL_RenderGeometry(
+            renderer,
+            font.textureAtlas,
+            tr.Vertices,
+            tr.Vertices.Length,
+            tr.Indices,
+            tr.Indices.Length
+        ) != 0) {
+            throw new Exception($"Unable to render character due to: {SDL.SDL_GetError()}");
+        }
     }
 }
