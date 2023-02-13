@@ -37,7 +37,7 @@ public static class TextRendererHandler {
         List<string> lines = tr.GetLines(font);
         Vector2 drawPosition = matrix.ConvertPoint(tr.Transform.Position);
         Vector2 origin = drawPosition;
-        float sizeModifier = 1 / camera.Size * tr.size / Font.FONT_SIZE;
+        float sizeModifier = 1 / camera.Size * tr.Size / Font.FONT_SIZE;
         SDL.SDL_Color color = new() { r = tr.color.Rbyte, g = tr.color.Gbyte, b = tr.color.Bbyte, a = tr.color.Abyte };
         Vector2 boldPosition = new(drawPosition.x + 2 * sizeModifier, drawPosition.y);
 

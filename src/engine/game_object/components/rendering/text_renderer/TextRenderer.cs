@@ -38,11 +38,19 @@ public class TextRenderer : RenderComponent {
             _width = value;
         }
     }
-    public int size;
+    public int Size {
+        get => _size;
+        set {
+            if (_size == value) {
+                return;
+            }
+
+            _lines = null;
+            _size = value;
+        }
+    }
     public bool bold;
     public bool italics;
-    public bool underline;
-    public bool strikeThrough;
     public TextAlignment alignment;
     public int characterSpacing;
     public int lineSpacing;
@@ -51,6 +59,7 @@ public class TextRenderer : RenderComponent {
     private string _text;
     private string _font;
     private int _width;
+    private int _size;
 
     private List<string>? _lines = null;
     
@@ -65,8 +74,6 @@ public class TextRenderer : RenderComponent {
         int size,
         bool bold,
         bool italics,
-        bool underline,
-        bool strikeThrough,
         TextAlignment alignment,
         int characterSpacing,
         int lineSpacing,
@@ -75,11 +82,9 @@ public class TextRenderer : RenderComponent {
         Text = text;
         Font = font;
         Width = width;
-        this.size = size;
+        Size = size;
         this.bold = bold;
         this.italics = italics;
-        this.underline = underline;
-        this.strikeThrough = strikeThrough;
         this.alignment = alignment;
         this.characterSpacing = characterSpacing;
         this.lineSpacing = lineSpacing;
@@ -88,7 +93,7 @@ public class TextRenderer : RenderComponent {
 
     public List<string> GetLines(Font font) {
         if (_lines == null) {
-            _lines = TextFormatter.FormatText(_text, _width, font);
+            _lines = TextFormatter.FormatText(_text, _width, _size, font);
         }
 
         return _lines;

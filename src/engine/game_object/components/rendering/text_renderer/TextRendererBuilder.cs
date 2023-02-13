@@ -15,8 +15,6 @@ public class TextRendererBuilder {
     private int _size = 16;
     private bool _bold = false;
     private bool _italics = false;
-    private bool _underline = false;
-    private bool _strikeThrough = false;
     private TextAlignment _alignment = TextAlignment.LEFT;
     private int _characterSpacing = 0;
     private int _lineSpacing = 0;
@@ -27,7 +25,7 @@ public class TextRendererBuilder {
     }
 
     public TextRenderer Build() {
-        return new TextRenderer(_isActive, _sortingLayer, _sortOrder, _color, _text, _font, _width, _size, _bold, _italics, _underline, _strikeThrough, _alignment, _characterSpacing, _lineSpacing, _wordSpacing);
+        return new TextRenderer(_isActive, _sortingLayer, _sortOrder, _color, _text, _font, _width, _size, _bold, _italics, _alignment, _characterSpacing, _lineSpacing, _wordSpacing);
     }
     
     public TextRendererBuilder SetIsActive(bool isActive) {
@@ -79,17 +77,7 @@ public class TextRendererBuilder {
         _italics = true;
         return this;
     }
-    
-    public TextRendererBuilder SetUnderline() {
-        _underline = true;
-        return this;
-    }
-    
-    public TextRendererBuilder SetStrikeThrough() {
-        _strikeThrough = true;
-        return this;
-    }
-    
+
     public TextRendererBuilder SetAlignment(TextAlignment alignment) {
         _alignment = alignment;
         return this;

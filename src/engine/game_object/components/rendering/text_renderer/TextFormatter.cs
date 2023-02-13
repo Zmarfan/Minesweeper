@@ -4,7 +4,8 @@ using Worms.engine.core.renderer.font;
 namespace Worms.engine.game_object.components.rendering.text_renderer; 
 
 public static class TextFormatter {
-    public static List<string> FormatText(string text, int width, Font font) {
+    public static List<string> FormatText(string text, int width, int size, Font font) {
+        float sizeModifier = size / (float)Font.FONT_SIZE;
         List<string> allLines = new();
         
         StringBuilder line = new();
@@ -37,7 +38,7 @@ public static class TextFormatter {
 
             CharacterInfo info = font.characters[c];
             if (c != ' ') {
-                wordWidth += info.dimension.x;
+                wordWidth += info.dimension.x * sizeModifier;
             }
 
             if (wordWidth >= width) {
@@ -49,7 +50,7 @@ public static class TextFormatter {
                 
                 allLines.Add(word.ToString());
 
-                wordWidth = info.dimension.x;
+                wordWidth = info.dimension.x * sizeModifier;
                 word.Clear();
                 word.Append(c);
                 continue;
@@ -67,7 +68,7 @@ public static class TextFormatter {
                 }
                 else if (lineWidth != 0) {
                     line.Append(' ');
-                    lineWidth += font.characters[' '].dimension.x;
+                    lineWidth += font.characters[' '].dimension.x * sizeModifier;
                 }
 
                 line.Append(word);
