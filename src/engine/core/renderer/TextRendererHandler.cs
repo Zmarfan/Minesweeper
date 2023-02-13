@@ -10,6 +10,8 @@ using Worms.engine.game_object.components.rendering.texture_renderer;
 namespace Worms.engine.core.renderer; 
 
 public static class TextRendererHandler {
+    private const int ITALICS_OFFSET = 20;
+    
     public static void RenderText(IntPtr renderer, Camera camera, Font font, TextRenderer tr, TransformationMatrix matrix) {
         SDL.SDL_Vertex[] vertices = CreateTextVertices(camera, font, tr, matrix);
         int[] indices = CreateIndicesFromVertices(vertices.Length);
@@ -45,7 +47,7 @@ public static class TextRendererHandler {
                     line,
                     drawPosition,
                     origin,
-                    tr.Transform.Rotation,
+                    tr,
                     sizeModifier,
                     color,
                     font
@@ -61,7 +63,7 @@ public static class TextRendererHandler {
         string line,
         Vector2 drawPosition,
         Vector2 origin,
-        Rotation rotation,
+        TextRenderer tr,
         float sizeModifier,
         SDL.SDL_Color color,
         Font font
@@ -69,11 +71,11 @@ public static class TextRendererHandler {
         List<SDL.SDL_Vertex> vertices = new();
         foreach (CharacterInfo info in line.Select(c => font.characters[c])) {
             vertices.AddRange(CreateCharacterVertices(
-                CalculateVertexPositions(drawPosition, info, font, sizeModifier),
+                CalculateVertexPositions(drawPosition, info, font, sizeModifier, tr.italics),
                 color,
                 info,
                 origin,
-                rotation
+                tr.Transform.Rotation
             ));
             drawPosition.x += info.dimension.x * sizeModifier;
         }
@@ -98,12 +100,14 @@ public static class TextRendererHandler {
         Vector2 topLeftPosition,
         CharacterInfo info,
         Font font,
-        float sizeModifier
+        float sizeModifier,
+        bool italics
     ) {
         float charMaxHeightDiff = (font.maxCharHeight - info.dimension.y) * sizeModifier;
+        float italicsOffset = italics ? ITALICS_OFFSET * sizeModifier : 0;
         return new List<Vector2> {
-            new(topLeftPosition.x, topLeftPosition.y + charMaxHeightDiff),
-            new(topLeftPosition.x + info.dimension.x * sizeModifier, topLeftPosition.y + charMaxHeightDiff),
+            new(topLeftPosition.x + italicsOffset, topLeftPosition.y + charMaxHeightDiff),
+            new(topLeftPosition.x + info.dimension.x * sizeModifier + italicsOffset, topLeftPosition.y + charMaxHeightDiff),
             new(topLeftPosition.x, topLeftPosition.y + font.maxCharHeight * sizeModifier),
             new(topLeftPosition.x + info.dimension.x * sizeModifier, topLeftPosition.y + font.maxCharHeight * sizeModifier)
         };
