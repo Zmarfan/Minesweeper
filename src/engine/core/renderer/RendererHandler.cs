@@ -43,7 +43,7 @@ public class RendererHandler {
                         TextureRendererHandler.RenderTexture(_renderer, texture, matrix);
                         break;
                     case TextRenderer text:
-                        TextRendererHandler.RenderText(_renderer, _sceneData.camera, _fontHandler.fonts[text.font], text, matrix);
+                        TextRendererHandler.RenderText(_renderer, _sceneData.camera, _fontHandler.fonts[text.Font], text, matrix);
                         break;
                 }
             }

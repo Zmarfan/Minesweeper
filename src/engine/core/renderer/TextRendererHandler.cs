@@ -32,7 +32,7 @@ public static class TextRendererHandler {
         TextRenderer tr,
         TransformationMatrix matrix
     ) {
-        List<string> lines = TextFormatter.FormatText(tr.text, tr.width, font);
+        List<string> lines = tr.GetLines(font);
         Vector2 drawPosition = matrix.ConvertPoint(tr.Transform.Position);
         Vector2 origin = drawPosition;
         float sizeModifier = 1 / camera.Size * tr.size / Font.FONT_SIZE;

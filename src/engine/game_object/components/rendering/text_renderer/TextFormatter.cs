@@ -13,7 +13,7 @@ public static class TextFormatter {
         float wordWidth = 0;
         
         for (int i = 0; i < text.Length; i++) {
-            char c = font.characters.ContainsKey(text[i]) || text[i] == '\n' ? text[i] : '.';
+            char c = font.characters.ContainsKey(text[i]) || text[i] == '\n' ? text[i] : '?';
             
             if (c == '\n') {
                 if (lineWidth + wordWidth >= width) {
