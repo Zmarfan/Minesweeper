@@ -4,9 +4,9 @@ using Worms.engine.core.renderer.font;
 namespace Worms.engine.game_object.components.rendering.text_renderer; 
 
 public static class TextFormatter {
-    public static List<string> FormatText(string text, int width, int size, Font font) {
+    public static List<TextLine> FormatText(string text, int width, int size, Font font) {
         float sizeModifier = size / (float)Font.FONT_SIZE;
-        List<string> allLines = new();
+        List<TextLine> allLines = new();
         
         StringBuilder line = new();
         float lineWidth = 0;
@@ -19,16 +19,19 @@ public static class TextFormatter {
             
             if (c == '\n') {
                 if (lineWidth + wordWidth >= width) {
-                    allLines.Add(line.ToString());
+                    allLines.Add(new TextLine(line.ToString(), lineWidth, width));
                     line.Clear();
+                    lineWidth = 0;
                 }
                 else if (lineWidth != 0) {
                     line.Append(' ');
+                    lineWidth += font.characters[' '].dimension.x * sizeModifier;
                 }
 
+                lineWidth += wordWidth;
                 line.Append(word);
                 
-                allLines.Add(line.ToString());
+                allLines.Add(new TextLine(line.ToString(), lineWidth, width));
 
                 wordWidth = 0;
                 lineWidth = 0;
@@ -39,7 +42,7 @@ public static class TextFormatter {
             }
 
             CharacterInfo info = font.characters[c];
-            int kerning = !previousWordCharacter.HasValue ? 0 : info.kerningByCharacter[previousWordCharacter.Value];
+            int kerning = !previousWordCharacter.HasValue  ? 0 : info.kerningByCharacter[previousWordCharacter.Value];
             float charWidth = (info.dimension.x + kerning) * sizeModifier;
             if (c != ' ') {
                 wordWidth += charWidth;
@@ -47,12 +50,12 @@ public static class TextFormatter {
 
             if (wordWidth >= width) {
                 if (lineWidth != 0) {
-                    allLines.Add(line.ToString());
+                    allLines.Add(new TextLine(line.ToString(), lineWidth, width));
                     lineWidth = 0;
                     line.Clear();
                 }
                 
-                allLines.Add(word.ToString());
+                allLines.Add(new TextLine(word.ToString(), wordWidth, width));
 
                 wordWidth = charWidth;
                 word.Clear();
@@ -68,7 +71,7 @@ public static class TextFormatter {
             
             if (c == ' ' || i == text.Length - 1) {
                 if (lineWidth + wordWidth >= width) {
-                    allLines.Add(line.ToString());
+                    allLines.Add(new TextLine(line.ToString(), lineWidth, width));
                     lineWidth = 0;
                     line.Clear();
                 }
@@ -85,7 +88,7 @@ public static class TextFormatter {
             }
         }
 
-        allLines.Add(line.ToString());
+        allLines.Add(new TextLine(line.ToString(), lineWidth, width));
         return allLines;
     }
 }

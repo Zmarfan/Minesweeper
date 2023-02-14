@@ -69,7 +69,7 @@ public class TextRenderer : RenderComponent {
     public int lineSpacing;
     public int wordSpacing;
 
-    public IEnumerable<string> Lines => _lines!;
+    public IEnumerable<TextLine> Lines => _lines!;
 
     private Color _color;
     private string _text;
@@ -77,7 +77,7 @@ public class TextRenderer : RenderComponent {
     private int _width;
     private int _size;
 
-    private List<string>? _lines = null;
+    private List<TextLine>? _lines = null;
     public SDL.SDL_Vertex[] Vertices { get; private set; } = null!;
     public int[] Indices { get; private set; } = null!;
     
@@ -118,12 +118,12 @@ public class TextRenderer : RenderComponent {
     }
 
     private SDL.SDL_Vertex[] CreateVertices(Font font) {
-        List<string> lines = _lines!;
+        List<TextLine> lines = _lines!;
         SDL.SDL_Color vertexColor = new() { r = Color.Rbyte, g = Color.Gbyte, b = Color.Bbyte, a = Color.Abyte };
 
         List<SDL.SDL_Vertex> vertices = new();
-        foreach (string line in lines.Where(line => line != string.Empty)) {
-            vertices.AddRange(CreateVerticesForLine(line, vertexColor, font));
+        foreach (TextLine line in lines.Where(line => line.text != string.Empty)) {
+            vertices.AddRange(CreateVerticesForLine(line.text, vertexColor, font));
         }
         
         return vertices.ToArray();

@@ -3,6 +3,5 @@
 public enum TextAlignment {
     LEFT,
     CENTER,
-    RIGHT,
-    FLUSH
+    RIGHT
 }

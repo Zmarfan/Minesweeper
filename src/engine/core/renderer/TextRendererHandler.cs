@@ -15,13 +15,15 @@ public static class TextRendererHandler {
     
     public static void RenderText(IntPtr renderer, Camera camera, Font font, TextRenderer tr, TransformationMatrix matrix) {
         tr.RefreshDataIfNeeded(font);
-        
-        Vector2 sizeModifier = 1 / camera.Size * tr.Size / Font.FONT_SIZE * tr.Transform.Scale;
-        UpdateVertexPositions(tr, sizeModifier, font, matrix.ConvertPoint(tr.Transform.Position));
+
+        Vector2 scaleModifier = 1 / camera.Size * tr.Transform.Scale;
+        float width = scaleModifier.x * tr.Width;
+        Vector2 fontSizeModifier = scaleModifier * tr.Size / Font.FONT_SIZE;
+        UpdateVertexPositions(tr, fontSizeModifier, font, matrix.ConvertPoint(tr.Transform.Position), width);
 
         RenderTextGeometry(renderer, tr, font);
         if (tr.bold) {
-            RenderBoldText(renderer, tr, font, sizeModifier);
+            RenderBoldText(renderer, tr, font, fontSizeModifier);
         }
     }
 
@@ -29,15 +31,17 @@ public static class TextRendererHandler {
         TextRenderer tr,
         Vector2 sizeModifier,
         Font font,
-        Vector2 origin
+        Vector2 origin,
+        float width
     ) {
         Vector2 drawPosition = origin;
         
         int vertexIndex = 0;
-        foreach (string line in tr.Lines) {
+        foreach (TextLine line in tr.Lines) {
             char? previous = null;
-            if (line != string.Empty) {
-                foreach (char c in line) {
+            if (line.text != string.Empty) {
+                drawPosition.x = CalculateDrawStartPosition(origin.x, line.fraction, width, tr.alignment);
+                foreach (char c in line.text) {
                     CharacterInfo info = font.characters[c];
                     float kerningOffset = (!previous.HasValue ? 0 : font.characters[c].kerningByCharacter[previous.Value]) * sizeModifier.x;
                     drawPosition.x += kerningOffset;
@@ -50,6 +54,15 @@ public static class TextRendererHandler {
             drawPosition.x = origin.x;
             drawPosition.y += font.maxCharHeight * sizeModifier.y;
         }
+    }
+
+    private static float CalculateDrawStartPosition(float originX, float fraction, float width, TextAlignment alignment) {
+        return alignment switch {
+            TextAlignment.LEFT => originX,
+            TextAlignment.CENTER => originX + fraction * width / 2,
+            TextAlignment.RIGHT => originX + fraction * width,
+            _ => throw new Exception($"Text renderer handler do not support this alignment style: {alignment}")
+        };
     }
 
     private static void CalculateVertexPositions(
