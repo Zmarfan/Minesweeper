@@ -41,9 +41,7 @@ public static class TextRendererHandler {
                     CharacterInfo info = font.characters[c];
                     float kerningOffset = (!previous.HasValue ? 0 : font.characters[c].kerningByCharacter[previous.Value]) * sizeModifier.x;
                     drawPosition.x += kerningOffset;
-                    foreach (SDL.SDL_FPoint point in CalculateVertexPositions(drawPosition, info, font, sizeModifier, tr, origin)) {
-                        tr.Vertices[vertexIndex++].position = point;
-                    }
+                    CalculateVertexPositions(drawPosition, info, font, sizeModifier, tr, origin, ref vertexIndex);
                     drawPosition.x += info.dimension.x * sizeModifier.x;
                     previous = c;
                 }
@@ -54,30 +52,45 @@ public static class TextRendererHandler {
         }
     }
 
-    private static IEnumerable<SDL.SDL_FPoint> CalculateVertexPositions(
+    private static void CalculateVertexPositions(
         Vector2 topLeftPosition,
         CharacterInfo info,
         Font font,
         Vector2 sizeModifier,
         TextRenderer tr,
-        Vector2 origin
+        Vector2 origin,
+        ref int vertexIndex
     ) {
         float charMaxHeightDiff = (font.maxCharHeight - info.dimension.y) * sizeModifier.y;
         float italicsOffset = tr.italics ? ITALICS_OFFSET * sizeModifier.x : 0;
-        return new List<Vector2> {
-            new(topLeftPosition.x + italicsOffset, topLeftPosition.y + charMaxHeightDiff),
-            new(topLeftPosition.x + info.dimension.x * sizeModifier.x + italicsOffset, topLeftPosition.y + charMaxHeightDiff),
-            new(topLeftPosition.x, topLeftPosition.y + font.maxCharHeight * sizeModifier.y),
-            new(topLeftPosition.x + info.dimension.x * sizeModifier.x, topLeftPosition.y + font.maxCharHeight * sizeModifier.y)
-        }.Select(pos => RotateVertexPoint(pos, origin, tr.Transform.Rotation));
+        tr.Vertices[vertexIndex++].position = RotateVertexPoint(
+            new Vector2(topLeftPosition.x + italicsOffset, topLeftPosition.y + charMaxHeightDiff),
+            origin,
+            tr
+        );
+        tr.Vertices[vertexIndex++].position = RotateVertexPoint(
+            new Vector2(topLeftPosition.x + info.dimension.x * sizeModifier.x + italicsOffset, topLeftPosition.y + charMaxHeightDiff),
+            origin,
+            tr
+        );
+        tr.Vertices[vertexIndex++].position = RotateVertexPoint(
+            new Vector2(topLeftPosition.x, topLeftPosition.y + font.maxCharHeight * sizeModifier.y),
+            origin, 
+            tr
+        );
+        tr.Vertices[vertexIndex++].position = RotateVertexPoint(
+            new Vector2(topLeftPosition.x + info.dimension.x * sizeModifier.x, topLeftPosition.y + font.maxCharHeight * sizeModifier.y),
+            origin,
+            tr
+        );
     }
     
-    private static SDL.SDL_FPoint RotateVertexPoint(Vector2 position, Vector2 pivot, Rotation rotation) {
-        if (rotation == Rotation.Identity()) {
+    private static SDL.SDL_FPoint RotateVertexPoint(Vector2 position, Vector2 pivot, TextRenderer tr) {
+        if (tr.Transform.Rotation == Rotation.Identity()) {
             return new SDL.SDL_FPoint { x = position.x, y = position.y };
         }
 
-        Vector2 rotated = Vector2.RotatePointAroundPoint(position, pivot, rotation.Degree);
+        Vector2 rotated = Vector2.RotatePointAroundPoint(position, pivot, tr.Transform.Rotation.Degree);
         return new SDL.SDL_FPoint { x = rotated.x, y = rotated.y };
     }
     
