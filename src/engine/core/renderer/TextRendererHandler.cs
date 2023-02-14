@@ -32,15 +32,20 @@ public static class TextRendererHandler {
         Vector2 origin
     ) {
         Vector2 drawPosition = origin;
-
+        
         int vertexIndex = 0;
         foreach (string line in tr.Lines) {
+            char? previous = null;
             if (line != string.Empty) {
-                foreach (CharacterInfo info in line.Select(c => font.characters[c])) {
+                foreach (char c in line) {
+                    CharacterInfo info = font.characters[c];
+                    float kerningOffset = (!previous.HasValue ? 0 : font.characters[c].kerningByCharacter[previous.Value]) * sizeModifier.x;
+                    drawPosition.x += kerningOffset;
                     foreach (SDL.SDL_FPoint point in CalculateVertexPositions(drawPosition, info, font, sizeModifier, tr, origin)) {
                         tr.Vertices[vertexIndex++].position = point;
                     }
                     drawPosition.x += info.dimension.x * sizeModifier.x;
+                    previous = c;
                 }
             }
 

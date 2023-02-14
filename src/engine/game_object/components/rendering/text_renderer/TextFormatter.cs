@@ -12,6 +12,7 @@ public static class TextFormatter {
         float lineWidth = 0;
         StringBuilder word = new();
         float wordWidth = 0;
+        char? previousWordCharacter = null;
         
         for (int i = 0; i < text.Length; i++) {
             char c = font.characters.ContainsKey(text[i]) || text[i] == '\n' ? text[i] : '?';
@@ -33,12 +34,15 @@ public static class TextFormatter {
                 lineWidth = 0;
                 line.Clear();
                 word.Clear();
+                previousWordCharacter = null;
                 continue;
             }
 
             CharacterInfo info = font.characters[c];
+            int kerning = !previousWordCharacter.HasValue ? 0 : info.kerningByCharacter[previousWordCharacter.Value];
+            float charWidth = (info.dimension.x + kerning) * sizeModifier;
             if (c != ' ') {
-                wordWidth += info.dimension.x * sizeModifier;
+                wordWidth += charWidth;
             }
 
             if (wordWidth >= width) {
@@ -50,14 +54,16 @@ public static class TextFormatter {
                 
                 allLines.Add(word.ToString());
 
-                wordWidth = info.dimension.x * sizeModifier;
+                wordWidth = charWidth;
                 word.Clear();
                 word.Append(c);
+                previousWordCharacter = c;
                 continue;
             }
 
             if (c != ' ') {
                 word.Append(c);
+                previousWordCharacter = c;
             }
             
             if (c == ' ' || i == text.Length - 1) {
@@ -75,6 +81,7 @@ public static class TextFormatter {
                 lineWidth += wordWidth;
                 wordWidth = 0;
                 word.Clear();
+                previousWordCharacter = null;
             }
         }
 

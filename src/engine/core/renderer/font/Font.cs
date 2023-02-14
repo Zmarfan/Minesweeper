@@ -61,15 +61,16 @@ public class Font {
         
         SDL_ttf.TTF_SizeUTF8(_ttfFont, c.ToString(), out destination.w, out destination.h);
 
+        destination = MoveDownRowIfNeeded(destination);
         characters.Add(c, new CharacterInfo(destination));
         if (SDL.SDL_BlitSurface((IntPtr)glyph, IntPtr.Zero, (IntPtr)atlas, ref destination) != 0) {
             throw new Exception($"Unable to blit char due to: {SDL.SDL_GetError()})");
         }
-        destination = CalculateNewDestination(destination);
+        destination.x += destination.w;
         SDL.SDL_FreeSurface((IntPtr)glyph);
     }
 
-    private static SDL.SDL_Rect CalculateNewDestination(SDL.SDL_Rect destination) {
+    private SDL.SDL_Rect MoveDownRowIfNeeded(SDL.SDL_Rect destination) {
         if (destination.x + destination.w >= ATLAS_SIZE) {
             destination.x = 0;
             destination.y += destination.h + 1;
@@ -78,11 +79,10 @@ public class Font {
                 throw new Exception($"Not all characters in font can fit in texture atlas!");
             }
         }
-        
-        destination.x += destination.w;
+
         return destination;
     }
-    
+
     private static unsafe bool SurfaceHasContent(SDL.SDL_Surface* surface) {
         return SurfaceReadWriteUtils.ReadSurfacePixels(surface).Cast<Color>().Any(c => c.a > 0);
     }
