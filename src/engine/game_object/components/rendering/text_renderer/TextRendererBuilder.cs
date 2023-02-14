@@ -16,16 +16,14 @@ public class TextRendererBuilder {
     private bool _bold = false;
     private bool _italics = false;
     private TextAlignment _alignment = TextAlignment.LEFT;
-    private int _characterSpacing = 0;
     private int _lineSpacing = 0;
-    private int _wordSpacing = 0;
 
     public static TextRendererBuilder Builder() {
         return new TextRendererBuilder();
     }
 
     public TextRenderer Build() {
-        return new TextRenderer(_isActive, _sortingLayer, _sortOrder, _color, _text, _font, _width, _size, _bold, _italics, _alignment, _characterSpacing, _lineSpacing, _wordSpacing);
+        return new TextRenderer(_isActive, _sortingLayer, _sortOrder, _color, _text, _font, _width, _size, _bold, _italics, _alignment, _lineSpacing);
     }
     
     public TextRendererBuilder SetIsActive(bool isActive) {
@@ -82,19 +80,9 @@ public class TextRendererBuilder {
         _alignment = alignment;
         return this;
     }
-    
-    public TextRendererBuilder SetCharacterSpacing(int spacing) {
-        _characterSpacing = spacing;
-        return this;
-    }
-    
+
     public TextRendererBuilder SetLineSpacing(int spacing) {
         _lineSpacing = spacing;
-        return this;
-    }
-    
-    public TextRendererBuilder SetWordSpacing(int spacing) {
-        _wordSpacing = spacing;
         return this;
     }
 }

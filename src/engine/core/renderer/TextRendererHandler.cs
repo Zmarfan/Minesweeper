@@ -52,7 +52,7 @@ public static class TextRendererHandler {
             }
 
             drawPosition.x = origin.x;
-            drawPosition.y += font.maxCharHeight * sizeModifier.y;
+            drawPosition.y += (font.maxCharHeight + tr.lineSpacing) * sizeModifier.y;
         }
     }
 

@@ -65,9 +65,7 @@ public class TextRenderer : RenderComponent {
     public bool bold;
     public bool italics;
     public TextAlignment alignment;
-    public int characterSpacing;
     public int lineSpacing;
-    public int wordSpacing;
 
     public IEnumerable<TextLine> Lines => _lines!;
 
@@ -93,9 +91,7 @@ public class TextRenderer : RenderComponent {
         bool bold,
         bool italics,
         TextAlignment alignment,
-        int characterSpacing,
-        int lineSpacing,
-        int wordSpacing
+        int lineSpacing
     ) : base(isActive, sortingLayer, orderInLayer, color) {
         _text = text;
         _font = font;
@@ -104,9 +100,7 @@ public class TextRenderer : RenderComponent {
         this.bold = bold;
         this.italics = italics;
         this.alignment = alignment;
-        this.characterSpacing = characterSpacing;
         this.lineSpacing = lineSpacing;
-        this.wordSpacing = wordSpacing;
     }
 
     public void RefreshDataIfNeeded(Font font) {
