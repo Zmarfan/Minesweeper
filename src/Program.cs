@@ -34,7 +34,6 @@ internal static class Program {
                 InputListenerBuilder.Builder("action", Button.RIGHT_MOUSE)
                     .SetAltPositiveButton(Button.MIDDLE_MOUSE)
                     .Build(),
-                InputListenerBuilder.Builder("alterTexture", Button.NUM_7).Build(),
                 InputListenerBuilder.Builder("explosion", Button.SPACE).Build(),
                 InputListenerBuilder.Builder("cameraZoom", Button.NUM_1)
                     .SetNegativeButton(Button.NUM_2)
