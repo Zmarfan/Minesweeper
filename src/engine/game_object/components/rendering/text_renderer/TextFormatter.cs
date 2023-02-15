@@ -44,9 +44,6 @@ public static class TextFormatter {
             CharacterInfo info = font.characters[c];
             int kerning = !previousWordCharacter.HasValue  ? 0 : info.kerningByCharacter[previousWordCharacter.Value];
             float charWidth = (info.dimension.x + kerning) * sizeModifier;
-            if (c != ' ') {
-                wordWidth += charWidth;
-            }
 
             if (wordWidth >= width) {
                 if (lineWidth != 0) {
@@ -65,6 +62,7 @@ public static class TextFormatter {
             }
 
             if (c != ' ') {
+                wordWidth += charWidth;
                 word.Append(c);
                 previousWordCharacter = c;
             }

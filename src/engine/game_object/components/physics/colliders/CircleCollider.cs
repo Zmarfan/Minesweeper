@@ -29,13 +29,12 @@ public class CircleCollider : Collider {
         return points;
     }
 
-    public override List<Vector2> GetLocalCorners() {
-        return new List<Vector2> {
-            offset + new Vector2(-radius, -radius),
-            offset + new Vector2(-radius, radius),
-            offset + new Vector2(radius, radius),
-            offset + new Vector2(radius, -radius)
-        };
+    public override Vector2[] GetLocalCorners() {
+        localCorners[0] = offset + new Vector2(-radius, -radius);
+        localCorners[1] = offset + new Vector2(-radius, radius);
+        localCorners[2] = offset + new Vector2(radius, radius);
+        localCorners[3] = offset + new Vector2(radius, -radius);
+        return localCorners;
     }
 
     public override bool IsPointInside(Vector2 p) {

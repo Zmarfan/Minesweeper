@@ -32,13 +32,12 @@ public class PixelCollider : Collider {
         this.pixels = pixels;
     }
 
-    public override List<Vector2> GetLocalCorners() {
-        return new List<Vector2> {
-            PixelToLocal(new Vector2Int(0, 0)),
-            PixelToLocal(new Vector2Int(0, Height - 1)),
-            PixelToLocal(new Vector2Int(Width - 1, Height - 1)),
-            PixelToLocal(new Vector2Int(Width - 1, 0))
-        };
+    public override Vector2[] GetLocalCorners() {
+        localCorners[0] = PixelToLocal(new Vector2Int(0, 0));
+        localCorners[1] = PixelToLocal(new Vector2Int(0, Height - 1));
+        localCorners[2] = PixelToLocal(new Vector2Int(Width - 1, Height - 1));
+        localCorners[3] = PixelToLocal(new Vector2Int(Width - 1, 0));
+        return localCorners;
     }
 
     public override bool IsPointInside(Vector2 p) {

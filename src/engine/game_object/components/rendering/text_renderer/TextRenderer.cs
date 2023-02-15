@@ -7,14 +7,14 @@ namespace Worms.engine.game_object.components.rendering.text_renderer;
 
 public class TextRenderer : RenderComponent {
     public override Color Color {
-        get => _color;
+        get => color;
         set {
-            if (_color == value) {
+            if (color == value) {
                 return;
             }
 
             _lines = null;
-            _color = value;
+            color = value;
         }
     }
 
@@ -69,7 +69,6 @@ public class TextRenderer : RenderComponent {
 
     public IEnumerable<TextLine> Lines => _lines!;
 
-    private Color _color;
     private string _text;
     private string _font;
     private int _width;

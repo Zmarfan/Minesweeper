@@ -21,13 +21,12 @@ public class BoxCollider : Collider {
         this.size = size;
     }
 
-    public override List<Vector2> GetLocalCorners() {
-        return new List<Vector2> {
-            new(offset.x - size.x / 2, offset.y - size.y / 2),
-            new(offset.x - size.x / 2, offset.y + size.y / 2),
-            new(offset.x + size.x / 2, offset.y + size.y / 2),
-            new(offset.x + size.x / 2, offset.y - size.y / 2)
-        };
+    public override Vector2[] GetLocalCorners() {
+        localCorners[0] = new Vector2(offset.x - size.x / 2, offset.y - size.y / 2);
+        localCorners[1] = new Vector2(offset.x - size.x / 2, offset.y + size.y / 2);
+        localCorners[2] = new Vector2(offset.x + size.x / 2, offset.y + size.y / 2);
+        localCorners[3] = new Vector2(offset.x + size.x / 2, offset.y - size.y / 2);
+        return localCorners;
     }
 
     public override bool IsPointInside(Vector2 p) {

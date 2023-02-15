@@ -32,14 +32,14 @@ public static class PhysicsUtils {
     }
 
     public static bool LineBoxIntersectionWithNormal(
-        List<Vector2> corners,
+        Vector2[] corners,
         Vector2 origin,
         Vector2 direction,
         out Tuple<Vector2, Vector2> pointAndNormal
     ) {
         Tuple<Vector2, Vector2>? best = null;
-        int fromIndex = corners.Count - 1;
-        for (int i = 0; i < corners.Count; i++) {
+        int fromIndex = corners.Length - 1;
+        for (int i = 0; i < corners.Length; i++) {
             if (LineLineIntersection(origin, direction, corners[fromIndex], corners[i], out Vector2 p)) {
                 Vector2 edgeDirection = corners[i] - corners[fromIndex];
                 Vector2 normal = new(-edgeDirection.y, edgeDirection.x);
