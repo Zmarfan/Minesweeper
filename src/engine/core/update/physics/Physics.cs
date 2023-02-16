@@ -24,6 +24,11 @@ public class Physics {
 
         _self = new Physics(sceneData);
     }
+    
+    public static bool LineCast(Vector2 from, Vector2 to, out RaycastHit? hit) {
+        Vector2 direction = to - from;
+        return Raycast(from, direction, direction.Magnitude, out hit);
+    }
 
     public static bool Raycast(Vector2 origin, Vector2 direction, out RaycastHit? hit) {
         return Raycast(origin, direction, 5000f, out hit);

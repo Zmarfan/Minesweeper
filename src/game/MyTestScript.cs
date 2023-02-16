@@ -39,8 +39,7 @@ public class MyTestScript : Script {
         Transform.Position += Input.GetAxis("vertical") * _speed * 100 * deltaTime;
         Transform.Rotation += Input.GetButton("action") ? _speed * 50 * deltaTime : 0;
 
-        Vector2 direction = Input.MouseWorldPosition - Transform.Position;
-        Physics.Raycast(Transform.Position, Input.MouseWorldPosition - Transform.Position, direction.Magnitude, out _hit);
+        Physics.LineCast(Transform.Position, Input.MouseWorldPosition, out _hit);
     }
 
     public override void OnTriggerEnter(Collider collider) {
