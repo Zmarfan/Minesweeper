@@ -1,7 +1,7 @@
 ﻿using SDL2;
 using Worms.engine.data;
 
-namespace Worms.engine.core.renderer; 
+namespace Worms.engine.core.renderer.textures; 
 
 public static class SurfaceReadWriteUtils {
     private const string ACCEPTED_PIXEL_FORMAT = "SDL_PIXELFORMAT_ABGR8888";

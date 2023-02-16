@@ -1,6 +1,7 @@
 ﻿using SDL2;
 using Worms.engine.camera;
 using Worms.engine.core.renderer.font;
+using Worms.engine.core.renderer.textures;
 using Worms.engine.core.window;
 using Worms.engine.data;
 using Worms.engine.scene;

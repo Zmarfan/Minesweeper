@@ -1,5 +1,6 @@
 ﻿using SDL2;
 using Worms.engine.core.renderer;
+using Worms.engine.core.renderer.textures;
 using Worms.engine.data;
 
 namespace Worms.engine.game_object.components.rendering.texture_renderer; 

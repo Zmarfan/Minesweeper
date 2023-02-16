@@ -2,7 +2,7 @@
 using Worms.engine.data;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 
-namespace Worms.engine.core.renderer; 
+namespace Worms.engine.core.renderer.textures; 
 
 public static class TextureStorage {
     private static readonly Dictionary<string, StoredTexture> LOADED_TEXTURES = new();

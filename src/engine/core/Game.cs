@@ -34,9 +34,7 @@ public class Game {
             throw new Exception();
         }
         
-        SceneManager.Init(settings.scenes, LoadScene);
         _updateHandler = new UpdateHandler(_sceneData);
-        
         _gameRenderer = new GameRenderer(settings, _sceneData);
         _eventHandler = new EventHandler(settings);
         _eventHandler.QuitEvent += () => _isRunning = false;
@@ -44,6 +42,7 @@ public class Game {
         AudioHandler.Init(settings.audioSettings);
         Input.Init(settings, _sceneData, _eventHandler, settings.inputListeners);
         Cursor.Init(settings.cursorSettings);
+        SceneManager.Init(settings.scenes, LoadScene);
         
         _isRunning = true;
     }

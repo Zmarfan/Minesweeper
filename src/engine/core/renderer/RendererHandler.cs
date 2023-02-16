@@ -1,6 +1,7 @@
 ﻿using SDL2;
 using Worms.engine.core.game_object_handler;
 using Worms.engine.core.renderer.font;
+using Worms.engine.core.renderer.textures;
 using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.rendering;
