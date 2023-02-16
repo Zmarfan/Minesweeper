@@ -7,10 +7,12 @@ public class StoredTexture {
     public readonly unsafe SDL.SDL_Surface* surface;
     public readonly IntPtr texture;
     public readonly Color[,] pixels;
+    public readonly bool fromFile;
 
-    public unsafe StoredTexture(SDL.SDL_Surface* surface, nint texture, Color[,] pixels) {
+    public unsafe StoredTexture(SDL.SDL_Surface* surface, nint texture, Color[,] pixels, bool fromFile) {
         this.surface = surface;
         this.texture = texture;
         this.pixels = pixels;
+        this.fromFile = fromFile;
     }
 }

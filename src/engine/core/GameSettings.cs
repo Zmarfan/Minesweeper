@@ -2,6 +2,7 @@
 using Worms.engine.core.cursor;
 using Worms.engine.core.input.listener;
 using Worms.engine.core.renderer.font;
+using Worms.engine.core.renderer.textures;
 using Worms.engine.scene;
 
 namespace Worms.engine.core; 
@@ -16,7 +17,8 @@ public record GameSettings(
     List<string> sortLayers,
     AudioSettings audioSettings,
     CursorSettings cursorSettings,
-    IEnumerable<FontDefinition> fontDefinitions
+    IEnumerable<FontDefinition> fontDefinitions,
+    IEnumerable<TextureDeclaration> textureDeclarations
 ) {
     public readonly bool debug = debug;
     public readonly string title = title;
@@ -28,4 +30,5 @@ public record GameSettings(
     public readonly AudioSettings audioSettings = audioSettings;
     public readonly CursorSettings cursorSettings = cursorSettings;
     public readonly IEnumerable<FontDefinition> fontDefinitions = fontDefinitions;
+    public readonly IEnumerable<TextureDeclaration> textureDeclarations = textureDeclarations;
 }

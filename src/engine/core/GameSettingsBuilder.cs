@@ -2,6 +2,7 @@
 using Worms.engine.core.cursor;
 using Worms.engine.core.input.listener;
 using Worms.engine.core.renderer.font;
+using Worms.engine.core.renderer.textures;
 using Worms.engine.scene;
 
 namespace Worms.engine.core; 
@@ -17,6 +18,7 @@ public class GameSettingsBuilder {
     private readonly AudioSettings _audioSettings;
     private CursorSettings _cursorSettings = new(true, null);
     private readonly List<FontDefinition> _fontDefinitions = new();
+    private readonly List<TextureDeclaration> _textureDeclarations = new();
 
     private GameSettingsBuilder(AudioSettings audioSettings) {
         _audioSettings = audioSettings;
@@ -27,7 +29,7 @@ public class GameSettingsBuilder {
     }
 
     public GameSettings Build() {
-        return new GameSettings(_debug, _title, _width, _height, _scenes, _inputListeners, _sortLayers, _audioSettings, _cursorSettings, _fontDefinitions);
+        return new GameSettings(_debug, _title, _width, _height, _scenes, _inputListeners, _sortLayers, _audioSettings, _cursorSettings, _fontDefinitions, _textureDeclarations);
     }
 
     public GameSettingsBuilder SetDebugMode() {
@@ -77,6 +79,11 @@ public class GameSettingsBuilder {
     
     public GameSettingsBuilder AddFonts(IEnumerable<FontDefinition> fonts) {
         _fontDefinitions.AddRange(fonts);
+        return this;
+    }
+    
+    public GameSettingsBuilder AddTextures(IEnumerable<TextureDeclaration> textureDeclarations) {
+        _textureDeclarations.AddRange(textureDeclarations);
         return this;
     }
 }

@@ -118,10 +118,6 @@
       <Content Include="src\assets\test\Vanilla Caramel.ttf">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <None Remove="src\assets\font\missing_character.png" />
-      <Content Include="src\assets\font\missing_character.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\Consolas.ttf" />
       <Content Include="src\assets\test\Consolas.ttf">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>

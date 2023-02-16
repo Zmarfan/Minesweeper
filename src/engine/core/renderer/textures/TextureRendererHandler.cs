@@ -6,7 +6,7 @@ namespace Worms.engine.core.renderer.textures;
 
 public static class TextureRendererHandler {
     public static unsafe void RenderTexture(IntPtr renderer, TextureRenderer tr, TransformationMatrix matrix) {
-        StoredTexture texture = TextureStorage.GetAndCacheTexture(renderer, tr.texture);
+        StoredTexture texture = TextureStorage.GetStoredTexture(tr.texture.textureId);
 
         SDL.SDL_Rect srcRect = tr.texture.GetSrcRect(texture);
         SDL.SDL_FRect destRect = CalculateTextureDrawPosition(tr, texture.surface, matrix);

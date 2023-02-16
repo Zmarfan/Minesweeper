@@ -3,6 +3,7 @@ using Worms.engine.core.audio;
 using Worms.engine.core.cursor;
 using Worms.engine.core.input.listener;
 using Worms.engine.core.renderer.font;
+using Worms.engine.core.renderer.textures;
 using Worms.engine.helper;
 using Worms.game.scenes;
 
@@ -47,13 +48,27 @@ internal static class Program {
             .AddSortLayers(ListUtils.Of("layer1", "layer2", "layer3"))
             .SetCursorSettings(new CursorSettings(false, new CustomCursorSettings($"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\cursor.png")))
             .AddFonts(ListUtils.Of(
-                new FontDefinition($"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\Vanilla Caramel.ttf", "myFont"),
-                new FontDefinition($"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\Consolas.ttf", "Consolas"),
-                new FontDefinition($"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\times-new-roman.ttf", "times")
+                new FontDefinition(Path("test\\Vanilla Caramel.ttf"), "myFont"),
+                new FontDefinition(Path("test\\Consolas.ttf"), "Consolas"),
+                new FontDefinition(Path("test\\times-new-roman.ttf"), "times")
+            ))
+            .AddTextures(ListUtils.Of(
+                new TextureDeclaration(Path("test\\1.png"), "1"), 
+                new TextureDeclaration(Path("test\\explosion\\circle75.png"), "circle75"), 
+                new TextureDeclaration(Path("test\\explosion\\elipse75.png"), "elipse75"), 
+                new TextureDeclaration(Path("test\\explosion\\expow.png"), "expow"), 
+                new TextureDeclaration(Path("test\\explosion\\smklt75.png"), "smklt75"), 
+                new TextureDeclaration(Path("test\\explosion\\flame1.png"), "flame1"), 
+                new TextureDeclaration(Path("test\\explosion\\smkdrk40.png"), "smkdrk40"), 
+                new TextureDeclaration(Path("test\\pixelTest7.png"), "pixelTest7")
             ))
             .Build()
         );
 
         game.Run();
+    }
+    
+    private static string Path(string path) {
+        return $"{Directory.GetCurrentDirectory()}\\src\\assets\\{path}";
     }
 }

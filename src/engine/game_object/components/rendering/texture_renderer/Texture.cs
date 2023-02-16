@@ -17,7 +17,6 @@ public struct Texture {
     }
     public string textureId;
     public readonly Vector2 textureScale;
-    public readonly unsafe SDL.SDL_Surface* surface;
     private readonly int _column;
     private readonly int _row;
     private readonly int _columnLength;
@@ -26,32 +25,30 @@ public struct Texture {
     public Color[,] texturePixels;
     private Color[,]? _sectionPixels = null;
     
-    private unsafe Texture(string textureSrc, int column, int row, int columnLength, int rowLength) {
-        textureId = textureSrc;
+    private Texture(string textureId, int column, int row, int columnLength, int rowLength) {
+        this.textureId = textureId;
         textureScale = new Vector2(1f / columnLength, 1f / rowLength);
         _column = column;
         _row = row;
         _columnLength = columnLength;
         _rowLength = rowLength;
-        TextureStorage.LoadImageFromFile(textureSrc, out SDL.SDL_Surface* surfaceData, out Color[,] pixelData);
-        surface = surfaceData;
-        texturePixels = pixelData;
+        StoredTexture storedTexture = TextureStorage.GetStoredTexture(textureId);
+        texturePixels = storedTexture.pixels;
     }
     
-    private unsafe Texture(Color[,] pixels, int column, int row, int columnLength, int rowLength) {
-        textureId = Guid.NewGuid().ToString();
+    private Texture(Color[,] pixels, int column, int row, int columnLength, int rowLength) {
         textureScale = new Vector2(1f / columnLength, 1f / rowLength);
         _column = column;
         _row = row;
         _columnLength = columnLength;
         _rowLength = rowLength;
-        surface = SurfaceReadWriteUtils.WriteSurfacePixels(pixels);
+        TextureStorage.LoadTextureFromPixels(pixels, out textureId);
         texturePixels = pixels;
     }
 
 
-    public static Texture CreateSingle(string textureSrc) {
-        return new Texture(textureSrc, 0, 0, 1, 1);
+    public static Texture CreateSingle(string textureId) {
+        return new Texture(textureId, 0, 0, 1, 1);
     }
 
     public static Texture CreateSingle(Color[,] pixels) {
@@ -66,12 +63,10 @@ public struct Texture {
         return new Texture(pixels, column, row, columnLength, rowLength);
     }
 
-    public unsafe void Alter(Color[,] pixels) {
+    public void Alter(Color[,] pixels) {
         _sectionPixels = null;
-        SurfaceReadWriteUtils.AlterSurfacePixels(surface, texturePixels, pixels);
-        TextureStorage.RemoveLoadedTexture(textureId);
-        texturePixels = pixels;
-        textureId = Guid.NewGuid().ToString();
+        TextureStorage.AlterTexture(textureId, texturePixels, pixels, out textureId, out StoredTexture storedTexture);
+        texturePixels = storedTexture.pixels;
     }
 
     public unsafe SDL.SDL_Rect GetSrcRect(StoredTexture storedTexture) {
@@ -80,13 +75,13 @@ public struct Texture {
         return new SDL.SDL_Rect { x = _column * w, y = _row * h, w = w, h = h };
     }
 
-    private unsafe Color[,] CalculateSectionPixels() {
+    private Color[,] CalculateSectionPixels() {
         if (_columnLength == 1 && _rowLength == 1) {
             return texturePixels;
         }
         
-        int width = surface->w / _columnLength;
-        int height = surface->h / _rowLength;
+        int width = texturePixels.GetLength(0) / _columnLength;
+        int height = texturePixels.GetLength(1) / _rowLength;
         int startWidth = width * _column;
         int startHeight = height * _row;
 

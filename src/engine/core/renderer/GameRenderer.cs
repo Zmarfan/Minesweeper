@@ -11,6 +11,7 @@ namespace Worms.engine.core.renderer;
 public class GameRenderer {
     private readonly IntPtr _window;
     private readonly IntPtr _renderer;
+    private readonly TextureStorage _textureStorage;
     private readonly FontHandler _fontHandler;
     private readonly RendererHandler _rendererHandler;
     private readonly GizmosRendererHandler _gizmosRendererHandler;
@@ -40,9 +41,10 @@ public class GameRenderer {
         SDL.SDL_SetWindowGrab(_window, SDL.SDL_bool.SDL_TRUE);
         
         WindowManager.Init(_window, settings);
-        
+
         _settings = settings;
         _sceneData = sceneData;
+        _textureStorage = TextureStorage.Init(_renderer, _settings.textureDeclarations);
         _fontHandler = new FontHandler(_renderer, settings.fontDefinitions);
         _rendererHandler = new RendererHandler(_renderer, _fontHandler, settings, _sceneData);
         _gizmosRendererHandler = new GizmosRendererHandler(_renderer, _sceneData);
@@ -67,7 +69,7 @@ public class GameRenderer {
     
     public void Clean() {
         _fontHandler.Clean();
-        TextureStorage.Clean();
+        _textureStorage.Clean();
         SDL.SDL_DestroyWindow(_window);
         SDL.SDL_DestroyRenderer(_renderer);
     }
