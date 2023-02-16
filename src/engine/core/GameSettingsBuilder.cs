@@ -55,26 +55,18 @@ public class GameSettingsBuilder {
         return this;
     }
     
-    public GameSettingsBuilder AddScenes(params Scene[] scenes) {
-        foreach (Scene scene in scenes) {
-            _scenes.Add(scene);
-        }
+    public GameSettingsBuilder AddScenes(IEnumerable<Scene> scenes) {
+        _scenes.AddRange(scenes);
         return this;
     }
     
-    public GameSettingsBuilder AddInputListeners(params InputListener[] listeners) {
-        foreach (InputListener inputListener in listeners) {
-            _inputListeners.Add(inputListener);
-        }
-
+    public GameSettingsBuilder AddInputListeners(IEnumerable<InputListener> listeners) {
+        _inputListeners.AddRange(listeners);
         return this;
     }
     
-    public GameSettingsBuilder AddSortLayers(params string[] layers) {
-        foreach (string layer in layers) {
-            _sortLayers.Add(layer);
-        }
-
+    public GameSettingsBuilder AddSortLayers(IEnumerable<string> layers) {
+        _sortLayers.AddRange(layers);
         return this;
     }
 
@@ -83,8 +75,8 @@ public class GameSettingsBuilder {
         return this;
     }
     
-    public GameSettingsBuilder AddFont(FontDefinition font) {
-        _fontDefinitions.Add(font);
+    public GameSettingsBuilder AddFonts(IEnumerable<FontDefinition> fonts) {
+        _fontDefinitions.AddRange(fonts);
         return this;
     }
 }

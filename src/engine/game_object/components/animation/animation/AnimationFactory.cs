@@ -1,5 +1,6 @@
 ﻿using Worms.engine.game_object.components.animation.composition;
 using Worms.engine.game_object.components.rendering.texture_renderer;
+using Worms.engine.helper;
 
 namespace Worms.engine.game_object.components.animation.animation; 
 
@@ -24,6 +25,6 @@ public static class AnimationFactory {
             gameObject => gameObject.GetComponent<TextureRenderer>(),
             states
         );
-        return new Animation(stepLengthInSeconds, loop, new List<Composition> { composition });
+        return new Animation(stepLengthInSeconds, loop, ListUtils.Of(composition));
     }
 }

@@ -2,6 +2,7 @@
 using Worms.engine.camera;
 using Worms.engine.core.input.listener;
 using Worms.engine.data;
+using Worms.engine.helper;
 using Worms.engine.scene;
 using EventHandler = Worms.engine.core.event_handler.EventHandler;
 
@@ -128,7 +129,7 @@ public class Input {
     
     private void AddListenerByButton(Button button, InputListener listener) {
         if (!_listenersByButton.ContainsKey(button)) {
-            _listenersByButton.Add(button, new List<InputListener>());
+            _listenersByButton.Add(button, ListUtils.Empty<InputListener>());
         }
         _listenersByButton[button].Add(listener);
     }

@@ -7,12 +7,13 @@ using Worms.engine.game_object.components.particle_system.ranges;
 using Worms.engine.game_object.components.particle_system.renderer;
 using Worms.engine.game_object.components.particle_system.shape;
 using Worms.engine.game_object.scripts;
+using Worms.engine.helper;
 
 namespace Worms.engine.game_object.components.particle_system; 
 
 public class ParticleSystemBuilder {
     private Particles _particles = ParticlesBuilder.Builder().Build();
-    private Emission _emission = new(new RangeZero(10f), new List<EmissionBurst>());
+    private Emission _emission = new(new RangeZero(10f), ListUtils.Empty<EmissionBurst>());
     private Shape _shape = new(new SphereEmission(10f, 0, Rotation.FromDegrees(359)), new VectorRange(new Vector2(5f, 5f)), 0f);
     private ParticleSystemBuilder? _subSystem = null;
     private Func<Animation>? _particleAnimationProvider = null; 

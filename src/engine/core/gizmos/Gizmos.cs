@@ -1,4 +1,5 @@
 ﻿using Worms.engine.data;
+using Worms.engine.helper;
 
 namespace Worms.engine.core.gizmos; 
 
@@ -46,7 +47,7 @@ public static class Gizmos {
     }
     
     public static void DrawPoint(Vector2 point, Color color) {
-        DrawPoints(new List<Vector2> { point }, color);
+        DrawPoints(ListUtils.Of(point), color);
     }
 
     public static void DrawPoints(IEnumerable<Vector2> points, Color color) {

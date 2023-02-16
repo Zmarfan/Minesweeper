@@ -2,6 +2,7 @@
 using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.physics.colliders;
+using Worms.engine.helper;
 using Worms.engine.scene;
 
 namespace Worms.engine.core.update.physics; 
@@ -57,9 +58,9 @@ public class Physics {
     private static IEnumerable<RaycastHit> CalculateRaycastHit(Vector2 origin, Vector2 direction, Collider collider) {
         ColliderHit? hit = collider.Raycast(origin, direction);
         if (hit == null) {
-            return new List<RaycastHit>();
+            return ListUtils.Empty<RaycastHit>();
         }
 
-        return new List<RaycastHit> { new(collider, (hit.point - origin).Magnitude, hit.normal, hit.point, collider.Transform) };
+        return ListUtils.Of(new RaycastHit(collider, (hit.point - origin).Magnitude, hit.normal, hit.point, collider.Transform));
     }
 }

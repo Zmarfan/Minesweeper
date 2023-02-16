@@ -1,6 +1,7 @@
 ﻿using Worms.engine.game_object;
 using Worms.engine.game_object.components;
 using Worms.engine.game_object.scripts;
+using Worms.engine.helper;
 using Object = Worms.engine.game_object.Object;
 
 namespace Worms.engine.core.game_object_handler; 
@@ -102,7 +103,7 @@ public class GameObjectHandler {
 
     private static IEnumerable<GameObject> GetAllGameObjectsFromGameObject(GameObject gameObject, bool active) {
         if (!gameObject.IsActive && active) {
-            return new List<GameObject>();
+            return ListUtils.Empty<GameObject>();
         }
         List<GameObject> gameObjects = new() { gameObject };
         foreach (GameObject child in GetChildren(gameObject)) {
