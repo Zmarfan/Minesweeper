@@ -39,4 +39,7 @@ public abstract class Script : ToggleComponent {
 
     public virtual void OnMouseExit() {
     }
+    
+    public virtual void OnMouseClick() {
+    }
 }

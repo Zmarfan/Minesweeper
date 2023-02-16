@@ -1,4 +1,6 @@
-﻿using Worms.engine.data;
+﻿using Worms.engine.core.input;
+using Worms.engine.core.input.listener;
+using Worms.engine.data;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.engine.game_object.scripts;
 
@@ -18,6 +20,10 @@ public class TriggerScriptTest : Script {
         _textureRenderer.Color = new Color(1, 1, 1, 0.5f);
     }
 
+    public override void OnMouseClick() {
+        Console.WriteLine("click");
+    }
+    
     public override void OnMouseExit() {
         _textureRenderer.Color = Color.WHITE;
     }

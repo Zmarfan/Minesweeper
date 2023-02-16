@@ -1,5 +1,6 @@
 ﻿using Worms.engine.core.game_object_handler;
 using Worms.engine.core.input;
+using Worms.engine.core.input.listener;
 using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.physics.colliders;
@@ -11,6 +12,8 @@ namespace Worms.engine.core.update.physics;
 public class PhysicsUpdateHandler {
     private readonly SceneData _sceneData;
     private GameObjectHandler GameObjectHandler => _sceneData.gameObjectHandler;
+    private bool _mouseIsDown = false;
+    private bool _doMouseClick = false;
 
     public PhysicsUpdateHandler(SceneData sceneData) {
         _sceneData = sceneData;
@@ -18,6 +21,10 @@ public class PhysicsUpdateHandler {
     }
 
     public void Update() {
+        bool down = Input.GetKey(Button.LEFT_MOUSE);
+        _doMouseClick = !_mouseIsDown && down;
+        _mouseIsDown = down;
+        
         foreach ((GameObject _, TrackObject obj) in GameObjectHandler.objects) {
             if (!obj.isActive) {
                 return;
@@ -43,6 +50,10 @@ public class PhysicsUpdateHandler {
             RunScriptsFunction(obj, static s => s.OnMouseExit());
         }
 
+        if (_doMouseClick && isInsideTrigger) {
+            RunScriptsFunction(obj, static s => s.OnMouseClick());
+        } 
+        
         obj.MouseInsideTrigger = isInsideTrigger;
     }
     
