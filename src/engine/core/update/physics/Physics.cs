@@ -31,36 +31,44 @@ public class Physics {
 
     public static bool Raycast(Vector2 origin, Vector2 direction, float maxDistance, out RaycastHit? hit) {
         direction = direction.Normalized * maxDistance;
-        List<RaycastHit> hits = new();
+        hit = null;
         foreach ((GameObject _, TrackObject obj) in _self.GameObjectHandler.objects) {
             if (!obj.isActive) {
                 continue;
             }
 
-            hits.AddRange(CalculateRaycastHitsOnColliders(origin, direction, obj.Colliders));
+            hit = CalculateBestRaycastHitOnColliders(origin, direction, obj.Colliders, hit);
         }
 
-        if (hits.Count == 0) {
-            hit = null;
-            return false;
+        return hit.HasValue;
+    }
+
+    private static RaycastHit? CalculateBestRaycastHitOnColliders(
+        Vector2 origin,
+        Vector2 direction,
+        IEnumerable<Collider> colliders,
+        RaycastHit? bestHit
+    ) {
+        foreach (Collider collider in colliders) {
+            if (!collider.IsActive || collider.state == ColliderState.TRIGGER) {
+                continue;
+            }
+
+            RaycastHit? hit = CalculateRaycastHit(origin, direction, collider);
+            if (hit != null && (bestHit == null || bestHit.Value.distance > hit.Value.distance)) {
+                bestHit = hit.Value;
+            }
         }
 
-        hit = hits.MinBy(h => h.distance);
-        return true;
+        return bestHit;
     }
 
-    private static IEnumerable<RaycastHit> CalculateRaycastHitsOnColliders(Vector2 origin, Vector2 direction, IEnumerable<Collider> colliders) {
-        return colliders
-            .Where(c => c.IsActive && c.state != ColliderState.TRIGGER)
-            .SelectMany(c => CalculateRaycastHit(origin, direction, c));
-    }
-
-    private static IEnumerable<RaycastHit> CalculateRaycastHit(Vector2 origin, Vector2 direction, Collider collider) {
+    private static RaycastHit? CalculateRaycastHit(Vector2 origin, Vector2 direction, Collider collider) {
         ColliderHit? hit = collider.Raycast(origin, direction);
         if (hit == null) {
-            return ListUtils.Empty<RaycastHit>();
+            return null;
         }
 
-        return ListUtils.Of(new RaycastHit(collider, (hit.point - origin).Magnitude, hit.normal, hit.point, collider.Transform));
+        return new RaycastHit(collider, (hit.point - origin).Magnitude, hit.normal, hit.point, collider.Transform);
     }
 }
