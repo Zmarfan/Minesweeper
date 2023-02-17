@@ -20,6 +20,7 @@ public class Game {
     private readonly EventHandler _eventHandler;
     private readonly UpdateHandler _updateHandler;
     private readonly GameRenderer _gameRenderer;
+    private readonly AudioHandler _audioHandler;
     private readonly Stopwatch _actionFrameWatch = new();
     private readonly Stopwatch _totalFrameWatch = new();
     private float _deltaTime = 0;
@@ -39,7 +40,7 @@ public class Game {
         _eventHandler = new EventHandler(settings);
         _eventHandler.QuitEvent += () => _isRunning = false;
         _eventHandler.ToggleFullscreenEvent += _gameRenderer.ToggleFullScreen;
-        AudioHandler.Init(settings.audioSettings);
+        _audioHandler = AudioHandler.Init(settings.audioSettings, settings.assets.audioDeclarations);
         Input.Init(settings, _sceneData, _eventHandler, settings.inputListeners);
         Cursor.Init(settings.cursorSettings);
         SceneManager.Init(settings.scenes, LoadScene);
@@ -84,7 +85,7 @@ public class Game {
     
     private void Clean() {
         Cursor.Clean();
-        AudioHandler.Clean();
+        _audioHandler.Clean();
         _gameRenderer.Clean();
         SDL.SDL_Quit();
     }

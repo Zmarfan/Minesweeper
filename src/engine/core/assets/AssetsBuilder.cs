@@ -15,7 +15,7 @@ public class AssetsBuilder {
         return new Assets(_audioDeclarations, _textureDeclarations, _fontDeclarations);
     }
 
-    public AssetsBuilder AddAudioSources(IEnumerable<AssetDeclaration> declarations) {
+    public AssetsBuilder AddAudios(IEnumerable<AssetDeclaration> declarations) {
         _audioDeclarations.AddRange(declarations);
         return this;
     }

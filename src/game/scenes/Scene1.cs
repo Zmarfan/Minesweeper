@@ -218,7 +218,7 @@ public static class Scene1 {
                 .Build()
             )
             .SetComponent(AudioSourceBuilder
-                .Builder(Path("explosion\\Explosion1.wav"), "effects")
+                .Builder("Explosion1", "effects")
                 .SetVolume(Volume.FromPercentage(10))
                 .SetPlayOnAwake(false)
                 .Build()
@@ -255,9 +255,5 @@ public static class Scene1 {
             .SetComponent(new ScreenPivot(new Vector2(1, 0), true))
             .Build()
             .Transform.GetRoot().gameObject;
-    }
-    
-    private static string Path(string path) {
-        return $"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\{path}";
     }
 }

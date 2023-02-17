@@ -72,6 +72,9 @@ internal static class Program {
                 new AssetDeclaration(Path("test\\Consolas.ttf"), "Consolas"),
                 new AssetDeclaration(Path("test\\times-new-roman.ttf"), "times")
             ))
+            .AddAudios(ListUtils.Of(
+                new AssetDeclaration(Path("test\\explosion\\Explosion1.wav"), "Explosion1")
+            ))
             .Build();
     }
     

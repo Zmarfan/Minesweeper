@@ -4,7 +4,7 @@ using Worms.engine.game_object.scripts;
 namespace Worms.engine.game_object.components.audio_source; 
 
 public class AudioSource : Script {
-    public string audioSrc;
+    public string audioId;
     public string channel;
     public bool Mute {
         get => _mute;
@@ -31,7 +31,7 @@ public class AudioSource : Script {
     private readonly string _uniqueId = Guid.NewGuid().ToString();
 
     public AudioSource(
-        string audioSrc,
+        string audioId,
         string channel,
         bool mute,
         bool loop,
@@ -39,7 +39,7 @@ public class AudioSource : Script {
         Volume volume,
         bool isActive
     ) : base(isActive) {
-        this.audioSrc = audioSrc;
+        this.audioId = audioId;
         this.channel = channel;
         _mute = mute;
         this.loop = loop;
@@ -54,7 +54,7 @@ public class AudioSource : Script {
     }
 
     public void Play() {
-        AudioHandler.Play(audioSrc, channel, GetPlayVolume(), _uniqueId, AudioFinished);
+        AudioHandler.Play(audioId, channel, GetPlayVolume(), _uniqueId, AudioFinished);
         IsPlaying = true;
         IsPaused = false;
     }

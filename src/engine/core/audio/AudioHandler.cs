@@ -1,4 +1,5 @@
 ﻿using SDL2;
+using Worms.engine.core.renderer.textures;
 
 namespace Worms.engine.core.audio; 
 
@@ -11,25 +12,29 @@ public class AudioHandler {
     private readonly Dictionary<string, PlayingSound> _playingSounds = new();
     private readonly AudioSettings _settings;
 
-    private AudioHandler(AudioSettings settings) {
+    private AudioHandler(AudioSettings settings, IEnumerable<AssetDeclaration> declarations) {
         SDL_mixer.Mix_Init(SDL_mixer.MIX_InitFlags.MIX_INIT_MP3);
         if (SDL_mixer.Mix_OpenAudio(SDL_mixer.MIX_DEFAULT_FREQUENCY, SDL_mixer.MIX_DEFAULT_FORMAT, SDL_mixer.MIX_DEFAULT_CHANNELS, 2048) == -1) {
             throw new Exception();
         }
 
         SDL_mixer.Mix_AllocateChannels(MAX_TRACKS);
+        foreach (AssetDeclaration declaration in declarations) {
+            LoadAudio(declaration);
+        }
         _settings = settings;
     }
 
-    public static void Init(AudioSettings settings) {
+    public static AudioHandler Init(AudioSettings settings, IEnumerable<AssetDeclaration> declarations) {
         if (_self != null) {
             throw new Exception("There can only be one audio handler!");
         }
-        _self = new AudioHandler(settings);
+        _self = new AudioHandler(settings, declarations);
+        return _self;
     }
 
     public static void Play(
-        string audioSrc,
+        string audioId,
         string channel,
         Volume audioVolume,
         string callerId,
@@ -39,12 +44,8 @@ public class AudioHandler {
             SDL_mixer.Mix_Resume(sound.track);
             return;
         }
-        
-        if (!_self._loadedSounds.ContainsKey(audioSrc)) {
-            LoadAudio(audioSrc);
-        }
 
-        int track = SDL_mixer.Mix_PlayChannel(-1, _self._loadedSounds[audioSrc], 0);
+        int track = SDL_mixer.Mix_PlayChannel(-1, _self._loadedSounds[audioId], 0);
         if (track == -1) {
             throw new Exception($"Unable to play another sound as all channels are occupied, increase? {SDL_mixer.Mix_GetError()}");
         }
@@ -72,24 +73,24 @@ public class AudioHandler {
         SDL_mixer.Mix_HaltChannel(_self._playingSounds[callerId].track);
     }
 
+    public static void ChangeAudioVolume(Volume audioVolume, string callerId) {
+        PlayingSound sound = _self._playingSounds[callerId];
+        SetChannelVolume(sound.track, CalculateVolume(sound.channel, audioVolume));
+    }
+
     public static void ReloadVolumeSettings() {
         foreach ((string _, PlayingSound sound) in _self._playingSounds) {
             SetChannelVolume(sound.track, CalculateVolume(sound.channel, sound.currentAudioVolume));
         }
     }
     
-    public static void ChangeAudioVolume(Volume audioVolume, string callerId) {
-        PlayingSound sound = _self._playingSounds[callerId];
-        SetChannelVolume(sound.track, CalculateVolume(sound.channel, audioVolume));
-    }
-
-    public static void Clean() {
-        foreach ((string _, IntPtr audioChunk) in _self._loadedSounds) {
+    public void Clean() {
+        foreach ((string _, IntPtr audioChunk) in _loadedSounds) {
             SDL_mixer.Mix_FreeChunk(audioChunk);
         }
 
-        _self._playingSounds.Clear();
-        _self._loadedSounds.Clear();
+        _playingSounds.Clear();
+        _loadedSounds.Clear();
         SDL_mixer.Mix_CloseAudio();
         SDL_mixer.Mix_Quit();
     }
@@ -106,11 +107,11 @@ public class AudioHandler {
         SDL_mixer.Mix_Volume(channel, (int)(SDL_mixer.MIX_MAX_VOLUME * volume.Percentage / 100f));
     }
     
-    private static void LoadAudio(string audioSrc) {
-        IntPtr chunk = SDL_mixer.Mix_LoadWAV(audioSrc);
+    private void LoadAudio(AssetDeclaration declaration) {
+        IntPtr chunk = SDL_mixer.Mix_LoadWAV(declaration.src);
         if (chunk == IntPtr.Zero) {
-            throw new ArgumentException($"Unable to load the provided sound: {audioSrc} due to: {SDL_mixer.Mix_GetError()}");
+            throw new ArgumentException($"Unable to load the provided sound: {declaration} due to: {SDL_mixer.Mix_GetError()}");
         }
-        _self._loadedSounds.Add(audioSrc, chunk);
+        _loadedSounds.Add(declaration.id, chunk);
     }
 }
