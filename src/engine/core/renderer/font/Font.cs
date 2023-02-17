@@ -43,7 +43,7 @@ public class Font {
             TryAddGlyphToAtlas(c, ref atlas, ref destination);
         }
 
-        return SurfaceReadWriteUtils.SurfaceToTexture(renderer, (nint)atlas);
+        return SurfaceReadWriteUtils.SurfaceToTexture(renderer, atlas);
     }
 
     private unsafe void TryAddGlyphToAtlas(char c, ref SDL.SDL_Surface* atlas, ref SDL.SDL_Rect destination) {

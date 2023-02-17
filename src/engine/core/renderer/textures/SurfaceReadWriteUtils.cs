@@ -6,8 +6,8 @@ namespace Worms.engine.core.renderer.textures;
 public static class SurfaceReadWriteUtils {
     private const string ACCEPTED_PIXEL_FORMAT = "SDL_PIXELFORMAT_ABGR8888";
     
-    public static nint SurfaceToTexture(nint renderer, nint surface) {
-        nint texture = SDL.SDL_CreateTextureFromSurface(renderer, surface);
+    public static unsafe nint SurfaceToTexture(nint renderer, SDL.SDL_Surface* surface) {
+        nint texture = SDL.SDL_CreateTextureFromSurface(renderer, (nint)surface);
         if (texture == nint.Zero) {
             throw new ArgumentException($"Unable to load surface due to: {SDL.SDL_GetError()}");
         }

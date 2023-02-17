@@ -39,7 +39,7 @@ public class TextureStorage {
         SDL.SDL_Surface* surface = SurfaceReadWriteUtils.WriteSurfacePixels(pixels);
         _self._loadedTextures.Add(textureId, new StoredTexture(
             surface,
-            SurfaceReadWriteUtils.SurfaceToTexture(_self._renderer, (nint)surface),
+            SurfaceReadWriteUtils.SurfaceToTexture(_self._renderer, surface),
             pixels,
             false
         ));
@@ -66,7 +66,7 @@ public class TextureStorage {
         }
         _self._loadedTextures.Add(newTextureId, new StoredTexture(
             surface, 
-            SurfaceReadWriteUtils.SurfaceToTexture(_self._renderer, (nint)surface),
+            SurfaceReadWriteUtils.SurfaceToTexture(_self._renderer, surface),
             pixels,
             false
         ));
@@ -77,7 +77,7 @@ public class TextureStorage {
         SDL.SDL_Surface* surface = SurfaceReadWriteUtils.LoadSurfaceFromFile(declaration.src);
         _loadedTextures.Add(declaration.id, new StoredTexture(
             surface,
-            SurfaceReadWriteUtils.SurfaceToTexture(_renderer, (nint)surface),
+            SurfaceReadWriteUtils.SurfaceToTexture(_renderer, surface),
             SurfaceReadWriteUtils.ReadSurfacePixels(surface),
             true
         ));
