@@ -9,8 +9,8 @@ using Worms.engine.scene;
 namespace Worms.engine.core.renderer; 
 
 public class GameRenderer {
-    private readonly IntPtr _window;
-    private readonly IntPtr _renderer;
+    private readonly nint _window;
+    private readonly nint _renderer;
     private readonly TextureStorage _textureStorage;
     private readonly FontHandler _fontHandler;
     private readonly RendererHandler _rendererHandler;
@@ -30,12 +30,12 @@ public class GameRenderer {
             SDL.SDL_WindowFlags.SDL_WINDOW_SHOWN
         );
         SDL.SDL_SetHint( SDL.SDL_HINT_RENDER_SCALE_QUALITY, "1");
-        if (_window == IntPtr.Zero) {
+        if (_window == nint.Zero) {
             throw new Exception();
         }
 
         _renderer = SDL.SDL_CreateRenderer(_window, -1, 0);
-        if (_renderer == IntPtr.Zero) {
+        if (_renderer == nint.Zero) {
             throw new Exception();
         }
         SDL.SDL_SetWindowGrab(_window, SDL.SDL_bool.SDL_TRUE);

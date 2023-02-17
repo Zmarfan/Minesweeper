@@ -8,7 +8,7 @@ public class AudioHandler {
 
     private static AudioHandler _self = null!;
 
-    private readonly Dictionary<string, IntPtr> _loadedSounds = new();
+    private readonly Dictionary<string, nint> _loadedSounds = new();
     private readonly Dictionary<string, PlayingSound> _playingSounds = new();
     private readonly AudioSettings _settings;
 
@@ -85,7 +85,7 @@ public class AudioHandler {
     }
     
     public void Clean() {
-        foreach ((string _, IntPtr audioChunk) in _loadedSounds) {
+        foreach ((string _, nint audioChunk) in _loadedSounds) {
             SDL_mixer.Mix_FreeChunk(audioChunk);
         }
 
@@ -108,8 +108,8 @@ public class AudioHandler {
     }
     
     private void LoadAudio(AssetDeclaration declaration) {
-        IntPtr chunk = SDL_mixer.Mix_LoadWAV(declaration.src);
-        if (chunk == IntPtr.Zero) {
+        nint chunk = SDL_mixer.Mix_LoadWAV(declaration.src);
+        if (chunk == nint.Zero) {
             throw new ArgumentException($"Unable to load the provided sound: {declaration} due to: {SDL_mixer.Mix_GetError()}");
         }
         _loadedSounds.Add(declaration.id, chunk);

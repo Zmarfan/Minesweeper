@@ -23,7 +23,7 @@ public class GizmoIcon : GizmosObject {
         _center = center;
     }
 
-    public override void Render(IntPtr renderer, TransformationMatrix worldToScreenMatrix) {
+    public override void Render(nint renderer, TransformationMatrix worldToScreenMatrix) {
         SDL.SDL_GetRenderDrawColor(renderer, out byte r, out byte g, out byte b, out byte a);
         Vector2 centerScreen = worldToScreenMatrix.ConvertPoint(_center);
         for (int x = 0; x < TEMPLATE.GetLength(0); x++) {

@@ -10,7 +10,7 @@ using Worms.engine.scene;
 namespace Worms.engine.core.renderer; 
 
 public class GizmosRendererHandler {
-    private readonly IntPtr _renderer;
+    private readonly nint _renderer;
     private readonly SceneData _sceneData;
 
     public GizmosRendererHandler(nint renderer, SceneData sceneData) {

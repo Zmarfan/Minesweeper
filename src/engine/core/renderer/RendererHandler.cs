@@ -15,12 +15,12 @@ namespace Worms.engine.core.renderer;
 public class RendererHandler {
     public const string DEFAULT_SORTING_LAYER = "Default";
 
-    private readonly IntPtr _renderer;
+    private readonly nint _renderer;
     private readonly FontHandler _fontHandler;
     private readonly SceneData _sceneData;
     private readonly List<string> _sortLayers = new() { DEFAULT_SORTING_LAYER };
 
-    public RendererHandler(IntPtr renderer, FontHandler fontHandler, GameSettings settings, SceneData sceneData) {
+    public RendererHandler(nint renderer, FontHandler fontHandler, GameSettings settings, SceneData sceneData) {
         _renderer = renderer;
         _fontHandler = fontHandler;
         _sceneData = sceneData;

@@ -19,14 +19,14 @@ public class Font {
         }
     }
     
-    private readonly IntPtr _ttfFont;
+    private readonly nint _ttfFont;
     public readonly Dictionary<char, CharacterInfo> characters = new();
     public readonly int maxCharHeight;
-    public readonly IntPtr textureAtlas;
+    public readonly nint textureAtlas;
 
-    public Font(IntPtr renderer, string fontSrc) {
+    public Font(nint renderer, string fontSrc) {
         _ttfFont = SDL_ttf.TTF_OpenFont(fontSrc, FONT_SIZE);
-        if (_ttfFont == IntPtr.Zero) {
+        if (_ttfFont == nint.Zero) {
             throw new ArgumentException($"Unable to load font: {fontSrc} due to: {SDL_ttf.TTF_GetError()}");
         }
 
@@ -35,7 +35,7 @@ public class Font {
         maxCharHeight = characters.Values.MaxBy(c => c.dimension.y)!.dimension.y;
     }
 
-    private unsafe nint CreateTextureAtlas(IntPtr renderer) {
+    private unsafe nint CreateTextureAtlas(nint renderer) {
         SDL.SDL_Surface* atlas = (SDL.SDL_Surface*)SDL.SDL_CreateRGBSurfaceWithFormat(0, ATLAS_SIZE, ATLAS_SIZE, 32, SDL.SDL_PIXELFORMAT_ABGR8888);
         
         SDL.SDL_Rect destination = new() { x = 0, y = 0 };
@@ -43,7 +43,7 @@ public class Font {
             TryAddGlyphToAtlas(c, ref atlas, ref destination);
         }
 
-        return SurfaceReadWriteUtils.SurfaceToTexture(renderer, (IntPtr)atlas);
+        return SurfaceReadWriteUtils.SurfaceToTexture(renderer, (nint)atlas);
     }
 
     private unsafe void TryAddGlyphToAtlas(char c, ref SDL.SDL_Surface* atlas, ref SDL.SDL_Rect destination) {
@@ -52,7 +52,7 @@ public class Font {
         }
             
         SDL.SDL_Surface* glyph = (SDL.SDL_Surface*)SDL_ttf.TTF_RenderGlyph32_Solid(_ttfFont, c, DEFAULT_GLYPH_COLOR);
-        if ((IntPtr)glyph == IntPtr.Zero) {
+        if ((nint)glyph == nint.Zero) {
             return;
         }
         SurfaceReadWriteUtils.FormatSurface(ref glyph);
@@ -64,11 +64,11 @@ public class Font {
 
         destination = MoveDownRowIfNeeded(destination);
         characters.Add(c, new CharacterInfo(destination));
-        if (SDL.SDL_BlitSurface((IntPtr)glyph, IntPtr.Zero, (IntPtr)atlas, ref destination) != 0) {
+        if (SDL.SDL_BlitSurface((nint)glyph, nint.Zero, (nint)atlas, ref destination) != 0) {
             throw new Exception($"Unable to blit char due to: {SDL.SDL_GetError()})");
         }
         destination.x += destination.w;
-        SDL.SDL_FreeSurface((IntPtr)glyph);
+        SDL.SDL_FreeSurface((nint)glyph);
     }
 
     private SDL.SDL_Rect MoveDownRowIfNeeded(SDL.SDL_Rect destination) {

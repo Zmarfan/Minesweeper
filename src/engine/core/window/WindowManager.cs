@@ -6,15 +6,15 @@ namespace Worms.engine.core.window;
 public class WindowManager {
     private static WindowManager _self = null!;
 
-    private readonly IntPtr _window;
+    private readonly nint _window;
     private readonly GameSettings _settings;
 
-    private WindowManager(IntPtr window, GameSettings settings) {
+    private WindowManager(nint window, GameSettings settings) {
         _window = window;
         _settings = settings;
     }
 
-    public static void Init(IntPtr window, GameSettings settings) {
+    public static void Init(nint window, GameSettings settings) {
         if (_self != null) {
             throw new Exception("There can only be one Window Manager!");
         }

@@ -10,7 +10,7 @@ public class GizmosPoints : GizmosObject {
         _points = points;
     }
 
-    public override void Render(IntPtr renderer, TransformationMatrix worldToScreenMatrix) {
+    public override void Render(nint renderer, TransformationMatrix worldToScreenMatrix) {
         SDL.SDL_FPoint[] formattedPoints = _points
             .Select(worldToScreenMatrix.ConvertPoint)
             .Select(p => new SDL.SDL_FPoint { x = p.x, y = p.y })

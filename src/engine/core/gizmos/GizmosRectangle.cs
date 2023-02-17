@@ -14,7 +14,7 @@ public class GizmosRectangle : GizmosObject {
         _rotation = rotation;
     }
 
-    public override void Render(IntPtr renderer, TransformationMatrix worldToScreenMatrix) {
+    public override void Render(nint renderer, TransformationMatrix worldToScreenMatrix) {
         Vector2 bottomLeft = GetCorner(new Vector2(_center.x - _size.x / 2f, _center.y - _size.y / 2f), worldToScreenMatrix);
         Vector2 topLeft = GetCorner(new Vector2(_center.x - _size.x / 2f, _center.y + _size.y / 2f), worldToScreenMatrix);
         Vector2 bottomRight = GetCorner(new Vector2(_center.x + _size.x / 2f, _center.y - _size.y / 2f), worldToScreenMatrix);

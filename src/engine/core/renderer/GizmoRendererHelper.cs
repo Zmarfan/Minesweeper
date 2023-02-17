@@ -4,7 +4,7 @@ using Worms.engine.data;
 namespace Worms.engine.core.renderer; 
 
 public static class GizmoRendererHelper {
-    public static void DrawEllipse(IntPtr renderer, Vector2 center, Vector2 radius, Rotation rotation) {
+    public static void DrawEllipse(nint renderer, Vector2 center, Vector2 radius, Rotation rotation) {
         float sin = (float)Math.Sin(rotation.Radians);
         float cos = (float)Math.Cos(rotation.Radians);
         float sinInv = (float)Math.Sin(-rotation.Radians);
@@ -59,7 +59,7 @@ public static class GizmoRendererHelper {
         }
     }
 
-    private static void RenderEllipsisPixels(IntPtr renderer, Vector2 center, float x, float y, float cos, float sin, float cosInv, float sinInv) {
+    private static void RenderEllipsisPixels(nint renderer, Vector2 center, float x, float y, float cos, float sin, float cosInv, float sinInv) {
         Vector2 p = new(x * cos - y * sin, x * sin + y * cos);
         Vector2 p2 = new(x * cosInv - y * sinInv, x * sinInv + y * cosInv);
         SDL.SDL_RenderDrawPointF(renderer, center.x + p2.x, center.y - p2.y);

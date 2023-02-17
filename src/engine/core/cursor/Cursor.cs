@@ -5,7 +5,7 @@ namespace Worms.engine.core.cursor;
 public class Cursor {
     public static bool IsActive { get; private set; }
     private static Cursor _self = null!;
-    private readonly IntPtr _cursor;
+    private readonly nint _cursor;
     
     private unsafe Cursor(CursorSettings settings) {
         if (settings.customCursorSettings == null) {
@@ -15,12 +15,12 @@ public class Cursor {
         SDL.SDL_Surface* surface = GetSurface(settings.customCursorSettings);
         int x = Math.Min((int)(surface->w * settings.customCursorSettings.xHotSpot), surface->w - 1);
         int y = Math.Min((int)(surface->h * settings.customCursorSettings.yHotSpot), surface->h - 1);
-        _cursor = SDL.SDL_CreateColorCursor((IntPtr)surface, x, y);
-        if (_cursor == IntPtr.Zero) {
+        _cursor = SDL.SDL_CreateColorCursor((nint)surface, x, y);
+        if (_cursor == nint.Zero) {
             throw new Exception($"Unable to set cursor to provided image: {settings.customCursorSettings.imageSource} due to: {SDL.SDL_GetError()}");
         }
         SDL.SDL_SetCursor(_cursor);
-        SDL.SDL_FreeSurface((IntPtr)surface);
+        SDL.SDL_FreeSurface((nint)surface);
     }
 
     public static void Init(CursorSettings settings) {

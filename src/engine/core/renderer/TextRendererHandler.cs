@@ -14,7 +14,7 @@ public static class TextRendererHandler {
     private const int ITALICS_OFFSET = 20;
     private const int BOLD_OFFSET = 3;
     
-    public static void RenderText(IntPtr renderer, Camera camera, Font font, TextRenderer tr, TransformationMatrix matrix) {
+    public static void RenderText(nint renderer, Camera camera, Font font, TextRenderer tr, TransformationMatrix matrix) {
         tr.RefreshDataIfNeeded(font);
 
         Vector2 scaleModifier = 1 / camera.Size * tr.Transform.Scale;
@@ -121,7 +121,7 @@ public static class TextRendererHandler {
         RenderTextGeometry(renderer, tr, font);
     }
     
-    private static void RenderTextGeometry(IntPtr renderer, TextRenderer tr, Font font) {
+    private static void RenderTextGeometry(nint renderer, TextRenderer tr, Font font) {
         if (SDL.SDL_RenderGeometry(
             renderer,
             font.textureAtlas,

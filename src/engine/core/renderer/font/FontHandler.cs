@@ -6,7 +6,7 @@ namespace Worms.engine.core.renderer.font;
 public class FontHandler {
     public readonly Dictionary<string, Font> fonts;
 
-    public FontHandler(IntPtr renderer, IEnumerable<AssetDeclaration> declarations) {
+    public FontHandler(nint renderer, IEnumerable<AssetDeclaration> declarations) {
         if (SDL_ttf.TTF_Init() != 0) {
             throw new Exception($"Unable to load sdl ttf due to: {SDL_ttf.TTF_GetError()}");
         }

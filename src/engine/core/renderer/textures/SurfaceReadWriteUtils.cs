@@ -6,9 +6,9 @@ namespace Worms.engine.core.renderer.textures;
 public static class SurfaceReadWriteUtils {
     private const string ACCEPTED_PIXEL_FORMAT = "SDL_PIXELFORMAT_ABGR8888";
     
-    public static IntPtr SurfaceToTexture(IntPtr renderer, IntPtr surface) {
-        IntPtr texture = SDL.SDL_CreateTextureFromSurface(renderer, surface);
-        if (texture == IntPtr.Zero) {
+    public static nint SurfaceToTexture(nint renderer, nint surface) {
+        nint texture = SDL.SDL_CreateTextureFromSurface(renderer, surface);
+        if (texture == nint.Zero) {
             throw new ArgumentException($"Unable to load surface due to: {SDL.SDL_GetError()}");
         }
 

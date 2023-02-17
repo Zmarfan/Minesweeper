@@ -5,7 +5,7 @@ namespace Worms.engine.core.renderer.textures;
 
 public class StoredTexture {
     public readonly unsafe SDL.SDL_Surface* surface;
-    public readonly IntPtr texture;
+    public readonly nint texture;
     public readonly Color[,] pixels;
     public readonly bool fromFile;
 

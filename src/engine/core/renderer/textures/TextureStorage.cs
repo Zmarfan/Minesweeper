@@ -7,17 +7,17 @@ namespace Worms.engine.core.renderer.textures;
 public class TextureStorage {
     private static TextureStorage _self = null!;
 
-    private readonly IntPtr _renderer;
+    private readonly nint _renderer;
     private readonly Dictionary<string, StoredTexture> _loadedTextures = new();
     
-    private TextureStorage(IntPtr renderer, IEnumerable<AssetDeclaration> textureDeclarations) {
+    private TextureStorage(nint renderer, IEnumerable<AssetDeclaration> textureDeclarations) {
         _renderer = renderer;
         foreach (AssetDeclaration declaration in textureDeclarations) {
             PreLoadTextureDeclaration(declaration);
         }
     }
 
-    public static TextureStorage Init(IntPtr renderer, IEnumerable<AssetDeclaration> textureDeclarations) {
+    public static TextureStorage Init(nint renderer, IEnumerable<AssetDeclaration> textureDeclarations) {
         if (_self != null) {
             throw new Exception("There can only be one TextureStorage at a time!");
         }
@@ -40,7 +40,7 @@ public class TextureStorage {
         SDL.SDL_Surface* surface = SurfaceReadWriteUtils.WriteSurfacePixels(pixels);
         _self._loadedTextures.Add(textureId, new StoredTexture(
             surface,
-            SurfaceReadWriteUtils.SurfaceToTexture(_self._renderer, (IntPtr)surface),
+            SurfaceReadWriteUtils.SurfaceToTexture(_self._renderer, (nint)surface),
             pixels,
             false
         ));
@@ -67,7 +67,7 @@ public class TextureStorage {
         }
         _self._loadedTextures.Add(newTextureId, new StoredTexture(
             surface, 
-            SurfaceReadWriteUtils.SurfaceToTexture(_self._renderer, (IntPtr)surface),
+            SurfaceReadWriteUtils.SurfaceToTexture(_self._renderer, (nint)surface),
             pixels,
             false
         ));
@@ -78,7 +78,7 @@ public class TextureStorage {
         SDL.SDL_Surface* surface = SurfaceReadWriteUtils.LoadSurfaceFromFile(declaration.src);
         _loadedTextures.Add(declaration.id, new StoredTexture(
             surface,
-            SurfaceReadWriteUtils.SurfaceToTexture(_renderer, (IntPtr)surface),
+            SurfaceReadWriteUtils.SurfaceToTexture(_renderer, (nint)surface),
             SurfaceReadWriteUtils.ReadSurfacePixels(surface),
             true
         ));

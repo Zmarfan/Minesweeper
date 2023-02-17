@@ -5,7 +5,7 @@ using Worms.engine.game_object.components.rendering.texture_renderer;
 namespace Worms.engine.core.renderer.textures; 
 
 public static class TextureRendererHandler {
-    public static unsafe void RenderTexture(IntPtr renderer, TextureRenderer tr, TransformationMatrix matrix) {
+    public static unsafe void RenderTexture(nint renderer, TextureRenderer tr, TransformationMatrix matrix) {
         StoredTexture texture = TextureStorage.GetStoredTexture(tr.texture.textureId);
 
         SDL.SDL_Rect srcRect = tr.texture.GetSrcRect(texture);
@@ -24,7 +24,7 @@ public static class TextureRendererHandler {
             ref srcRect,
             ref destRect,
             tr.Transform.Rotation.Degree, 
-            IntPtr.Zero,
+            nint.Zero,
             GetTextureFlipSettings(tr)
         ) != 0) {
             throw new Exception($"Unable to render texture to screen due to: {SDL.SDL_GetError()}");
