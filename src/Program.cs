@@ -45,6 +45,7 @@ internal static class Program {
                 InputListenerBuilder.Builder("animationTest3", Button.P).Build(),
                 InputListenerBuilder.Builder("cursorToggle", Button.C).Build()
             ))
+            .AddLayers(ListUtils.Of("testLayer1", "testLayer2", "testLayer3"))
             .AddSortLayers(ListUtils.Of("layer1", "layer2", "layer3"))
             .SetCursorSettings(new CursorSettings(false, new CustomCursorSettings($"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\cursor.png")))
             .Build()

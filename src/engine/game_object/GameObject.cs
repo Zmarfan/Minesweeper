@@ -12,6 +12,7 @@ public class GameObject : Object {
     
     public string Name { get; set; }
     public string Tag { get; set; }
+    public int Layer { get; set; }
 
     public bool IsActive {
         get => _isActive;
@@ -29,9 +30,10 @@ public class GameObject : Object {
     public readonly List<Component> components;
     private Transform? _transform;
     
-    public GameObject(string name, string tag, bool isActive, List<Component> components) {
+    public GameObject(string name, string tag, int layer, bool isActive, List<Component> components) {
         Name = name;
         Tag = tag;
+        Layer = layer;
         IsActive = isActive;
         this.components = components;
     }

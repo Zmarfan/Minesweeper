@@ -14,6 +14,7 @@ public record GameSettings(
     Assets assets,
     List<Scene> scenes, 
     List<InputListener> inputListeners,
+    List<string> layers,
     List<string> sortLayers,
     AudioSettings audioSettings,
     CursorSettings cursorSettings
@@ -25,6 +26,7 @@ public record GameSettings(
     public readonly Assets assets = assets;
     public readonly List<Scene> scenes = scenes;
     public readonly List<InputListener> inputListeners = inputListeners;
+    public readonly List<string> layers = layers;
     public readonly List<string> sortLayers = sortLayers;
     public readonly AudioSettings audioSettings = audioSettings;
     public readonly CursorSettings cursorSettings = cursorSettings;

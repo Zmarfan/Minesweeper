@@ -1,4 +1,5 @@
 ﻿using Worms.engine.core.game_object_handler;
+using Worms.engine.core.update.physics.layers;
 using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.physics.colliders;
@@ -7,6 +8,8 @@ using Worms.engine.scene;
 namespace Worms.engine.core.update.physics; 
 
 public class Physics {
+    private static readonly int DEFAULT_LAYER_MASK = ~LayerMask.CreateMask(LayerMask.IGNORE_RAYCAST);
+    
     private static Physics _self = null!;
 
     private readonly SceneData _sceneData;
@@ -25,19 +28,27 @@ public class Physics {
     }
     
     public static bool LineCast(Vector2 from, Vector2 to, out RaycastHit? hit) {
-        Vector2 direction = to - from;
-        return Raycast(from, direction, direction.Magnitude, out hit);
+        return LineCast(from, to, DEFAULT_LAYER_MASK, out hit);
     }
 
     public static bool Raycast(Vector2 origin, Vector2 direction, out RaycastHit? hit) {
-        return Raycast(origin, direction, 5000f, out hit);
+        return Raycast(origin, direction, DEFAULT_LAYER_MASK, out hit);
+    }
+    
+    public static bool LineCast(Vector2 from, Vector2 to, int layerMask, out RaycastHit? hit) {
+        Vector2 direction = to - from;
+        return Raycast(from, direction, direction.Magnitude, layerMask, out hit);
     }
 
-    public static bool Raycast(Vector2 origin, Vector2 direction, float maxDistance, out RaycastHit? hit) {
+    public static bool Raycast(Vector2 origin, Vector2 direction, int layerMask, out RaycastHit? hit) {
+        return Raycast(origin, direction, 5000f, layerMask, out hit);
+    }
+
+    public static bool Raycast(Vector2 origin, Vector2 direction, float maxDistance, int layerMask, out RaycastHit? hit) {
         direction = direction.Normalized * maxDistance;
         hit = null;
-        foreach ((GameObject _, TrackObject obj) in _self.GameObjectHandler.objects) {
-            if (!obj.isActive) {
+        foreach ((GameObject gameObject, TrackObject obj) in _self.GameObjectHandler.objects) {
+            if (!obj.isActive || (LayerMask.CreateMask(gameObject.Layer) & layerMask) == 0) {
                 continue;
             }
 

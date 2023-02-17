@@ -3,6 +3,7 @@ using Worms.engine.core.gizmos;
 using Worms.engine.core.input;
 using Worms.engine.core.input.listener;
 using Worms.engine.core.update.physics;
+using Worms.engine.core.update.physics.layers;
 using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.audio_source;
@@ -45,7 +46,7 @@ public class MyTestScript : Script {
         Transform.Position += Input.GetAxis("vertical") * SPEED * 100 * deltaTime;
         Transform.Rotation += Input.GetButton("action") ? SPEED * 50 * deltaTime : 0;
 
-        Physics.LineCast(Transform.Position, Input.MouseWorldPosition, out _hit);
+        Physics.LineCast(Transform.Position, Input.MouseWorldPosition, LayerMask.CreateMask("testLayer1", "testLayer2"), out _hit);
     }
 
     public override void OnTriggerEnter(Collider collider) {

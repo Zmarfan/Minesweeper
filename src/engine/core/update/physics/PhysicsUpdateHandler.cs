@@ -66,8 +66,8 @@ public class PhysicsUpdateHandler {
                 continue;
             }
 
-            foreach ((GameObject _, TrackObject checkObj) in GameObjectHandler.objects) {
-                if (!obj.isActive || (obj.RigidBody == null && checkObj.RigidBody == null)) {
+            foreach ((GameObject gameObject, TrackObject checkObj) in GameObjectHandler.objects) {
+                if (!obj.isActive || collider.gameObject.Layer != gameObject.Layer || (obj.RigidBody == null && checkObj.RigidBody == null)) {
                     continue;
                 }
 

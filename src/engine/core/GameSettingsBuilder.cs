@@ -14,6 +14,7 @@ public class GameSettingsBuilder {
     private readonly Assets _assets;
     private readonly List<Scene> _scenes = new();
     private readonly List<InputListener> _inputListeners = new();
+    private readonly List<string> _layers = new();
     private readonly List<string> _sortLayers = new();
     private readonly AudioSettings _audioSettings;
     private CursorSettings _cursorSettings = new(true, null);
@@ -28,7 +29,7 @@ public class GameSettingsBuilder {
     }
 
     public GameSettings Build() {
-        return new GameSettings(_debug, _title, _width, _height, _assets, _scenes, _inputListeners, _sortLayers, _audioSettings, _cursorSettings);
+        return new GameSettings(_debug, _title, _width, _height, _assets, _scenes, _inputListeners, _layers, _sortLayers, _audioSettings, _cursorSettings);
     }
 
     public GameSettingsBuilder SetDebugMode() {
@@ -63,6 +64,11 @@ public class GameSettingsBuilder {
     
     public GameSettingsBuilder AddInputListeners(IEnumerable<InputListener> listeners) {
         _inputListeners.AddRange(listeners);
+        return this;
+    }
+    
+    public GameSettingsBuilder AddLayers(IEnumerable<string> layers) {
+        _layers.AddRange(layers);
         return this;
     }
     
