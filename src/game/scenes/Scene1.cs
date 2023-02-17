@@ -189,6 +189,7 @@ public static class Scene1 {
         
         return GameObjectBuilder.Root()
             .Transform.AddChild("pixelTest1")
+            .SetTag("pixel")
             .SetComponent(new TriggerScriptTest())
             .SetComponent(TextureColliderBuilder
                 .Builder(Texture.CreateSingle("pixelTest7"))

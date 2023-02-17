@@ -124,6 +124,22 @@ public class Transform : Component {
         GameObjectInstantiateEvent?.Invoke(go);
         return go;
     }
+
+    public GameObject? FindByName(string name) {
+        return children.FirstOrDefault(child => child.gameObject.IsActive && child.gameObject.Name == name)?.gameObject;
+    }
+    
+    public GameObject? FindByTag(string tag) {
+        return children.FirstOrDefault(child => child.gameObject.IsActive && child.gameObject.Tag == tag)?.gameObject;
+    }
+    
+    public GameObject? FindByNameRecursively(string name) {
+        return FindByConditionRecursively(obj => obj.Name == name);
+    }
+
+    public GameObject? FindByTagRecursively(string tag) {
+        return FindByConditionRecursively(obj => obj.Tag == tag);
+    }
     
     private void SetChild(Transform child) {
         if (children.Contains(child)) {
@@ -140,6 +156,21 @@ public class Transform : Component {
         }
     }
 
+    private GameObject? FindByConditionRecursively(Predicate<GameObject> condition) {
+        foreach (Transform child in children.Where(child => child.gameObject.IsActive)) {
+            if (condition.Invoke(child.gameObject)) {
+                return child.gameObject;
+            }
+
+            GameObject? found = child.FindByConditionRecursively(condition);
+            if (found != null) {
+                return found;
+            }
+        }
+
+        return null;
+    }
+    
     public override string ToString() {
         string parentName = Parent?.gameObject.Name ?? "root";
         return $"ParentName: {parentName}, LocalPosition: {LocalPosition}, WorldPosition: {Position}, LocalRotation: {LocalRotation}, WorldRotation: {Rotation}, LocalScale: {LocalScale}, WorldScale: {Scale}";

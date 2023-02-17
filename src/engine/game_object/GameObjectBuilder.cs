@@ -5,6 +5,7 @@ namespace Worms.engine.game_object;
 
 public class GameObjectBuilder {
     private readonly string _name;
+    private string _tag = "default";
     private Transform? _parent;
     private Vector2 _position = Vector2.Zero();
     private Rotation _rotation = Rotation.Identity();
@@ -19,7 +20,7 @@ public class GameObjectBuilder {
 
     public GameObject Build() {
         _components.Add(new Transform(_parent, _position, _rotation, _scale));
-        GameObject gameObject = new(_name, _isActive, _components);
+        GameObject gameObject = new(_name, _tag, _isActive, _components);
         _components.ForEach(component => component.InitComponent(gameObject));
         return gameObject;
     }
@@ -34,6 +35,11 @@ public class GameObjectBuilder {
 
     public void SetParent(Transform parent) {
         _parent = parent;
+    }
+    
+    public GameObjectBuilder SetTag(string tag) {
+        _tag = tag;
+        return this;
     }
     
     public GameObjectBuilder SetPosition(Vector2 position) {
