@@ -2,6 +2,8 @@
 using Worms.engine.core.audio;
 using Worms.engine.core.cursor;
 using Worms.engine.core.input.listener;
+using Worms.engine.core.renderer.textures;
+using Worms.engine.helper;
 using Worms.engine.scene;
 
 namespace Worms.engine.core; 
@@ -11,27 +13,27 @@ public class GameSettingsBuilder {
     private string _title = "My Game";
     private int _width = 600;
     private int _height = 400;
-    private readonly Assets _assets;
+    private Assets _assets = new(ListUtils.Empty<AssetDeclaration>(), ListUtils.Empty<AssetDeclaration>(), ListUtils.Empty<AssetDeclaration>());
     private readonly List<Scene> _scenes = new();
     private readonly List<InputListener> _inputListeners = new();
     private readonly List<string> _layers = new();
     private readonly List<string> _sortLayers = new();
-    private readonly AudioSettings _audioSettings;
+    private AudioSettings _audioSettings = new(Volume.Max(), ListUtils.Empty<AudioChannel>());
     private CursorSettings _cursorSettings = new(true, null);
-
-    private GameSettingsBuilder(Assets assets, AudioSettings audioSettings) {
-        _assets = assets;
-        _audioSettings = audioSettings;
-    }
-
-    public static GameSettingsBuilder Builder(Assets assets, AudioSettings audioSettings) {
-        return new GameSettingsBuilder(assets, audioSettings);
+    
+    public static GameSettingsBuilder Builder() {
+        return new GameSettingsBuilder();
     }
 
     public GameSettings Build() {
         return new GameSettings(_debug, _title, _width, _height, _assets, _scenes, _inputListeners, _layers, _sortLayers, _audioSettings, _cursorSettings);
     }
 
+    public GameSettingsBuilder SetAssets(Assets assets) {
+        _assets = assets;
+        return this;
+    }
+    
     public GameSettingsBuilder SetDebugMode() {
         _debug = true;
         return this;
@@ -59,6 +61,11 @@ public class GameSettingsBuilder {
     
     public GameSettingsBuilder AddScenes(IEnumerable<Scene> scenes) {
         _scenes.AddRange(scenes);
+        return this;
+    }
+    
+    public GameSettingsBuilder SetAudioSettings(AudioSettings audioSettings) {
+        _audioSettings = audioSettings;
         return this;
     }
     

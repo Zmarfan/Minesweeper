@@ -12,7 +12,9 @@ namespace Worms;
 internal static class Program {
     private static void Main() {
         Game game = new(GameSettingsBuilder
-            .Builder(DefineAssets(), new AudioSettings(Volume.Max(), ListUtils.Of(
+            .Builder()
+            .SetAssets(DefineAssets())
+            .SetAudioSettings(new AudioSettings(Volume.Max(), ListUtils.Of(
                 new AudioChannel("effects", Volume.Max()),
                 new AudioChannel("music", Volume.Max())
             )))
