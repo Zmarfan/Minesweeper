@@ -1,4 +1,5 @@
-﻿using Worms.engine.core.audio;
+﻿using Worms.engine.core.assets;
+using Worms.engine.core.audio;
 using Worms.engine.core.cursor;
 using Worms.engine.core.input.listener;
 using Worms.engine.core.renderer.font;
@@ -12,24 +13,24 @@ public class GameSettingsBuilder {
     private string _title = "My Game";
     private int _width = 600;
     private int _height = 400;
+    private readonly Assets _assets;
     private readonly List<Scene> _scenes = new();
     private readonly List<InputListener> _inputListeners = new();
     private readonly List<string> _sortLayers = new();
     private readonly AudioSettings _audioSettings;
     private CursorSettings _cursorSettings = new(true, null);
-    private readonly List<FontDefinition> _fontDefinitions = new();
-    private readonly List<TextureDeclaration> _textureDeclarations = new();
 
-    private GameSettingsBuilder(AudioSettings audioSettings) {
+    private GameSettingsBuilder(Assets assets, AudioSettings audioSettings) {
+        _assets = assets;
         _audioSettings = audioSettings;
     }
 
-    public static GameSettingsBuilder Builder(AudioSettings audioSettings) {
-        return new GameSettingsBuilder(audioSettings);
+    public static GameSettingsBuilder Builder(Assets assets, AudioSettings audioSettings) {
+        return new GameSettingsBuilder(assets, audioSettings);
     }
 
     public GameSettings Build() {
-        return new GameSettings(_debug, _title, _width, _height, _scenes, _inputListeners, _sortLayers, _audioSettings, _cursorSettings, _fontDefinitions, _textureDeclarations);
+        return new GameSettings(_debug, _title, _width, _height, _assets, _scenes, _inputListeners, _sortLayers, _audioSettings, _cursorSettings);
     }
 
     public GameSettingsBuilder SetDebugMode() {
@@ -74,16 +75,6 @@ public class GameSettingsBuilder {
 
     public GameSettingsBuilder SetCursorSettings(CursorSettings settings) {
         _cursorSettings = settings;
-        return this;
-    }
-    
-    public GameSettingsBuilder AddFonts(IEnumerable<FontDefinition> fonts) {
-        _fontDefinitions.AddRange(fonts);
-        return this;
-    }
-    
-    public GameSettingsBuilder AddTextures(IEnumerable<TextureDeclaration> textureDeclarations) {
-        _textureDeclarations.AddRange(textureDeclarations);
         return this;
     }
 }

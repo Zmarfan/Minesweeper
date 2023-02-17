@@ -1,16 +1,17 @@
 ﻿using SDL2;
+using Worms.engine.core.renderer.textures;
 
 namespace Worms.engine.core.renderer.font; 
 
 public class FontHandler {
     public readonly Dictionary<string, Font> fonts;
 
-    public FontHandler(IntPtr renderer, IEnumerable<FontDefinition> fontDefinitions) {
+    public FontHandler(IntPtr renderer, IEnumerable<AssetDeclaration> declarations) {
         if (SDL_ttf.TTF_Init() != 0) {
             throw new Exception($"Unable to load sdl ttf due to: {SDL_ttf.TTF_GetError()}");
         }
 
-        fonts = fontDefinitions.ToDictionary(f => f.name, f => new Font(renderer, f.src));
+        fonts = declarations.ToDictionary(f => f.id, f => new Font(renderer, f.src));
     }
 
     public void Clean() {

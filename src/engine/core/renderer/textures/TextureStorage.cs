@@ -10,14 +10,14 @@ public class TextureStorage {
     private readonly IntPtr _renderer;
     private readonly Dictionary<string, StoredTexture> _loadedTextures = new();
     
-    private TextureStorage(IntPtr renderer, IEnumerable<TextureDeclaration> textureDeclarations) {
+    private TextureStorage(IntPtr renderer, IEnumerable<AssetDeclaration> textureDeclarations) {
         _renderer = renderer;
-        foreach (TextureDeclaration declaration in textureDeclarations) {
+        foreach (AssetDeclaration declaration in textureDeclarations) {
             PreLoadTextureDeclaration(declaration);
         }
     }
 
-    public static TextureStorage Init(IntPtr renderer, IEnumerable<TextureDeclaration> textureDeclarations) {
+    public static TextureStorage Init(IntPtr renderer, IEnumerable<AssetDeclaration> textureDeclarations) {
         if (_self != null) {
             throw new Exception("There can only be one TextureStorage at a time!");
         }
@@ -74,7 +74,7 @@ public class TextureStorage {
         storedTexture = _self._loadedTextures[newTextureId];
     }
 
-    private unsafe void PreLoadTextureDeclaration(TextureDeclaration declaration) {
+    private unsafe void PreLoadTextureDeclaration(AssetDeclaration declaration) {
         SDL.SDL_Surface* surface = SurfaceReadWriteUtils.LoadSurfaceFromFile(declaration.src);
         _loadedTextures.Add(declaration.id, new StoredTexture(
             surface,

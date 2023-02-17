@@ -1,4 +1,5 @@
 ﻿using Worms.engine.core;
+using Worms.engine.core.assets;
 using Worms.engine.core.audio;
 using Worms.engine.core.cursor;
 using Worms.engine.core.input.listener;
@@ -12,7 +13,7 @@ namespace Worms;
 internal static class Program {
     private static void Main() {
         Game game = new(GameSettingsBuilder
-            .Builder(new AudioSettings(Volume.Max(), ListUtils.Of(
+            .Builder(DefineAssets(), new AudioSettings(Volume.Max(), ListUtils.Of(
                 new AudioChannel("effects", Volume.Max()),
                 new AudioChannel("music", Volume.Max())
             )))
@@ -47,25 +48,31 @@ internal static class Program {
             ))
             .AddSortLayers(ListUtils.Of("layer1", "layer2", "layer3"))
             .SetCursorSettings(new CursorSettings(false, new CustomCursorSettings($"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\cursor.png")))
-            .AddFonts(ListUtils.Of(
-                new FontDefinition(Path("test\\Vanilla Caramel.ttf"), "myFont"),
-                new FontDefinition(Path("test\\Consolas.ttf"), "Consolas"),
-                new FontDefinition(Path("test\\times-new-roman.ttf"), "times")
-            ))
-            .AddTextures(ListUtils.Of(
-                new TextureDeclaration(Path("test\\1.png"), "1"), 
-                new TextureDeclaration(Path("test\\explosion\\circle75.png"), "circle75"), 
-                new TextureDeclaration(Path("test\\explosion\\elipse75.png"), "elipse75"), 
-                new TextureDeclaration(Path("test\\explosion\\expow.png"), "expow"), 
-                new TextureDeclaration(Path("test\\explosion\\smklt75.png"), "smklt75"), 
-                new TextureDeclaration(Path("test\\explosion\\flame1.png"), "flame1"), 
-                new TextureDeclaration(Path("test\\explosion\\smkdrk40.png"), "smkdrk40"), 
-                new TextureDeclaration(Path("test\\pixelTest7.png"), "pixelTest7")
-            ))
             .Build()
         );
 
         game.Run();
+    }
+
+    private static Assets DefineAssets() {
+        return AssetsBuilder
+            .Builder()
+            .AddTextures(ListUtils.Of(
+                new AssetDeclaration(Path("test\\1.png"), "1"), 
+                new AssetDeclaration(Path("test\\explosion\\circle75.png"), "circle75"), 
+                new AssetDeclaration(Path("test\\explosion\\elipse75.png"), "elipse75"), 
+                new AssetDeclaration(Path("test\\explosion\\expow.png"), "expow"), 
+                new AssetDeclaration(Path("test\\explosion\\smklt75.png"), "smklt75"), 
+                new AssetDeclaration(Path("test\\explosion\\flame1.png"), "flame1"), 
+                new AssetDeclaration(Path("test\\explosion\\smkdrk40.png"), "smkdrk40"), 
+                new AssetDeclaration(Path("test\\pixelTest7.png"), "pixelTest7")
+            ))
+            .AddFonts(ListUtils.Of(
+                new AssetDeclaration(Path("test\\Vanilla Caramel.ttf"), "myFont"),
+                new AssetDeclaration(Path("test\\Consolas.ttf"), "Consolas"),
+                new AssetDeclaration(Path("test\\times-new-roman.ttf"), "times")
+            ))
+            .Build();
     }
     
     private static string Path(string path) {

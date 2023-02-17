@@ -44,8 +44,8 @@ public class GameRenderer {
 
         _settings = settings;
         _sceneData = sceneData;
-        _textureStorage = TextureStorage.Init(_renderer, _settings.textureDeclarations);
-        _fontHandler = new FontHandler(_renderer, settings.fontDefinitions);
+        _textureStorage = TextureStorage.Init(_renderer, _settings.assets.textureDeclarations);
+        _fontHandler = new FontHandler(_renderer, settings.assets.fontDeclarations);
         _rendererHandler = new RendererHandler(_renderer, _fontHandler, settings, _sceneData);
         _gizmosRendererHandler = new GizmosRendererHandler(_renderer, _sceneData);
     }
