@@ -20,7 +20,7 @@ namespace Worms.game.scenes;
 
 public static class Scene1 {
     public static Scene GetScene() {
-        return new Scene("main", () => new MyCamera(), CreateWorldRoot, CreateScreenRoot);
+        return new Scene("main", CreateWorldRoot, CreateScreenRoot);
     }
     
     private static GameObject CreateWorldRoot() {
@@ -188,7 +188,10 @@ public static class Scene1 {
         );
         
         return GameObjectBuilder.Root()
-            .Transform.AddChild("pixelTest1")
+            .Transform.AddChild("cameraScript")
+            .SetComponent(new MyCamera())
+            .Build()
+            .Transform.AddSibling("pixelTest1")
             .SetTag("pixel")
             .SetLayer("testLayer1")
             .SetComponent(new TriggerScriptTest())

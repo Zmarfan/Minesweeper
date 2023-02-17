@@ -3,7 +3,7 @@ using Worms.engine.data;
 
 namespace Worms.engine.camera; 
 
-public abstract class Camera {
+public class Camera {
     public static Camera Main { get; private set; } = null!;
 
     public Vector2 Position {
@@ -102,7 +102,7 @@ public abstract class Camera {
     private int _oldScreenWidth;
     private int _oldScreenHeight;
 
-    protected Camera() {
+    public Camera() {
         Main = this;
     }
     
@@ -111,12 +111,6 @@ public abstract class Camera {
         SetDirty();
     }
 
-    public virtual void Awake() {
-    }
-
-    public virtual void Update(float deltaTime) {
-    }
-    
     private void SetDirty() {
         _isWorldDirty = true;
         _isWorldInverseDirty = true;

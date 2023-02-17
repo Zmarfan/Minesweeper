@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using SDL2;
+using Worms.engine.camera;
 using Worms.engine.core.audio;
 using Worms.engine.core.cursor;
 using Worms.engine.core.game_object_handler;
@@ -78,9 +79,8 @@ public class Game {
     }
 
     private void LoadScene(Scene scene) {
-        _sceneData.camera = scene.CreateCamera();
+        _sceneData.camera = new Camera();
         _sceneData.camera.Init(_settings);
-        _sceneData.camera.Awake();
         _sceneData.gameObjectHandler = new GameObjectHandler(scene.CreateWorldGameObjectRoot(), scene.CreateSceneGameObjectRoot());
     }
     

@@ -3,13 +3,17 @@ using Worms.engine.core.cursor;
 using Worms.engine.core.input;
 using Worms.engine.core.input.listener;
 using Worms.engine.data;
+using Worms.engine.game_object.scripts;
 
 namespace Worms.game; 
 
-public class MyCamera : Camera {
+public class MyCamera : Script {
+    public MyCamera() : base(true) {
+    }
+    
     public override void Awake() {
-        Size = 1;
-        defaultDrawColor = new Color(0.1f, 0.25f, 0f);
+        Camera.Main.Size = 1;
+        Camera.Main.defaultDrawColor = new Color(0.1f, 0.25f, 0f);
     }
 
     public override void Update(float deltaTime) {
@@ -18,8 +22,8 @@ public class MyCamera : Camera {
         }
 
         if (!Cursor.IsActive) {
-            Position += Input.MouseDirection * 500f * Size * deltaTime;
+            Camera.Main.Position += Input.MouseDirection * 500f * Camera.Main.Size * deltaTime;
         }
-        Size += Input.GetAxis("cameraZoom").x * deltaTime;
+        Camera.Main.Size += Input.GetAxis("cameraZoom").x * deltaTime;
     }
 }

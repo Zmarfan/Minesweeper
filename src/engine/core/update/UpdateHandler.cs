@@ -111,8 +111,6 @@ public class UpdateHandler {
                 }
             }
         }
-
-        _sceneData.camera.Update(_deltaTime);
     }
     
     private void UpdateFrameTimeData(float deltaTime) {
