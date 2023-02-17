@@ -4,6 +4,8 @@ using Worms.engine.data;
 namespace Worms.engine.camera; 
 
 public abstract class Camera {
+    public static Camera Main { get; private set; } = null!;
+
     public Vector2 Position {
         get => _position;
         set {
@@ -100,6 +102,10 @@ public abstract class Camera {
     private int _oldScreenWidth;
     private int _oldScreenHeight;
 
+    protected Camera() {
+        Main = this;
+    }
+    
     public void Init(GameSettings settings) {
         _settings = settings;
         SetDirty();

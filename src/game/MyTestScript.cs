@@ -1,5 +1,7 @@
-﻿using Worms.engine.core.gizmos;
+﻿using Worms.engine.camera;
+using Worms.engine.core.gizmos;
 using Worms.engine.core.input;
+using Worms.engine.core.input.listener;
 using Worms.engine.core.update.physics;
 using Worms.engine.data;
 using Worms.engine.game_object;
@@ -28,6 +30,11 @@ public class MyTestScript : Script {
     }
 
     public override void Update(float deltaTime) {
+        if (Input.GetKeyDown(Button.TAB)) {
+            Random random = new();
+            Camera.Main.defaultDrawColor = new Color(random.NextSingle(), random.NextSingle(), random.NextSingle(), 1f);
+        }
+        
         if (Input.GetButtonDown("explosion")) {
             Transform.Instantiate(_explosion.Invoke().SetPosition(new Vector2(0, 100)));
             _audioSource.Restart();
