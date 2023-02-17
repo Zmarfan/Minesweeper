@@ -13,12 +13,16 @@ public class AudioHandler {
     private readonly AudioSettings _settings;
 
     private AudioHandler(AudioSettings settings, IEnumerable<AssetDeclaration> declarations) {
-        SDL_mixer.Mix_Init(SDL_mixer.MIX_InitFlags.MIX_INIT_MP3);
-        if (SDL_mixer.Mix_OpenAudio(SDL_mixer.MIX_DEFAULT_FREQUENCY, SDL_mixer.MIX_DEFAULT_FORMAT, SDL_mixer.MIX_DEFAULT_CHANNELS, 2048) == -1) {
-            throw new Exception();
+        if (SDL_mixer.Mix_Init(SDL_mixer.MIX_InitFlags.MIX_INIT_MP3) == 0) {
+            throw new Exception($"Unable to init audio mix due to: {SDL_mixer.Mix_GetError()}");
+        }
+        if (SDL_mixer.Mix_OpenAudio(SDL_mixer.MIX_DEFAULT_FREQUENCY, SDL_mixer.MIX_DEFAULT_FORMAT, SDL_mixer.MIX_DEFAULT_CHANNELS, 2048) != 0) {
+            throw new Exception($"Unable to open audio due to: {SDL_mixer.Mix_GetError()}");
         }
 
-        SDL_mixer.Mix_AllocateChannels(MAX_TRACKS);
+        if (SDL_mixer.Mix_AllocateChannels(MAX_TRACKS) != MAX_TRACKS) {
+            throw new Exception($"Unable to allocate audio channels due to: {SDL_mixer.Mix_GetError()}");
+        }
         foreach (AssetDeclaration declaration in declarations) {
             LoadAudio(declaration);
         }

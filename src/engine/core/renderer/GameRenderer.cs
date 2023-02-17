@@ -50,8 +50,10 @@ public class GameRenderer {
     }
 
     public void Render() {
-         SetDrawColor(DefaultDrawColor);
-        SDL.SDL_RenderClear(_renderer);
+        SetDrawColor(DefaultDrawColor);
+        if (SDL.SDL_RenderClear(_renderer) != 0) {
+            throw new Exception($"Unable to clear renderer due to: {SDL.SDL_GetError()}");
+        }
         _rendererHandler.Render(_sceneData.gameObjectHandler.objects);
         if (_settings.debug) {
             _gizmosRendererHandler.RenderGizmos(_sceneData.gameObjectHandler.objects);
@@ -62,7 +64,9 @@ public class GameRenderer {
 
     public void ToggleFullScreen() {
         uint flag = _isFullscreen ? 0 : (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN;
-        SDL.SDL_SetWindowFullscreen(_window, flag);
+        if (SDL.SDL_SetWindowFullscreen(_window, flag) != 0) {
+            throw new Exception($"Unable to change window fullScreen mode due to: {SDL.SDL_GetError()}");
+        }
         _isFullscreen = !_isFullscreen;
     }
     
@@ -74,6 +78,8 @@ public class GameRenderer {
     }
 
     private void SetDrawColor(Color c) {
-        SDL.SDL_SetRenderDrawColor(_renderer, c.Rbyte, c.Gbyte, c.Bbyte, c.Abyte);
+        if (SDL.SDL_SetRenderDrawColor(_renderer, c.Rbyte, c.Gbyte, c.Bbyte, c.Abyte) != 0) {
+            throw new Exception($"Unable to set render draw color due to: {SDL.SDL_GetError()}");
+        }
     }
 }

@@ -37,7 +37,9 @@ public class Cursor {
             throw new Exception($"Unable to set cursor active state due to: {SDL.SDL_GetError()}");
         }
 
-        SDL.SDL_SetRelativeMouseMode(active ? SDL.SDL_bool.SDL_FALSE : SDL.SDL_bool.SDL_TRUE);
+        if (SDL.SDL_SetRelativeMouseMode(active ? SDL.SDL_bool.SDL_FALSE : SDL.SDL_bool.SDL_TRUE) != 0) {
+            throw new Exception($"Unable to set relative mouse mode due to: {SDL.SDL_GetError()}");
+        }
         IsActive = active;
     }
 

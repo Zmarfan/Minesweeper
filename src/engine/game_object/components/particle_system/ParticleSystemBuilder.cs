@@ -12,7 +12,7 @@ namespace Worms.engine.game_object.components.particle_system;
 public class ParticleSystemBuilder {
     private Particles _particles = ParticlesBuilder.Builder().Build();
     private Emission _emission = new(new RangeZero(10f), ListUtils.Empty<EmissionBurst>());
-    private Shape _shape = new(new SphereEmission(10f, 0, Rotation.FromDegrees(359)), new VectorRange(new Vector2(5f, 5f)), 0f);
+    private Shape _shape = new(new SphereEmission(10f, 0, Rotation.FromDegrees(359)), new VectorRange(new Vector2(5f, 5f)));
     private ParticleSystemBuilder? _subSystem;
     private Func<Animation>? _particleAnimationProvider; 
     private readonly Renderer _renderer;
