@@ -1,6 +1,4 @@
 ﻿using SDL2;
-using Worms.engine.camera;
-using Worms.engine.core.renderer;
 using Worms.engine.data;
 
 namespace Worms.engine.core.gizmos; 

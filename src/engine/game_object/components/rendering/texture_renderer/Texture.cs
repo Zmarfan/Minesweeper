@@ -1,20 +1,11 @@
 ﻿using SDL2;
-using Worms.engine.core.renderer;
 using Worms.engine.core.renderer.textures;
 using Worms.engine.data;
 
 namespace Worms.engine.game_object.components.rendering.texture_renderer; 
 
 public struct Texture {
-    public Color[,] SectionPixels {
-        get {
-            if (_sectionPixels == null) {
-                _sectionPixels = CalculateSectionPixels();
-            }
-
-            return _sectionPixels;
-        }
-    }
+    public Color[,] SectionPixels => _sectionPixels ??= CalculateSectionPixels();
     public string textureId;
     public readonly Vector2 textureScale;
     private readonly int _column;

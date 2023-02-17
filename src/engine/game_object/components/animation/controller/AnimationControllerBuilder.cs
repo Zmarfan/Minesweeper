@@ -5,7 +5,7 @@ namespace Worms.engine.game_object.components.animation.controller;
 public class AnimationControllerBuilder {
     private bool _isActive = true;
     private readonly List<Tuple<string, Animation>> _animationsWithTriggers = new();
-    private Animation? _startAnimation = null;
+    private Animation? _startAnimation;
 
     public AnimationController Build() {
         return new AnimationController(_startAnimation, _animationsWithTriggers, _isActive);

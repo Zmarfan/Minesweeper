@@ -64,7 +64,7 @@ public readonly struct TransformationMatrix {
             {
                 _values[1, 1] * _values[2, 2] - _values[2, 1] * _values[1, 2], 
                 _values[2, 1] * _values[0, 2] - _values[0, 1] * _values[2, 2],
-                _values[0, 1] * _values[1, 2] - _values[1, 1] * _values[0, 2],
+                _values[0, 1] * _values[1, 2] - _values[1, 1] * _values[0, 2]
             },
             {
                 _values[2, 0] * _values[1, 2] - _values[1, 0] * _values[2, 2],

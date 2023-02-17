@@ -1,5 +1,4 @@
 ﻿using Worms.engine.core.renderer;
-using Worms.engine.data;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 
 namespace Worms.engine.game_object.components.particle_system.renderer; 
@@ -7,11 +6,11 @@ namespace Worms.engine.game_object.components.particle_system.renderer;
 public class RendererBuilder {
     private readonly Texture _texture;
     private string _sortingLayer = RendererHandler.DEFAULT_SORTING_LAYER;
-    private int _sortOrder = 0;
+    private int _sortOrder;
     private bool _flipX;
     private bool _flipY;
 
-    public RendererBuilder(Texture texture) {
+    private RendererBuilder(Texture texture) {
         _texture = texture;
     }
 

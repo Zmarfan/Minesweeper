@@ -7,7 +7,7 @@ public class TextureRendererBuilder {
     private bool _isActive = true;
     private readonly Texture _texture;
     private string _sortingLayer = RendererHandler.DEFAULT_SORTING_LAYER;
-    private int _sortOrder = 0;
+    private int _sortOrder;
     private Color _color = Color.WHITE;
     private bool _flipX;
     private bool _flipY;

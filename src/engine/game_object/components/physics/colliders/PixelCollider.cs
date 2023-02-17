@@ -43,10 +43,7 @@ public class PixelCollider : Collider {
     public override bool IsPointInside(Vector2 p) {
         p = Transform.WorldToLocalMatrix.ConvertPoint(p);
         Vector2Int pixel = LocalToPixel(p);
-        if (!PixelIsInTexture(pixel)) {
-            return false;
-        }
-        return pixels[pixel.x, pixel.y].IsOpaque;
+        return PixelIsInTexture(pixel) && pixels[pixel.x, pixel.y].IsOpaque;
     }
     
     public override ColliderHit? Raycast(Vector2 origin, Vector2 direction) {
@@ -98,11 +95,7 @@ public class PixelCollider : Collider {
             }
         }
 
-        if (surroundingPixels < MIN_SURROUNDING_PIXELS_FOR_VALID_NORMAL) {
-            return Vector2.Zero();
-        }
-
-        return normal;
+        return surroundingPixels < MIN_SURROUNDING_PIXELS_FOR_VALID_NORMAL ? Vector2.Zero() : normal;
     }
 
     private bool PixelIsInTexture(Vector2Int pixel) {

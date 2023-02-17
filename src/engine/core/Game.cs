@@ -6,7 +6,6 @@ using Worms.engine.core.game_object_handler;
 using Worms.engine.core.input;
 using Worms.engine.core.renderer;
 using Worms.engine.core.update;
-using Worms.engine.core.window;
 using Worms.engine.logger;
 using Worms.engine.scene;
 using EventHandler = Worms.engine.core.event_handler.EventHandler;
@@ -23,7 +22,7 @@ public class Game {
     private readonly AudioHandler _audioHandler;
     private readonly Stopwatch _actionFrameWatch = new();
     private readonly Stopwatch _totalFrameWatch = new();
-    private float _deltaTime = 0;
+    private float _deltaTime;
 
     private readonly SceneData _sceneData = new();
     private readonly GameSettings _settings;

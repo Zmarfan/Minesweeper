@@ -71,12 +71,12 @@ public static class SdlInputCodeToButton {
         { SDL.SDL_Scancode.SDL_SCANCODE_W, Button.W },
         { SDL.SDL_Scancode.SDL_SCANCODE_X, Button.X },
         { SDL.SDL_Scancode.SDL_SCANCODE_Y, Button.Y },
-        { SDL.SDL_Scancode.SDL_SCANCODE_Z, Button.Z },
+        { SDL.SDL_Scancode.SDL_SCANCODE_Z, Button.Z }
     };
 
     public static readonly Dictionary<uint, Button> MOUSE_BUTTON_TO_BUTTON = new() {
         { SDL.SDL_BUTTON_LEFT, Button.LEFT_MOUSE },
         { SDL.SDL_BUTTON_RIGHT, Button.RIGHT_MOUSE },
-        { SDL.SDL_BUTTON_MIDDLE, Button.MIDDLE_MOUSE },
+        { SDL.SDL_BUTTON_MIDDLE, Button.MIDDLE_MOUSE }
     };
 }

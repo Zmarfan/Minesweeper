@@ -12,7 +12,7 @@ public class ParticlesBuilder {
     private RangeZero _startLifeTime = new(5f);
     private RangeZero _startSize = new(1f);
     private RangeZero _startRotation = new(Rotation.Identity().Degree);
-    private float _flipRotation = 0f;
+    private float _flipRotation;
     private bool _playOnAwake = true;
     private int _maxParticles = 1000;
     private int _seed = Guid.NewGuid().GetHashCode();

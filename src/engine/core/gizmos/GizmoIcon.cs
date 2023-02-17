@@ -1,5 +1,4 @@
 ﻿using SDL2;
-using Worms.engine.core.renderer;
 using Worms.engine.data;
 
 namespace Worms.engine.core.gizmos; 
@@ -14,7 +13,7 @@ public class GizmoIcon : GizmosObject {
         { PixelType.BORDER, PixelType.SOLID, PixelType.SOLID, PixelType.SOLID, PixelType.SOLID, PixelType.SOLID, PixelType.SOLID, PixelType.BORDER },
         { PixelType.BORDER, PixelType.BORDER, PixelType.SOLID, PixelType.SOLID, PixelType.SOLID, PixelType.SOLID, PixelType.BORDER, PixelType.BORDER },
         { PixelType.NONE, PixelType.BORDER, PixelType.BORDER, PixelType.SOLID, PixelType.SOLID, PixelType.BORDER, PixelType.BORDER, PixelType.NONE },
-        { PixelType.NONE, PixelType.NONE, PixelType.BORDER, PixelType.BORDER, PixelType.BORDER, PixelType.BORDER, PixelType.NONE, PixelType.NONE },
+        { PixelType.NONE, PixelType.NONE, PixelType.BORDER, PixelType.BORDER, PixelType.BORDER, PixelType.BORDER, PixelType.NONE, PixelType.NONE }
     };
     
     private readonly Vector2 _center;
@@ -38,7 +37,7 @@ public class GizmoIcon : GizmosObject {
                         SDL.SDL_SetRenderDrawColor(renderer, r, g, b, a);
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        throw new ArgumentOutOfRangeException($"There is no support for: {TEMPLATE[x, y]} pixel type");
                 }
 
                 SDL.SDL_RenderDrawPointF(renderer, centerScreen.x + x - 4, centerScreen.y + y - 4);

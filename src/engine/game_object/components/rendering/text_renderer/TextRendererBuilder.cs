@@ -1,22 +1,21 @@
 ﻿using Worms.engine.core.renderer;
 using Worms.engine.data;
-using Worms.engine.game_object.components.rendering.texture_renderer;
 
 namespace Worms.engine.game_object.components.rendering.text_renderer; 
 
 public class TextRendererBuilder {
     private bool _isActive = true;
     private string _sortingLayer = RendererHandler.DEFAULT_SORTING_LAYER;
-    private int _sortOrder = 0;
+    private int _sortOrder;
     private Color _color = Color.WHITE;
     private string _text = string.Empty;
     private string _font = string.Empty;
     private int _width = 200;
     private int _size = 16;
-    private bool _bold = false;
-    private bool _italics = false;
+    private bool _bold;
+    private bool _italics;
     private TextAlignment _alignment = TextAlignment.LEFT;
-    private int _lineSpacing = 0;
+    private int _lineSpacing;
 
     public static TextRendererBuilder Builder() {
         return new TextRendererBuilder();

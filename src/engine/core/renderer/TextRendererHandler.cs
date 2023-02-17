@@ -1,12 +1,9 @@
-﻿
-using System.Text;
-using SDL2;
+﻿using SDL2;
 using Worms.engine.camera;
 using Worms.engine.core.renderer.font;
 using Worms.engine.data;
-using Worms.engine.game_object.components.rendering;
+using Worms.engine.game_object.components;
 using Worms.engine.game_object.components.rendering.text_renderer;
-using Worms.engine.game_object.components.rendering.texture_renderer;
 
 namespace Worms.engine.core.renderer; 
 
@@ -99,7 +96,7 @@ public static class TextRendererHandler {
         );
     }
     
-    private static SDL.SDL_FPoint RotateVertexPoint(Vector2 position, Vector2 pivot, TextRenderer tr) {
+    private static SDL.SDL_FPoint RotateVertexPoint(Vector2 position, Vector2 pivot, Component tr) {
         if (tr.Transform.Rotation == Rotation.Identity()) {
             return new SDL.SDL_FPoint { x = position.x, y = position.y };
         }

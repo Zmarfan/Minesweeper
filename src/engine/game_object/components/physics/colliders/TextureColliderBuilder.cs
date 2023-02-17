@@ -9,12 +9,12 @@ public class TextureColliderBuilder {
     private ColliderState _state = ColliderState.TRIGGER;
     private readonly Texture _texture;
     private string _sortingLayer = RendererHandler.DEFAULT_SORTING_LAYER;
-    private int _sortOrder = 0;
+    private int _sortOrder;
     private Color _color = Color.WHITE;
-    private bool _flipX = false;
-    private bool _flipY = false;
+    private bool _flipX;
+    private bool _flipY;
 
-    public TextureColliderBuilder(Texture texture) {
+    private TextureColliderBuilder(Texture texture) {
         _texture = texture;
     }
 

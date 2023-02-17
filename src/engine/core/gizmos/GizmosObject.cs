@@ -1,5 +1,4 @@
-﻿using Worms.engine.camera;
-using Worms.engine.data;
+﻿using Worms.engine.data;
 
 namespace Worms.engine.core.gizmos; 
 

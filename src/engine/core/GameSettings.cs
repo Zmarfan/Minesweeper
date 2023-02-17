@@ -2,8 +2,6 @@
 using Worms.engine.core.audio;
 using Worms.engine.core.cursor;
 using Worms.engine.core.input.listener;
-using Worms.engine.core.renderer.font;
-using Worms.engine.core.renderer.textures;
 using Worms.engine.scene;
 
 namespace Worms.engine.core; 

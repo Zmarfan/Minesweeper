@@ -23,14 +23,7 @@ public class GameObject : Object {
     }
     private bool _isActive = true;
 
-    public Transform Transform {
-        get {
-            if (_transform == null) {
-                _transform = GetComponent<Transform>();
-            }
-            return _transform;
-        }
-    }
+    public Transform Transform => _transform ??= GetComponent<Transform>();
     public readonly List<Component> components;
     private Transform? _transform;
     

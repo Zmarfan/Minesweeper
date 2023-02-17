@@ -50,6 +50,7 @@ public class AudioHandler {
             throw new Exception($"Unable to play another sound as all channels are occupied, increase? {SDL_mixer.Mix_GetError()}");
         }
         SetChannelVolume(track, CalculateVolume(channel, audioVolume));
+        // This can not be made into a local function, it will be garbage collected then
         SDL_mixer.ChannelFinishedDelegate finishedCallback = _ => {
             _self._playingSounds.Remove(callerId);
             audioFinishCallback.Invoke();

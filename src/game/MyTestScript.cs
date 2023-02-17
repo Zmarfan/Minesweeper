@@ -1,6 +1,5 @@
 ﻿using Worms.engine.core.gizmos;
 using Worms.engine.core.input;
-using Worms.engine.core.update;
 using Worms.engine.core.update.physics;
 using Worms.engine.data;
 using Worms.engine.game_object;
@@ -12,12 +11,12 @@ using Worms.engine.game_object.scripts;
 namespace Worms.game; 
 
 public class MyTestScript : Script {
-    private readonly float _speed = 4.5f;
+    private const float SPEED = 4.5f;
     private readonly Func<GameObjectBuilder> _explosion;
     private AudioSource _audioSource = null!;
 
     private TextRenderer _textRenderer = null!;
-    private RaycastHit? _hit = null;
+    private RaycastHit? _hit;
 
     public MyTestScript(Func<GameObjectBuilder> explosion) : base(true) {
         _explosion = explosion;
@@ -35,9 +34,9 @@ public class MyTestScript : Script {
             _textRenderer.lineSpacing += 5;
         }
         
-        Transform.Position += Input.GetAxis("horizontal") * _speed * 100 * deltaTime;
-        Transform.Position += Input.GetAxis("vertical") * _speed * 100 * deltaTime;
-        Transform.Rotation += Input.GetButton("action") ? _speed * 50 * deltaTime : 0;
+        Transform.Position += Input.GetAxis("horizontal") * SPEED * 100 * deltaTime;
+        Transform.Position += Input.GetAxis("vertical") * SPEED * 100 * deltaTime;
+        Transform.Rotation += Input.GetButton("action") ? SPEED * 50 * deltaTime : 0;
 
         Physics.LineCast(Transform.Position, Input.MouseWorldPosition, out _hit);
     }

@@ -15,7 +15,7 @@ public class Animation {
 
     private readonly ClockTimer _timer;
     private int _lastStep = -1;
-    private bool _hasFinished = false;
+    private bool _hasFinished;
     
     public Animation(float stepLengthInSeconds, bool loop, List<Composition> compositions) {
         _loop = loop;

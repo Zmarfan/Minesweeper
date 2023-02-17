@@ -1,8 +1,6 @@
-﻿using Worms.engine.core;
-using Worms.engine.core.window;
+﻿using Worms.engine.core.window;
 using Worms.engine.data;
 using Worms.engine.game_object.scripts;
-using EventHandler = Worms.engine.core.event_handler.EventHandler;
 
 namespace Worms.engine.game_object.components.screen_pivot; 
 

@@ -1,5 +1,4 @@
-﻿using SDL2;
-using Worms.engine.data;
+﻿using Worms.engine.data;
 
 namespace Worms.engine.core.input.listener; 
 
@@ -14,10 +13,10 @@ public class InputListener {
     public readonly bool snap;
     public readonly InputAxis axis;
 
-    private float _value = 0;
-    private bool _positiveDown = false;
-    private bool _negativeDown = false;
-    private bool _wasPositiveDown = false;
+    private float _value;
+    private bool _positiveDown;
+    private bool _negativeDown;
+    private bool _wasPositiveDown;
 
     public InputListener(
         string name,
@@ -59,12 +58,9 @@ public class InputListener {
     
     public void UpdateAxis(float deltaTime) {
         if (ShouldPerformGravityOperation()) {
-            if (_value > 0) {
-                _value = Math.Max(_value - deltaTime * gravity, 0);
-            }
-            else {
-                _value = Math.Min(_value + deltaTime * gravity, 0);
-            }
+            _value = _value > 0
+                ? Math.Max(_value - deltaTime * gravity, 0)
+                : Math.Min(_value + deltaTime * gravity, 0);
         }
 
         if (_negativeDown) {

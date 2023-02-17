@@ -1,6 +1,5 @@
 ﻿using Worms.engine.core.renderer;
 using Worms.engine.data;
-using MathF = Worms.engine.data.MathF;
 
 namespace Worms.engine.core.gizmos; 
 

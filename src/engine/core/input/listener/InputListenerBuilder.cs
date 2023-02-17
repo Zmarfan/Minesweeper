@@ -1,6 +1,4 @@
-﻿using SDL2;
-
-namespace Worms.engine.core.input.listener; 
+﻿namespace Worms.engine.core.input.listener; 
 
 public class InputListenerBuilder {
     private readonly string _name;

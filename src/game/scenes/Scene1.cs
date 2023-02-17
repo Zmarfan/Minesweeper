@@ -2,7 +2,6 @@
 using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.animation.animation;
-using Worms.engine.game_object.components.animation.controller;
 using Worms.engine.game_object.components.audio_source;
 using Worms.engine.game_object.components.particle_system;
 using Worms.engine.game_object.components.particle_system.emission;

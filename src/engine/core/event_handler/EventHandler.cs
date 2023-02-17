@@ -1,6 +1,5 @@
 ﻿using SDL2;
 using Worms.engine.core.input.listener;
-using Worms.engine.core.window;
 using Worms.engine.data;
 using Worms.engine.logger;
 
@@ -48,26 +47,26 @@ public class EventHandler {
                         ToggleFullscreenEvent?.Invoke();
                     }
 
-                    if (SdlInputCodeToButton.SCANCODE_TO_BUTTON.ContainsKey(e.key.keysym.scancode)) {
-                        KeyDownEvent?.Invoke(SdlInputCodeToButton.SCANCODE_TO_BUTTON[e.key.keysym.scancode]);
+                    if (SdlInputCodeToButton.SCANCODE_TO_BUTTON.TryGetValue(e.key.keysym.scancode, out Button value)) {
+                        KeyDownEvent?.Invoke(value);
                     }
                     break;
                 }
                 case SDL.SDL_EventType.SDL_MOUSEBUTTONDOWN: {
-                    if (SdlInputCodeToButton.MOUSE_BUTTON_TO_BUTTON.ContainsKey(e.button.button)) {
-                        KeyDownEvent?.Invoke(SdlInputCodeToButton.MOUSE_BUTTON_TO_BUTTON[e.button.button]);
+                    if (SdlInputCodeToButton.MOUSE_BUTTON_TO_BUTTON.TryGetValue(e.button.button, out Button value)) {
+                        KeyDownEvent?.Invoke(value);
                     }
                     break;
                 }
                 case SDL.SDL_EventType.SDL_KEYUP: {
-                    if (SdlInputCodeToButton.SCANCODE_TO_BUTTON.ContainsKey(e.key.keysym.scancode)) {
-                        KeyUpEvent?.Invoke(SdlInputCodeToButton.SCANCODE_TO_BUTTON[e.key.keysym.scancode]);
+                    if (SdlInputCodeToButton.SCANCODE_TO_BUTTON.TryGetValue(e.key.keysym.scancode, out Button value)) {
+                        KeyUpEvent?.Invoke(value);
                     }
                     break;
                 }
                 case SDL.SDL_EventType.SDL_MOUSEBUTTONUP: {
-                    if (SdlInputCodeToButton.MOUSE_BUTTON_TO_BUTTON.ContainsKey(e.button.button)) {
-                        KeyUpEvent?.Invoke(SdlInputCodeToButton.MOUSE_BUTTON_TO_BUTTON[e.button.button]);
+                    if (SdlInputCodeToButton.MOUSE_BUTTON_TO_BUTTON.TryGetValue(e.button.button, out Button value)) {
+                        KeyUpEvent?.Invoke(value);
                     }
                     break;
                 }
@@ -77,6 +76,8 @@ public class EventHandler {
                     MouseMovementEvent?.Invoke(new Vector2(relativeXPosition, relativeYPosition), new Vector2(e.motion.xrel, -e.motion.yrel));
                     break;
                 }
+                default:
+                    return;
             }
         }
     }

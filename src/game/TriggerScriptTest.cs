@@ -1,6 +1,4 @@
-﻿using Worms.engine.core.input;
-using Worms.engine.core.input.listener;
-using Worms.engine.data;
+﻿using Worms.engine.data;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.engine.game_object.scripts;
 

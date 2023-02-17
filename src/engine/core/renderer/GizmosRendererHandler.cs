@@ -4,7 +4,6 @@ using Worms.engine.core.gizmos;
 using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components;
-using Worms.engine.game_object.scripts;
 using Worms.engine.scene;
 
 namespace Worms.engine.core.renderer; 

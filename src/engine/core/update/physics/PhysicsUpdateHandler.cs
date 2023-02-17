@@ -12,8 +12,8 @@ namespace Worms.engine.core.update.physics;
 public class PhysicsUpdateHandler {
     private readonly SceneData _sceneData;
     private GameObjectHandler GameObjectHandler => _sceneData.gameObjectHandler;
-    private bool _mouseIsDown = false;
-    private bool _doMouseClick = false;
+    private bool _mouseIsDown;
+    private bool _doMouseClick;
 
     public PhysicsUpdateHandler(SceneData sceneData) {
         _sceneData = sceneData;
@@ -40,14 +40,16 @@ public class PhysicsUpdateHandler {
             .Where(collider => collider is { IsActive: true, state: ColliderState.TRIGGER })
             .Any(trigger => trigger.IsPointInside(GetMouseWorldPosition(obj)));
         
-        if (!obj.MouseInsideTrigger && isInsideTrigger) {
-            RunScriptsFunction(obj, static s => s.OnMouseEnter());
-        }
-        else if (obj.MouseInsideTrigger && isInsideTrigger) {
-            RunScriptsFunction(obj, static s => s.OnMouseOver());
-        }
-        else if (obj.MouseInsideTrigger && !isInsideTrigger) {
-            RunScriptsFunction(obj, static s => s.OnMouseExit());
+        switch (obj.MouseInsideTrigger) {
+            case false when isInsideTrigger:
+                RunScriptsFunction(obj, static s => s.OnMouseEnter());
+                break;
+            case true when isInsideTrigger:
+                RunScriptsFunction(obj, static s => s.OnMouseOver());
+                break;
+            case true when !isInsideTrigger:
+                RunScriptsFunction(obj, static s => s.OnMouseExit());
+                break;
         }
 
         if (_doMouseClick && isInsideTrigger) {

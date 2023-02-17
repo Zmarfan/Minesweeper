@@ -1,6 +1,4 @@
-﻿using SDL2;
-using Worms.engine.camera;
-using Worms.engine.core.input.listener;
+﻿using Worms.engine.core.input.listener;
 using Worms.engine.data;
 using Worms.engine.helper;
 using Worms.engine.scene;

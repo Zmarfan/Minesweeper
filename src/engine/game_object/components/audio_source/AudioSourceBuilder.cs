@@ -6,12 +6,12 @@ public class AudioSourceBuilder {
     private bool _isActive = true;
     private readonly string _audioId;
     private readonly string _channel;
-    private bool _mute = false;
-    private bool _loop = false;
+    private bool _mute;
+    private bool _loop;
     private bool _playOnAwake = true;
     private Volume _volume = Volume.Max();
 
-    public AudioSourceBuilder(string audioId, string channel) {
+    private AudioSourceBuilder(string audioId, string channel) {
         _audioId = audioId;
         _channel = channel;
     }

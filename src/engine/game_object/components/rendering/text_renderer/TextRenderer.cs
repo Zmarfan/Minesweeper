@@ -74,7 +74,7 @@ public class TextRenderer : RenderComponent {
     private int _width;
     private int _size;
 
-    private List<TextLine>? _lines = null;
+    private List<TextLine>? _lines;
     public SDL.SDL_Vertex[] Vertices { get; private set; } = null!;
     public int[] Indices { get; private set; } = null!;
     

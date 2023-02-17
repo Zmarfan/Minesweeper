@@ -2,5 +2,5 @@
 
 public enum InputAxis {
     X_AXIS,
-    Y_AXIS,
+    Y_AXIS
 }

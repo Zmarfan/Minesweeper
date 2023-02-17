@@ -1,8 +1,6 @@
 ﻿using Worms.engine.data;
 using Worms.engine.game_object.components.animation.animation;
 using Worms.engine.game_object.components.animation.controller;
-using Worms.engine.game_object.components.particle_system.emission;
-using Worms.engine.game_object.components.particle_system.ranges;
 using Worms.engine.game_object.components.particle_system.renderer;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 

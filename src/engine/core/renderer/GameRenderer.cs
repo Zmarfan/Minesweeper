@@ -1,5 +1,4 @@
 ﻿using SDL2;
-using Worms.engine.camera;
 using Worms.engine.core.renderer.font;
 using Worms.engine.core.renderer.textures;
 using Worms.engine.core.window;
@@ -18,7 +17,7 @@ public class GameRenderer {
     private readonly SceneData _sceneData;
     private readonly GameSettings _settings;
     private Color DefaultDrawColor => _sceneData.camera.defaultDrawColor;
-    private bool _isFullscreen = false;
+    private bool _isFullscreen;
     
     public GameRenderer(GameSettings settings, SceneData sceneData) {
         _window = SDL.SDL_CreateWindow(

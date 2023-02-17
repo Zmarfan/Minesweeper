@@ -71,14 +71,15 @@ public class Font {
         SDL.SDL_FreeSurface((nint)glyph);
     }
 
-    private SDL.SDL_Rect MoveDownRowIfNeeded(SDL.SDL_Rect destination) {
-        if (destination.x + destination.w >= ATLAS_SIZE) {
-            destination.x = 0;
-            destination.y += destination.h + 1;
+    private static SDL.SDL_Rect MoveDownRowIfNeeded(SDL.SDL_Rect destination) {
+        if (destination.x + destination.w < ATLAS_SIZE) {
+            return destination;
+        }
+        destination.x = 0;
+        destination.y += destination.h + 1;
 
-            if (destination.y + destination.h >= ATLAS_SIZE) {
-                throw new Exception($"Not all characters in font can fit in texture atlas!");
-            }
+        if (destination.y + destination.h >= ATLAS_SIZE) {
+            throw new Exception("Not all characters in font can fit in texture atlas!");
         }
 
         return destination;

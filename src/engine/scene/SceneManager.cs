@@ -7,7 +7,7 @@ public class SceneManager {
     private readonly Dictionary<string, Scene> _scenes;
     private readonly Action<Scene> _loadSceneCallback;
     
-    private SceneManager(List<Scene> scenes, Action<Scene> loadSceneCallback) {
+    private SceneManager(IReadOnlyCollection<Scene> scenes, Action<Scene> loadSceneCallback) {
         ActiveScene = scenes.First().name;
         _scenes = scenes.ToDictionary(s => s.name, s => s);
         _loadSceneCallback = loadSceneCallback;

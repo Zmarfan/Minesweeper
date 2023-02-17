@@ -23,8 +23,8 @@ public class AudioSource : Script {
         }
     }
 
-    public bool IsPlaying { get; private set; } = false;
-    public bool IsPaused { get; private set; } = false;
+    public bool IsPlaying { get; private set; }
+    public bool IsPaused { get; private set; }
 
     private bool _mute;
     private Volume _volume;

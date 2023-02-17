@@ -2,7 +2,6 @@
 using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.physics.colliders;
-using Worms.engine.helper;
 using Worms.engine.scene;
 
 namespace Worms.engine.core.update.physics; 

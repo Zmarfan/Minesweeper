@@ -3,5 +3,5 @@
 public enum StopAction {
     NONE,
     DISABLE,
-    DESTROY,
+    DESTROY
 }
