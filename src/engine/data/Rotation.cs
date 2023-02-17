@@ -93,4 +93,12 @@ public struct Rotation {
     public static bool operator !=(Rotation lhs, Rotation rhs) {
         return !(lhs == rhs);
     }
+    
+    public override bool Equals(object? obj) {
+        return obj is Rotation rotation && rotation == this;
+    }
+
+    public override int GetHashCode() {
+        return _degree.GetHashCode();
+    }
 }

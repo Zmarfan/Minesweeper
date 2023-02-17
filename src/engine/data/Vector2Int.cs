@@ -86,4 +86,12 @@ public struct Vector2Int {
     public static bool operator !=(Vector2Int lhs, Vector2Int rhs) {
         return !(lhs == rhs);
     }
+
+    public override bool Equals(object? obj) {
+        return obj is Vector2Int vector && vector == this;
+    }
+
+    public override int GetHashCode() {
+        return (x, y).GetHashCode();
+    }
 }

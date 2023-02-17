@@ -63,4 +63,12 @@ public struct Color {
     public static bool operator !=(Color c1, Color c2) {
         return !(c1 == c2);
     }
+
+    public override bool Equals(object? obj) {
+        return obj is Color color && color == this;
+    }
+
+    public override int GetHashCode() {
+        return (r, g, b, a).GetHashCode();
+    }
 }

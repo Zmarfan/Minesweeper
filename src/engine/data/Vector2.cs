@@ -178,4 +178,12 @@ public struct Vector2 {
     public static bool operator !=(Vector2 lhs, Vector2 rhs) {
         return !(lhs == rhs);
     }
+    
+    public override bool Equals(object? obj) {
+        return obj is Vector2 vector && vector == this;
+    }
+
+    public override int GetHashCode() {
+        return (x, y).GetHashCode();
+    }
 }
