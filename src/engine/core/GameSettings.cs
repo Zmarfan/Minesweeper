@@ -2,6 +2,7 @@
 using Worms.engine.core.audio;
 using Worms.engine.core.cursor;
 using Worms.engine.core.input.listener;
+using Worms.engine.core.update.physics.settings;
 using Worms.engine.scene;
 
 namespace Worms.engine.core; 
@@ -14,7 +15,7 @@ public record GameSettings(
     Assets assets,
     List<Scene> scenes, 
     List<InputListener> inputListeners,
-    List<string> layers,
+    PhysicsSettings physicsSettings,
     List<string> sortLayers,
     AudioSettings audioSettings,
     CursorSettings cursorSettings
@@ -26,7 +27,7 @@ public record GameSettings(
     public readonly Assets assets = assets;
     public readonly List<Scene> scenes = scenes;
     public readonly List<InputListener> inputListeners = inputListeners;
-    public readonly List<string> layers = layers;
+    public readonly PhysicsSettings physicsSettings = physicsSettings;
     public readonly List<string> sortLayers = sortLayers;
     public readonly AudioSettings audioSettings = audioSettings;
     public readonly CursorSettings cursorSettings = cursorSettings;

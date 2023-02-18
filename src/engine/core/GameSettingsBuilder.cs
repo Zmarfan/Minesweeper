@@ -3,6 +3,8 @@ using Worms.engine.core.audio;
 using Worms.engine.core.cursor;
 using Worms.engine.core.input.listener;
 using Worms.engine.core.renderer.textures;
+using Worms.engine.core.update.physics.layers;
+using Worms.engine.core.update.physics.settings;
 using Worms.engine.helper;
 using Worms.engine.scene;
 
@@ -16,7 +18,12 @@ public class GameSettingsBuilder {
     private Assets _assets = new(ListUtils.Empty<AssetDeclaration>(), ListUtils.Empty<AssetDeclaration>(), ListUtils.Empty<AssetDeclaration>());
     private readonly List<Scene> _scenes = new();
     private readonly List<InputListener> _inputListeners = new();
-    private readonly List<string> _layers = new();
+    private PhysicsSettings _physicsSettings = PhysicsSettingsBuilder
+        .Builder(
+            ListUtils.Of(LayerMask.DEFAULT, LayerMask.IGNORE_RAYCAST),
+            ListUtils.Of(LayerMask.DEFAULT, LayerMask.IGNORE_RAYCAST)
+        )
+        .Build();
     private readonly List<string> _sortLayers = new();
     private AudioSettings _audioSettings = new(Volume.Max(), ListUtils.Empty<AudioChannel>());
     private CursorSettings _cursorSettings = new(true, null);
@@ -26,7 +33,7 @@ public class GameSettingsBuilder {
     }
 
     public GameSettings Build() {
-        return new GameSettings(_debug, _title, _width, _height, _assets, _scenes, _inputListeners, _layers, _sortLayers, _audioSettings, _cursorSettings);
+        return new GameSettings(_debug, _title, _width, _height, _assets, _scenes, _inputListeners, _physicsSettings, _sortLayers, _audioSettings, _cursorSettings);
     }
 
     public GameSettingsBuilder SetAssets(Assets assets) {
@@ -74,8 +81,8 @@ public class GameSettingsBuilder {
         return this;
     }
     
-    public GameSettingsBuilder AddLayers(IEnumerable<string> layers) {
-        _layers.AddRange(layers);
+    public GameSettingsBuilder SetPhysics(PhysicsSettings settings) {
+        _physicsSettings = settings;
         return this;
     }
     

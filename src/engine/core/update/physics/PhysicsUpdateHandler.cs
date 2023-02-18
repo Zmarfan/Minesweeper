@@ -1,6 +1,7 @@
 ﻿using Worms.engine.core.game_object_handler;
 using Worms.engine.core.input;
 using Worms.engine.core.input.listener;
+using Worms.engine.core.update.physics.layers;
 using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.physics.colliders;
@@ -67,7 +68,7 @@ public class PhysicsUpdateHandler {
             }
 
             foreach ((GameObject gameObject, TrackObject checkObj) in GameObjectHandler.objects) {
-                if (!obj.isActive || collider.gameObject.Layer != gameObject.Layer || (obj.RigidBody == null && checkObj.RigidBody == null)) {
+                if (!obj.isActive || !LayerMask.CanLayersInteract(collider.gameObject.Layer, gameObject.Layer) || (obj.RigidBody == null && checkObj.RigidBody == null)) {
                     continue;
                 }
 

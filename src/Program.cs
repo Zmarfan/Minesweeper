@@ -4,6 +4,8 @@ using Worms.engine.core.audio;
 using Worms.engine.core.cursor;
 using Worms.engine.core.input.listener;
 using Worms.engine.core.renderer.textures;
+using Worms.engine.core.update.physics.layers;
+using Worms.engine.core.update.physics.settings;
 using Worms.engine.helper;
 using Worms.game.scenes;
 
@@ -47,7 +49,12 @@ internal static class Program {
                 InputListenerBuilder.Builder("animationTest3", Button.P).Build(),
                 InputListenerBuilder.Builder("cursorToggle", Button.C).Build()
             ))
-            .AddLayers(ListUtils.Of("testLayer1", "testLayer2", "testLayer3"))
+            .SetPhysics(PhysicsSettingsBuilder
+                .Builder(ListUtils.Of(LayerMask.DEFAULT, "testLayer1", "testLayer2"), ListUtils.Of(LayerMask.IGNORE_RAYCAST))
+                .AddLayer("testLayer1", ListUtils.Of("testLayer1"))
+                .AddLayer("testLayer2", ListUtils.Of("testLayer2"))
+                .Build()
+            )
             .AddSortLayers(ListUtils.Of("layer1", "layer2", "layer3"))
             .SetCursorSettings(new CursorSettings(false, new CustomCursorSettings($"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\cursor.png")))
             .Build()
