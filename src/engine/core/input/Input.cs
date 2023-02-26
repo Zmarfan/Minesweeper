@@ -52,7 +52,7 @@ public class Input {
         eventHandler.KeyUpEvent += ButtonUpEventListener;
         eventHandler.MouseMovementEvent += (position, direction) => {
             _mouseScreenPosition = position;
-            MouseDirection = direction;
+            MouseDirection += direction;
         };
     }
 

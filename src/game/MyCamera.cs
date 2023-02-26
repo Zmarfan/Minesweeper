@@ -22,7 +22,7 @@ public class MyCamera : Script {
         }
 
         if (!Cursor.IsActive) {
-            Camera.Main.Position += Input.MouseDirection * 500f * Camera.Main.Size * deltaTime;
+            Camera.Main.Position += Input.MouseDirection * 200f * Camera.Main.Size * deltaTime;
         }
         Camera.Main.Size += Input.GetAxis("cameraZoom").x * deltaTime;
     }
