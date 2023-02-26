@@ -98,17 +98,17 @@ public class Camera {
     private bool _isWorldInverseDirty = true;
     private bool _isUiDirty = true;
     private bool _isUiInverseDirty = true;
-    private GameSettings _settings = null!;
+    private readonly GameSettings _settings;
     private int _oldScreenWidth;
     private int _oldScreenHeight;
 
-    public Camera() {
-        Main = this;
-    }
-    
-    public void Init(GameSettings settings) {
+    private Camera(GameSettings settings) {
         _settings = settings;
         SetDirty();
+    }
+    
+    public static void CreateMainCamera(GameSettings settings) {
+        Main = new Camera(settings);
     }
 
     private void SetDirty() {

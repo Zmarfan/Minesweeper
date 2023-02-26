@@ -43,7 +43,7 @@ public class Game {
         _eventHandler.ToggleFullscreenEvent += _gameRenderer.ToggleFullScreen;
         _audioHandler = AudioHandler.Init(settings.audioSettings, settings.assets.audioDeclarations);
         LayerMask.Init(settings.physicsSettings.layersToCollisionLayers);
-        Input.Init(settings, _sceneData, _eventHandler, settings.inputListeners);
+        Input.Init(settings, _eventHandler, settings.inputListeners);
         Cursor.Init(settings.cursorSettings);
         SceneManager.Init(settings.scenes, LoadScene);
         
@@ -79,8 +79,7 @@ public class Game {
     }
 
     private void LoadScene(Scene scene) {
-        _sceneData.camera = new Camera();
-        _sceneData.camera.Init(_settings);
+        Camera.CreateMainCamera(_settings);
         _sceneData.gameObjectHandler = new GameObjectHandler(scene.CreateWorldGameObjectRoot(), scene.CreateSceneGameObjectRoot());
     }
     

@@ -1,4 +1,5 @@
 ﻿using SDL2;
+using Worms.engine.camera;
 using Worms.engine.core.renderer.font;
 using Worms.engine.core.renderer.textures;
 using Worms.engine.core.window;
@@ -16,7 +17,7 @@ public class GameRenderer {
     private readonly GizmosRendererHandler _gizmosRendererHandler;
     private readonly SceneData _sceneData;
     private readonly GameSettings _settings;
-    private Color DefaultDrawColor => _sceneData.camera.defaultDrawColor;
+    private static Color DefaultDrawColor => Camera.Main.defaultDrawColor;
     private bool _isFullscreen;
     
     public GameRenderer(GameSettings settings, SceneData sceneData) {
@@ -45,8 +46,8 @@ public class GameRenderer {
         _sceneData = sceneData;
         _textureStorage = TextureStorage.Init(_renderer, _settings.assets.textureDeclarations);
         _fontHandler = new FontHandler(_renderer, settings.assets.fontDeclarations);
-        _rendererHandler = new RendererHandler(_renderer, _fontHandler, settings, _sceneData);
-        _gizmosRendererHandler = new GizmosRendererHandler(_renderer, _sceneData);
+        _rendererHandler = new RendererHandler(_renderer, _fontHandler, settings);
+        _gizmosRendererHandler = new GizmosRendererHandler(_renderer);
     }
 
     public void Render() {

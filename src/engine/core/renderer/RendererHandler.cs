@@ -1,4 +1,5 @@
-﻿using Worms.engine.core.game_object_handler;
+﻿using Worms.engine.camera;
+using Worms.engine.core.game_object_handler;
 using Worms.engine.core.renderer.font;
 using Worms.engine.core.renderer.textures;
 using Worms.engine.data;
@@ -16,13 +17,11 @@ public class RendererHandler {
 
     private readonly nint _renderer;
     private readonly FontHandler _fontHandler;
-    private readonly SceneData _sceneData;
     private readonly List<string> _sortLayers = new() { DEFAULT_SORTING_LAYER };
 
-    public RendererHandler(nint renderer, FontHandler fontHandler, GameSettings settings, SceneData sceneData) {
+    public RendererHandler(nint renderer, FontHandler fontHandler, GameSettings settings) {
         _renderer = renderer;
         _fontHandler = fontHandler;
-        _sceneData = sceneData;
         _sortLayers.AddRange(settings.sortLayers);
     }
 
@@ -37,13 +36,13 @@ public class RendererHandler {
         
         foreach (RenderComponent renderComponent in renderComponents) {
             try {
-                TransformationMatrix matrix = objects[renderComponent.gameObject].isWorld ? _sceneData.camera.WorldToScreenMatrix : _sceneData.camera.UiToScreenMatrix;
+                TransformationMatrix matrix = objects[renderComponent.gameObject].isWorld ? Camera.Main.WorldToScreenMatrix : Camera.Main.UiToScreenMatrix;
                 switch (renderComponent) {
                     case TextureRenderer texture:
                         TextureRendererHandler.RenderTexture(_renderer, texture, matrix);
                         break;
                     case TextRenderer text:
-                        TextRendererHandler.RenderText(_renderer, _sceneData.camera, _fontHandler.fonts[text.Font], text, matrix);
+                        TextRendererHandler.RenderText(_renderer, _fontHandler.fonts[text.Font], text, matrix);
                         break;
                 }
             }

@@ -1,4 +1,5 @@
-﻿using Worms.engine.core.input.listener;
+﻿using Worms.engine.camera;
+using Worms.engine.core.input.listener;
 using Worms.engine.data;
 using Worms.engine.helper;
 using Worms.engine.scene;
@@ -10,27 +11,25 @@ public class Input {
     private static Input _self = null!;
 
     public static Vector2 MouseWorldPosition =>
-        _sceneData.camera.ScreenToWorldMatrix.ConvertPoint(new Vector2(
+        Camera.Main.ScreenToWorldMatrix.ConvertPoint(new Vector2(
             _mouseScreenPosition.x * _gameSettings.width,
             (1 - _mouseScreenPosition.y) * _gameSettings.height)
         );
 
     public static Vector2 MouseCameraPosition =>
-        _sceneData.camera.ScreenToUiMatrix.ConvertPoint(
+        Camera.Main.ScreenToUiMatrix.ConvertPoint(
             new Vector2(_mouseScreenPosition.x * _gameSettings.width, _gameSettings.height - _mouseScreenPosition.y * _gameSettings.height)
         );
 
     public static Vector2 MouseDirection { get; private set; }
     private static Vector2 _mouseScreenPosition = new(0, 1);
     private static GameSettings _gameSettings = null!;
-    private static SceneData _sceneData = null!;
     
     private readonly Dictionary<string, InputListener> _listenersByName;
     private readonly Dictionary<Button, List<InputListener>> _listenersByButton = new();
 
-    private Input(GameSettings settings, SceneData sceneData, EventHandler eventHandler, List<InputListener> listeners) {
+    private Input(GameSettings settings, EventHandler eventHandler, List<InputListener> listeners) {
         _gameSettings = settings;
-        _sceneData = sceneData;
         
         _listenersByName = listeners.ToDictionary(l => l.name, l => l);
         listeners.ForEach(listener => {
@@ -58,12 +57,12 @@ public class Input {
         };
     }
 
-    public static void Init(GameSettings settings, SceneData sceneData, EventHandler eventHandler, List<InputListener> listeners) {
+    public static void Init(GameSettings settings, EventHandler eventHandler, List<InputListener> listeners) {
         if (_self != null) {
             throw new Exception("There can only be one input manager!");
         }
 
-        _self = new Input(settings, sceneData, eventHandler, listeners);
+        _self = new Input(settings, eventHandler, listeners);
     }
 
     public static void Update(float deltaTime) {

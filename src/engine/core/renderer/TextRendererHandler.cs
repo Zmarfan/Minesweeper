@@ -11,10 +11,10 @@ public static class TextRendererHandler {
     private const int ITALICS_OFFSET = 20;
     private const int BOLD_OFFSET = 3;
     
-    public static void RenderText(nint renderer, Camera camera, Font font, TextRenderer tr, TransformationMatrix matrix) {
+    public static void RenderText(nint renderer, Font font, TextRenderer tr, TransformationMatrix matrix) {
         tr.RefreshDataIfNeeded(font);
 
-        Vector2 scaleModifier = 1 / camera.Size * tr.Transform.Scale;
+        Vector2 scaleModifier = 1 / Camera.Main.Size * tr.Transform.Scale;
         float width = scaleModifier.x * tr.Width;
         Vector2 fontSizeModifier = scaleModifier * tr.Size / Font.FONT_SIZE;
         UpdateVertexPositions(tr, fontSizeModifier, font, matrix.ConvertPoint(tr.Transform.Position), width);
