@@ -68,7 +68,11 @@ public class PhysicsUpdateHandler {
             }
 
             foreach ((GameObject gameObject, TrackObject checkObj) in GameObjectHandler.objects) {
-                if (!obj.isActive || !LayerMask.CanLayersInteract(collider.gameObject.Layer, gameObject.Layer) || (obj.RigidBody == null && checkObj.RigidBody == null)) {
+                if (!obj.isActive
+                    || collider.gameObject == gameObject
+                    || !LayerMask.CanLayersInteract(collider.gameObject.Layer, gameObject.Layer)
+                    || (obj.RigidBody == null && checkObj.RigidBody == null)
+                ) {
                     continue;
                 }
 
