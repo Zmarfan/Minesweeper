@@ -5,7 +5,24 @@ using Worms.engine.data;
 namespace Worms.engine.game_object.components.physics.colliders; 
 
 public class CircleCollider : Collider {
+    private const int CIRCLE_TO_POLYGON_POINT_COUNT = 15;
+    
     public float radius;
+    
+    public Vector2[] CircleAsPoints {
+        get {
+            float theta = (float)(Math.PI * 2 / _circlePoints.Length);
+            for (int i = 0; i < _circlePoints.Length; i++) {
+                Rotation angle = Rotation.FromRadians(theta * i);
+                Vector2 point = offset + new Vector2((float)(radius * Math.Cos(angle.Radians)), (float)(radius * Math.Sin(angle.Radians)));
+                _circlePoints[i] = Transform.LocalToWorldMatrix.ConvertPoint(point);
+            }
+
+            return _circlePoints;
+        }
+    }
+    
+    private readonly Vector2[] _circlePoints = new Vector2[CIRCLE_TO_POLYGON_POINT_COUNT];
     
     public CircleCollider(
         bool isActive, 
@@ -14,19 +31,6 @@ public class CircleCollider : Collider {
         Vector2 offset
     ) : base(isActive, state, offset) {
         this.radius = radius;
-    }
-
-    public List<Vector2> GetCircleAsPoints(int amount) {
-        List<Vector2> points = new();
-        
-        float theta = (float)(Math.PI * 2 / amount);
-        for (int i = 0; i < amount; i++) {
-            Rotation angle = Rotation.FromRadians(theta * i);
-            Vector2 point = offset + new Vector2((float)(radius * Math.Cos(angle.Radians)), (float)(radius * Math.Sin(angle.Radians)));
-            points.Add(Transform.LocalToWorldMatrix.ConvertPoint(point));
-        }
-
-        return points;
     }
 
     public override Vector2[] GetLocalCorners() {
@@ -55,14 +59,15 @@ public class CircleCollider : Collider {
     }
 
     public override void OnDrawGizmos() {
-        Gizmos.DrawEllipsis(Center, radius * Transform.Scale, Transform.Rotation, GIZMO_COLOR);
+        Gizmos.DrawEllipsis(Center, radius * Transform.Scale, Transform.Rotation, COLLIDER_GIZMO_COLOR);
+        DrawAsPolygon();
         base.OnDrawGizmos();
     }
 
     private void DrawAsPolygon() {
-        List<Vector2> points = GetCircleAsPoints(TriggerIntersectUtils.CIRCLE_TO_POLYGON_POINT_COUNT);
-        int from = points.Count - 1;
-        for (int i = 0; i < points.Count; i++) {
+        Vector2[] points = CircleAsPoints;
+        int from = points.Length - 1;
+        for (int i = 0; i < points.Length; i++) {
             Gizmos.DrawLine(points[from], points[i], Color.BLUE);
             from = i;
         }

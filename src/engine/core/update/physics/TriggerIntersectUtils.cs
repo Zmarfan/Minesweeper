@@ -5,8 +5,6 @@ using Worms.engine.game_object.components.physics.colliders;
 namespace Worms.engine.core.update.physics; 
 
 public static class TriggerIntersectUtils {
-    public const int CIRCLE_TO_POLYGON_POINT_COUNT = 15;
-    
     public static bool DoesBoxOnBoxOverlap(BoxCollider c1, BoxCollider c2) {
         return c1.Transform.Rotation == c2.Transform.Rotation
             ? DoSameRotationBoxesOverlap(c1, c2)
@@ -21,7 +19,7 @@ public static class TriggerIntersectUtils {
         // This check is an approximation and NOT exact mathematically. Ellipses are weird and hard, no fun ):
         // Here we transform one of the ellipses to a convex polygon and then we check if the circle intersect it
         // the downside with this is that we lose precision in narrow parts 
-        return DoCirclePolygonOverlap(c1, c2, c2.GetCircleAsPoints(CIRCLE_TO_POLYGON_POINT_COUNT));
+        return DoCirclePolygonOverlap(c1, c2, c2.CircleAsPoints);
     }
 
     public static bool DoesPixelOnColliderOverlap(PixelCollider pixel, Collider collider) {
