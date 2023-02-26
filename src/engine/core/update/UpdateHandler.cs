@@ -12,12 +12,14 @@ public class UpdateHandler {
     private const float FIXED_UPDATE_CYCLE_TIME = 0.02f;
 
     private readonly PhysicsUpdateHandler _physicsUpdateHandler;
+    private readonly Input _inputHandler;
     private readonly SceneData _sceneData;
     private GameObjectHandler GameObjectHandler => _sceneData.gameObjectHandler;
     private float _fixedUpdateAcc;
     private float _deltaTime;
 
-    public UpdateHandler(SceneData sceneData) {
+    public UpdateHandler(Input inputHandler, SceneData sceneData) {
+        _inputHandler = inputHandler;
         _sceneData = sceneData;
         _fixedUpdateAcc = 0;
         _physicsUpdateHandler = new PhysicsUpdateHandler(sceneData);
@@ -63,7 +65,7 @@ public class UpdateHandler {
     
     public void UpdateLoops(float deltaTime) {
         UpdateFrameTimeData(deltaTime);
-        Input.Update(_deltaTime);
+        _inputHandler.Update(_deltaTime);
         while (_fixedUpdateAcc > FIXED_UPDATE_CYCLE_TIME) {
             FixedUpdate();
             GameObjectHandler.FrameCleanup();
@@ -71,7 +73,7 @@ public class UpdateHandler {
             _fixedUpdateAcc -= FIXED_UPDATE_CYCLE_TIME;
         }
         Update();
-        Input.FrameReset();
+        _inputHandler.FrameReset();
         GameObjectHandler.FrameCleanup();
     }
 

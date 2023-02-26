@@ -22,6 +22,7 @@ public class Game {
     private readonly UpdateHandler _updateHandler;
     private readonly GameRenderer _gameRenderer;
     private readonly AudioHandler _audioHandler;
+    private readonly Cursor _cursorHandler;
     private readonly Stopwatch _actionFrameWatch = new();
     private readonly Stopwatch _totalFrameWatch = new();
     private float _deltaTime;
@@ -36,15 +37,15 @@ public class Game {
             throw new Exception();
         }
         
-        _updateHandler = new UpdateHandler(_sceneData);
-        _gameRenderer = new GameRenderer(settings, _sceneData);
         _eventHandler = new EventHandler(settings);
+        Input inputHandler = Input.Init(settings, _eventHandler, settings.inputListeners);
+        _updateHandler = new UpdateHandler(inputHandler, _sceneData);
+        _gameRenderer = new GameRenderer(settings, _sceneData);
         _eventHandler.QuitEvent += () => _isRunning = false;
         _eventHandler.ToggleFullscreenEvent += _gameRenderer.ToggleFullScreen;
         _audioHandler = AudioHandler.Init(settings.audioSettings, settings.assets.audioDeclarations);
         LayerMask.Init(settings.physicsSettings.layersToCollisionLayers);
-        Input.Init(settings, _eventHandler, settings.inputListeners);
-        Cursor.Init(settings.cursorSettings);
+        _cursorHandler = Cursor.Init(settings.cursorSettings);
         SceneManager.Init(settings.scenes, LoadScene);
         
         _isRunning = true;
@@ -84,7 +85,7 @@ public class Game {
     }
     
     private void Clean() {
-        Cursor.Clean();
+        _cursorHandler.Clean();
         _audioHandler.Clean();
         _gameRenderer.Clean();
         SDL.SDL_Quit();

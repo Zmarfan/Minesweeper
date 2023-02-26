@@ -2,7 +2,6 @@
 using Worms.engine.core.input.listener;
 using Worms.engine.data;
 using Worms.engine.helper;
-using Worms.engine.scene;
 using EventHandler = Worms.engine.core.event_handler.EventHandler;
 
 namespace Worms.engine.core.input; 
@@ -57,21 +56,22 @@ public class Input {
         };
     }
 
-    public static void Init(GameSettings settings, EventHandler eventHandler, List<InputListener> listeners) {
+    public static Input Init(GameSettings settings, EventHandler eventHandler, List<InputListener> listeners) {
         if (_self != null) {
             throw new Exception("There can only be one input manager!");
         }
 
         _self = new Input(settings, eventHandler, listeners);
+        return _self;
     }
 
-    public static void Update(float deltaTime) {
+    public void Update(float deltaTime) {
         foreach ((string _, InputListener listener) in _self._listenersByName) {
             listener.UpdateAxis(deltaTime);
         }
     }
 
-    public static void FrameReset() {
+    public void FrameReset() {
         MouseDirection = Vector2.Zero();
         foreach ((string _, InputListener listener) in _self._listenersByName) {
             listener.FrameReset();

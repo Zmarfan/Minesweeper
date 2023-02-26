@@ -23,13 +23,14 @@ public class Cursor {
         SDL.SDL_FreeSurface((nint)surface);
     }
 
-    public static void Init(CursorSettings settings) {
+    public static Cursor Init(CursorSettings settings) {
         if (_self != null) {
             throw new Exception("You can not init more than one cursor!");
         }
 
         _self = new Cursor(settings);
         SetActive(settings.enabled);
+        return _self;
     }
 
     public static void SetActive(bool active) {
@@ -43,7 +44,7 @@ public class Cursor {
         IsActive = active;
     }
 
-    public static void Clean() {
+    public void Clean() {
         SDL.SDL_FreeCursor(_self._cursor);
         _self = null!;
     }
