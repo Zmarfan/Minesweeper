@@ -4,6 +4,7 @@ using Worms.engine.camera;
 using Worms.engine.core.audio;
 using Worms.engine.core.cursor;
 using Worms.engine.core.game_object_handler;
+using Worms.engine.core.gizmos;
 using Worms.engine.core.input;
 using Worms.engine.core.renderer;
 using Worms.engine.core.update;
@@ -46,6 +47,7 @@ public class Game {
         _audioHandler = AudioHandler.Init(settings.audioSettings, settings.assets.audioDeclarations);
         LayerMask.Init(settings.physicsSettings.layersToCollisionLayers);
         _cursorHandler = Cursor.Init(settings.cursorSettings);
+        Gizmos.Init(settings.gizmoSettings);
         SceneManager.Init(settings.scenes, LoadScene);
         
         _isRunning = true;

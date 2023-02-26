@@ -1,6 +1,7 @@
 ﻿using Worms.engine.core.assets;
 using Worms.engine.core.audio;
 using Worms.engine.core.cursor;
+using Worms.engine.core.gizmos;
 using Worms.engine.core.input.listener;
 using Worms.engine.core.update.physics.settings;
 using Worms.engine.scene;
@@ -18,7 +19,8 @@ public record GameSettings(
     PhysicsSettings physicsSettings,
     List<string> sortLayers,
     AudioSettings audioSettings,
-    CursorSettings cursorSettings
+    CursorSettings cursorSettings,
+    GizmoSettings gizmoSettings
 ) {
     public readonly bool debug = debug;
     public readonly string title = title;
@@ -31,4 +33,5 @@ public record GameSettings(
     public readonly List<string> sortLayers = sortLayers;
     public readonly AudioSettings audioSettings = audioSettings;
     public readonly CursorSettings cursorSettings = cursorSettings;
+    public readonly GizmoSettings gizmoSettings = gizmoSettings;
 }

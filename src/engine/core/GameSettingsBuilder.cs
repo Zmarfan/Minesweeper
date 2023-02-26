@@ -1,6 +1,7 @@
 ﻿using Worms.engine.core.assets;
 using Worms.engine.core.audio;
 using Worms.engine.core.cursor;
+using Worms.engine.core.gizmos;
 using Worms.engine.core.input.listener;
 using Worms.engine.core.renderer.textures;
 using Worms.engine.core.update.physics.layers;
@@ -27,13 +28,14 @@ public class GameSettingsBuilder {
     private readonly List<string> _sortLayers = new();
     private AudioSettings _audioSettings = new(Volume.Max(), ListUtils.Empty<AudioChannel>());
     private CursorSettings _cursorSettings = new(true, null);
+    private GizmoSettings _gizmoSettings = GizmoSettingsBuilder.Builder().Build();
     
     public static GameSettingsBuilder Builder() {
         return new GameSettingsBuilder();
     }
 
     public GameSettings Build() {
-        return new GameSettings(_debug, _title, _width, _height, _assets, _scenes, _inputListeners, _physicsSettings, _sortLayers, _audioSettings, _cursorSettings);
+        return new GameSettings(_debug, _title, _width, _height, _assets, _scenes, _inputListeners, _physicsSettings, _sortLayers, _audioSettings, _cursorSettings, _gizmoSettings);
     }
 
     public GameSettingsBuilder SetAssets(Assets assets) {
@@ -93,6 +95,11 @@ public class GameSettingsBuilder {
 
     public GameSettingsBuilder SetCursorSettings(CursorSettings settings) {
         _cursorSettings = settings;
+        return this;
+    }
+
+    public GameSettingsBuilder SetGizmoSettings(GizmoSettings settings) {
+        _gizmoSettings = settings;
         return this;
     }
 }

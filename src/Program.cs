@@ -2,6 +2,7 @@
 using Worms.engine.core.assets;
 using Worms.engine.core.audio;
 using Worms.engine.core.cursor;
+using Worms.engine.core.gizmos;
 using Worms.engine.core.input.listener;
 using Worms.engine.core.renderer.textures;
 using Worms.engine.core.update.physics.layers;
@@ -57,6 +58,11 @@ internal static class Program {
             )
             .AddSortLayers(ListUtils.Of("layer1", "layer2", "layer3"))
             .SetCursorSettings(new CursorSettings(false, new CustomCursorSettings($"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\cursor.png")))
+            .SetGizmoSettings(GizmoSettingsBuilder
+                .Builder()
+                .ShowBoundingBoxes(false)
+                .Build()
+            )
             .Build()
         );
 

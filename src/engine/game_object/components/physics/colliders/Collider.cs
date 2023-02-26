@@ -5,14 +5,13 @@ using Worms.engine.data;
 namespace Worms.engine.game_object.components.physics.colliders; 
 
 public abstract class Collider : ToggleComponent {
-    protected static readonly Color COLLIDER_GIZMO_COLOR = new(0.1059f, 0.949f, 0.3294f);
-    private static readonly Color BOUNDING_BOX_GIZMO_COLOR = new(0.25f, 0.67f, 0.9f);
-
     public Vector2 Center => Transform.LocalToWorldMatrix.ConvertPoint(offset);
     
     public ColliderState state;
     public Vector2 offset;
 
+    protected string GizmoId => state == ColliderState.TRIGGER ? GizmoSettings.TRIGGER_NAME : GizmoSettings.COLLIDER_NAME;
+    
     protected readonly Vector2[] localCorners = new Vector2[4];
 
     protected Collider(bool isActive, ColliderState state, Vector2 offset) : base(isActive) {
@@ -36,6 +35,6 @@ public abstract class Collider : ToggleComponent {
         float maxY = corners.MaxBy(c => c.y).y;
 
         Vector2 size = new(maxX - minX, maxY - minY);
-        Gizmos.DrawRectangle(new Vector2(minX, minY) + size / 2, size, Rotation.Identity(), BOUNDING_BOX_GIZMO_COLOR);
+        Gizmos.DrawRectangle(new Vector2(minX, minY) + size / 2, size, Rotation.Identity(), GizmoSettings.BOUNDING_BOX_NAME);
     }
 }

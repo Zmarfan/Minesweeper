@@ -152,8 +152,8 @@ public class TextRenderer : RenderComponent {
     public override void OnDrawGizmos() {
         Vector2 corner = Transform.LocalToWorldMatrix.ConvertPoint(new Vector2(Width, 0));
         Vector2 downVector = Transform.LocalToWorldMatrix.ConvertVector(Vector2.Down()).Normalized * 50;
-        Gizmos.DrawLine(Transform.Position, corner, Color.RED);
-        Gizmos.DrawRay(Transform.Position, downVector, Color.RED);
-        Gizmos.DrawRay(corner, downVector, Color.RED);
+        Gizmos.DrawLine(Transform.Position, corner, GizmoSettings.TEXT_AREA_NAME);
+        Gizmos.DrawRay(Transform.Position, downVector, GizmoSettings.TEXT_AREA_NAME);
+        Gizmos.DrawRay(corner, downVector, GizmoSettings.TEXT_AREA_NAME);
     }
 }

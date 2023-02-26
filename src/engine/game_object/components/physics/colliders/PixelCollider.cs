@@ -1,4 +1,5 @@
-﻿using Worms.engine.core.update.physics;
+﻿using Worms.engine.core.gizmos;
+using Worms.engine.core.update.physics;
 using Worms.engine.data;
 
 namespace Worms.engine.game_object.components.physics.colliders; 
@@ -151,5 +152,9 @@ public class PixelCollider : Collider {
         }
 
         return null;
+    }
+
+    public override void OnDrawGizmos() {
+        Gizmos.DrawPolygon(GetLocalCorners().Select(c => Transform.LocalToWorldMatrix.ConvertPoint(c)).ToList(), GizmoId);
     }
 }

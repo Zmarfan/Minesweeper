@@ -59,17 +59,8 @@ public class CircleCollider : Collider {
     }
 
     public override void OnDrawGizmos() {
-        Gizmos.DrawEllipsis(Center, radius * Transform.Scale, Transform.Rotation, COLLIDER_GIZMO_COLOR);
-        DrawAsPolygon();
+        Gizmos.DrawEllipsis(Center, radius * Transform.Scale, Transform.Rotation, GizmoId);
+        Gizmos.DrawPolygon(CircleAsPoints,GizmoSettings.CIRCLE_POLYGON_NAME);
         base.OnDrawGizmos();
-    }
-
-    private void DrawAsPolygon() {
-        Vector2[] points = CircleAsPoints;
-        int from = points.Length - 1;
-        for (int i = 0; i < points.Length; i++) {
-            Gizmos.DrawLine(points[from], points[i], Color.BLUE);
-            from = i;
-        }
     }
 }

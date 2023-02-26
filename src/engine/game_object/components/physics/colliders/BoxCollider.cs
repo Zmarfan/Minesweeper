@@ -53,7 +53,7 @@ public class BoxCollider : Collider {
     }
 
     public override void OnDrawGizmos() {
-        Gizmos.DrawRectangle(Center, size * Transform.Scale, Transform.Rotation, COLLIDER_GIZMO_COLOR);
+        Gizmos.DrawRectangle(Center, size * Transform.Scale, Transform.Rotation, GizmoId);
         base.OnDrawGizmos();
     }
 }
