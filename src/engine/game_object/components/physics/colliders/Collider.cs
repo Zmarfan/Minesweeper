@@ -35,9 +35,7 @@ public abstract class Collider : ToggleComponent {
         float maxX = corners.MaxBy(c => c.x).x;
         float maxY = corners.MaxBy(c => c.y).y;
 
-        Gizmos.DrawLine(new Vector2(minX, minY), new Vector2(minX, maxY), BOUNDING_BOX_GIZMO_COLOR);
-        Gizmos.DrawLine(new Vector2(minX, minY), new Vector2(maxX, minY), BOUNDING_BOX_GIZMO_COLOR);
-        Gizmos.DrawLine(new Vector2(maxX, maxY), new Vector2(minX, maxY), BOUNDING_BOX_GIZMO_COLOR);
-        Gizmos.DrawLine(new Vector2(maxX, maxY), new Vector2(maxX, minY), BOUNDING_BOX_GIZMO_COLOR);
+        Vector2 size = new(maxX - minX, maxY - minY);
+        Gizmos.DrawRectangle(new Vector2(minX, minY) + size / 2, size, Rotation.Identity(), BOUNDING_BOX_GIZMO_COLOR);
     }
 }

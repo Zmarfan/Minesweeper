@@ -46,6 +46,14 @@ public static class Gizmos {
         ));
     }
     
+    public static void DrawPolygon(List<Vector2> points, Color color) {
+        int fromIndex = points.Count - 1;
+        for (int toIndex = 0; toIndex < points.Count; toIndex++) {
+            DrawLine(points[fromIndex], points[toIndex], color);
+            fromIndex = toIndex;
+        }
+    }
+    
     public static void DrawPoint(Vector2 point, Color color) {
         DrawPoints(ListUtils.Of(point), color);
     }
