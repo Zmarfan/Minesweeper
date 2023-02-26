@@ -42,10 +42,10 @@ public static class TextFormatter {
             }
 
             CharacterInfo info = font.characters[c];
-            int kerning = !previousWordCharacter.HasValue  ? 0 : info.kerningByCharacter[previousWordCharacter.Value];
+            int kerning = !previousWordCharacter.HasValue ? 0 : info.kerningByCharacter[previousWordCharacter.Value];
             float charWidth = (info.dimension.x + kerning) * sizeModifier;
 
-            if (wordWidth >= width) {
+            if (wordWidth + charWidth >= width) {
                 if (lineWidth != 0) {
                     allLines.Add(new TextLine(line.ToString(), lineWidth, width));
                     lineWidth = 0;
