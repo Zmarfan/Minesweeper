@@ -2,6 +2,7 @@
 using Worms.engine.camera;
 using Worms.engine.core.game_object_handler;
 using Worms.engine.core.gizmos;
+using Worms.engine.core.gizmos.objects;
 using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components;

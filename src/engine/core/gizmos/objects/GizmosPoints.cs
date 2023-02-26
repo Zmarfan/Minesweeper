@@ -1,7 +1,7 @@
 ﻿using SDL2;
 using Worms.engine.data;
 
-namespace Worms.engine.core.gizmos; 
+namespace Worms.engine.core.gizmos.objects; 
 
 public class GizmosPoints : GizmosObject {
     private readonly IEnumerable<Vector2> _points;

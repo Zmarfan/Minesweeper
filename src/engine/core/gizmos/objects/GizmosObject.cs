@@ -1,6 +1,6 @@
 ﻿using Worms.engine.data;
 
-namespace Worms.engine.core.gizmos; 
+namespace Worms.engine.core.gizmos.objects; 
 
 public abstract class GizmosObject {
     public readonly Color color;

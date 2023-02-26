@@ -1,7 +1,7 @@
 ﻿using SDL2;
 using Worms.engine.data;
 
-namespace Worms.engine.core.gizmos; 
+namespace Worms.engine.core.gizmos.objects; 
 
 public class GizmosRectangle : GizmosObject {
     private readonly Vector2 _center;

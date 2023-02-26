@@ -1,7 +1,7 @@
 ﻿using Worms.engine.core.renderer;
 using Worms.engine.data;
 
-namespace Worms.engine.core.gizmos; 
+namespace Worms.engine.core.gizmos.objects; 
 
 public class GizmosEllipsis : GizmosObject {
     private readonly Vector2 _center;
