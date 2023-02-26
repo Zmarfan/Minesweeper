@@ -93,6 +93,10 @@ public class PhysicsUpdateHandler {
     }
 
     private static bool DoCollidersIntersect(Collider c1, Collider c2) {
+        if (!TriggerIntersectUtils.DoBoundingBoxesOverlap(c1, c2)) {
+            return false;
+        }
+        
         return c1 switch {
             BoxCollider box1 when c2 is BoxCollider box2 => TriggerIntersectUtils.DoesBoxOnBoxOverlap(box1, box2),
             CircleCollider circle1 when c2 is CircleCollider circle2 => TriggerIntersectUtils.DoesCircleOnCircleOverlap(circle1, circle2),
