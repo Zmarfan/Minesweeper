@@ -37,10 +37,9 @@ public class PhysicsUpdateHandler {
     }
 
     private void UpdateMouseTriggers(TrackObject obj) {
-        bool isInsideTrigger = obj.Colliders
-            .Where(collider => collider is { IsActive: true, state: ColliderState.TRIGGER })
-            .Any(trigger => trigger.IsPointInside(GetMouseWorldPosition(obj)));
-        
+        bool isInsideTrigger = obj.Collider is { IsActive: true, state: ColliderState.TRIGGER }
+                               && obj.Collider.IsPointInside(GetMouseWorldPosition(obj));
+
         switch (obj.MouseInsideTrigger) {
             case false when isInsideTrigger:
                 RunScriptsFunction(obj, static s => s.OnMouseEnter());
@@ -62,29 +61,25 @@ public class PhysicsUpdateHandler {
     
     private void UpdateColliderTriggers(TrackObject obj) {
         HashSet<Collider> collidersInTrigger = new();
-        foreach (Collider collider in obj.Colliders) {
-            if (collider is not { IsActive: true, state: ColliderState.TRIGGER }) {
+        if (obj.Collider is not { IsActive: true, state: ColliderState.TRIGGER }) {
+            return;
+        }
+
+        foreach ((GameObject gameObject, TrackObject checkObj) in GameObjectHandler.objects) {
+            if (!obj.isActive
+                || obj.Collider.gameObject == gameObject
+                || !LayerMask.CanLayersInteract(obj.Collider.gameObject.Layer, gameObject.Layer)
+                || (obj.RigidBody == null && checkObj.RigidBody == null)
+               ) {
                 continue;
             }
 
-            foreach ((GameObject gameObject, TrackObject checkObj) in GameObjectHandler.objects) {
-                if (!obj.isActive
-                    || collider.gameObject == gameObject
-                    || !LayerMask.CanLayersInteract(collider.gameObject.Layer, gameObject.Layer)
-                    || (obj.RigidBody == null && checkObj.RigidBody == null)
-                ) {
-                    continue;
-                }
+            if (checkObj.Collider is not { IsActive: true } || checkObj.Collider.state != ColliderState.TRIGGERING_COLLIDER) {
+                continue;
+            }
 
-                foreach (Collider checkCollider in checkObj.Colliders) {
-                    if (!checkCollider.IsActive || checkCollider.state != ColliderState.TRIGGERING_COLLIDER) {
-                        continue;
-                    }
-
-                    if (DoCollidersIntersect(collider, checkCollider)) {
-                        collidersInTrigger.Add(checkCollider);
-                    }
-                }
+            if (DoCollidersIntersect(obj.Collider, checkObj.Collider)) {
+                collidersInTrigger.Add(checkObj.Collider);
             }
         }
 

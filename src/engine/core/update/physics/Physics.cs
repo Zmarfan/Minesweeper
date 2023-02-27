@@ -52,27 +52,25 @@ public class Physics {
                 continue;
             }
 
-            hit = CalculateBestRaycastHitOnColliders(origin, direction, obj.Colliders, hit);
+            hit = CalculateBestRaycastHitOnCollider(origin, direction, obj.Collider, hit);
         }
 
         return hit.HasValue;
     }
 
-    private static RaycastHit? CalculateBestRaycastHitOnColliders(
+    private static RaycastHit? CalculateBestRaycastHitOnCollider(
         Vector2 origin,
         Vector2 direction,
-        IEnumerable<Collider> colliders,
+        Collider? collider,
         RaycastHit? bestHit
     ) {
-        foreach (Collider collider in colliders) {
-            if (!collider.IsActive || collider.state == ColliderState.TRIGGER) {
-                continue;
-            }
+        if (collider is not { IsActive: true } || collider.state == ColliderState.TRIGGER) {
+            return bestHit;
+        }
 
-            RaycastHit? hit = CalculateRaycastHit(origin, direction, collider);
-            if (hit != null && (bestHit == null || bestHit.Value.distance > hit.Value.distance)) {
-                bestHit = hit.Value;
-            }
+        RaycastHit? hit = CalculateRaycastHit(origin, direction, collider);
+        if (hit != null && (bestHit == null || bestHit.Value.distance > hit.Value.distance)) {
+            bestHit = hit.Value;
         }
 
         return bestHit;
