@@ -70,7 +70,7 @@ public class UpdateHandler {
         while (_fixedUpdateAcc > FIXED_UPDATE_CYCLE_TIME) {
             FixedUpdate();
             GameObjectHandler.FrameCleanup();
-            _physicsUpdateHandler.Update();
+            _physicsUpdateHandler.Update(FIXED_UPDATE_CYCLE_TIME);
             _fixedUpdateAcc -= FIXED_UPDATE_CYCLE_TIME;
         }
         Update();

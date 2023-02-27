@@ -7,51 +7,8 @@ using Worms.engine.game_object.components.physics.colliders;
 
 namespace Worms.engine.core.update.physics.updating; 
 
-public static class TriggerIntersectUtils {
-    public static void UpdateColliderTriggers(TrackObject obj, Dictionary<GameObject, TrackObject> objects) {
-        HashSet<Collider> collidersInTrigger = new();
-        if (obj.Collider is not { IsActive: true, state: ColliderState.TRIGGER }) {
-            return;
-        }
-
-        foreach ((GameObject gameObject, TrackObject checkObj) in objects) {
-            if (!obj.isActive
-                || obj.Collider.gameObject == gameObject
-                || !LayerMask.CanLayersInteract(obj.Collider.gameObject.Layer, gameObject.Layer)
-                || (obj.RigidBody == null && checkObj.RigidBody == null)
-               ) {
-                continue;
-            }
-
-            if (checkObj.Collider is not { IsActive: true } || checkObj.Collider.state != ColliderState.TRIGGERING_COLLIDER) {
-                continue;
-            }
-
-            if (DoCollidersIntersect(obj.Collider, checkObj.Collider)) {
-                collidersInTrigger.Add(checkObj.Collider);
-            }
-        }
-
-        FireObjectTriggerEvents(obj, collidersInTrigger);
-        obj.CollidersInsideTrigger = collidersInTrigger;
-    }
-
-    private static void FireObjectTriggerEvents(TrackObject obj, IReadOnlySet<Collider> collidersInTrigger) {
-        foreach (Collider collider in obj.CollidersInsideTrigger) {
-            if (collidersInTrigger.Contains(collider)) {
-                PhysicsUtils.RunScriptsFunction(obj, script => script.OnTriggerStay(collider));
-            }
-            else {
-                PhysicsUtils.RunScriptsFunction(obj, script => script.OnTriggerExit(collider));
-            }
-        }
-
-        foreach (Collider collider in collidersInTrigger.Except(obj.CollidersInsideTrigger)) {
-            PhysicsUtils.RunScriptsFunction(obj, script => script.OnTriggerEnter(collider));
-        }
-    }
-    
-    private static bool DoCollidersIntersect(Collider c1, Collider c2) {
+public static class IntersectUtils {
+    public static bool DoCollidersIntersect(Collider c1, Collider c2) {
         if (!DoBoundingBoxesOverlap(c1, c2)) {
             return false;
         }
