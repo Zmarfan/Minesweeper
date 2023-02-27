@@ -1,17 +1,79 @@
-﻿using Worms.engine.data;
+﻿using Worms.engine.core.game_object_handler;
+using Worms.engine.core.update.physics.layers;
+using Worms.engine.data;
+using Worms.engine.game_object;
 using Worms.engine.game_object.components;
 using Worms.engine.game_object.components.physics.colliders;
 
-namespace Worms.engine.core.update.physics; 
+namespace Worms.engine.core.update.physics.updating; 
 
 public static class TriggerIntersectUtils {
-    public static bool DoesBoxOnBoxOverlap(BoxCollider c1, BoxCollider c2) {
+    public static void UpdateColliderTriggers(TrackObject obj, Dictionary<GameObject, TrackObject> objects) {
+        HashSet<Collider> collidersInTrigger = new();
+        if (obj.Collider is not { IsActive: true, state: ColliderState.TRIGGER }) {
+            return;
+        }
+
+        foreach ((GameObject gameObject, TrackObject checkObj) in objects) {
+            if (!obj.isActive
+                || obj.Collider.gameObject == gameObject
+                || !LayerMask.CanLayersInteract(obj.Collider.gameObject.Layer, gameObject.Layer)
+                || (obj.RigidBody == null && checkObj.RigidBody == null)
+               ) {
+                continue;
+            }
+
+            if (checkObj.Collider is not { IsActive: true } || checkObj.Collider.state != ColliderState.TRIGGERING_COLLIDER) {
+                continue;
+            }
+
+            if (DoCollidersIntersect(obj.Collider, checkObj.Collider)) {
+                collidersInTrigger.Add(checkObj.Collider);
+            }
+        }
+
+        FireObjectTriggerEvents(obj, collidersInTrigger);
+        obj.CollidersInsideTrigger = collidersInTrigger;
+    }
+
+    private static void FireObjectTriggerEvents(TrackObject obj, IReadOnlySet<Collider> collidersInTrigger) {
+        foreach (Collider collider in obj.CollidersInsideTrigger) {
+            if (collidersInTrigger.Contains(collider)) {
+                PhysicsUtils.RunScriptsFunction(obj, script => script.OnTriggerStay(collider));
+            }
+            else {
+                PhysicsUtils.RunScriptsFunction(obj, script => script.OnTriggerExit(collider));
+            }
+        }
+
+        foreach (Collider collider in collidersInTrigger.Except(obj.CollidersInsideTrigger)) {
+            PhysicsUtils.RunScriptsFunction(obj, script => script.OnTriggerEnter(collider));
+        }
+    }
+    
+    private static bool DoCollidersIntersect(Collider c1, Collider c2) {
+        if (!DoBoundingBoxesOverlap(c1, c2)) {
+            return false;
+        }
+        
+        return c1 switch {
+            BoxCollider box1 when c2 is BoxCollider box2 => DoesBoxOnBoxOverlap(box1, box2),
+            CircleCollider circle1 when c2 is CircleCollider circle2 => DoesCircleOnCircleOverlap(circle1, circle2),
+            PixelCollider p1 => DoesPixelOnColliderOverlap(p1, c2),
+            BoxCollider box when c2 is CircleCollider circle => DoesBoxOnCircleOverlap(circle, box),
+            CircleCollider circle when c2 is BoxCollider box => DoesBoxOnCircleOverlap(circle, box),
+            not null when c2 is PixelCollider p2 => DoesPixelOnColliderOverlap(p2, c1),
+            _ => throw new Exception($"The collider types: {c1} and {c2} are not supported in the physics trigger system!")
+        };
+    }
+
+    private static bool DoesBoxOnBoxOverlap(BoxCollider c1, BoxCollider c2) {
         return c1.Transform.Rotation == c2.Transform.Rotation
             ? DoSameRotationBoxesOverlap(c1, c2)
             : DoConvexPolygonsOverlap(c1.WorldCorners, c2.WorldCorners);
     }
 
-    public static bool DoesCircleOnCircleOverlap(CircleCollider c1, CircleCollider c2) {
+    private static bool DoesCircleOnCircleOverlap(CircleCollider c1, CircleCollider c2) {
         if (IsScaleUniform(c1) && IsScaleUniform(c2)) {
             return DoCirclesOverlap(c1.Center, c2.Center, c1.radius * c1.Transform.Scale.x, c2.radius * c2.Transform.Scale.x);
         }
@@ -22,7 +84,7 @@ public static class TriggerIntersectUtils {
         return DoCirclePolygonOverlap(c1, c2, c2.CircleAsPoints);
     }
 
-    public static bool DoesPixelOnColliderOverlap(PixelCollider pixel, Collider collider) {
+    private static bool DoesPixelOnColliderOverlap(PixelCollider pixel, Collider collider) {
         Tuple<Vector2, Vector2> box = CalculatePixelTextureBoundingBox(pixel, collider);
 
         for (int x = (int)Math.Max(box.Item1.x, 0); x < Math.Min(box.Item2.x, pixel.Width); x++) {
@@ -52,11 +114,11 @@ public static class TriggerIntersectUtils {
         );
     }
 
-    public static bool DoesBoxOnCircleOverlap(CircleCollider c1, BoxCollider c2) {
+    private static bool DoesBoxOnCircleOverlap(CircleCollider c1, BoxCollider c2) {
         return DoCirclePolygonOverlap(c1, c2, c2.WorldCorners);
     }
 
-    public static bool DoBoundingBoxesOverlap(Collider c1, Collider c2) {
+    private static bool DoBoundingBoxesOverlap(Collider c1, Collider c2) {
         Tuple<Vector2, Vector2> bounding1 = CalculateBoundingBox(
             c1.GetLocalCorners().Select(c => c1.Transform.LocalToWorldMatrix.ConvertPoint(c)).ToList()
         );

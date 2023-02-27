@@ -1,8 +1,19 @@
-﻿using Worms.engine.data;
+﻿using Worms.engine.core.game_object_handler;
+using Worms.engine.data;
+using Worms.engine.game_object.components.physics.colliders;
+using Worms.engine.game_object.scripts;
 
-namespace Worms.engine.core.update.physics; 
+namespace Worms.engine.core.update.physics.updating; 
 
 public static class PhysicsUtils {
+    public static void RunScriptsFunction(TrackObject obj, Action<Script> action) {
+        foreach (Script script in obj.Scripts) {
+            if (script.IsActive) {
+                action.Invoke(script);
+            }
+        }
+    }
+    
     public static bool LineCircleIntersection(
         Vector2 origin,
         Vector2 direction, 
