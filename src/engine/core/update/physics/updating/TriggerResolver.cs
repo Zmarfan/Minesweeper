@@ -49,7 +49,7 @@ public static class TriggerResolver {
                 continue;
             }
 
-            if (IntersectUtils.DoCollidersIntersect(obj.Collider, checkObj.Collider)) {
+            if (IntersectUtils.DoTriggersIntersect(obj.Collider, checkObj.Collider)) {
                 collidersInTrigger.Add(checkObj.Collider);
             }
         }

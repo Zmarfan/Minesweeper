@@ -33,9 +33,9 @@ public static class CollisionResolver {
             }
 
             checkedPairs.Add(new Tuple<RigidBody, RigidBody>(obj.RigidBody, checkObj.RigidBody));
-            
-            if (IntersectUtils.DoCollidersIntersect(obj.Collider, checkObj.Collider)) {
-                ResolveCollision(obj.RigidBody, checkObj.RigidBody, 20, Vector2.Left()); // FIX NORMAL
+
+            if (CollisionUtils.ObjectsCollide(obj, checkObj, out CollisionData data)) {
+                ResolveCollision(obj.RigidBody, checkObj.RigidBody, data);
             }
         }
     }
@@ -46,8 +46,8 @@ public static class CollisionResolver {
             || Equals(pair, new Tuple<RigidBody, RigidBody>(obj2, obj1)));
     }
     
-    private static void ResolveCollision(RigidBody a, RigidBody b, float penetration, Vector2 collisionNormal) {
-        float velocityAlongNormal = Vector2.Dot(b.velocity - a.velocity, collisionNormal);
+    private static void ResolveCollision(RigidBody a, RigidBody b, CollisionData data) {
+        float velocityAlongNormal = Vector2.Dot(b.velocity - a.velocity, data.normal);
         if (velocityAlongNormal > 0) {
             return;
         }
@@ -55,16 +55,16 @@ public static class CollisionResolver {
         float bounciness = Math.Min(a.bounciness, b.bounciness);
         float j = -(1 + bounciness) * velocityAlongNormal;
         j /= a.InverseMass + b.InverseMass;
-        Vector2 impulse = j * collisionNormal;
+        Vector2 impulse = j * data.normal;
         a.velocity -= a.InverseMass * impulse;
         b.velocity += b.InverseMass * impulse;
 
-        PositionalCorrection(a, b, penetration, collisionNormal);
+        PositionalCorrection(a, b, data);
     }
 
-    private static void PositionalCorrection(RigidBody a, RigidBody b, float penetration, Vector2 normal) {
-        Vector2 correction = Math.Max(penetration - POSITIONAL_CORRECTION_SLOP_FRACTION, 0)
-            / (a.InverseMass + b.InverseMass) * POSITIONAL_CORRECTION_AMOUNT_FRACTION * normal;
+    private static void PositionalCorrection(RigidBody a, RigidBody b, CollisionData data) {
+        Vector2 correction = Math.Max(data.penetration - POSITIONAL_CORRECTION_SLOP_FRACTION, 0)
+            / (a.InverseMass + b.InverseMass) * POSITIONAL_CORRECTION_AMOUNT_FRACTION * data.normal;
         a.Transform.Position -= a.InverseMass * correction;
         b.Transform.Position += b.InverseMass * correction;
     }
