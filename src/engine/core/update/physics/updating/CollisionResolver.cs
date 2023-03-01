@@ -8,7 +8,7 @@ using Worms.engine.game_object.components.physics.colliders;
 namespace Worms.engine.core.update.physics.updating; 
 
 public static class CollisionResolver {
-    private const float POSITIONAL_CORRECTION_AMOUNT_FRACTION = 0.2f;
+    private const float POSITIONAL_CORRECTION_AMOUNT_FRACTION = 0.8f;
     private const float POSITIONAL_CORRECTION_SLOP_FRACTION = 0.01f;
     
     public static void ResolveCollisions(
@@ -47,6 +47,7 @@ public static class CollisionResolver {
     }
     
     private static void ResolveCollision(RigidBody a, RigidBody b, CollisionData data) {
+        PositionalCorrection(a, b, data);
         float velocityAlongNormal = Vector2.Dot(b.velocity - a.velocity, data.normal);
         if (velocityAlongNormal > 0) {
             return;
@@ -58,8 +59,6 @@ public static class CollisionResolver {
         Vector2 impulse = j * data.normal;
         a.velocity -= a.InverseMass * impulse;
         b.velocity += b.InverseMass * impulse;
-
-        PositionalCorrection(a, b, data);
     }
 
     private static void PositionalCorrection(RigidBody a, RigidBody b, CollisionData data) {

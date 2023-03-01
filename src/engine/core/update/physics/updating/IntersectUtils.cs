@@ -21,6 +21,16 @@ public static class IntersectUtils {
         };
     }
 
+    public static bool DoBoundingBoxesIntersect(Collider c1, Collider c2) {
+        Tuple<Vector2, Vector2> bounding1 = CalculateBoundingBox(
+            c1.GetLocalCorners().Select(c => c1.Transform.LocalToWorldMatrix.ConvertPoint(c)).ToList()
+        );
+        Tuple<Vector2, Vector2> bounding2 = CalculateBoundingBox(
+            c2.GetLocalCorners().Select(c => c2.Transform.LocalToWorldMatrix.ConvertPoint(c)).ToList()
+        );
+        return DoRectanglesIntersect(bounding1.Item1, bounding1.Item2, bounding2.Item1, bounding2.Item2);
+    }
+    
     private static bool DoesBoxOnBoxIntersect(BoxCollider c1, BoxCollider c2) {
         return c1.Transform.Rotation == c2.Transform.Rotation
             ? DoSameRotationBoxesIntersect(c1, c2)
@@ -72,16 +82,6 @@ public static class IntersectUtils {
         return DoCirclePolygonIntersect(c1, c2, c2.WorldCorners);
     }
 
-    private static bool DoBoundingBoxesIntersect(Collider c1, Collider c2) {
-        Tuple<Vector2, Vector2> bounding1 = CalculateBoundingBox(
-            c1.GetLocalCorners().Select(c => c1.Transform.LocalToWorldMatrix.ConvertPoint(c)).ToList()
-        );
-        Tuple<Vector2, Vector2> bounding2 = CalculateBoundingBox(
-            c2.GetLocalCorners().Select(c => c2.Transform.LocalToWorldMatrix.ConvertPoint(c)).ToList()
-        );
-        return DoRectanglesIntersect(bounding1.Item1, bounding1.Item2, bounding2.Item1, bounding2.Item2);
-    }
-    
     private static bool DoSameRotationBoxesIntersect(BoxCollider c1, BoxCollider c2) {
         Vector2 c2BottomLeft = c1.Transform.WorldToLocalMatrix.ConvertPoint(
             c2.Transform.LocalToWorldMatrix.ConvertPoint(c2.BottomLeftLocal)

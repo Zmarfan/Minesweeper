@@ -18,7 +18,6 @@ public class MyTestScript : Script {
     private readonly Func<GameObjectBuilder> _explosion;
     private AudioSource _audioSource = null!;
 
-    private TextRenderer _textRenderer = null!;
     private RaycastHit? _hit;
 
     public MyTestScript(Func<GameObjectBuilder> explosion) : base(true) {
@@ -27,7 +26,6 @@ public class MyTestScript : Script {
 
     public override void Awake() {
         _audioSource = GetComponent<AudioSource>();
-        _textRenderer = GetComponent<TextRenderer>();
     }
 
     public override void Update(float deltaTime) {
@@ -39,7 +37,6 @@ public class MyTestScript : Script {
         if (Input.GetButtonDown("explosion")) {
             Transform.Instantiate(_explosion.Invoke().SetPosition(new Vector2(0, 100)));
             _audioSource.Restart();
-            _textRenderer.lineSpacing += 5;
         }
         
         Transform.Position += Input.GetAxis("horizontal") * SPEED * 100 * deltaTime;
