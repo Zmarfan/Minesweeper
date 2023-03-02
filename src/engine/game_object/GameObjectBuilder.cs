@@ -21,7 +21,8 @@ public class GameObjectBuilder {
     }
 
     public GameObject Build() {
-        _components.Add(new Transform(_parent, _position, _rotation, _scale));
+        Transform transform = new(_parent, _position, _rotation, _scale);
+        _components.Add(transform);
         GameObject gameObject = new(_name, _tag, LayerMask.NameToLayer(_layer), _isActive, _components);
         _components.ForEach(component => component.InitComponent(gameObject));
         return gameObject;

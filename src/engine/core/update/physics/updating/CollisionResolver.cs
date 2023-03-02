@@ -48,6 +48,10 @@ public static class CollisionResolver {
     
     private static void ResolveCollision(RigidBody a, RigidBody b, CollisionData data) {
         PositionalCorrection(a, b, data);
+        SetNewRigidbodyVelocities(a, b, data);
+    }
+
+    private static void SetNewRigidbodyVelocities(RigidBody a, RigidBody b, CollisionData data) {
         float velocityAlongNormal = Vector2.Dot(b.velocity - a.velocity, data.normal);
         if (velocityAlongNormal > 0) {
             return;
