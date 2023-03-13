@@ -1,4 +1,5 @@
-﻿using Worms.engine.game_object.components;
+﻿using Worms.engine.game_object;
+using Worms.engine.game_object.components;
 using Worms.engine.game_object.components.physics;
 using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.components.rendering;

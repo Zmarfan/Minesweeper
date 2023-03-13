@@ -1,6 +1,5 @@
 ﻿using Worms.engine.core.game_object_handler;
 using Worms.engine.data;
-using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.scripts;
 
 namespace Worms.engine.core.update.physics.updating; 

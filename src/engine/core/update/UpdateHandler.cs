@@ -1,4 +1,5 @@
-﻿using Worms.engine.core.game_object_handler;
+﻿using System.Diagnostics;
+using Worms.engine.core.game_object_handler;
 using Worms.engine.core.input;
 using Worms.engine.core.update.physics;
 using Worms.engine.core.update.physics.updating;
@@ -10,7 +11,7 @@ using Worms.engine.scene;
 namespace Worms.engine.core.update; 
 
 public class UpdateHandler {
-    private const float FIXED_UPDATE_CYCLE_TIME = 0.02f;
+    public const float FIXED_UPDATE_CYCLE_TIME = 0.02f;
 
     private readonly PhysicsUpdateHandler _physicsUpdateHandler;
     private readonly Input _inputHandler;
@@ -70,7 +71,7 @@ public class UpdateHandler {
         while (_fixedUpdateAcc > FIXED_UPDATE_CYCLE_TIME) {
             FixedUpdate();
             GameObjectHandler.FrameCleanup();
-            _physicsUpdateHandler.Update(FIXED_UPDATE_CYCLE_TIME);
+            _physicsUpdateHandler.Update();
             _fixedUpdateAcc -= FIXED_UPDATE_CYCLE_TIME;
         }
         Update();
