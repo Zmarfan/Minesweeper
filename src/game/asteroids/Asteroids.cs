@@ -37,7 +37,8 @@ public static class Asteroids {
                     .Builder(InputNames.THRUST, Button.W)
                     .SetAltPositiveButton(Button.UP)
                     .SetSensitivity(2)
-                    .Build()
+                    .Build(),
+                InputListenerBuilder.Builder(InputNames.FIRE, Button.SPACE).Build()
             ))
             .SetPhysics(PhysicsSettingsBuilder
                 .Builder(ListUtils.Of(LayerMask.DEFAULT), ListUtils.Of(LayerMask.IGNORE_RAYCAST))

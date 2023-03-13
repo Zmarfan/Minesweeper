@@ -8,6 +8,6 @@ public class CameraInit : Script {
     }
 
     public override void Awake() {
-        Camera.Main.Size = 2;
+        Camera.Main.Size = 1;
     }
 }

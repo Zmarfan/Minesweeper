@@ -1,6 +1,8 @@
 ﻿using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.animation.controller;
+using Worms.engine.game_object.components.physics;
+using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.engine.game_object.components.screen_pivot;
 using Worms.engine.scene;
@@ -21,6 +23,8 @@ public static class Scene1 {
             .Build()
             .Transform.AddChild("player")
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateMultiple("player", 0, 0, 1, 2)).Build())
+            .SetComponent(new RigidBody(true))
+            .SetComponent(new PolygonCollider(true, PlayerMovement.COLLIDER_VERTICES, ColliderState.TRIGGER, Vector2.Zero()))
             .SetComponent(new PlayerMovement())
             .Build()
             .Transform.GetRoot().gameObject;
