@@ -11,12 +11,11 @@ using Worms.engine.game_object.components.particle_system.renderer;
 using Worms.engine.game_object.components.particle_system.shape;
 using Worms.engine.game_object.components.physics;
 using Worms.engine.game_object.components.physics.colliders;
-using Worms.engine.game_object.components.rendering.text_renderer;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.engine.game_object.components.screen_pivot;
 using Worms.engine.scene;
 
-namespace Worms.game.scenes; 
+namespace Worms.game.test.scenes; 
 
 public static class Scene1 {
     public static Scene GetScene() {

@@ -3,14 +3,13 @@ using Worms.engine.core.gizmos;
 using Worms.engine.core.input;
 using Worms.engine.core.input.listener;
 using Worms.engine.core.update.physics;
-using Worms.engine.core.update.physics.layers;
 using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.audio_source;
 using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.scripts;
 
-namespace Worms.game; 
+namespace Worms.game.test; 
 
 public class MyTestScript : Script {
     private const float SPEED = 4.5f;

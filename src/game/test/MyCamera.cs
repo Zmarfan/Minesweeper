@@ -4,7 +4,7 @@ using Worms.engine.core.input;
 using Worms.engine.data;
 using Worms.engine.game_object.scripts;
 
-namespace Worms.game; 
+namespace Worms.game.test; 
 
 public class MyCamera : Script {
     public MyCamera() : base(true) {

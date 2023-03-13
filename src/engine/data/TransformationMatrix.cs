@@ -18,7 +18,7 @@ public readonly struct TransformationMatrix {
     }
 
     public static TransformationMatrix CreateWorldToScreenMatrix(Vector2 position, Vector2 scale) {
-        return Scale(scale) * Translate(position) * RotateCameraYAxis();
+        return Translate(position) * Scale(scale) * RotateCameraYAxis();
     }
     
     public static TransformationMatrix CreateLocalToParentMatrix(Vector2 position, Rotation rotation, Vector2 scale) {
