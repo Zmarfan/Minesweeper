@@ -41,17 +41,18 @@ public static class PhysicsUtils {
         return false;
     }
 
-    public static bool LineBoxIntersectionWithNormal(
-        Vector2[] corners,
+    public static bool LinePolygonIntersectionWithNormal(
+        IReadOnlyList<Vector2> vertices,
         Vector2 origin,
         Vector2 direction,
+        Vector2 offset,
         out Tuple<Vector2, Vector2> pointAndNormal
     ) {
         Tuple<Vector2, Vector2>? best = null;
-        int fromIndex = corners.Length - 1;
-        for (int i = 0; i < corners.Length; i++) {
-            if (LineLineIntersection(origin, direction, corners[fromIndex], corners[i], out Vector2 p)) {
-                Vector2 edgeDirection = corners[i] - corners[fromIndex];
+        int fromIndex = vertices.Count - 1;
+        for (int i = 0; i < vertices.Count; i++) {
+            if (LineLineIntersection(origin, direction, vertices[fromIndex] + offset, vertices[i] + offset, out Vector2 p)) {
+                Vector2 edgeDirection = vertices[i] - vertices[fromIndex];
                 Vector2 normal = new(-edgeDirection.y, edgeDirection.x);
                 Tuple<Vector2, Vector2> hit = new(p, normal);
                 best = best == null || (origin - best.Item1).SqrMagnitude > (origin - hit.Item1).SqrMagnitude ? hit : best; 

@@ -42,7 +42,7 @@ public class MyTestScript : Script {
         Transform.Position += Input.GetAxis("vertical") * SPEED * 100 * deltaTime;
         Transform.Rotation += Input.GetButton("action") ? SPEED * 50 * deltaTime : 0;
 
-        Physics.LineCast(Transform.Position, Input.MouseWorldPosition, LayerMask.CreateMask("testLayer1", "testLayer2"), out _hit);
+        Physics.LineCast(Transform.Position, Input.MouseWorldPosition, out _hit);
     }
 
     public override void OnTriggerEnter(Collider collider) {

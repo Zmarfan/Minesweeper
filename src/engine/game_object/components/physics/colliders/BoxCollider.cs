@@ -43,7 +43,7 @@ public class BoxCollider : Collider {
         origin = Transform.WorldToLocalMatrix.ConvertPoint(origin);
         direction = Transform.WorldToLocalMatrix.ConvertVector(direction);
 
-        if (PhysicsUtils.LineBoxIntersectionWithNormal(GetLocalCorners(), origin, direction, out Tuple<Vector2, Vector2> value)) {
+        if (PhysicsUtils.LinePolygonIntersectionWithNormal(GetLocalCorners(), origin, direction, Vector2.Zero(), out Tuple<Vector2, Vector2> value)) {
             return new ColliderHit(
                 Transform.LocalToWorldMatrix.ConvertPoint(value.Item1),
                 Transform.LocalToWorldMatrix.ConvertVector(value.Item2).Normalized

@@ -12,10 +12,15 @@ public static class IntersectUtils {
         
         return c1 switch {
             BoxCollider box1 when c2 is BoxCollider box2 => DoesBoxOnBoxIntersect(box1, box2),
+            PolygonCollider p1 when c2 is PolygonCollider p2 => DoPolygonCollidersIntersect(p1, p2),
             CircleCollider circle1 when c2 is CircleCollider circle2 => DoesCircleOnCircleIntersect(circle1, circle2),
             PixelCollider p1 => DoesPixelOnColliderIntersect(p1, c2),
             BoxCollider box when c2 is CircleCollider circle => DoesBoxOnCircleIntersect(circle, box),
             CircleCollider circle when c2 is BoxCollider box => DoesBoxOnCircleIntersect(circle, box),
+            PolygonCollider polygon when c2 is BoxCollider box => DoPolygonAndBoxIntersect(polygon, box),
+            BoxCollider box when c2 is PolygonCollider polygon => DoPolygonAndBoxIntersect(polygon, box),
+            PolygonCollider polygon when c2 is CircleCollider circle => DoPolygonAndCircleIntersect(polygon, circle),
+            CircleCollider circle when c2 is PolygonCollider polygon => DoPolygonAndCircleIntersect(polygon, circle),
             not null when c2 is PixelCollider p2 => DoesPixelOnColliderIntersect(p2, c1),
             _ => throw new Exception($"The collider types: {c1} and {c2} are not supported in the physics trigger system!")
         };
@@ -67,6 +72,26 @@ public static class IntersectUtils {
         return false;
     }
 
+    private static bool DoPolygonCollidersIntersect(PolygonCollider p1, PolygonCollider p2) {
+        foreach (Vector2[] triangle1 in p1.Triangulation) {
+            foreach (Vector2[] triangle2 in p2.Triangulation) {
+                if (DoConvexPolygonsIntersect(triangle1, triangle2)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static bool DoPolygonAndBoxIntersect(PolygonCollider polygon, BoxCollider box) {
+        return polygon.Triangulation.Any(triangle => DoConvexPolygonsIntersect(triangle, box.WorldCorners));
+    }
+
+    private static bool DoPolygonAndCircleIntersect(PolygonCollider polygon, CircleCollider circle) {
+        return polygon.Triangulation.Any(triangle => DoCirclePolygonIntersect(circle, polygon, triangle));
+    }
+    
     private static Tuple<Vector2, Vector2> CalculatePixelTextureBoundingBox(PixelCollider pixel, Collider collider) {
         return CalculateBoundingBox(
             collider.GetLocalCorners()
@@ -99,8 +124,8 @@ public static class IntersectUtils {
                && topRight1.y > bottomLeft2.y;
     }
     
-    private static bool DoConvexPolygonsIntersect(List<Vector2> c1Points, List<Vector2> c2Points) {
-        foreach (List<Vector2> points in new[] { c1Points, c2Points })
+    private static bool DoConvexPolygonsIntersect(IReadOnlyList<Vector2> c1Points, IReadOnlyList<Vector2> c2Points) {
+        foreach (IReadOnlyList<Vector2> points in new[] { c1Points, c2Points })
         {
             for (int i1 = 0; i1 < points.Count; i1++)
             {
