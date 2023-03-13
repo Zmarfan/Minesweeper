@@ -19,9 +19,8 @@ public class PolygonCollider : Collider {
     }
 
     public Vector2[] WorldVertices => Vertices.Select(v => Transform.LocalToWorldMatrix.ConvertPoint(v + offset)).ToArray();
-    public List<Vector2[]> Triangulation => _triangulation
-        .Select(triangle => triangle.Select(v => Transform.LocalToWorldMatrix.ConvertPoint(v + offset)).ToArray())
-        .ToList();
+
+    public IEnumerable<Vector2[]> Triangulation => _triangulation.Select(triangle => triangle.Select(v => Transform.LocalToWorldMatrix.ConvertPoint(v + offset)).ToArray());
 
     private List<Vector2[]> _triangulation = null!;
     private Vector2[] _vertices = null!;
@@ -36,14 +35,14 @@ public class PolygonCollider : Collider {
     }
 
     public override Vector2[] GetLocalCorners() {
-        float minX = Vertices.MinBy(v => v.x).x;
-        float maxX = Vertices.MaxBy(v => v.x).x;
-        float minY = Vertices.MinBy(v => v.y).y;
-        float maxY = Vertices.MaxBy(v => v.y).y;
-        localCorners[0] = new Vector2(minX, minY) + offset;
-        localCorners[1] = new Vector2(minX, maxY) + offset;
-        localCorners[2] = new Vector2(maxX, maxY) + offset;
-        localCorners[3] = new Vector2(maxX, minY) + offset;
+        float minX = Vertices.MinBy(v => v.x).x + offset.x;
+        float maxX = Vertices.MaxBy(v => v.x).x + offset.x;
+        float minY = Vertices.MinBy(v => v.y).y + offset.y;
+        float maxY = Vertices.MaxBy(v => v.y).y + offset.y;
+        localCorners[0] = new Vector2(minX, minY);
+        localCorners[1] = new Vector2(minX, maxY);
+        localCorners[2] = new Vector2(maxX, maxY);
+        localCorners[3] = new Vector2(maxX, minY);
         return localCorners;
     }
 
@@ -136,11 +135,11 @@ public class PolygonCollider : Collider {
     }
     
     public override void OnDrawGizmos() {
-        Gizmos.DrawPolygon(WorldVertices, GizmoId);
         foreach (Vector2[] triangle in _triangulation) {
-            Gizmos.DrawPolygon(triangle.Select(v => Transform.LocalToWorldMatrix.ConvertPoint(v + offset)).ToList(), Color.RED);
+            Gizmos.DrawPolygon(triangle.Select(v => Transform.LocalToWorldMatrix.ConvertPoint(v + offset)).ToList(), GizmoSettings.POLYGON_TRIANGLES_NAME);
         }
-        
+        Gizmos.DrawPolygon(WorldVertices, GizmoId);
+
         base.OnDrawGizmos();
     }
 }

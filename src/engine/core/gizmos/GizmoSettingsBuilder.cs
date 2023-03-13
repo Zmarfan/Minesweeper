@@ -8,7 +8,8 @@ public class GizmoSettingsBuilder {
         { GizmoSettings.TRIGGER_NAME, new GizmoIdDetails(true, new Color(0.1059f, 0.649f, 0.3294f)) },
         { GizmoSettings.BOUNDING_BOX_NAME, new GizmoIdDetails(true, new Color(0.25f, 0.67f, 0.9f)) },
         { GizmoSettings.TEXT_AREA_NAME, new GizmoIdDetails(true, new Color(0.85f, 0.2f, 0.2f)) },
-        { GizmoSettings.CIRCLE_POLYGON_NAME, new GizmoIdDetails(false, new Color(0.2f, 0.2f, 0.85f)) }
+        { GizmoSettings.CIRCLE_POLYGON_NAME, new GizmoIdDetails(false, new Color(0.2f, 0.2f, 0.85f)) },
+        { GizmoSettings.POLYGON_TRIANGLES_NAME, new GizmoIdDetails(false, new Color(0.5059f, 0.949f, 0.3294f)) },
     };
 
     public static GizmoSettingsBuilder Builder() {
@@ -68,6 +69,17 @@ public class GizmoSettingsBuilder {
         _gizmoIdDetails[GizmoSettings.CIRCLE_POLYGON_NAME].color = color;
         return this;
     }
+    
+    public GizmoSettingsBuilder ShowPolygonTriangles(bool show) {
+        _gizmoIdDetails[GizmoSettings.POLYGON_TRIANGLES_NAME].show = show;
+        return this;
+    }
+    
+    public GizmoSettingsBuilder SetPolygonTrianglesColor(Color color) {
+        _gizmoIdDetails[GizmoSettings.POLYGON_TRIANGLES_NAME].color = color;
+        return this;
+    }
+
     
     public GizmoSettingsBuilder AddGizmoDetails(string id, Color color, bool show = true) {
         _gizmoIdDetails.Add(id, new GizmoIdDetails(show, color));

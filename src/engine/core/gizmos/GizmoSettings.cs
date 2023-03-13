@@ -6,6 +6,7 @@ public class GizmoSettings {
     public const string BOUNDING_BOX_NAME = "internal_gizmo_bounding_box";
     public const string CIRCLE_POLYGON_NAME = "internal_gizmo_circle_polygon";
     public const string TEXT_AREA_NAME = "internal_gizmo_text_area";
+    public const string POLYGON_TRIANGLES_NAME = "internal_gizmo_polygon_triangles";
     
     public Dictionary<string, GizmoIdDetails> gizmoIdDetails;
 

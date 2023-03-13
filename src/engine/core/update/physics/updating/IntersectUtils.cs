@@ -17,8 +17,8 @@ public static class IntersectUtils {
             PixelCollider p1 => DoesPixelOnColliderIntersect(p1, c2),
             BoxCollider box when c2 is CircleCollider circle => DoesBoxOnCircleIntersect(circle, box),
             CircleCollider circle when c2 is BoxCollider box => DoesBoxOnCircleIntersect(circle, box),
-            PolygonCollider polygon when c2 is BoxCollider box => DoPolygonAndBoxIntersect(polygon, box),
-            BoxCollider box when c2 is PolygonCollider polygon => DoPolygonAndBoxIntersect(polygon, box),
+            PolygonCollider polygon when c2 is BoxCollider box => DoPolygonAndConvexPolygonIntersect(polygon, box.WorldCorners),
+            BoxCollider box when c2 is PolygonCollider polygon => DoPolygonAndConvexPolygonIntersect(polygon, box.WorldCorners),
             PolygonCollider polygon when c2 is CircleCollider circle => DoPolygonAndCircleIntersect(polygon, circle),
             CircleCollider circle when c2 is PolygonCollider polygon => DoPolygonAndCircleIntersect(polygon, circle),
             not null when c2 is PixelCollider p2 => DoesPixelOnColliderIntersect(p2, c1),
@@ -26,7 +26,7 @@ public static class IntersectUtils {
         };
     }
 
-    public static bool DoBoundingBoxesIntersect(Collider c1, Collider c2) {
+    private static bool DoBoundingBoxesIntersect(Collider c1, Collider c2) {
         Tuple<Vector2, Vector2> bounding1 = CalculateBoundingBox(
             c1.GetLocalCorners().Select(c => c1.Transform.LocalToWorldMatrix.ConvertPoint(c)).ToList()
         );
@@ -73,19 +73,11 @@ public static class IntersectUtils {
     }
 
     private static bool DoPolygonCollidersIntersect(PolygonCollider p1, PolygonCollider p2) {
-        foreach (Vector2[] triangle1 in p1.Triangulation) {
-            foreach (Vector2[] triangle2 in p2.Triangulation) {
-                if (DoConvexPolygonsIntersect(triangle1, triangle2)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return p1.Triangulation.Any(triangle => DoPolygonAndConvexPolygonIntersect(p2, triangle));
     }
 
-    private static bool DoPolygonAndBoxIntersect(PolygonCollider polygon, BoxCollider box) {
-        return polygon.Triangulation.Any(triangle => DoConvexPolygonsIntersect(triangle, box.WorldCorners));
+    private static bool DoPolygonAndConvexPolygonIntersect(PolygonCollider polygon, IReadOnlyList<Vector2> polygon2) {
+        return polygon.Triangulation.Any(triangle => DoConvexPolygonsIntersect(triangle, polygon2));
     }
 
     private static bool DoPolygonAndCircleIntersect(PolygonCollider polygon, CircleCollider circle) {

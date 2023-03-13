@@ -156,5 +156,6 @@ public class PixelCollider : Collider {
 
     public override void OnDrawGizmos() {
         Gizmos.DrawPolygon(GetLocalCorners().Select(c => Transform.LocalToWorldMatrix.ConvertPoint(c)).ToList(), GizmoId);
+        base.OnDrawGizmos();
     }
 }

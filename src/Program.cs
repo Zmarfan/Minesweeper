@@ -60,7 +60,8 @@ internal static class Program {
             .SetCursorSettings(new CursorSettings(false, new CustomCursorSettings($"{Directory.GetCurrentDirectory()}\\src\\assets\\test\\cursor.png")))
             .SetGizmoSettings(GizmoSettingsBuilder
                 .Builder()
-                .ShowBoundingBoxes(false)
+                .ShowBoundingBoxes(true)
+                .ShowPolygonTriangles(true)
                 .Build()
             )
             .Build()
