@@ -126,6 +126,54 @@
       <Content Include="src\assets\test\times-new-roman.ttf">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="src\assets\asteroids\textures\big_asteroid_1.png" />
+      <Content Include="src\assets\asteroids\textures\big_asteroid_1.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\asteroids\textures\big_asteroid_2.png" />
+      <Content Include="src\assets\asteroids\textures\big_asteroid_2.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\asteroids\textures\big_asteroid_3.png" />
+      <Content Include="src\assets\asteroids\textures\big_asteroid_3.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\asteroids\textures\enemy.png" />
+      <Content Include="src\assets\asteroids\textures\enemy.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\asteroids\textures\medium_asteroid_1.png" />
+      <Content Include="src\assets\asteroids\textures\medium_asteroid_1.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\asteroids\textures\medium_asteroid_2.png" />
+      <Content Include="src\assets\asteroids\textures\medium_asteroid_2.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\asteroids\textures\medium_asteroid_3.png" />
+      <Content Include="src\assets\asteroids\textures\medium_asteroid_3.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\asteroids\textures\player.png" />
+      <Content Include="src\assets\asteroids\textures\player.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\asteroids\textures\shot.png" />
+      <Content Include="src\assets\asteroids\textures\shot.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\asteroids\textures\small_asteroid_1.png" />
+      <Content Include="src\assets\asteroids\textures\small_asteroid_1.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\asteroids\textures\small_asteroid_2.png" />
+      <Content Include="src\assets\asteroids\textures\small_asteroid_2.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\asteroids\textures\small_asteroid_3.png" />
+      <Content Include="src\assets\asteroids\textures\small_asteroid_3.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>
