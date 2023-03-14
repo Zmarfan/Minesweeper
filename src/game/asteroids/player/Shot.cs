@@ -4,6 +4,7 @@ using Worms.engine.game_object.components.physics;
 using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.engine.game_object.scripts;
+using Worms.game.asteroids.names;
 
 namespace Worms.game.asteroids.player; 
 
@@ -34,7 +35,8 @@ public class Shot : Script {
 
     public static GameObject Create(Transform parent, Vector2 position, Vector2 direction, float initialSpeed) {
         return parent.AddChild("shot")
-            .SetTag("shot")
+            .SetLayer(LayerNames.SHOT)
+            .SetTag(TagNames.SHOT)
             .SetPosition(position)
             .SetComponent(new CircleCollider(true, ColliderState.TRIGGERING_COLLIDER, 7, Vector2.Zero()))
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(TextureNames.SHOT)).Build())

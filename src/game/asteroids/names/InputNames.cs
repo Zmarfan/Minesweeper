@@ -1,4 +1,4 @@
-﻿namespace Worms.game.asteroids; 
+﻿namespace Worms.game.asteroids.names; 
 
 public static class InputNames {
     public const string ROTATE = "rotate";

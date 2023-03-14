@@ -7,6 +7,7 @@ using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.engine.game_object.components.screen_pivot;
 using Worms.engine.scene;
 using Worms.game.asteroids.camera;
+using Worms.game.asteroids.names;
 using Worms.game.asteroids.player;
 
 namespace Worms.game.asteroids.scenes; 

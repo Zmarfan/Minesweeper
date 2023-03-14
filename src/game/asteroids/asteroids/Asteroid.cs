@@ -8,6 +8,7 @@ using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.engine.game_object.scripts;
 using Worms.engine.helper;
+using Worms.game.asteroids.names;
 
 namespace Worms.game.asteroids.asteroids; 
 
@@ -31,7 +32,7 @@ public class Asteroid : Script {
         float angularVelocity = RandomUtil.GetRandomValueBetweenTwoValues(RANDOM, -MAX_ANGULAR_VELOCITY, MAX_ANGULAR_VELOCITY);
 
         return parent.AddChild("asteroid1")
-            .SetTag("asteroid")
+            .SetLayer(LayerNames.ASTEROID)
             .SetPosition(position)
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(details.textureId)).Build())
             .SetComponent(new PolygonCollider(true, details.polygonVertices, ColliderState.TRIGGER, Vector2.Zero()))
@@ -55,7 +56,7 @@ public class Asteroid : Script {
     }
 
     public override void OnTriggerEnter(Collider collider) {
-        if (collider.gameObject.Tag == "shot") {
+        if (collider.gameObject.Tag == TagNames.SHOT) {
             collider.gameObject.Destroy();
         }
     }

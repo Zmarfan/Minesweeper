@@ -138,7 +138,8 @@ public static class IntersectUtils {
     private static void FindMinMaxPointsProjectedAlongNormal(IEnumerable<Vector2> corners, Vector2 normal, out float min, out float max) {
         min = float.MaxValue;
         max = float.MinValue;
-        foreach (float projected in corners.Select(p => Vector2.Dot(normal, p))) {
+        foreach (Vector2 p in corners) {
+            float projected = Vector2.Dot(normal, p);
             min = projected < min ? projected : min;
             max = projected > max ? projected : max;
         }

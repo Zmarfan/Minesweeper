@@ -8,6 +8,7 @@ using Worms.engine.core.renderer.textures;
 using Worms.engine.core.update.physics.layers;
 using Worms.engine.core.update.physics.settings;
 using Worms.engine.helper;
+using Worms.game.asteroids.names;
 using Worms.game.asteroids.scenes;
 
 namespace Worms.game.asteroids; 
@@ -42,6 +43,8 @@ public static class Asteroids {
             ))
             .SetPhysics(PhysicsSettingsBuilder
                 .Builder(ListUtils.Of(LayerMask.DEFAULT), ListUtils.Of(LayerMask.IGNORE_RAYCAST))
+                .AddLayer(LayerNames.ASTEROID, ListUtils.Of(LayerNames.SHOT))
+                .AddLayer(LayerNames.SHOT, ListUtils.Of(LayerNames.ASTEROID))
                 .AddLayer(LayerNames.PLAY_AREA_OBJECT, ListUtils.Of(LayerNames.PLAY_AREA_OBJECT))
                 .Build()
             )
