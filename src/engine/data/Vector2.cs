@@ -1,4 +1,6 @@
-﻿namespace Worms.engine.data; 
+﻿using Worms.engine.helper;
+
+namespace Worms.engine.data; 
 
 public struct Vector2 {
     public float x = 0;
@@ -131,6 +133,11 @@ public struct Vector2 {
         Vector2 rotated = new(point.x * c - point.y * s, point.x * s + point.y * c);
 
         return rotated + center;
+    }
+
+    public static Vector2 InsideUnitCircle(Random random) {
+        Rotation rotation = Rotation.FromDegrees(RandomUtil.GetRandomValueBetweenTwoValues(random, 0, 360));
+        return RotatePoint(Zero(), rotation, Up());
     }
     
     public override string ToString() {

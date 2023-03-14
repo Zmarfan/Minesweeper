@@ -48,16 +48,7 @@ public class PolygonCollider : Collider {
 
     public override bool IsPointInside(Vector2 p) {
         p = Transform.WorldToLocalMatrix.ConvertPoint(p);
-        int i, j, c = 0;
-        for (i = 0, j = Vertices.Length - 1; i < Vertices.Length; j = i++) {
-            if (Vertices[i].y > p.y != Vertices[j].y > p.y
-                && p.x < (Vertices[j].x - Vertices[i].x) * (p.y - Vertices[i].y) / (Vertices[j].y - Vertices[i].y) +
-                Vertices[i].x
-            ) {
-                c = c == 0 ? 1 : 0;
-            }
-        }
-        return c == 1;
+        return IsPointInsidePolygon(Vertices, p);
     }
 
     public override ColliderHit? Raycast(Vector2 origin, Vector2 direction) {
@@ -123,15 +114,20 @@ public class PolygonCollider : Collider {
     private static bool IsEar(Vector2 a, Vector2 b, Vector2 c, IEnumerable<Vector2> polygon) {
         return polygon
             .Where(t => t != a && t != b && t != c)
-            .All(t => !IsPointInsideTriangle(a, b, c, t));
+            .All(t => !IsPointInsidePolygon(new []{ a, b, c }, t));
     }
 
-    private static bool IsPointInsideTriangle(Vector2 a, Vector2 b, Vector2 c, Vector2 p) {
-        float p1 = Vector2.Cross(b - a, p - b);
-        float p2 = Vector2.Cross(c - b, p - c);
-        float p3 = Vector2.Cross(a - c, p - a);
-
-        return p1 >= 0 && p2 >= 0 && p3 >= 0;
+    private static bool IsPointInsidePolygon(IReadOnlyList<Vector2> polygon, Vector2 p) {
+        int i, j, c = 0;
+        for (i = 0, j = polygon.Count - 1; i < polygon.Count; j = i++) {
+            if (polygon[i].y > p.y != polygon[j].y > p.y
+                && p.x < (polygon[j].x - polygon[i].x) * (p.y - polygon[i].y) / (polygon[j].y - polygon[i].y) +
+                polygon[i].x
+               ) {
+                c = c == 0 ? 1 : 0;
+            }
+        }
+        return c == 1;
     }
     
     public override void OnDrawGizmos() {

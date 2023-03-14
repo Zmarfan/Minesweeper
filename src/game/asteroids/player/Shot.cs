@@ -34,14 +34,17 @@ public class Shot : Script {
 
     public static GameObject Create(Transform parent, Vector2 position, Vector2 direction, float initialSpeed) {
         return parent.AddChild("shot")
+            .SetTag("shot")
             .SetPosition(position)
+            .SetComponent(new RigidBody(true))
+            .SetComponent(new CircleCollider(true, ColliderState.TRIGGERING_COLLIDER, 7, Vector2.Zero()))
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(TextureNames.SHOT)).Build())
             .SetComponent(new Shot(direction, initialSpeed))
             .Build()
                 .Transform.AddChild("playAreaContainer")
                 .SetComponent(new RigidBody(true))
                 .SetLayer(LayerNames.PLAY_AREA_OBJECT)
-                .SetComponent(new BoxCollider(true, ColliderState.TRIGGERING_COLLIDER, new Vector2(20, 20), Vector2.Zero()))
+                .SetComponent(new BoxCollider(true, ColliderState.TRIGGER, new Vector2(20, 20), Vector2.Zero()))
                 .Build()
             .Transform.Parent!.gameObject;
     }

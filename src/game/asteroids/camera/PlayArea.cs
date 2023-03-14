@@ -1,8 +1,10 @@
 ﻿using Worms.engine.camera;
 using Worms.engine.core.window;
 using Worms.engine.data;
+using Worms.engine.game_object;
 using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.scripts;
+using Worms.game.asteroids.asteroids;
 
 namespace Worms.game.asteroids.camera; 
 
@@ -18,11 +20,17 @@ public class PlayArea : Script {
         Camera.Main.Size = 2;
         ResolutionChanged(WindowManager.CurrentResolution);
         WindowManager.ResolutionChangedEvent += ResolutionChanged;
+
+        for (int i = 0; i < 50; i++) {
+            GameObject asteroid = Asteroid.Create(Transform.GetRoot(), AsteroidType.BIG, new Vector2(100, 100));
+            Transform.Instantiate(asteroid);
+        }
+
     }
 
     public override void OnTriggerExit(Collider collider) {
         Vector2 half = _boxCollider.size / 2;
-        engine.game_object.Transform transform = collider.Transform.Parent!;
+        Transform transform = collider.Transform.Parent!;
         if (transform.Position.x < -half.x) {
             transform.Position = new Vector2(half.x, transform.Position.y);
         }

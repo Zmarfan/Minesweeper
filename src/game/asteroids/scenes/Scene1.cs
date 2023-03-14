@@ -6,6 +6,7 @@ using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.engine.game_object.components.screen_pivot;
 using Worms.engine.scene;
+using Worms.game.asteroids.asteroids;
 using Worms.game.asteroids.camera;
 using Worms.game.asteroids.player;
 
@@ -24,7 +25,7 @@ public static class Scene1 {
             .SetComponent(new BoxCollider(true, ColliderState.TRIGGER, Vector2.One(), Vector2.Zero()))
             .SetComponent(new PlayArea())
             .Build()
-            .Transform.AddChild("player")
+            .Transform.AddSibling("player")
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateMultiple("player", 0, 0, 1, 2)).Build())
             .SetComponent(new RigidBody(true))
             .SetComponent(new PolygonCollider(true, PlayerMovement.COLLIDER_VERTICES, ColliderState.TRIGGER, Vector2.Zero()))

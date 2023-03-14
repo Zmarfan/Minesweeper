@@ -48,9 +48,8 @@ public static class Asteroids {
             .SetCursorSettings(new CursorSettings(false, new CustomCursorSettings(Path("test\\cursor.png"))))
             .SetGizmoSettings(GizmoSettingsBuilder
                 .Builder()
-                .ShowColliders(false)
                 .ShowBoundingBoxes(false)
-                .ShowPolygonTriangles(true)
+                .ShowPolygonTriangles(false)
                 .Build()
             )
             .Build()
