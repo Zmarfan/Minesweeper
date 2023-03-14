@@ -3,18 +3,24 @@ using Worms.engine.data;
 
 namespace Worms.engine.core.gizmos.objects; 
 
-public class GizmosRectangle : GizmosObject {
+public readonly struct GizmosRectangle : IGizmosObject {
+    private readonly Color _color;
     private readonly Vector2 _center;
     private readonly Vector2 _size;
     private readonly Rotation _rotation;
 
-    public GizmosRectangle(Vector2 center, Vector2 size, Rotation rotation, Color color) : base(color) {
+    public GizmosRectangle(Vector2 center, Vector2 size, Rotation rotation, Color color) {
+        _color = color;
         _center = center;
         _size = size;
         _rotation = rotation;
     }
 
-    public override void Render(nint renderer, TransformationMatrix worldToScreenMatrix) {
+    public Color GetColor() {
+        return _color;
+    }
+
+    public void Render(nint renderer, TransformationMatrix worldToScreenMatrix) {
         Vector2 bottomLeft = GetCorner(new Vector2(_center.x - _size.x / 2f, _center.y - _size.y / 2f), worldToScreenMatrix);
         Vector2 topLeft = GetCorner(new Vector2(_center.x - _size.x / 2f, _center.y + _size.y / 2f), worldToScreenMatrix);
         Vector2 bottomRight = GetCorner(new Vector2(_center.x + _size.x / 2f, _center.y - _size.y / 2f), worldToScreenMatrix);

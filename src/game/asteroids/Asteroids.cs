@@ -16,13 +16,13 @@ public static class Asteroids {
     public static Game CreateGame() {
         return new Game(GameSettingsBuilder
             .Builder()
+            .SetBuildMode()
             .SetTitle("Asteroids")
             .SetAssets(DefineAssets())
             .SetAudioSettings(new AudioSettings(Volume.Max(), ListUtils.Of(
                 new AudioChannel("effects", Volume.Max()),
                 new AudioChannel("music", Volume.Max())
             )))
-            .SetDebugMode()
             .SetWindowWidth(1280)
             .SetWindowHeight(720)
             .AddScenes(ListUtils.Of(Scene1.GetScene()))
@@ -72,6 +72,18 @@ public static class Asteroids {
                 new AssetDeclaration(Path("asteroids\\textures\\player.png"), TextureNames.PLAYER),
                 new AssetDeclaration(Path("asteroids\\textures\\enemy.png"), TextureNames.ENEMY),
                 new AssetDeclaration(Path("asteroids\\textures\\shot.png"), TextureNames.SHOT)
+            ))
+            .AddAudios(ListUtils.Of(
+                new AssetDeclaration(Path("asteroids\\sounds\\bangLarge.wav"), SoundNames.BANG_LARGE),
+                new AssetDeclaration(Path("asteroids\\sounds\\bangMedium.wav"), SoundNames.BANG_MEDIUM),
+                new AssetDeclaration(Path("asteroids\\sounds\\bangSmall.wav"), SoundNames.BANG_SMALL),
+                new AssetDeclaration(Path("asteroids\\sounds\\beat1.wav"), SoundNames.BEAT_1),
+                new AssetDeclaration(Path("asteroids\\sounds\\beat2.wav"), SoundNames.BEAT_2),
+                new AssetDeclaration(Path("asteroids\\sounds\\extraShip.wav"), SoundNames.EXTRA_SHIP),
+                new AssetDeclaration(Path("asteroids\\sounds\\fire.wav"), SoundNames.FIRE),
+                new AssetDeclaration(Path("asteroids\\sounds\\saucerBig.wav"), SoundNames.SAUCER_BIG),
+                new AssetDeclaration(Path("asteroids\\sounds\\saucerSmall.wav"), SoundNames.SAUCER_SMALL),
+                new AssetDeclaration(Path("asteroids\\sounds\\thrust.wav"), SoundNames.THRUST)
             ))
             .Build();
     }

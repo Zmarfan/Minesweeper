@@ -3,7 +3,7 @@ using Worms.engine.data;
 
 namespace Worms.engine.core.gizmos.objects; 
 
-public class GizmoIcon : GizmosObject {
+public readonly struct GizmoIcon : IGizmosObject {
     private static readonly Color BORDER_COLOR = Color.BLACK;
     private static readonly PixelType[,] TEMPLATE = {
         { PixelType.NONE, PixelType.NONE, PixelType.BORDER, PixelType.BORDER, PixelType.BORDER, PixelType.BORDER, PixelType.NONE, PixelType.NONE },
@@ -15,14 +15,20 @@ public class GizmoIcon : GizmosObject {
         { PixelType.NONE, PixelType.BORDER, PixelType.BORDER, PixelType.SOLID, PixelType.SOLID, PixelType.BORDER, PixelType.BORDER, PixelType.NONE },
         { PixelType.NONE, PixelType.NONE, PixelType.BORDER, PixelType.BORDER, PixelType.BORDER, PixelType.BORDER, PixelType.NONE, PixelType.NONE }
     };
-    
+
+    private readonly Color _color;
     private readonly Vector2 _center;
 
-    public GizmoIcon(Vector2 center, Color color) : base(color) {
+    public GizmoIcon(Vector2 center, Color color) {
+        _color = color;
         _center = center;
     }
 
-    public override void Render(nint renderer, TransformationMatrix worldToScreenMatrix) {
+    public Color GetColor() {
+        return _color;
+    }
+
+    public void Render(nint renderer, TransformationMatrix worldToScreenMatrix) {
         SDL.SDL_GetRenderDrawColor(renderer, out byte r, out byte g, out byte b, out byte a);
         Vector2 centerScreen = worldToScreenMatrix.ConvertPoint(_center);
         for (int x = 0; x < TEMPLATE.GetLength(0); x++) {

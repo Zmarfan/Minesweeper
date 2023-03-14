@@ -6,7 +6,7 @@ namespace Worms.engine.core.gizmos;
 
 public static class Gizmos {
     public static TransformationMatrix matrix;
-    public static readonly Queue<GizmosObject> GIZMOS_OBJECTS = new();
+    public static readonly Queue<IGizmosObject> GIZMOS_OBJECTS = new();
     private static Dictionary<string, GizmoIdDetails> _idDetails = new();
 
     public static void Init(GizmoSettings settings) {
@@ -14,7 +14,10 @@ public static class Gizmos {
     }
     
     public static void DrawLine(Vector2 from, Vector2 to, string id) {
-        AddGizmoWithId(id, c => DrawLine(from, to, c));
+        GetIdDetailsIfPresent(id, out bool show, out Color color);
+        if (show) {
+            DrawLine(from, to, color);
+        }
     }
     
     public static void DrawLine(Vector2 from, Vector2 to, Color color) {
@@ -22,7 +25,10 @@ public static class Gizmos {
     }
     
     public static void DrawRay(Vector2 from, Vector2 direction, string id) {
-        AddGizmoWithId(id, c => DrawRay(from, direction, c));
+        GetIdDetailsIfPresent(id, out bool show, out Color color);
+        if (show) {
+            DrawRay(from, direction, color);
+        }
     }
     
     public static void DrawRay(Vector2 from, Vector2 direction, Color color) {
@@ -30,7 +36,10 @@ public static class Gizmos {
     }
 
     public static void DrawIcon(Vector2 center, string id) {
-        AddGizmoWithId(id, c => DrawIcon(center, c));
+        GetIdDetailsIfPresent(id, out bool show, out Color color);
+        if (show) {
+            DrawIcon(center, color);
+        }
     }
     
     public static void DrawIcon(Vector2 center, Color color) {
@@ -38,7 +47,10 @@ public static class Gizmos {
     }
     
     public static void DrawCircle(Vector2 center, float radius, string id) {
-        AddGizmoWithId(id, c => DrawCircle(center, radius, c));
+        GetIdDetailsIfPresent(id, out bool show, out Color color);
+        if (show) {
+            DrawCircle(center, radius, color);
+        }
     }
     
     public static void DrawCircle(Vector2 center, float radius, Color color) {
@@ -51,7 +63,10 @@ public static class Gizmos {
     }
     
     public static void DrawEllipsis(Vector2 center, Vector2 radius, Rotation rotation, string id) {
-        AddGizmoWithId(id, c => DrawEllipsis(center, radius, rotation, c));
+        GetIdDetailsIfPresent(id, out bool show, out Color color);
+        if (show) {
+            DrawEllipsis(center, radius, rotation, color);
+        }
     }
     
     public static void DrawEllipsis(Vector2 center, Vector2 radius, Rotation rotation, Color color) {
@@ -64,7 +79,10 @@ public static class Gizmos {
     }
     
     public static void DrawRectangle(Vector2 center, Vector2 size, Rotation rotation, string id) {
-        AddGizmoWithId(id, c => DrawRectangle(center, size, rotation, c));
+        GetIdDetailsIfPresent(id, out bool show, out Color color);
+        if (show) {
+            DrawRectangle(center, size, rotation, color);
+        }
     }
     
     public static void DrawRectangle(Vector2 center, Vector2 size, Rotation rotation, Color color) {
@@ -77,7 +95,10 @@ public static class Gizmos {
     }
     
     public static void DrawPolygon(IReadOnlyList<Vector2> points, string id) {
-        AddGizmoWithId(id, c => DrawPolygon(points, c));
+        GetIdDetailsIfPresent(id, out bool show, out Color color);
+        if (show) {
+            DrawPolygon(points, color);
+        }
     }
     
     public static void DrawPolygon(IReadOnlyList<Vector2> points, Color color) {
@@ -89,7 +110,10 @@ public static class Gizmos {
     }
     
     public static void DrawPoint(Vector2 point, string id) {
-        AddGizmoWithId(id, c => DrawPoint(point, c));
+        GetIdDetailsIfPresent(id, out bool show, out Color color);
+        if (show) {
+            DrawPoint(point, color);
+        }
     }
     
     public static void DrawPoint(Vector2 point, Color color) {
@@ -97,20 +121,16 @@ public static class Gizmos {
     }
 
     public static void DrawPoints(IEnumerable<Vector2> points, string id) {
-        AddGizmoWithId(id, c => DrawPoints(points, c));
+        GetIdDetailsIfPresent(id, out bool show, out Color color);
+        if (show) {
+            DrawPoints(points, color);
+        }
     }
     
     public static void DrawPoints(IEnumerable<Vector2> points, Color color) {
         GIZMOS_OBJECTS.Enqueue(new GizmosPoints(points.Select(ToWorld), color));
     }
 
-    private static void AddGizmoWithId(string id, Action<Color> gizmoAdder) {
-        GetIdDetailsIfPresent(id, out bool show, out Color color);
-        if (show) {
-            gizmoAdder.Invoke(color);
-        }
-    }
-    
     private static void GetIdDetailsIfPresent(string id, out bool show, out Color color) {
         show = false;
         color = Color.BLACK;

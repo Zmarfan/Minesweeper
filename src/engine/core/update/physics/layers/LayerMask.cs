@@ -29,16 +29,11 @@ public static class LayerMask {
     }
 
     public static bool CanLayersInteract(int layer1, int layer2) {
-        return (CreateMask(layer1) & COLLISION_MASK_BY_LAYER[layer2]) != 0;
+        return (1 << layer1 & COLLISION_MASK_BY_LAYER[layer2]) != 0;
     }
     
     public static int CreateMask(params int[] layers) {
-        int mask = 0;
-        foreach (int layer in layers) {
-            mask |= 1 << layer;
-        }
-
-        return mask;
+        return layers.Aggregate(0, (current, layer) => current | 1 << layer);
     }
     
     public static int CreateMask(params string[] layerNames) {

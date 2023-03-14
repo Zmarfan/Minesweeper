@@ -63,8 +63,7 @@ public class GameObjectHandler {
         HashSet<GameObject> allActiveGameObjects = GetAllGameObjectsFromGameObject(gameObject, true).ToHashSet();
         allGameObjects.ForEach(obj => {
             bool isWorld = obj.Transform.GetRoot() == _worldRoot.Transform;
-            TrackObject trackObject = new(isWorld, allActiveGameObjects.Contains(obj));
-            trackObject.toggleComponents.AddRange(obj.components.OfType<ToggleComponent>());
+            TrackObject trackObject = new(isWorld, allActiveGameObjects.Contains(obj), obj.components.OfType<ToggleComponent>().ToList());
             objects.Add(obj, trackObject);
         });
     }
@@ -99,7 +98,7 @@ public class GameObjectHandler {
     private void DestroyComponent(ToggleComponent component) {
         component.OnDestroy();
         component.gameObject.components.Remove(component);
-        objects[component.gameObject].toggleComponents.Remove(component);
+        objects[component.gameObject].RemoveComponent(component);
     }
 
     private static IEnumerable<GameObject> GetAllGameObjectsFromGameObject(GameObject gameObject, bool active) {

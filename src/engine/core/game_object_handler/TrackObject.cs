@@ -10,16 +10,29 @@ namespace Worms.engine.core.game_object_handler;
 public class TrackObject {
     public readonly bool isWorld;
     public bool isActive;
-    public readonly List<ToggleComponent> toggleComponents = new();
-    public Collider? Collider => toggleComponents.OfType<Collider>().FirstOrDefault();
-    public IEnumerable<RenderComponent> TextureRenderers => toggleComponents.OfType<RenderComponent>();
-    public IEnumerable<Script> Scripts => toggleComponents.OfType<Script>();
+    public readonly List<ToggleComponent> toggleComponents;
+    public Collider? Collider { get; private set; } = null!;
+    public IEnumerable<RenderComponent> TextureRenderers { get; private set; } = null!;
+    public IEnumerable<Script> Scripts { get; private set; } = null!;
 
     public bool MouseInsideTrigger { get; set; }
     public HashSet<Collider> CollidersInsideTrigger { get; set; } = new();
     
-    public TrackObject(bool isWorld, bool isActive) {
+    public TrackObject(bool isWorld, bool isActive, List<ToggleComponent> toggleComponents) {
         this.isWorld = isWorld;
         this.isActive = isActive;
+        this.toggleComponents = toggleComponents;
+        SetSpecificComponents();
+    }
+
+    public void RemoveComponent(ToggleComponent component) {
+        toggleComponents.Remove(component);
+        SetSpecificComponents();
+    }
+    
+    private void SetSpecificComponents() {
+        Collider = toggleComponents.OfType<Collider>().FirstOrDefault();
+        TextureRenderers = toggleComponents.OfType<RenderComponent>();
+        Scripts = toggleComponents.OfType<Script>();
     }
 }
