@@ -19,7 +19,7 @@ public class Asteroid : Script {
     private readonly Vector2 _velocity;
     private readonly float _angularVelocity;
     
-    public Asteroid(Vector2 velocity, float angularVelocity) : base(true) {
+    private Asteroid(Vector2 velocity, float angularVelocity) : base(true) {
         _velocity = velocity;
         _angularVelocity = angularVelocity;
     }
@@ -33,13 +33,11 @@ public class Asteroid : Script {
         return parent.AddChild("asteroid1")
             .SetTag("asteroid")
             .SetPosition(position)
-            .SetComponent(new RigidBody(true))
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(details.textureId)).Build())
             .SetComponent(new PolygonCollider(true, details.polygonVertices, ColliderState.TRIGGER, Vector2.Zero()))
             .SetComponent(new Asteroid(velocity, angularVelocity))
             .Build()
                 .Transform.AddChild("playAreaContainer")
-                .SetComponent(new RigidBody(true))
                 .SetLayer(LayerNames.PLAY_AREA_OBJECT)
                 .SetComponent(new PolygonCollider(true, details.polygonVertices, ColliderState.TRIGGERING_COLLIDER, Vector2.Zero()))
                 .Build()

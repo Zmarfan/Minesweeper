@@ -11,7 +11,6 @@ public class TrackObject {
     public readonly bool isWorld;
     public bool isActive;
     public readonly List<ToggleComponent> toggleComponents = new();
-    public RigidBody? RigidBody => toggleComponents.OfType<RigidBody>().FirstOrDefault();
     public Collider? Collider => toggleComponents.OfType<Collider>().FirstOrDefault();
     public IEnumerable<RenderComponent> TextureRenderers => toggleComponents.OfType<RenderComponent>();
     public IEnumerable<Script> Scripts => toggleComponents.OfType<Script>();

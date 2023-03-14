@@ -9,6 +9,8 @@ using Worms.game.asteroids.asteroids;
 namespace Worms.game.asteroids.camera; 
 
 public class PlayArea : Script {
+    private const float PLAY_AREA_BORDER = 15f;
+    
     private BoxCollider _boxCollider = null!;
     
     public PlayArea() : base(true) {
@@ -46,6 +48,6 @@ public class PlayArea : Script {
     }
 
     private void ResolutionChanged(Vector2Int resolution) {
-        _boxCollider.size = new Vector2(resolution.x, resolution.y) * Camera.Main.Size;
+        _boxCollider.size = new Vector2(resolution.x + PLAY_AREA_BORDER, resolution.y + PLAY_AREA_BORDER) * Camera.Main.Size;
     }
 }

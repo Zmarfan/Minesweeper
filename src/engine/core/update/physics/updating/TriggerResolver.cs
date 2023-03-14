@@ -42,7 +42,6 @@ public static class TriggerResolver {
             if (!checkObj.isActive
                 || obj.Collider.gameObject == gameObject
                 || !LayerMask.CanLayersInteract(obj.Collider.gameObject.Layer, gameObject.Layer)
-                || (obj.RigidBody == null && checkObj.RigidBody == null)
                 || checkObj.Collider is not { IsActive: true }
                 || checkObj.Collider.state != ColliderState.TRIGGERING_COLLIDER
                ) {
