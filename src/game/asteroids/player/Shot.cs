@@ -8,7 +8,7 @@ using Worms.engine.game_object.scripts;
 namespace Worms.game.asteroids.player; 
 
 public class Shot : Script {
-    private const float SPEED = 1250;
+    private const float SPEED = 1500;
     private const float LIFE_TIME = 1.5f;
 
     private readonly Vector2 _direction;

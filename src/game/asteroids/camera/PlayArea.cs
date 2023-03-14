@@ -1,4 +1,5 @@
 ﻿using Worms.engine.camera;
+using Worms.engine.core.cursor;
 using Worms.engine.core.window;
 using Worms.engine.data;
 using Worms.engine.game_object;
@@ -19,15 +20,21 @@ public class PlayArea : Script {
     public override void Awake() {
         _boxCollider = GetComponent<BoxCollider>();
         
-        Camera.Main.Size = 2;
+        Camera.Main.Size = 2f;
         ResolutionChanged(WindowManager.CurrentResolution);
         WindowManager.ResolutionChangedEvent += ResolutionChanged;
 
-        for (int i = 0; i < 50; i++) {
-            GameObject asteroid = Asteroid.Create(Transform.GetRoot(), AsteroidType.BIG, new Vector2(100, 100));
-            Transform.Instantiate(asteroid);
+        Cursor.SetActive(true);
+        for (int i = 0; i < 20; i++) {
+            GameObject big = Asteroid.Create(Transform.GetRoot(), AsteroidType.BIG, new Vector2(0, 0));
+            Transform.Instantiate(big);
+            
+            GameObject medium = Asteroid.Create(Transform.GetRoot(), AsteroidType.MEDIUM, new Vector2(0, 0));
+            Transform.Instantiate(medium);
+            
+            GameObject small = Asteroid.Create(Transform.GetRoot(), AsteroidType.SMALL, new Vector2(0, 0));
+            Transform.Instantiate(small);
         }
-
     }
 
     public override void OnTriggerExit(Collider collider) {
