@@ -19,4 +19,7 @@ public abstract class Component : Object {
     public T AddComponent<T>(T component) where T : ToggleComponent {
         return gameObject.AddComponent(component);
     }
+
+    public virtual void OnDestroy() {
+    }
 }

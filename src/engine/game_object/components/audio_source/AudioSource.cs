@@ -89,4 +89,8 @@ public class AudioSource : Script {
             Play();
         }
     }
+
+    public override void OnDestroy() {
+        Stop();
+    }
 }

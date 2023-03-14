@@ -90,12 +90,14 @@ public class GameObjectHandler {
         GetAllGameObjectsFromGameObject(gameObject, false)
             .ToList()
             .ForEach(obj => {
+                obj.components.ForEach(component => component.OnDestroy());
                 gameObject.Transform.Parent!.children.Remove(gameObject.Transform);
                 objects.Remove(obj);
             });
     }
     
     private void DestroyComponent(ToggleComponent component) {
+        component.OnDestroy();
         component.gameObject.components.Remove(component);
         objects[component.gameObject].toggleComponents.Remove(component);
     }
