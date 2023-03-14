@@ -1,13 +1,15 @@
 ﻿using Worms.engine.data;
 using Worms.engine.game_object;
+using Worms.engine.game_object.components.physics;
+using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.engine.game_object.scripts;
 
 namespace Worms.game.asteroids.player; 
 
 public class Shot : Script {
-    private const float SPEED = 850;
-    private const float LIFE_TIME = 1;
+    private const float SPEED = 1250;
+    private const float LIFE_TIME = 1.5f;
 
     private readonly Vector2 _direction;
     private readonly float _initialSpeed;
@@ -30,11 +32,17 @@ public class Shot : Script {
         Transform.Position += _direction * (SPEED + _initialSpeed) * deltaTime;
     }
 
-    public static GameObjectBuilder Create(Vector2 position, Vector2 direction, float initialSpeed) {
-        return GameObjectBuilder
-            .Builder("shot")
+    public static GameObject Create(Transform parent, Vector2 position, Vector2 direction, float initialSpeed) {
+        return parent.AddChild("shot")
             .SetPosition(position)
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(TextureNames.SHOT)).Build())
-            .SetComponent(new Shot(direction, initialSpeed));
+            .SetComponent(new Shot(direction, initialSpeed))
+            .Build()
+                .Transform.AddChild("playAreaContainer")
+                .SetComponent(new RigidBody(true))
+                .SetLayer(LayerNames.PLAY_AREA_OBJECT)
+                .SetComponent(new BoxCollider(true, ColliderState.TRIGGERING_COLLIDER, new Vector2(20, 20), Vector2.Zero()))
+                .Build()
+            .Transform.Parent!.gameObject;
     }
 }

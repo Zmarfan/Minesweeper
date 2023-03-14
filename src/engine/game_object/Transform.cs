@@ -7,7 +7,7 @@ public class Transform : Component {
     public delegate void GameObjectInstantiate(GameObject gameObject);
     public static event GameObjectInstantiate? GameObjectInstantiateEvent;
     
-    public Transform? Parent { get; }
+    public Transform? Parent { get; private set; }
 
     public Vector2 LocalPosition {
         get => _localPosition;
@@ -123,6 +123,10 @@ public class Transform : Component {
         GameObject go = builder.Build();
         GameObjectInstantiateEvent?.Invoke(go);
         return go;
+    }
+    
+    public static void Instantiate(GameObject obj) {
+        GameObjectInstantiateEvent?.Invoke(obj);
     }
 
     public GameObject? FindByName(string name) {

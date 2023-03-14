@@ -230,16 +230,16 @@ public static class Scene1 {
     private static GameObject CreateScreenRoot() {
         return GameObjectBuilder.Root()
             .Transform.AddChild("bottom-left")
-            .SetComponent(new ScreenPivot(new Vector2(0, 0), true))
+            .SetComponent(new ScreenPivot( new Vector2Int(0, 0), true))
             .Build()
             .Transform.AddSibling("top-left")
-            .SetComponent(new ScreenPivot(new Vector2(0, 1), true))
+            .SetComponent(new ScreenPivot(new Vector2Int(0, 1), true))
             .Build()
             .Transform.AddSibling("top-right")
-            .SetComponent(new ScreenPivot(new Vector2(1, 1), true))
+            .SetComponent(new ScreenPivot(new Vector2Int(1, 1), true))
             .Build()
             .Transform.AddSibling("bottom-right")
-            .SetComponent(new ScreenPivot(new Vector2(1, 0), true))
+            .SetComponent(new ScreenPivot(new Vector2Int(1, 0), true))
             .Build()
             .Transform.GetRoot().gameObject;
     }

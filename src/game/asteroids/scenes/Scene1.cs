@@ -19,7 +19,10 @@ public static class Scene1 {
     private static GameObject CreateWorldRoot() {
         return GameObjectBuilder.Root()
             .Transform.AddChild("gameController")
-            .SetComponent(new CameraInit())
+            .SetLayer(LayerNames.PLAY_AREA_OBJECT)
+            .SetComponent(new RigidBody(true))
+            .SetComponent(new BoxCollider(true, ColliderState.TRIGGER, Vector2.One(), Vector2.Zero()))
+            .SetComponent(new PlayArea())
             .Build()
             .Transform.AddChild("player")
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateMultiple("player", 0, 0, 1, 2)).Build())
@@ -27,22 +30,27 @@ public static class Scene1 {
             .SetComponent(new PolygonCollider(true, PlayerMovement.COLLIDER_VERTICES, ColliderState.TRIGGER, Vector2.Zero()))
             .SetComponent(new PlayerMovement())
             .Build()
+                .Transform.AddChild("playAreaContainer")
+                .SetComponent(new RigidBody(true))
+                .SetLayer(LayerNames.PLAY_AREA_OBJECT)
+                .SetComponent(new BoxCollider(true, ColliderState.TRIGGERING_COLLIDER, new Vector2(80, 80), Vector2.Zero()))
+                .Build()
             .Transform.GetRoot().gameObject;
     }
 
     private static GameObject CreateScreenRoot() {
         return GameObjectBuilder.Root()
             .Transform.AddChild("bottom-left")
-            .SetComponent(new ScreenPivot(new Vector2(0, 0), true))
+            .SetComponent(new ScreenPivot(new Vector2Int(0, 0), true))
             .Build()
             .Transform.AddSibling("top-left")
-            .SetComponent(new ScreenPivot(new Vector2(0, 1), true))
+            .SetComponent(new ScreenPivot(new Vector2Int(0, 1), true))
             .Build()
             .Transform.AddSibling("top-right")
-            .SetComponent(new ScreenPivot(new Vector2(1, 1), true))
+            .SetComponent(new ScreenPivot(new Vector2Int(1, 1), true))
             .Build()
             .Transform.AddSibling("bottom-right")
-            .SetComponent(new ScreenPivot(new Vector2(1, 0), true))
+            .SetComponent(new ScreenPivot(new Vector2Int(1, 0), true))
             .Build()
             .Transform.GetRoot().gameObject;
     }

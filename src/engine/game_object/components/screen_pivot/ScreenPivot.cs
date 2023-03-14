@@ -5,10 +5,10 @@ using Worms.engine.game_object.scripts;
 namespace Worms.engine.game_object.components.screen_pivot; 
 
 public class ScreenPivot : Script {
-    private readonly Vector2 _pivot;
-    private Vector2 _oldResolution;
+    private readonly Vector2Int _pivot;
+    private Vector2Int _oldResolution;
     
-    public ScreenPivot(Vector2 pivot, bool isActive) : base(isActive) {
+    public ScreenPivot(Vector2Int pivot, bool isActive) : base(isActive) {
         _pivot = pivot;
     }
 
@@ -24,7 +24,8 @@ public class ScreenPivot : Script {
         }
     }
 
-    private void SetPivot(Vector2 resolution) {
-        Transform.Position = resolution / -2 + resolution * _pivot;
+    private void SetPivot(Vector2Int resolution) {
+        Vector2Int position = resolution / -2 + resolution * _pivot;
+        Transform.Position = new Vector2(position.x, position.y);
     }
 }

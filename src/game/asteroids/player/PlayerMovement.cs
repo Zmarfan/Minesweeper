@@ -42,7 +42,7 @@ public class PlayerMovement : Script {
 
         if (Input.GetButtonDown(InputNames.FIRE)) {
             float initialSpeed = Vector2.Dot(_velocity, Transform.Right);
-            Transform.GetRoot().Instantiate(Shot.Create(ShotSpawnPosition, Transform.Right, initialSpeed * THRUST_SPEED));
+            Transform.Instantiate(Shot.Create(Transform.GetRoot(), ShotSpawnPosition, Transform.Right, initialSpeed * THRUST_SPEED));
         }
     }
 

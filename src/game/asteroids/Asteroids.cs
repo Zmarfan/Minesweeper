@@ -23,8 +23,8 @@ public static class Asteroids {
                 new AudioChannel("music", Volume.Max())
             )))
             .SetDebugMode()
-            .SetWindowWidth(1200)
-            .SetWindowHeight(800)
+            .SetWindowWidth(1280)
+            .SetWindowHeight(720)
             .AddScenes(ListUtils.Of(Scene1.GetScene()))
             .AddInputListeners(ListUtils.Of(
                 InputListenerBuilder
@@ -42,12 +42,14 @@ public static class Asteroids {
             ))
             .SetPhysics(PhysicsSettingsBuilder
                 .Builder(ListUtils.Of(LayerMask.DEFAULT), ListUtils.Of(LayerMask.IGNORE_RAYCAST))
+                .AddLayer(LayerNames.PLAY_AREA_OBJECT, ListUtils.Of(LayerNames.PLAY_AREA_OBJECT))
                 .Build()
             )
             .SetCursorSettings(new CursorSettings(false, new CustomCursorSettings(Path("test\\cursor.png"))))
             .SetGizmoSettings(GizmoSettingsBuilder
                 .Builder()
-                .ShowBoundingBoxes(true)
+                .ShowColliders(false)
+                .ShowBoundingBoxes(false)
                 .ShowPolygonTriangles(true)
                 .Build()
             )
