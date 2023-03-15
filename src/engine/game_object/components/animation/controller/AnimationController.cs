@@ -15,6 +15,10 @@ public class AnimationController : Script {
         _animationsByTriggers = animationsWithTriggers.ToDictionary(a => a.Item1, a => a.Item2);
         _currentAnimation = startAnimation;
     }
+    
+    public void Stop() {
+        _currentAnimation = null;
+    }
 
     public void SetTrigger(string trigger) {
         if (!_animationsByTriggers.ContainsKey(trigger)) {

@@ -24,7 +24,6 @@ public class PlayArea : Script {
         ResolutionChanged(WindowManager.CurrentResolution);
         WindowManager.ResolutionChangedEvent += ResolutionChanged;
 
-        Cursor.SetActive(true);
         for (int i = 0; i < 20; i++) {
             GameObject big = Asteroid.Create(Transform.GetRoot(), AsteroidType.BIG, new Vector2(0, 0));
             Transform.Instantiate(big);

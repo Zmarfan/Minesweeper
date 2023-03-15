@@ -48,11 +48,6 @@ public class Asteroid : Script {
     public override void Update(float deltaTime) {
         Transform.Position += _velocity * deltaTime;
         Transform.Rotation += _angularVelocity * deltaTime;
-        
-        
-        if (Input.GetKeyDown(Button.LEFT_MOUSE)) {
-            Console.WriteLine(Transform.WorldToLocalMatrix.ConvertPoint(Input.MouseWorldPosition));
-        }
     }
 
     public override void OnTriggerEnter(Collider collider) {

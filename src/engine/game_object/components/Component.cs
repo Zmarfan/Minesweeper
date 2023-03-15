@@ -17,6 +17,7 @@ public abstract class Component : Object {
     }
     
     public T AddComponent<T>(T component) where T : ToggleComponent {
+        component.InitComponent(gameObject);
         return gameObject.AddComponent(component);
     }
 
