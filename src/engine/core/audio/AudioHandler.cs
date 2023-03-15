@@ -24,12 +24,7 @@ public class AudioHandler {
             throw new Exception($"Unable to allocate audio channels due to: {SDL_mixer.Mix_GetError()}");
         }
         
-        SDL_mixer.Mix_ChannelFinished(static trackChannel => {
-            KeyValuePair<string, PlayingSound> entry = _self._playingSounds
-                .First(entry => entry.Value.track == trackChannel);
-            _self._playingSounds.Remove(entry.Key);
-            entry.Value.audioFinishCallback.Invoke();
-        });
+        SDL_mixer.Mix_ChannelFinished(AudioFinishCallback);
         
         foreach (AssetDeclaration declaration in declarations) {
             LoadAudio(declaration);
@@ -120,5 +115,12 @@ public class AudioHandler {
             throw new ArgumentException($"Unable to load the provided sound: {declaration} due to: {SDL_mixer.Mix_GetError()}");
         }
         _loadedSounds.Add(declaration.id, chunk);
+    }
+    
+    private static void AudioFinishCallback(int channel) {
+        KeyValuePair<string, PlayingSound> entry = _self._playingSounds
+            .First(entry => entry.Value.track == channel);
+        _self._playingSounds.Remove(entry.Key);
+        entry.Value.audioFinishCallback.Invoke();
     }
 }

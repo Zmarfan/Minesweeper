@@ -22,9 +22,9 @@ public static class ParticleFactory {
     ) {
         GameObjectBuilder builder = GameObjectBuilder
             .Builder("particle")
-            .SetPosition(startPosition)
-            .SetScale(startSize)
-            .SetRotation(startRotation)
+            .SetLocalPosition(startPosition)
+            .SetLocalScale(startSize)
+            .SetLocalRotation(startRotation)
             .SetComponent(new ParticleScript(localSpace, lifeTime, rotationVelocity, moveDirection, force))
             .SetComponent(new TextureRenderer(true, renderer.texture, renderer.sortingLayer, renderer.orderInLayer, Color.WHITE, renderer.flipX, renderer.flipY));
 

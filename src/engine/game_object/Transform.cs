@@ -98,12 +98,35 @@ public class Transform : Component {
     private bool _isDirty = true;
     private bool _isInverseDirty = true;
 
-    public Transform(Transform? parent, Vector2 localPosition, Rotation localRotation, Vector2 localScale) {
-        Parent = parent;
-        LocalPosition = localPosition;
-        LocalRotation = localRotation;
-        LocalScale = localScale;
+    public Transform(
+        Transform? parent,
+        Vector2 position,
+        Rotation rotation,
+        Vector2 scale,
+        bool positionLocal,
+        bool rotationLocal,
+        bool scaleLocal
+    ) {
         parent?.SetChild(this);
+        Parent = parent;
+        if (positionLocal) {
+            LocalPosition = position;
+        }
+        else {
+            Position = position;
+        }
+        if (rotationLocal) {
+            LocalRotation = rotation;
+        }
+        else {
+            Rotation = rotation;
+        }
+        if (scaleLocal) {
+            LocalScale = scale;
+        }
+        else {
+            Scale = scale;
+        }
     }
 
     public Transform GetRoot() {

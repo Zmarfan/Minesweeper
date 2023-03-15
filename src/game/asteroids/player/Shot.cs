@@ -33,8 +33,8 @@ public class Shot : Script {
         Transform.Position += _direction * (SPEED + _initialSpeed) * deltaTime;
     }
 
-    public static GameObject Create(Transform parent, Vector2 position, Vector2 direction, float initialSpeed) {
-        return parent.AddChild("shot")
+    public static void Create(Transform parent, Vector2 position, Vector2 direction, float initialSpeed) {
+        GameObject obj = parent.AddChild("shot")
             .SetLayer(LayerNames.SHOT)
             .SetTag(TagNames.SHOT)
             .SetPosition(position)
@@ -47,5 +47,6 @@ public class Shot : Script {
                 .SetComponent(new BoxCollider(true, ColliderState.TRIGGER, new Vector2(20, 20), Vector2.Zero()))
                 .Build()
             .Transform.Parent!.gameObject;
+        Transform.Instantiate(obj);
     }
 }

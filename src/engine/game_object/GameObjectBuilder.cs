@@ -9,8 +9,11 @@ public class GameObjectBuilder {
     private string _tag = "default";
     private string _layer = LayerMask.DEFAULT;
     private Transform? _parent;
+    private bool _positionLocal = true;
     private Vector2 _position = Vector2.Zero();
+    private bool _rotationLocal = true;
     private Rotation _rotation = Rotation.Identity();
+    private bool _scaleLocal = true;
     private Vector2 _scale = Vector2.One();
     private bool _isActive = true;
     private readonly List<Component> _components = new();
@@ -21,7 +24,7 @@ public class GameObjectBuilder {
     }
 
     public GameObject Build() {
-        Transform transform = new(_parent, _position, _rotation, _scale);
+        Transform transform = new(_parent, _position, _rotation, _scale, _positionLocal, _rotationLocal, _scaleLocal);
         _components.Add(transform);
         GameObject gameObject = new(_name, _tag, LayerMask.NameToLayer(_layer), _isActive, _components);
         _components.ForEach(component => component.InitComponent(gameObject));
@@ -50,23 +53,39 @@ public class GameObjectBuilder {
         return this;
     }
     
+    public GameObjectBuilder SetLocalPosition(Vector2 position) {
+        _position = position;
+        _positionLocal = true;
+        return this;
+    }
+
+    public GameObjectBuilder SetLocalRotation(Rotation rotation) {
+        _rotation = rotation;
+        _rotationLocal = true;
+        return this;
+    }
+
+    public GameObjectBuilder SetLocalScale(Vector2 scale) {
+        _scale = scale;
+        _scaleLocal = false;
+        return this;
+    }
+    
     public GameObjectBuilder SetPosition(Vector2 position) {
         _position = position;
+        _positionLocal = false;
         return this;
     }
 
     public GameObjectBuilder SetRotation(Rotation rotation) {
         _rotation = rotation;
+        _rotationLocal = false;
         return this;
     }
 
     public GameObjectBuilder SetScale(Vector2 scale) {
         _scale = scale;
-        return this;
-    }
-    
-    public GameObjectBuilder SetScale(float scale) {
-        _scale = new Vector2(scale, scale);
+        _scaleLocal = false;
         return this;
     }
 

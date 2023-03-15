@@ -1,9 +1,5 @@
-﻿using Worms.engine.core.cursor;
-using Worms.engine.core.input;
-using Worms.engine.core.input.listener;
-using Worms.engine.data;
+﻿using Worms.engine.data;
 using Worms.engine.game_object;
-using Worms.engine.game_object.components.physics;
 using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.engine.game_object.scripts;
@@ -31,7 +27,7 @@ public class Asteroid : Script {
         Vector2 velocity = CalculateInitialVelocity(generalDetails);
         float angularVelocity = RandomUtil.GetRandomValueBetweenTwoValues(RANDOM, -MAX_ANGULAR_VELOCITY, MAX_ANGULAR_VELOCITY);
 
-        return parent.AddChild("asteroid1")
+        GameObject obj = parent.AddChild("asteroid")
             .SetLayer(LayerNames.ASTEROID)
             .SetPosition(position)
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(details.textureId)).Build())
@@ -43,6 +39,8 @@ public class Asteroid : Script {
                 .SetComponent(new PolygonCollider(true, details.polygonVertices, ColliderState.TRIGGERING_COLLIDER, Vector2.Zero()))
                 .Build()
             .Transform.Parent!.gameObject;
+        Transform.Instantiate(obj);
+        return obj;
     }
 
     public override void Update(float deltaTime) {
