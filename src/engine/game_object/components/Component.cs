@@ -12,6 +12,10 @@ public abstract class Component : Object {
         return gameObject.GetComponent<T>();
     }
     
+    public List<T> GetComponents<T>() where T : Component {
+        return gameObject.GetComponents<T>();
+    }
+    
     public bool TryGetComponent<T>(out T component) where T : Component {
         return gameObject.TryGetComponent(out component);
     }

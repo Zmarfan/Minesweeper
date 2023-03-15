@@ -23,6 +23,14 @@ public class AudioHandler {
         if (SDL_mixer.Mix_AllocateChannels(MAX_TRACKS) != MAX_TRACKS) {
             throw new Exception($"Unable to allocate audio channels due to: {SDL_mixer.Mix_GetError()}");
         }
+        
+        SDL_mixer.Mix_ChannelFinished(static trackChannel => {
+            KeyValuePair<string, PlayingSound> entry = _self._playingSounds
+                .First(entry => entry.Value.track == trackChannel);
+            _self._playingSounds.Remove(entry.Key);
+            entry.Value.audioFinishCallback.Invoke();
+        });
+        
         foreach (AssetDeclaration declaration in declarations) {
             LoadAudio(declaration);
         }
@@ -54,13 +62,7 @@ public class AudioHandler {
             throw new Exception($"Unable to play another sound as all channels are occupied, increase? {SDL_mixer.Mix_GetError()}");
         }
         SetChannelVolume(track, CalculateVolume(channel, audioVolume));
-        // This can not be made into a local function, it will be garbage collected then
-        SDL_mixer.ChannelFinishedDelegate finishedCallback = _ => {
-            _self._playingSounds.Remove(callerId);
-            audioFinishCallback.Invoke();
-        };
-        SDL_mixer.Mix_ChannelFinished(finishedCallback);
-        _self._playingSounds.Add(callerId, new PlayingSound(track, channel, audioVolume, finishedCallback));
+        _self._playingSounds.Add(callerId, new PlayingSound(track, channel, audioVolume, audioFinishCallback));
     }
 
     public static void Pause(string callerId) {

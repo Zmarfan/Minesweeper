@@ -47,6 +47,10 @@ public class GameObject : Object {
         }
     }
     
+    public List<T> GetComponents<T>() where T : Component {
+        return components.Where(static component => component is T).Select(component => (T)component).ToList();
+    }
+    
     public bool TryGetComponent<T>(out T component) where T : Component {
         if (!components.Any(static component => component is T)) {
             component = default!;

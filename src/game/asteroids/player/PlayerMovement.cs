@@ -13,7 +13,9 @@ using Worms.game.asteroids.names;
 namespace Worms.game.asteroids.player; 
 
 public class PlayerMovement : Script {
-    public static readonly string THRUST_ANIMATION_TRIGGER = "thrust";
+    public const string THRUST_ANIMATION_TRIGGER = "thrust";
+    public const string THRUST_AUDIO_SOURCE = "thrust";
+    public const string FIRE_AUDIO_SOURCE = "fire";
     public static readonly Vector2[] COLLIDER_VERTICES = { new(-15, 12), new(25, 0), new(-15, -12) };
     
     private const float ROTATE_SPEED = 100;
@@ -23,6 +25,7 @@ public class PlayerMovement : Script {
     
     private AnimationController _animationController = null!;
     private AudioSource _thrustAudioSource = null!;
+    private AudioSource _fireAudioSource = null!;
     
     private Vector2 _velocity = Vector2.Zero();
 
@@ -36,25 +39,19 @@ public class PlayerMovement : Script {
 
     public override void Awake() {
         _animationController = GetComponent<AnimationController>();
-        _thrustAudioSource = GetComponent<AudioSource>();
+        List<AudioSource> audioSources = GetComponents<AudioSource>();
+        _thrustAudioSource = audioSources.First(source => source.sourceName == THRUST_AUDIO_SOURCE);
+        _fireAudioSource = audioSources.First(source => source.sourceName == FIRE_AUDIO_SOURCE);
     }
 
     public override void Update(float deltaTime) {
         _rotateAmount += Input.GetAxis(InputNames.ROTATE).x;
         _thrust += Input.GetAxis(InputNames.THRUST).x;
 
-        if (Input.GetButtonDown(InputNames.THRUST)) {
-            _animationController.SetTrigger(THRUST_ANIMATION_TRIGGER);
-            _thrustAudioSource.loop = true;
-            _thrustAudioSource.Play();
-        }
-
-        if (Input.GetButtonUp(InputNames.THRUST)) {
-            _animationController.Stop();
-            _thrustAudioSource.loop = false;
-        }
+        HandleThrust();
 
         if (Input.GetButtonDown(InputNames.FIRE)) {
+            _fireAudioSource.Restart();
             float initialSpeed = Vector2.Dot(_velocity, Transform.Right);
             Transform.Instantiate(Shot.Create(Transform.GetRoot(), ShotSpawnPosition, Transform.Right, initialSpeed * THRUST_SPEED));
         }
@@ -74,5 +71,18 @@ public class PlayerMovement : Script {
         
         _rotateAmount = 0;
         _thrust = 0;
+    }
+    
+    private void HandleThrust() {
+        if (Input.GetButtonDown(InputNames.THRUST)) {
+            _animationController.SetTrigger(THRUST_ANIMATION_TRIGGER);
+            _thrustAudioSource.loop = true;
+            _thrustAudioSource.Play();
+        }
+
+        if (Input.GetButtonUp(InputNames.THRUST)) {
+            _animationController.Stop();
+            _thrustAudioSource.loop = false;
+        }
     }
 }

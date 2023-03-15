@@ -38,8 +38,14 @@ public static class Scene1 {
             .SetComponent(new PlayerMovement())
             .SetComponent(AudioSourceBuilder
                 .Builder(SoundNames.THRUST, ChannelNames.EFFECTS)
+                .SetSourceName(PlayerMovement.THRUST_AUDIO_SOURCE)
                 .SetPlayOnAwake(false)
-                .SetLoop(true)
+                .Build()
+            )
+            .SetComponent(AudioSourceBuilder
+                .Builder(SoundNames.FIRE, ChannelNames.EFFECTS)
+                .SetSourceName(PlayerMovement.FIRE_AUDIO_SOURCE)
+                .SetPlayOnAwake(false)
                 .Build()
             )
             .SetComponent(AnimationControllerBuilder
