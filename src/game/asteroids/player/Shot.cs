@@ -16,7 +16,7 @@ public class Shot : Script {
     private readonly float _initialSpeed;
     private readonly ClockTimer _lifeTimer;
 
-    private Shot(Vector2 direction, float initialSpeed) : base(true) {
+    public Shot(Vector2 direction, float initialSpeed) : base(true) {
         _direction = direction;
         _initialSpeed = initialSpeed;
         _lifeTimer = new ClockTimer(LIFE_TIME);
@@ -31,22 +31,5 @@ public class Shot : Script {
 
     public override void FixedUpdate(float deltaTime) {
         Transform.Position += _direction * (SPEED + _initialSpeed) * deltaTime;
-    }
-
-    public static void Create(Transform parent, Vector2 position, Vector2 direction, float initialSpeed) {
-        GameObject obj = parent.AddChild("shot")
-            .SetLayer(LayerNames.SHOT)
-            .SetTag(TagNames.SHOT)
-            .SetPosition(position)
-            .SetComponent(new CircleCollider(true, ColliderState.TRIGGERING_COLLIDER, 7, Vector2.Zero()))
-            .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(TextureNames.SHOT)).Build())
-            .SetComponent(new Shot(direction, initialSpeed))
-            .Build()
-                .Transform.AddChild("playAreaContainer")
-                .SetLayer(LayerNames.PLAY_AREA_OBJECT)
-                .SetComponent(new BoxCollider(true, ColliderState.TRIGGER, new Vector2(20, 20), Vector2.Zero()))
-                .Build()
-            .Transform.Parent!.gameObject;
-        Transform.Instantiate(obj);
     }
 }
