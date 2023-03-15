@@ -1,13 +1,8 @@
 ﻿using Worms.engine.core.input;
 using Worms.engine.data;
-using Worms.engine.game_object;
-using Worms.engine.game_object.components.animation.animation;
-using Worms.engine.game_object.components.animation.composition;
 using Worms.engine.game_object.components.animation.controller;
 using Worms.engine.game_object.components.audio_source;
-using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.engine.game_object.scripts;
-using Worms.engine.helper;
 using Worms.game.asteroids.names;
 
 namespace Worms.game.asteroids.player; 

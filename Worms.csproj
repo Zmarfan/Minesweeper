@@ -214,6 +214,10 @@
       <Content Include="src\assets\asteroids\sounds\thrust.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="src\assets\asteroids\textures\fragment.png" />
+      <Content Include="src\assets\asteroids\textures\fragment.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

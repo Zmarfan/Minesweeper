@@ -16,10 +16,10 @@ public static class ShotFactory {
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(TextureNames.SHOT)).Build())
             .SetComponent(new Shot(direction, initialSpeed))
             .Build()
-            .Transform.AddChild("playAreaContainer")
-            .SetLayer(LayerNames.PLAY_AREA_OBJECT)
-            .SetComponent(new BoxCollider(true, ColliderState.TRIGGER, new Vector2(20, 20), Vector2.Zero()))
-            .Build()
+                .Transform.AddChild("playAreaContainer")
+                .SetLayer(LayerNames.PLAY_AREA_OBJECT)
+                .SetComponent(new BoxCollider(true, ColliderState.TRIGGERING_COLLIDER, new Vector2(20, 20), Vector2.Zero()))
+                .Build()
             .Transform.Parent!.gameObject;
         Transform.Instantiate(obj);
     }

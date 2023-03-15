@@ -24,10 +24,8 @@ public class PlayArea : Script {
         ResolutionChanged(WindowManager.CurrentResolution);
         WindowManager.ResolutionChangedEvent += ResolutionChanged;
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 10; i++) {
             AsteroidFactory.Create(Transform.GetRoot(), AsteroidType.BIG, new Vector2(0, 0));
-            AsteroidFactory.Create(Transform.GetRoot(), AsteroidType.MEDIUM, new Vector2(0, 0));
-            AsteroidFactory.Create(Transform.GetRoot(), AsteroidType.SMALL, new Vector2(0, 0));
         }
     }
 

@@ -23,7 +23,7 @@ public static class AsteroidFactory {
             .SetPosition(position)
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(details.textureId)).Build())
             .SetComponent(new PolygonCollider(true, details.polygonVertices, ColliderState.TRIGGER, Vector2.Zero()))
-            .SetComponent(new Asteroid(velocity, angularVelocity))
+            .SetComponent(new Asteroid(velocity, angularVelocity, type))
             .Build()
             .Transform.AddChild("playAreaContainer")
             .SetLayer(LayerNames.PLAY_AREA_OBJECT)
