@@ -1,5 +1,6 @@
 ﻿using Worms.engine.data;
 using Worms.engine.game_object;
+using Worms.engine.game_object.components.audio_source;
 using Worms.engine.game_object.components.particle_system;
 using Worms.engine.game_object.components.particle_system.emission;
 using Worms.engine.game_object.components.particle_system.particles;
@@ -12,10 +13,11 @@ using Worms.game.asteroids.names;
 namespace Worms.game.asteroids.asteroids; 
 
 public static class ExplosionFactory {
-    public static void CreateExplosion(Transform parent, Vector2 position, RangeZero particleCount) {
+    public static void CreateExplosion(Transform parent, Vector2 position, RangeZero particleCount, string audioId) {
         GameObject obj = parent
             .AddChild("explosion")
             .SetPosition(position)
+            .SetComponent(AudioSourceBuilder.Builder(audioId, ChannelNames.EFFECTS).Build())
             .SetComponent(ParticleSystemBuilder
                 .Builder(RendererBuilder.Builder(Texture.CreateSingle(TextureNames.FRAGMENT)).Build())
                 .SetEmission(EmissionBuilder

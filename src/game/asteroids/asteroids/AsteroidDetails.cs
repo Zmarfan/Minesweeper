@@ -1,4 +1,5 @@
 ﻿using Worms.engine.data;
+using Worms.engine.game_object.components.particle_system.ranges;
 using Worms.engine.helper;
 using Worms.game.asteroids.names;
 
@@ -47,7 +48,7 @@ public class AsteroidDetails {
             new (-3, -55),
             new (-4, -25)
         })
-    ), 25, 250);
+    ), AsteroidType.BIG, 25, 250, new RangeZero(10, 20), SoundNames.BANG_LARGE);
 
     private static readonly AsteroidDetails MEDIUM = new(ListUtils.Of(
         new AsteroidTypeDetails(TextureNames.MEDIUM_ASTEROID_1, new Vector2[] {
@@ -91,7 +92,7 @@ public class AsteroidDetails {
             new(-1.5f, -29.5f),
             new(-4, -16)
         })
-    ), 50, 350);
+    ), AsteroidType.MEDIUM, 50, 350, new RangeZero(7, 15), SoundNames.BANG_MEDIUM);
 
     private static readonly AsteroidDetails SMALL = new(ListUtils.Of(
         new AsteroidTypeDetails(TextureNames.SMALL_ASTEROID_1, new Vector2[] {
@@ -135,16 +136,29 @@ public class AsteroidDetails {
             new(-3.5f, -17),
             new(-4, -11.5f)
         })
-    ), 100, 450);
+    ), AsteroidType.SMALL, 100, 450, new RangeZero(5, 12), SoundNames.BANG_SMALL);
 
     public readonly List<AsteroidTypeDetails> details;
+    public readonly AsteroidType type;
     public readonly float minVelocity;
     public readonly float maxVelocity;
+    public readonly RangeZero particleCount;
+    public readonly string explosionAudioId;
 
-    private AsteroidDetails(List<AsteroidTypeDetails> details, float minVelocity, float maxVelocity) {
+    private AsteroidDetails(
+        List<AsteroidTypeDetails> details,
+        AsteroidType type,
+        float minVelocity,
+        float maxVelocity,
+        RangeZero particleCount,
+        string explosionAudioId
+    ) {
         this.details = details;
+        this.type = type;
         this.minVelocity = minVelocity;
         this.maxVelocity = maxVelocity;
+        this.particleCount = particleCount;
+        this.explosionAudioId = explosionAudioId;
     }
 
     public static AsteroidDetails GetDetails(AsteroidType type) {

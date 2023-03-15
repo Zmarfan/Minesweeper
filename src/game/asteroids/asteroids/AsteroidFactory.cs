@@ -8,7 +8,7 @@ using Worms.game.asteroids.names;
 namespace Worms.game.asteroids.asteroids; 
 
 public static class AsteroidFactory {
-    private const float MAX_ANGULAR_VELOCITY = 100;
+    private const float MAX_ANGULAR_VELOCITY = 150;
     
     private static readonly Random RANDOM = new();
     
@@ -23,7 +23,7 @@ public static class AsteroidFactory {
             .SetPosition(position)
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(details.textureId)).Build())
             .SetComponent(new PolygonCollider(true, details.polygonVertices, ColliderState.TRIGGER, Vector2.Zero()))
-            .SetComponent(new Asteroid(velocity, angularVelocity, type))
+            .SetComponent(new Asteroid(velocity, angularVelocity, generalDetails))
             .Build()
             .Transform.AddChild("playAreaContainer")
             .SetLayer(LayerNames.PLAY_AREA_OBJECT)
