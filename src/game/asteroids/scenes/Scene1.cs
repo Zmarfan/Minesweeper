@@ -1,8 +1,10 @@
-﻿using Worms.engine.data;
+﻿using Worms.engine.core.audio;
+using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.animation.animation;
 using Worms.engine.game_object.components.animation.composition;
 using Worms.engine.game_object.components.animation.controller;
+using Worms.engine.game_object.components.audio_source;
 using Worms.engine.game_object.components.physics;
 using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.components.rendering.texture_renderer;
@@ -21,7 +23,7 @@ public static class Scene1 {
     }
     
     private static GameObject CreateWorldRoot() {
-        Texture playerBase = Texture.CreateMultiple("player", 0, 0, 1, 2);
+        Texture playerBase = Texture.CreateMultiple(TextureNames.PLAYER, 0, 0, 1, 2);
         Texture playerThrust = Texture.CreateMultiple(TextureNames.PLAYER, 0, 1, 1, 2);
     
         return GameObjectBuilder.Root()
@@ -34,6 +36,12 @@ public static class Scene1 {
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateMultiple("player", 0, 0, 1, 2)).Build())
             .SetComponent(new PolygonCollider(true, PlayerMovement.COLLIDER_VERTICES, ColliderState.TRIGGER, Vector2.Zero()))
             .SetComponent(new PlayerMovement())
+            .SetComponent(AudioSourceBuilder
+                .Builder(SoundNames.THRUST, ChannelNames.EFFECTS)
+                .SetPlayOnAwake(false)
+                .SetLoop(true)
+                .Build()
+            )
             .SetComponent(AnimationControllerBuilder
                 .Builder()
                 .AddAnimation(PlayerMovement.THRUST_ANIMATION_TRIGGER, new Animation(0.05f, true, ListUtils.Of(

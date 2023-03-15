@@ -4,6 +4,7 @@ using Worms.engine.game_object;
 using Worms.engine.game_object.components.animation.animation;
 using Worms.engine.game_object.components.animation.composition;
 using Worms.engine.game_object.components.animation.controller;
+using Worms.engine.game_object.components.audio_source;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.engine.game_object.scripts;
 using Worms.engine.helper;
@@ -20,9 +21,11 @@ public class PlayerMovement : Script {
     private const float MAX_THRUST_SPEED = 125;
     private const float DE_ACCELERATION_FRACTION = 0.975f;
     
+    private AnimationController _animationController = null!;
+    private AudioSource _thrustAudioSource = null!;
+    
     private Vector2 _velocity = Vector2.Zero();
 
-    private AnimationController _animationController = null!;
     private float _rotateAmount;
     private float _thrust;
 
@@ -33,6 +36,7 @@ public class PlayerMovement : Script {
 
     public override void Awake() {
         _animationController = GetComponent<AnimationController>();
+        _thrustAudioSource = GetComponent<AudioSource>();
     }
 
     public override void Update(float deltaTime) {
@@ -41,10 +45,13 @@ public class PlayerMovement : Script {
 
         if (Input.GetButtonDown(InputNames.THRUST)) {
             _animationController.SetTrigger(THRUST_ANIMATION_TRIGGER);
+            _thrustAudioSource.loop = true;
+            _thrustAudioSource.Play();
         }
 
         if (Input.GetButtonUp(InputNames.THRUST)) {
             _animationController.Stop();
+            _thrustAudioSource.loop = false;
         }
 
         if (Input.GetButtonDown(InputNames.FIRE)) {

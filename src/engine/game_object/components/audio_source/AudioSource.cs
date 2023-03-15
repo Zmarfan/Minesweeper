@@ -66,7 +66,8 @@ public class AudioSource : Script {
 
     public void Stop() {
         AudioHandler.Stop(_uniqueId);
-        AudioFinished();
+        IsPlaying = false;
+        IsPaused = false;
     }
 
     public void Restart() {
@@ -83,9 +84,10 @@ public class AudioSource : Script {
     }
     
     private void AudioFinished() {
+        bool playAgain = IsPlaying && !IsPaused;
         IsPlaying = false;
         IsPaused = false;
-        if (loop) {
+        if (loop && playAgain) {
             Play();
         }
     }

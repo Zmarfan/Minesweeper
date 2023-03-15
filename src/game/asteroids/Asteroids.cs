@@ -21,8 +21,8 @@ public static class Asteroids {
             .SetTitle("Asteroids")
             .SetAssets(DefineAssets())
             .SetAudioSettings(new AudioSettings(Volume.Max(), ListUtils.Of(
-                new AudioChannel("effects", Volume.Max()),
-                new AudioChannel("music", Volume.Max())
+                new AudioChannel(ChannelNames.EFFECTS, Volume.Max()),
+                new AudioChannel(ChannelNames.MUSIC, Volume.Max())
             )))
             .SetWindowWidth(1280)
             .SetWindowHeight(720)
