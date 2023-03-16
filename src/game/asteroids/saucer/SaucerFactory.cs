@@ -1,4 +1,5 @@
-﻿using Worms.engine.data;
+﻿using Worms.engine.core.audio;
+using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.audio_source;
 using Worms.engine.game_object.components.physics.colliders;
@@ -31,7 +32,13 @@ public static class SaucerFactory {
             .SetScale(settings.targetSupplier == null ? Vector2.One() : new Vector2(0.75f, 0.75f))
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(TextureNames.ENEMY)).Build())
             .SetComponent(new PolygonCollider(true, COLLIDER_VERTICES, ColliderState.TRIGGERING_COLLIDER, Vector2.Zero()))
-            .SetComponent(new SaucerMovement(settings.goesToTheRight))
+            .SetComponent(new SaucerMovement(settings.position.x < 0))
+            .SetComponent(AudioSourceBuilder
+                .Builder(settings.targetSupplier == null ? SoundNames.SAUCER_BIG : SoundNames.SAUCER_SMALL, ChannelNames.EFFECTS)
+                .SetVolume(Volume.FromPercentage(75))
+                .SetLoop(true)
+                .Build()
+            )
             .Build()
                 .Transform.AddChild("playAreaContainer")
                 .SetTag(TagNames.ENEMY)
@@ -42,7 +49,7 @@ public static class SaucerFactory {
                 .SetTag(TagNames.ENEMY)
                 .SetLayer(LayerNames.ENEMY)
                 .SetComponent(new SaucerShooter(settings.targetSupplier, settings.skillRatio))
-                .SetComponent(AudioSourceBuilder.Builder(SoundNames.FIRE, ChannelNames.EFFECTS).Build())
+                .SetComponent(AudioSourceBuilder.Builder(SoundNames.FIRE, ChannelNames.EFFECTS).SetPlayOnAwake(false).Build())
                 .SetComponent(new PolygonCollider(true, COLLIDER_VERTICES, ColliderState.TRIGGER, Vector2.Zero()))
                 .Build()
             .Transform.Parent!.gameObject;

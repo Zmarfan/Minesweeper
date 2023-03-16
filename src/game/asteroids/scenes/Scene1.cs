@@ -3,7 +3,7 @@ using Worms.engine.game_object;
 using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.components.screen_pivot;
 using Worms.engine.scene;
-using Worms.game.asteroids.camera;
+using Worms.game.asteroids.controller;
 using Worms.game.asteroids.names;
 
 namespace Worms.game.asteroids.scenes; 
@@ -18,7 +18,7 @@ public static class Scene1 {
             .Transform.AddChild("gameController")
             .SetLayer(LayerNames.PLAY_AREA_OBJECT)
             .SetComponent(new BoxCollider(true, ColliderState.TRIGGER, Vector2.One(), Vector2.Zero()))
-            .SetComponent(new PlayArea())
+            .SetComponent(new GameController())
             .Build()
             .Transform.GetRoot().gameObject;
     }

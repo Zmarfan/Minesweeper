@@ -3,9 +3,8 @@ using Worms.engine.game_object;
 using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.game.asteroids.names;
-using Worms.game.asteroids.shot;
 
-namespace Worms.game.asteroids.player; 
+namespace Worms.game.asteroids.shot; 
 
 public static class ShotFactory {
     public static void Create(Transform parent, Vector2 position, Vector2 direction, float initialSpeed, bool player) {

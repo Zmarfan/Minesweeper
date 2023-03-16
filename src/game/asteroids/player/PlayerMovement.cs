@@ -8,6 +8,7 @@ using Worms.engine.game_object.scripts;
 using Worms.game.asteroids.asteroids;
 using Worms.game.asteroids.names;
 using Worms.game.asteroids.saucer;
+using Worms.game.asteroids.shot;
 
 namespace Worms.game.asteroids.player; 
 

@@ -34,7 +34,7 @@ public static class ExplosionFactory {
                 .Builder(RendererBuilder.Builder(Texture.CreateSingle(TextureNames.SHIP_FRAGMENT)).Build())
                 .SetEmission(EmissionBuilder
                     .Builder()
-                    .AddBurst(new EmissionBurst(0, new RangeZero(5, 5), 1, 1, 1))
+                    .AddBurst(new EmissionBurst(0, new RangeZero(4, 4), 1, 1, 1))
                     .SetRateOverTime(RangeZero.Zero())
                     .Build()
                 )
@@ -45,7 +45,7 @@ public static class ExplosionFactory {
                 .SetParticles(ParticlesBuilder
                     .Builder()
                     .SetDuration(3f)
-                    .SetRotationVelocity(new Range(-10, 10))
+                    .SetRotationVelocity(new Range(-50, 50))
                     .SetStartRotation(new RangeZero(0, 359))
                     .SetStartLifeTime(new RangeZero(1.5f, 3f))
                     .SetLoop(false)

@@ -9,9 +9,9 @@ using Worms.game.asteroids.names;
 using Worms.game.asteroids.player;
 using Worms.game.asteroids.saucer;
 
-namespace Worms.game.asteroids.camera; 
+namespace Worms.game.asteroids.controller; 
 
-public class PlayArea : Script {
+public class GameController : Script {
     private const float PLAY_AREA_BORDER = 15f;
 
     private BoxCollider _boxCollider = null!;
@@ -20,7 +20,7 @@ public class PlayArea : Script {
     private bool _respawnPlayer = false;
     private ClockTimer _respawnTimer = new(3);
     
-    public PlayArea() : base() {
+    public GameController() : base() {
         PlayerBase.PlayerDieEvent += PlayerDied;
     }
 
@@ -34,7 +34,7 @@ public class PlayArea : Script {
 
     public override void Start() {
         SpawnPlayer();
-        SaucerSettings settings = new(Transform.GetRoot(), new Vector2(1200, 0), () => _player, false, 1f);
+        SaucerSettings settings = new(Transform.GetRoot(), new Vector2(1200, 0), null, 1f);
         SaucerFactory.Create(settings);
         for (int i = 0; i < 10; i++) {
             AsteroidFactory.Create(Transform.GetRoot(), AsteroidType.BIG, new Vector2(-1200, 0));
