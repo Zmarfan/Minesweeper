@@ -12,6 +12,9 @@ using Worms.game.asteroids.saucer;
 namespace Worms.game.asteroids.player; 
 
 public class PlayerBase : Script {
+    public const string START_ANIMATION_NAME = "startAnimation";
+    public const string THRUST_ANIMATION_NAME = "thrustAnimation";
+
     public delegate void PlayerDieDelegate();
     public static event PlayerDieDelegate? PlayerDieEvent;
     
@@ -20,11 +23,17 @@ public class PlayerBase : Script {
     private bool _dead = false;
     private readonly ClockTimer _canDieTimer = new(5);
     private bool _canDie = false;
+    private AnimationController _animationController = null!;
+
+    public override void Awake() {
+        _animationController = GetComponents<AnimationController>().First(controller => controller.Name == START_ANIMATION_NAME);
+    }
 
     public override void Update(float deltaTime) {
         _canDieTimer.Time += deltaTime;
         if (!_canDie && _canDieTimer.Expired()) {
             _canDie = true;
+            _animationController.Stop();
             GetComponentsInChildren<PolygonCollider>().ForEach(collider => collider.IsActive = true);
         }
     }

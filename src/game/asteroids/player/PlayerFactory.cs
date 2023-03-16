@@ -37,13 +37,27 @@ public static class PlayerFactory {
             )
             .SetComponent(AnimationControllerBuilder
                 .Builder()
+                .SetName(PlayerBase.THRUST_ANIMATION_NAME)
                 .AddAnimation(PlayerMovement.THRUST_ANIMATION_TRIGGER, new Animation(0.05f, true, ListUtils.Of(
                     new Composition(g => g.GetComponent<TextureRenderer>(), ListUtils.Of(
                         new State(c => ((TextureRenderer)c).texture = playerThrust, 1),
                         new State(c => ((TextureRenderer)c).texture = playerBase, 1)
                     ))
                 )))
-                .Build())
+                .Build()
+            )
+            .SetComponent(AnimationControllerBuilder
+                .Builder()
+                .SetName(PlayerBase.START_ANIMATION_NAME)
+                .AddAnimation("trigger", new Animation(0.15f, true, ListUtils.Of(
+                    new Composition(g => g.GetComponent<TextureRenderer>(), ListUtils.Of(
+                        new State(c => ((TextureRenderer)c).Color = Color.TRANSPARENT, 1),
+                        new State(c => ((TextureRenderer)c).Color = Color.WHITE, 1)
+                    ))
+                )))
+                .SetStartAnimation(0)
+                .Build()
+            )
             .Build()
                 .Transform.AddChild("playAreaContainer")
                 .SetLayer(LayerNames.PLAY_AREA_OBJECT)

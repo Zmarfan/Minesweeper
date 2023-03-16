@@ -33,7 +33,7 @@ public class PlayerMovement : Script {
     private Vector2 ShotSpawnPosition => Transform.Position + Transform.Right * 30;
     
     public override void Awake() {
-        _animationController = GetComponent<AnimationController>();
+        _animationController = GetComponents<AnimationController>().First(controller => controller.Name == PlayerBase.THRUST_ANIMATION_NAME);
         List<AudioSource> audioSources = GetComponents<AudioSource>();
         _thrustAudioSource = audioSources.First(source => source.Name == THRUST_AUDIO_SOURCE);
         _fireAudioSource = audioSources.First(source => source.Name == FIRE_AUDIO_SOURCE);
