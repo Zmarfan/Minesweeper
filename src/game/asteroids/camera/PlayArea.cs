@@ -31,7 +31,7 @@ public class PlayArea : Script {
 
     public override void Start() {
         SpawnPlayer();
-        SaucerSettings settings = new(Transform.GetRoot(), new Vector2(1200, 0), _player, false, 0f);
+        SaucerSettings settings = new(Transform.GetRoot(), new Vector2(1200, 0), () => _player, false, 1f);
         SaucerFactory.Create(settings);
         for (int i = 0; i < 10; i++) {
             AsteroidFactory.Create(Transform.GetRoot(), AsteroidType.BIG, new Vector2(-1200, 0));

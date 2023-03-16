@@ -14,4 +14,5 @@ public static class TextureNames {
     public const string ENEMY = "enemy";
     public const string SHOT = "shot";
     public const string FRAGMENT = "fragment";
+    public const string SHIP_FRAGMENT = "shipFragment";
 }

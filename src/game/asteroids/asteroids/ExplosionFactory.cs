@@ -9,6 +9,7 @@ using Worms.engine.game_object.components.particle_system.renderer;
 using Worms.engine.game_object.components.particle_system.shape;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.game.asteroids.names;
+using Range = Worms.engine.game_object.components.particle_system.ranges.Range;
 
 namespace Worms.game.asteroids.asteroids; 
 
@@ -22,6 +23,40 @@ public static class ExplosionFactory {
         GameObject obj = CreateExplosionInternal(parent, position, particleCount)
             .SetComponent(AudioSourceBuilder.Builder(audioId, ChannelNames.EFFECTS).Build())
             .Build();
+        Transform.Instantiate(obj);
+    }
+    
+    public static void CreateShipExplosion(Transform parent, Vector2 position) {
+        GameObject obj = parent
+            .AddChild("shipExplosion")
+            .SetPosition(position)
+            .SetComponent(ParticleSystemBuilder
+                .Builder(RendererBuilder.Builder(Texture.CreateSingle(TextureNames.SHIP_FRAGMENT)).Build())
+                .SetEmission(EmissionBuilder
+                    .Builder()
+                    .AddBurst(new EmissionBurst(0, new RangeZero(5, 5), 1, 1, 1))
+                    .SetRateOverTime(RangeZero.Zero())
+                    .Build()
+                )
+                .SetShape(new Shape(
+                    new SphereEmission(25, 1, Rotation.FromDegrees(359)),
+                    new VectorRange(new Vector2(5, 5), new Vector2(30, 30))
+                ))
+                .SetParticles(ParticlesBuilder
+                    .Builder()
+                    .SetDuration(3f)
+                    .SetRotationVelocity(new Range(-10, 10))
+                    .SetStartRotation(new RangeZero(0, 359))
+                    .SetStartLifeTime(new RangeZero(1.5f, 3f))
+                    .SetLoop(false)
+                    .SetStopAction(StopAction.DESTROY)
+                    .Build()
+                )
+                .Build()
+            )
+            .SetComponent(AudioSourceBuilder.Builder(SoundNames.BANG_MEDIUM, ChannelNames.EFFECTS).Build())
+            .Build();
+        
         Transform.Instantiate(obj);
     }
     

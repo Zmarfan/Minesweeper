@@ -118,7 +118,8 @@ public class PlayerMovement : Script {
     }
 
     public void Die() {
-        ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, new RangeZero(10, 20), SoundNames.BANG_MEDIUM);
+        ExplosionFactory.CreateShipExplosion(Transform.GetRoot(), Transform.Position);
+        ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, new RangeZero(5, 15));
         PlayerDieEvent?.Invoke();
         gameObject.Destroy();
     }

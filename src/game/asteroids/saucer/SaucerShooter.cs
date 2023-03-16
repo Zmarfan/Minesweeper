@@ -13,13 +13,13 @@ namespace Worms.game.asteroids.saucer;
 
 public class SaucerShooter : Script {
     private AudioSource _fireAudioSource = null!;
-    private readonly Transform? _target;
+    private readonly Func<Transform>? _targetSupplier;
     private readonly float _skillRatio;
     private readonly ClockTimer _shootIntervalTimer = new(0.75f);
     private bool _destroyed = false;
     
-    public SaucerShooter(Transform? target, float skillRatio) : base(true) {
-        _target = target;
+    public SaucerShooter(Func<Transform>? targetSupplier, float skillRatio) : base(true) {
+        _targetSupplier = targetSupplier;
         _skillRatio = skillRatio;
     }
 
@@ -37,9 +37,9 @@ public class SaucerShooter : Script {
     }
 
     private Vector2 GetShootDirection() {
-        if (_target != null) {
+        if (_targetSupplier != null) {
             bool flip = RandomUtil.RandomBool();
-            Vector2 toTarget = (_target.Position - Transform.Position).Normalized;
+            Vector2 toTarget = (_targetSupplier.Invoke().Position - Transform.Position).Normalized;
             Vector2 perpendicular = new(toTarget.y * (flip ? -1 : 1), toTarget.x * (flip ? 1 : -1));
             return Vector2.Lerp(perpendicular, toTarget, RandomUtil.GetRandomValueBetweenTwoValues(_skillRatio, 1));
         }

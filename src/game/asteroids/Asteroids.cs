@@ -80,7 +80,8 @@ public static class Asteroids {
                 new AssetDeclaration(Path("asteroids\\textures\\player.png"), TextureNames.PLAYER),
                 new AssetDeclaration(Path("asteroids\\textures\\enemy.png"), TextureNames.ENEMY),
                 new AssetDeclaration(Path("asteroids\\textures\\shot.png"), TextureNames.SHOT),
-                new AssetDeclaration(Path("asteroids\\textures\\fragment.png"), TextureNames.FRAGMENT)
+                new AssetDeclaration(Path("asteroids\\textures\\fragment.png"), TextureNames.FRAGMENT),
+                new AssetDeclaration(Path("asteroids\\textures\\ship_fragment.png"), TextureNames.SHIP_FRAGMENT)
             ))
             .AddAudios(ListUtils.Of(
                 new AssetDeclaration(Path("asteroids\\sounds\\bangLarge.wav"), SoundNames.BANG_LARGE),
