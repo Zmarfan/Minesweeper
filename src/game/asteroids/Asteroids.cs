@@ -43,9 +43,10 @@ public static class Asteroids {
             ))
             .SetPhysics(PhysicsSettingsBuilder
                 .Builder(ListUtils.Of(LayerMask.DEFAULT), ListUtils.Of(LayerMask.IGNORE_RAYCAST))
-                .AddLayer(LayerNames.ASTEROID, ListUtils.Of(LayerNames.SHOT, LayerNames.ENEMY))
-                .AddLayer(LayerNames.ENEMY, ListUtils.Of(LayerNames.ASTEROID))
-                .AddLayer(LayerNames.SHOT, ListUtils.Of(LayerNames.ASTEROID))
+                .AddLayer(LayerNames.ASTEROID, ListUtils.Of(LayerNames.PLAYER_SHOT, LayerNames.ENEMY_SHOT, LayerNames.ENEMY))
+                .AddLayer(LayerNames.ENEMY, ListUtils.Of(LayerNames.ASTEROID, LayerNames.PLAYER_SHOT))
+                .AddLayer(LayerNames.PLAYER_SHOT, ListUtils.Of(LayerNames.ENEMY, LayerNames.ASTEROID))
+                .AddLayer(LayerNames.ENEMY_SHOT, ListUtils.Of(LayerNames.ASTEROID))
                 .AddLayer(LayerNames.PLAY_AREA_OBJECT, ListUtils.Of(LayerNames.PLAY_AREA_OBJECT))
                 .Build()
             )

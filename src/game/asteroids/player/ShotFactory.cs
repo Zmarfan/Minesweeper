@@ -7,9 +7,9 @@ using Worms.game.asteroids.names;
 namespace Worms.game.asteroids.player; 
 
 public static class ShotFactory {
-    public static void Create(Transform parent, Vector2 position, Vector2 direction, float initialSpeed) {
+    public static void Create(Transform parent, Vector2 position, Vector2 direction, float initialSpeed, bool player) {
         GameObject obj = parent.AddChild("shot")
-            .SetLayer(LayerNames.SHOT)
+            .SetLayer(player ? LayerNames.PLAYER_SHOT : LayerNames.ENEMY_SHOT)
             .SetTag(TagNames.SHOT)
             .SetPosition(position)
             .SetComponent(new CircleCollider(true, ColliderState.TRIGGERING_COLLIDER, 7, Vector2.Zero()))

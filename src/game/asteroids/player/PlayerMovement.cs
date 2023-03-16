@@ -48,7 +48,7 @@ public class PlayerMovement : Script {
         if (Input.GetButtonDown(InputNames.FIRE)) {
             _fireAudioSource.Restart();
             float initialSpeed = Vector2.Dot(_velocity, Transform.Right);
-            ShotFactory.Create(Transform.GetRoot(), ShotSpawnPosition, Transform.Right, initialSpeed * THRUST_SPEED);
+            ShotFactory.Create(Transform.GetRoot(), ShotSpawnPosition, Transform.Right, initialSpeed * THRUST_SPEED, true);
         }
     }
 

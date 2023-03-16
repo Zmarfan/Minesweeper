@@ -1,8 +1,12 @@
 ﻿using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.audio_source;
+using Worms.engine.game_object.components.particle_system.ranges;
+using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.scripts;
 using Worms.engine.helper;
+using Worms.game.asteroids.asteroids;
+using Worms.game.asteroids.names;
 using Worms.game.asteroids.player;
 
 namespace Worms.game.asteroids.saucer; 
@@ -28,7 +32,7 @@ public class SaucerShooter : Script {
         _shootIntervalTimer.Time += deltaTime;
         if (_shootIntervalTimer.Expired()) {
             _fireAudioSource.Restart();
-            ShotFactory.Create(Transform.GetRoot(), Transform.Position, GetShootDirection(), 0);
+            ShotFactory.Create(Transform.GetRoot(), Transform.Position, GetShootDirection(), 0, false);
             _shootIntervalTimer.Reset();
         }
     }
@@ -43,5 +47,13 @@ public class SaucerShooter : Script {
         }
 
         return Vector2.InsideUnitCircle();
+    }
+
+    public override void OnTriggerEnter(Collider collider) {
+        if (collider.gameObject.Tag == TagNames.SHOT) {
+            ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, new RangeZero(10, 20), SoundNames.BANG_MEDIUM);
+            Transform.Parent!.gameObject.Destroy();
+            collider.gameObject.Destroy();
+        }
     }
 }
