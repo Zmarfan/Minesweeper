@@ -30,8 +30,7 @@ public class PlayArea : Script {
         SaucerSettings settings = new(
             Transform.GetRoot(),
             new Vector2(-1200, 0),
-            null,
-            true,
+            player,
             true,
             0.7f
         );

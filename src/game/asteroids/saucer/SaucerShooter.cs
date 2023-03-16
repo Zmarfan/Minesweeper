@@ -12,8 +12,6 @@ using Worms.game.asteroids.player;
 namespace Worms.game.asteroids.saucer; 
 
 public class SaucerShooter : Script {
-    private const float MAX_RANDOM_ACCURACY_INCREASE = 0.2f;
-
     private AudioSource _fireAudioSource = null!;
     private readonly Transform? _target;
     private readonly float _skillRatio;
@@ -42,8 +40,7 @@ public class SaucerShooter : Script {
             bool flip = RandomUtil.RandomBool();
             Vector2 toTarget = (_target.Position - Transform.Position).Normalized;
             Vector2 perpendicular = new(toTarget.y * (flip ? -1 : 1), toTarget.x * (flip ? 1 : -1));
-            float accuracy = Math.Min(_skillRatio + RandomUtil.GetRandomValueBetweenTwoValues(0, MAX_RANDOM_ACCURACY_INCREASE), 1);
-            return Vector2.Lerp(perpendicular, toTarget, accuracy);
+            return Vector2.Lerp(perpendicular, toTarget, RandomUtil.GetRandomValueBetweenTwoValues(_skillRatio, 1));
         }
 
         return Vector2.InsideUnitCircle();

@@ -67,7 +67,7 @@ public class GameObjectBuilder {
 
     public GameObjectBuilder SetLocalScale(Vector2 scale) {
         _scale = scale;
-        _scaleLocal = false;
+        _scaleLocal = true;
         return this;
     }
     
