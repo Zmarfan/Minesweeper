@@ -9,7 +9,7 @@ public class AudioHandler {
     private static AudioHandler _self = null!;
 
     private readonly Dictionary<string, nint> _loadedSounds = new();
-    private readonly Dictionary<string, PlayingSound> _playingSounds = new();
+    private readonly Dictionary<long, PlayingSound> _playingSounds = new();
     private readonly AudioSettings _settings;
 
     private AudioHandler(AudioSettings settings, IEnumerable<AssetDeclaration> declarations) {
@@ -44,7 +44,7 @@ public class AudioHandler {
         string audioId,
         string channel,
         Volume audioVolume,
-        string callerId,
+        long callerId,
         Action audioFinishCallback
     ) {
         if (_self._playingSounds.TryGetValue(callerId, out PlayingSound sound)) {
@@ -60,14 +60,14 @@ public class AudioHandler {
         _self._playingSounds.Add(callerId, new PlayingSound(track, channel, audioVolume, audioFinishCallback));
     }
 
-    public static void Pause(string callerId) {
+    public static void Pause(long callerId) {
         if (!_self._playingSounds.ContainsKey(callerId)) {
             return;
         }
         SDL_mixer.Mix_Pause(_self._playingSounds[callerId].track);
     }
 
-    public static void Stop(string callerId) {
+    public static void Stop(long callerId) {
         if (!_self._playingSounds.ContainsKey(callerId)) {
             return;
         }
@@ -75,13 +75,13 @@ public class AudioHandler {
         SDL_mixer.Mix_HaltChannel(_self._playingSounds[callerId].track);
     }
 
-    public static void ChangeAudioVolume(Volume audioVolume, string callerId) {
+    public static void ChangeAudioVolume(Volume audioVolume, long callerId) {
         PlayingSound sound = _self._playingSounds[callerId];
         SetChannelVolume(sound.track, CalculateVolume(sound.channel, audioVolume));
     }
 
     public static void ReloadVolumeSettings() {
-        foreach ((string _, PlayingSound sound) in _self._playingSounds) {
+        foreach ((long _, PlayingSound sound) in _self._playingSounds) {
             SetChannelVolume(sound.track, CalculateVolume(sound.channel, sound.currentAudioVolume));
         }
     }
@@ -118,7 +118,7 @@ public class AudioHandler {
     }
     
     private static void AudioFinishCallback(int channel) {
-        KeyValuePair<string, PlayingSound> entry = _self._playingSounds
+        KeyValuePair<long, PlayingSound> entry = _self._playingSounds
             .First(entry => entry.Value.track == channel);
         _self._playingSounds.Remove(entry.Key);
         entry.Value.audioFinishCallback.Invoke();

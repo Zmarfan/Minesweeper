@@ -17,7 +17,7 @@ public static class Asteroids {
     public static Game CreateGame() {
         return new Game(GameSettingsBuilder
             .Builder()
-            .SetBuildMode()
+            .SetDebugMode()
             .SetTitle("Asteroids")
             .SetAssets(DefineAssets())
             .SetAudioSettings(new AudioSettings(Volume.Max(), ListUtils.Of(
@@ -43,7 +43,8 @@ public static class Asteroids {
             ))
             .SetPhysics(PhysicsSettingsBuilder
                 .Builder(ListUtils.Of(LayerMask.DEFAULT), ListUtils.Of(LayerMask.IGNORE_RAYCAST))
-                .AddLayer(LayerNames.ASTEROID, ListUtils.Of(LayerNames.SHOT))
+                .AddLayer(LayerNames.ASTEROID, ListUtils.Of(LayerNames.SHOT, LayerNames.ENEMY))
+                .AddLayer(LayerNames.ENEMY, ListUtils.Of(LayerNames.ASTEROID))
                 .AddLayer(LayerNames.SHOT, ListUtils.Of(LayerNames.ASTEROID))
                 .AddLayer(LayerNames.PLAY_AREA_OBJECT, ListUtils.Of(LayerNames.PLAY_AREA_OBJECT))
                 .Build()

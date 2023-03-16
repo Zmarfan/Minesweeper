@@ -13,11 +13,22 @@ using Worms.game.asteroids.names;
 namespace Worms.game.asteroids.asteroids; 
 
 public static class ExplosionFactory {
+    public static void CreateExplosion(Transform parent, Vector2 position, RangeZero particleCount) {
+        GameObject obj = CreateExplosionInternal(parent, position, particleCount).Build();
+        Transform.Instantiate(obj);
+    }
+    
     public static void CreateExplosion(Transform parent, Vector2 position, RangeZero particleCount, string audioId) {
-        GameObject obj = parent
+        GameObject obj = CreateExplosionInternal(parent, position, particleCount)
+            .SetComponent(AudioSourceBuilder.Builder(audioId, ChannelNames.EFFECTS).Build())
+            .Build();
+        Transform.Instantiate(obj);
+    }
+    
+    private static GameObjectBuilder CreateExplosionInternal(Transform parent, Vector2 position, RangeZero particleCount) {
+        return parent
             .AddChild("explosion")
             .SetPosition(position)
-            .SetComponent(AudioSourceBuilder.Builder(audioId, ChannelNames.EFFECTS).Build())
             .SetComponent(ParticleSystemBuilder
                 .Builder(RendererBuilder.Builder(Texture.CreateSingle(TextureNames.FRAGMENT)).Build())
                 .SetEmission(EmissionBuilder
@@ -39,8 +50,6 @@ public static class ExplosionFactory {
                     .Build()
                 )
                 .Build()
-            )
-            .Build();
-        Transform.Instantiate(obj);
+            );
     }
 }

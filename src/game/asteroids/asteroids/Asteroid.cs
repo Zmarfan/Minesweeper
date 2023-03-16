@@ -23,14 +23,19 @@ public class Asteroid : Script {
     }
 
     public override void OnTriggerEnter(Collider collider) {
-        if (collider.gameObject.Tag == TagNames.SHOT) {
-            collider.gameObject.Destroy();
-            ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, _details.particleCount, _details.explosionAudioId);
-            if (_details.type != AsteroidType.SMALL) {
-                SpawnNewAsteroids();
-            }
-            gameObject.Destroy();
+        if (collider.gameObject.Tag is not (TagNames.SHOT or TagNames.ENEMY)) {
+            return;
         }
+        if (collider.gameObject.Tag == TagNames.ENEMY) {
+            ExplosionFactory.CreateExplosion(Transform.GetRoot(), collider.Transform.Position, new RangeZero(10, 20));
+        }
+        collider.gameObject.Destroy();
+            
+        ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, _details.particleCount, _details.explosionAudioId);
+        if (_details.type != AsteroidType.SMALL) {
+            SpawnNewAsteroids();
+        }
+        gameObject.Destroy();
     }
 
     private void SpawnNewAsteroids() {

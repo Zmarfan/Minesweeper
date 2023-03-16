@@ -4,6 +4,8 @@ using Worms.engine.game_object.scripts;
 namespace Worms.engine.game_object.components.audio_source; 
 
 public class AudioSource : Script {
+    private static long UNIQUE_ID = long.MinValue;
+    
     public string sourceName;
     public string audioId;
     public string channel;
@@ -29,7 +31,7 @@ public class AudioSource : Script {
 
     private bool _mute;
     private Volume _volume;
-    private readonly string _uniqueId = Guid.NewGuid().ToString();
+    private readonly long _uniqueId = UNIQUE_ID++;
 
     public AudioSource(
         string sourceName,
