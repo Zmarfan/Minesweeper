@@ -19,6 +19,10 @@ public abstract class Component : Object {
     public bool TryGetComponent<T>(out T component) where T : Component {
         return gameObject.TryGetComponent(out component);
     }
+
+    public T GetComponentInChildren<T>() where T : Component {
+        return gameObject.GetComponentInChildren<T>();
+    }
     
     public T AddComponent<T>(T component) where T : ToggleComponent {
         component.InitComponent(gameObject);

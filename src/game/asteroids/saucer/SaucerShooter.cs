@@ -49,10 +49,14 @@ public class SaucerShooter : Script {
         return Vector2.InsideUnitCircle();
     }
 
+    public void Die() {
+        ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, new RangeZero(10, 20), SoundNames.BANG_MEDIUM);
+        Transform.Parent!.gameObject.Destroy();
+    }
+
     public override void OnTriggerEnter(Collider collider) {
         if (collider.gameObject.Tag == TagNames.SHOT) {
-            ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, new RangeZero(10, 20), SoundNames.BANG_MEDIUM);
-            Transform.Parent!.gameObject.Destroy();
+            Die();
             collider.gameObject.Destroy();
         }
     }

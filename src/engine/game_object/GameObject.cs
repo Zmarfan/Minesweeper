@@ -60,7 +60,34 @@ public class GameObject : Object {
         component = GetComponent<T>();
         return true;
     }
+    
+    public T GetComponentInChildren<T>() where T : Component {
+        if (TryGetComponent(out T selfComponent)) {
+            return selfComponent;
+        }
+        T? component = GetComponentInChildrenRecursively<T>();
+        if (component == null) {
+            throw new Exception($"Unable to get component: {typeof(T)} from the children of gameObject: {Name}");
+        }
 
+        return component;
+    }
+
+    private T? GetComponentInChildrenRecursively<T>() where T : Component {
+        foreach (GameObject child in Transform.children.Select(child => child.gameObject)) {
+            if (child.TryGetComponent(out T component)) {
+                return component;
+            }
+            
+            T? found = child.GetComponentInChildrenRecursively<T>();
+            if (found != null) {
+                return found;
+            }
+        }
+
+        return null;
+    }
+    
     public T AddComponent<T>(T component) where T : ToggleComponent {
         component.InitComponent(this);
         GameObjectComponentAdd?.Invoke(component);

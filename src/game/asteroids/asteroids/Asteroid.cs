@@ -3,6 +3,7 @@ using Worms.engine.game_object.components.particle_system.ranges;
 using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.scripts;
 using Worms.game.asteroids.names;
+using Worms.game.asteroids.saucer;
 
 namespace Worms.game.asteroids.asteroids; 
 
@@ -27,11 +28,14 @@ public class Asteroid : Script {
             return;
         }
         if (collider.gameObject.Tag == TagNames.ENEMY) {
-            ExplosionFactory.CreateExplosion(Transform.GetRoot(), collider.Transform.Position, new RangeZero(10, 20));
+            collider.GetComponentInChildren<SaucerShooter>().Die();
+            ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, _details.particleCount);
         }
-        collider.gameObject.Destroy();
+        else {
+            collider.gameObject.Destroy();
+            ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, _details.particleCount, _details.explosionAudioId);
+        }
             
-        ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, _details.particleCount, _details.explosionAudioId);
         if (_details.type != AsteroidType.SMALL) {
             SpawnNewAsteroids();
         }
