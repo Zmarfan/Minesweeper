@@ -3,6 +3,7 @@ using Worms.engine.game_object.components.particle_system.ranges;
 using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.scripts;
 using Worms.game.asteroids.names;
+using Worms.game.asteroids.player;
 using Worms.game.asteroids.saucer;
 
 namespace Worms.game.asteroids.asteroids; 
@@ -25,18 +26,24 @@ public class Asteroid : Script {
     }
 
     public override void OnTriggerEnter(Collider collider) {
-        if (_destroyed || collider.gameObject.Tag is not (TagNames.SHOT or TagNames.ENEMY)) {
+        if (_destroyed || collider.gameObject.Tag is not (TagNames.SHOT or TagNames.ENEMY or TagNames.PLAYER)) {
             return;
         }
 
         _destroyed = true;
-        if (collider.gameObject.Tag == TagNames.ENEMY) {
-            collider.GetComponentInChildren<SaucerShooter>().Die();
-            ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, _details.particleCount);
-        }
-        else {
-            collider.gameObject.Destroy();
-            ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, _details.particleCount, _details.explosionAudioId);
+        switch (collider.gameObject.Tag) {
+            case TagNames.ENEMY:
+                collider.GetComponentInChildren<SaucerShooter>().Die();
+                ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, _details.particleCount);
+                break;
+            case TagNames.PLAYER:
+                collider.Transform.Parent!.GetComponent<PlayerMovement>().Die();
+                ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, _details.particleCount);
+                break;
+            default:
+                collider.gameObject.Destroy();
+                ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, _details.particleCount, _details.explosionAudioId);
+                break;
         }
             
         if (_details.type != AsteroidType.SMALL) {

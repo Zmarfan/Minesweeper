@@ -2,12 +2,19 @@
 using Worms.engine.data;
 using Worms.engine.game_object.components.animation.controller;
 using Worms.engine.game_object.components.audio_source;
+using Worms.engine.game_object.components.particle_system.ranges;
+using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.scripts;
+using Worms.game.asteroids.asteroids;
 using Worms.game.asteroids.names;
+using Worms.game.asteroids.saucer;
 
 namespace Worms.game.asteroids.player; 
 
 public class PlayerMovement : Script {
+    public delegate void PlayerDieDelegate();
+    public static event PlayerDieDelegate? PlayerDieEvent;
+    
     public const string THRUST_ANIMATION_TRIGGER = "thrust";
     public const string THRUST_AUDIO_SOURCE = "thrust";
     public const string FIRE_AUDIO_SOURCE = "fire";
@@ -27,6 +34,8 @@ public class PlayerMovement : Script {
     private float _rotateAmount;
     private float _thrust;
 
+    private bool _dead = false;
+
     private Vector2 ShotSpawnPosition => Transform.Position + Transform.Right * 30;
     
     public PlayerMovement() : base(true) {
@@ -37,6 +46,10 @@ public class PlayerMovement : Script {
         List<AudioSource> audioSources = GetComponents<AudioSource>();
         _thrustAudioSource = audioSources.First(source => source.sourceName == THRUST_AUDIO_SOURCE);
         _fireAudioSource = audioSources.First(source => source.sourceName == FIRE_AUDIO_SOURCE);
+
+        if (Input.GetButton(InputNames.THRUST)) {
+            TurnThrusterEffectsOn();
+        }
     }
 
     public override void Update(float deltaTime) {
@@ -66,19 +79,47 @@ public class PlayerMovement : Script {
         _rotateAmount = 0;
         _thrust = 0;
     }
-    
+
+    public override void OnTriggerEnter(Collider collider) {
+        if (_dead) {
+            return;
+        }
+
+        _dead = true;
+        
+        switch (collider.gameObject.Tag) {
+            case TagNames.SHOT:
+                collider.gameObject.Destroy();
+                break;
+            case TagNames.ENEMY:
+                collider.GetComponentInChildren<SaucerShooter>().Die();
+                break;
+        }
+        Die();
+    }
+
     private void HandleThrust() {
         _thrust += Input.GetAxis(InputNames.THRUST).x;
         
         if (Input.GetButtonDown(InputNames.THRUST)) {
-            _animationController.SetTrigger(THRUST_ANIMATION_TRIGGER);
-            _thrustAudioSource.loop = true;
-            _thrustAudioSource.Play();
+            TurnThrusterEffectsOn();
         }
 
         if (Input.GetButtonUp(InputNames.THRUST)) {
             _animationController.Stop();
             _thrustAudioSource.loop = false;
         }
+    }
+
+    private void TurnThrusterEffectsOn() {
+        _animationController.SetTrigger(THRUST_ANIMATION_TRIGGER);
+        _thrustAudioSource.loop = true;
+        _thrustAudioSource.Play();
+    }
+
+    public void Die() {
+        ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, new RangeZero(10, 20), SoundNames.BANG_MEDIUM);
+        PlayerDieEvent?.Invoke();
+        gameObject.Destroy();
     }
 }

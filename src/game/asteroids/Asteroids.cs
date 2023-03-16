@@ -33,6 +33,8 @@ public static class Asteroids {
                     .SetNegativeButton(Button.A)
                     .SetAltPositiveButton(Button.RIGHT)
                     .SetAltNegativeButton(Button.LEFT)
+                    .SetGravity(6)
+                    .SetSensitivity(6)
                     .Build(),
                 InputListenerBuilder
                     .Builder(InputNames.THRUST, Button.W)
@@ -43,10 +45,11 @@ public static class Asteroids {
             ))
             .SetPhysics(PhysicsSettingsBuilder
                 .Builder(ListUtils.Of(LayerMask.DEFAULT), ListUtils.Of(LayerMask.IGNORE_RAYCAST))
-                .AddLayer(LayerNames.ASTEROID, ListUtils.Of(LayerNames.PLAYER_SHOT, LayerNames.ENEMY_SHOT, LayerNames.ENEMY))
-                .AddLayer(LayerNames.ENEMY, ListUtils.Of(LayerNames.ASTEROID, LayerNames.PLAYER_SHOT))
+                .AddLayer(LayerNames.ASTEROID, ListUtils.Of(LayerNames.PLAYER_SHOT, LayerNames.ENEMY_SHOT, LayerNames.ENEMY, LayerNames.PLAYER))
+                .AddLayer(LayerNames.ENEMY, ListUtils.Of(LayerNames.ASTEROID, LayerNames.PLAYER_SHOT, LayerNames.PLAYER))
+                .AddLayer(LayerNames.PLAYER, ListUtils.Of(LayerNames.ASTEROID, LayerNames.ENEMY_SHOT, LayerNames.ENEMY))
                 .AddLayer(LayerNames.PLAYER_SHOT, ListUtils.Of(LayerNames.ENEMY, LayerNames.ASTEROID))
-                .AddLayer(LayerNames.ENEMY_SHOT, ListUtils.Of(LayerNames.ASTEROID))
+                .AddLayer(LayerNames.ENEMY_SHOT, ListUtils.Of(LayerNames.ASTEROID, LayerNames.PLAYER))
                 .AddLayer(LayerNames.PLAY_AREA_OBJECT, ListUtils.Of(LayerNames.PLAY_AREA_OBJECT))
                 .Build()
             )
