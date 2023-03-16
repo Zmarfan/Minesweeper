@@ -3,6 +3,7 @@ using Worms.engine.game_object;
 using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.game.asteroids.names;
+using Worms.game.asteroids.shot;
 
 namespace Worms.game.asteroids.player; 
 

@@ -6,7 +6,6 @@ namespace Worms.engine.game_object.components.audio_source;
 public class AudioSource : Script {
     private static long UNIQUE_ID = long.MinValue;
     
-    public string sourceName;
     public string audioId;
     public string channel;
     public bool Mute {
@@ -34,16 +33,15 @@ public class AudioSource : Script {
     private readonly long _uniqueId = UNIQUE_ID++;
 
     public AudioSource(
-        string sourceName,
         string audioId,
         string channel,
         bool mute,
         bool loop,
         bool playOnAwake,
         Volume volume,
-        bool isActive
-    ) : base(isActive) {
-        this.sourceName = sourceName;
+        bool isActive,
+        string name
+    ) : base(isActive, name) {
         this.audioId = audioId;
         this.channel = channel;
         _mute = mute;

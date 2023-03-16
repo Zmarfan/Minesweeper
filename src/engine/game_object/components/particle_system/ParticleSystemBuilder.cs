@@ -17,6 +17,7 @@ public class ParticleSystemBuilder {
     private Func<Animation>? _particleAnimationProvider; 
     private readonly Renderer _renderer;
     private bool _isActive = true;
+    private string _name = "particleSystem";
 
     private ParticleSystemBuilder(Renderer renderer) {
         _renderer = renderer;
@@ -30,7 +31,8 @@ public class ParticleSystemBuilder {
             _renderer,
             _subSystem,
             _particleAnimationProvider,
-            _isActive
+            _isActive,
+            _name
         );
     }
     
@@ -65,6 +67,11 @@ public class ParticleSystemBuilder {
     
     public ParticleSystemBuilder SetIsActive(bool isActive) {
         _isActive = isActive;
+        return this;
+    }
+    
+    public ParticleSystemBuilder SetName(string name) {
+        _name = name;
         return this;
     }
 }

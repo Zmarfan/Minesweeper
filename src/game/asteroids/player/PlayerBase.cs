@@ -18,10 +18,17 @@ public class PlayerBase : Script {
     public static readonly Vector2[] COLLIDER_VERTICES = { new(-15, 12), new(25, 0), new(-15, -12) };
     
     private bool _dead = false;
-    
-    public PlayerBase() : base(true) {
+    private readonly ClockTimer _canDieTimer = new(5);
+    private bool _canDie = false;
+
+    public override void Update(float deltaTime) {
+        _canDieTimer.Time += deltaTime;
+        if (!_canDie && _canDieTimer.Expired()) {
+            _canDie = true;
+            GetComponentsInChildren<PolygonCollider>().ForEach(collider => collider.IsActive = true);
+        }
     }
-    
+
     public override void OnTriggerEnter(Collider collider) {
         if (_dead) {
             return;

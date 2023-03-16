@@ -20,7 +20,7 @@ public class PlayArea : Script {
     private bool _respawnPlayer = false;
     private ClockTimer _respawnTimer = new(3);
     
-    public PlayArea() : base(true) {
+    public PlayArea() : base() {
         PlayerBase.PlayerDieEvent += PlayerDied;
     }
 

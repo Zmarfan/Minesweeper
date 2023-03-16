@@ -16,7 +16,7 @@ public class SaucerMovement : Script {
     private int _directionIndex = 0;
     private readonly bool _right;
     
-    public SaucerMovement(bool right) : base(true) {
+    public SaucerMovement(bool right) : base() {
         _right = right;
     }
 

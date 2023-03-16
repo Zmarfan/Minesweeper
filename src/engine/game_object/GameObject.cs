@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Worms.engine.core.game_object_handler;
 using Worms.engine.game_object.components;
+using Worms.engine.helper;
 
 namespace Worms.engine.game_object; 
 
@@ -60,32 +61,34 @@ public class GameObject : Object {
         component = GetComponent<T>();
         return true;
     }
-    
+        
     public T GetComponentInChildren<T>() where T : Component {
+        try {
+            return GetComponentsInChildren<T>().First();
+        }
+        catch (InvalidOperationException) {
+            throw new Exception($"Unable to get component: {typeof(T)} from gameObject children: {Name}");
+        }
+    }
+    
+    public List<T> GetComponentsInChildren<T>() where T : Component {
+        List<T> found = new();
         if (TryGetComponent(out T selfComponent)) {
-            return selfComponent;
+            found.Add(selfComponent);
         }
-        T? component = GetComponentInChildrenRecursively<T>();
-        if (component == null) {
-            throw new Exception($"Unable to get component: {typeof(T)} from the children of gameObject: {Name}");
-        }
+        GetComponentsInChildrenRecursively(ref found);
 
-        return component;
+        return found;
     }
 
-    private T? GetComponentInChildrenRecursively<T>() where T : Component {
+    private void GetComponentsInChildrenRecursively<T>(ref List<T> found) where T : Component {
         foreach (GameObject child in Transform.children.Select(child => child.gameObject)) {
             if (child.TryGetComponent(out T component)) {
-                return component;
+                found.Add(component);
             }
             
-            T? found = child.GetComponentInChildrenRecursively<T>();
-            if (found != null) {
-                return found;
-            }
+            child.GetComponentsInChildrenRecursively(ref found);
         }
-
-        return null;
     }
     
     public T AddComponent<T>(T component) where T : ToggleComponent {

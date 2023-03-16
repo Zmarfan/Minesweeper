@@ -12,7 +12,7 @@ public class ParticleScript : Script {
     private Vector2 _direction;
     private readonly Vector2 _force;
     
-    public ParticleScript(bool localSpace, float lifeTime, float rotationVelocity, Vector2 direction, Vector2 force) : base(true) {
+    public ParticleScript(bool localSpace, float lifeTime, float rotationVelocity, Vector2 direction, Vector2 force) : base(true, "particle") {
         _localSpace = localSpace;
         _lifeTimer = new ClockTimer(lifeTime);
         _rotationVelocity = rotationVelocity;

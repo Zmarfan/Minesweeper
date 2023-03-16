@@ -10,8 +10,9 @@ public class AnimationController : Script {
     public AnimationController(
         Animation? startAnimation,
         IEnumerable<Tuple<string, Animation>> animationsWithTriggers,
-        bool isActive
-    ) : base(isActive) {
+        bool isActive,
+        string name
+    ) : base(isActive, name) {
         _animationsByTriggers = animationsWithTriggers.ToDictionary(a => a.Item1, a => a.Item2);
         _currentAnimation = startAnimation;
     }

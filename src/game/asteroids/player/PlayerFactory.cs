@@ -20,18 +20,18 @@ public static class PlayerFactory {
             .SetLayer(LayerNames.PLAYER)
             .SetTag(TagNames.PLAYER)
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateMultiple("player", 0, 0, 1, 2)).Build())
-            .SetComponent(new PolygonCollider(true, PlayerBase.COLLIDER_VERTICES, ColliderState.TRIGGER, Vector2.Zero()))
+            .SetComponent(new PolygonCollider(false, PlayerBase.COLLIDER_VERTICES, ColliderState.TRIGGER, Vector2.Zero()))
             .SetComponent(new PlayerBase())
             .SetComponent(new PlayerMovement())
             .SetComponent(AudioSourceBuilder
                 .Builder(SoundNames.THRUST, ChannelNames.EFFECTS)
-                .SetSourceName(PlayerMovement.THRUST_AUDIO_SOURCE)
+                .SetName(PlayerMovement.THRUST_AUDIO_SOURCE)
                 .SetPlayOnAwake(false)
                 .Build()
             )
             .SetComponent(AudioSourceBuilder
                 .Builder(SoundNames.FIRE, ChannelNames.EFFECTS)
-                .SetSourceName(PlayerMovement.FIRE_AUDIO_SOURCE)
+                .SetName(PlayerMovement.FIRE_AUDIO_SOURCE)
                 .SetPlayOnAwake(false)
                 .Build()
             )
@@ -52,7 +52,7 @@ public static class PlayerFactory {
                 .Transform.AddSibling("playerKillCollider")
                 .SetLayer(LayerNames.PLAYER)
                 .SetTag(TagNames.PLAYER)
-                .SetComponent(new PolygonCollider(true, PlayerBase.COLLIDER_VERTICES, ColliderState.TRIGGERING_COLLIDER, Vector2.Zero()))
+                .SetComponent(new PolygonCollider(false, PlayerBase.COLLIDER_VERTICES, ColliderState.TRIGGERING_COLLIDER, Vector2.Zero()))
                 .Build()
             .Transform.Parent!.gameObject;
         

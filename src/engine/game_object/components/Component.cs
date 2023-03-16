@@ -20,6 +20,10 @@ public abstract class Component : Object {
         return gameObject.TryGetComponent(out component);
     }
 
+    public List<T> GetComponentsInChildren<T>() where T : Component {
+        return gameObject.GetComponentsInChildren<T>();
+    }
+    
     public T GetComponentInChildren<T>() where T : Component {
         return gameObject.GetComponentInChildren<T>();
     }

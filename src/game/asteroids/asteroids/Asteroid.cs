@@ -14,7 +14,7 @@ public class Asteroid : Script {
     private readonly AsteroidDetails _details;
     private bool _destroyed = false;
     
-    public Asteroid(Vector2 velocity, float angularVelocity, AsteroidDetails details) : base(true) {
+    public Asteroid(Vector2 velocity, float angularVelocity, AsteroidDetails details) : base() {
         _velocity = velocity;
         _angularVelocity = angularVelocity;
         _details = details;

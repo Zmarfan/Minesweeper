@@ -43,7 +43,7 @@ public class TextureCollider : Script {
     private readonly TextureRenderer _textureRenderer;
     private readonly PixelCollider _pixelCollider;
     
-    public TextureCollider(bool isActive, ColliderState state, TextureRenderer tr) : base(isActive) {
+    public TextureCollider(bool isActive, string name, ColliderState state, TextureRenderer tr) : base(isActive, name) {
         IsActive = isActive;
         _textureRenderer = tr;
         _pixelCollider = new PixelCollider(true, tr.texture.SectionPixels, tr.flipX, tr.flipY, state);

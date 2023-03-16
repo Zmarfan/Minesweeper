@@ -31,8 +31,9 @@ public class ParticleSystem : Script {
         Renderer renderer,
         ParticleSystemBuilder? subSystem,
         Func<Animation>? particleAnimationProvider,
-        bool isActive
-    ) : base(isActive) {
+        bool isActive,
+        string name
+    ) : base(isActive, name) {
         _particles = particles;
         _emission = emission;
         _shape = shape;

@@ -7,7 +7,7 @@ public abstract class Script : ToggleComponent {
     public bool HasRunAwake { get; set; }
     public bool HasRunStart { get; set; }
     
-    protected Script(bool isActive) : base(isActive) {
+    protected Script(bool isActive = true, string name = "script") : base(isActive, name) {
     }
 
     public virtual void Awake() {

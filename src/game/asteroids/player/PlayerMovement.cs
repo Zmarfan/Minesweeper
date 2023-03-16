@@ -32,14 +32,11 @@ public class PlayerMovement : Script {
     
     private Vector2 ShotSpawnPosition => Transform.Position + Transform.Right * 30;
     
-    public PlayerMovement() : base(true) {
-    }
-
     public override void Awake() {
         _animationController = GetComponent<AnimationController>();
         List<AudioSource> audioSources = GetComponents<AudioSource>();
-        _thrustAudioSource = audioSources.First(source => source.sourceName == THRUST_AUDIO_SOURCE);
-        _fireAudioSource = audioSources.First(source => source.sourceName == FIRE_AUDIO_SOURCE);
+        _thrustAudioSource = audioSources.First(source => source.Name == THRUST_AUDIO_SOURCE);
+        _fireAudioSource = audioSources.First(source => source.Name == FIRE_AUDIO_SOURCE);
 
         if (Input.GetButton(InputNames.THRUST)) {
             TurnThrusterEffectsOn();

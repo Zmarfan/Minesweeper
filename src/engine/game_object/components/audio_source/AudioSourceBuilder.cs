@@ -3,8 +3,8 @@
 namespace Worms.engine.game_object.components.audio_source;
 
 public class AudioSourceBuilder {
-    private string _sourceName = "audio";
     private bool _isActive = true;
+    private string _name = "audioSource";
     private readonly string _audioId;
     private readonly string _channel;
     private bool _mute;
@@ -22,7 +22,7 @@ public class AudioSourceBuilder {
     }
 
     public AudioSource Build() {
-        return new AudioSource(_sourceName, _audioId, _channel, _mute, _loop, _playOnAwake, _volume, _isActive);
+        return new AudioSource(_audioId, _channel, _mute, _loop, _playOnAwake, _volume, _isActive, _name);
     }
 
     public AudioSourceBuilder SetIsActive(bool isActive) {
@@ -30,8 +30,8 @@ public class AudioSourceBuilder {
         return this;
     }
 
-    public AudioSourceBuilder SetSourceName(string sourceName) {
-        _sourceName = sourceName;
+    public AudioSourceBuilder SetName(string name) {
+        _name = name;
         return this;
     }
     
