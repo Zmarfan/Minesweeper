@@ -18,114 +18,33 @@
 
     <ItemGroup>
       <None Remove="src\assets\test\1.png" />
-      <Content Include="src\assets\test\1.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\2.png" />
-      <Content Include="src\assets\test\2.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\3.png" />
-      <Content Include="src\assets\test\3.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\4.png" />
-      <Content Include="src\assets\test\4.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\5.png" />
-      <Content Include="src\assets\test\5.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\background.png" />
       <None Remove="src\assets\test\test_sound1.wav" />
-      <Content Include="src\assets\test\test_sound1.wav">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\test_sound2.wav" />
-      <Content Include="src\assets\test\test_sound2.wav">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\animation_1.png" />
-      <Content Include="src\assets\test\animation_1.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\animation_2.png" />
-      <Content Include="src\assets\test\animation_2.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\explosion\circle75.png" />
-      <Content Include="src\assets\test\explosion\circle75.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\explosion\elipse75.png" />
-      <Content Include="src\assets\test\explosion\elipse75.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\explosion\expow.png" />
-      <Content Include="src\assets\test\explosion\expow.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\explosion\flame1.png" />
-      <Content Include="src\assets\test\explosion\flame1.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\explosion\smkdrk40.png" />
-      <Content Include="src\assets\test\explosion\smkdrk40.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\explosion\smklt75.png" />
-      <Content Include="src\assets\test\explosion\smklt75.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\explosion\Explosion1.wav" />
-      <Content Include="src\assets\test\explosion\Explosion1.wav">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\cursor.png" />
-      <Content Include="src\assets\test\cursor.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\pixelTest2.png" />
-      <Content Include="src\assets\test\pixelTest2.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\pixelTest1.png" />
-      <Content Include="src\assets\test\pixelTest1.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\pixelTest3.png" />
-      <Content Include="src\assets\test\pixelTest3.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\pixelTest4.png" />
-      <Content Include="src\assets\test\pixelTest4.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\pixelTest5.png" />
-      <Content Include="src\assets\test\pixelTest5.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\pixelTest6.png" />
-      <Content Include="src\assets\test\pixelTest6.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\pixelTest7.png" />
-      <Content Include="src\assets\test\pixelTest7.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\Vanilla Caramel.ttf" />
-      <Content Include="src\assets\test\Vanilla Caramel.ttf">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\Consolas.ttf" />
-      <Content Include="src\assets\test\Consolas.ttf">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\test\times-new-roman.ttf" />
-      <Content Include="src\assets\test\times-new-roman.ttf">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\textures\big_asteroid_1.png" />
       <Content Include="src\assets\asteroids\textures\big_asteroid_1.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>

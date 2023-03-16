@@ -41,8 +41,7 @@ public class PlayerMovement : Script {
 
     public override void Update(float deltaTime) {
         _rotateAmount += Input.GetAxis(InputNames.ROTATE).x;
-        _thrust += Input.GetAxis(InputNames.THRUST).x;
-
+        
         HandleThrust();
 
         if (Input.GetButtonDown(InputNames.FIRE)) {
@@ -69,6 +68,8 @@ public class PlayerMovement : Script {
     }
     
     private void HandleThrust() {
+        _thrust += Input.GetAxis(InputNames.THRUST).x;
+        
         if (Input.GetButtonDown(InputNames.THRUST)) {
             _animationController.SetTrigger(THRUST_ANIMATION_TRIGGER);
             _thrustAudioSource.loop = true;

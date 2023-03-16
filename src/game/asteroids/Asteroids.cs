@@ -50,7 +50,7 @@ public static class Asteroids {
                 .AddLayer(LayerNames.PLAY_AREA_OBJECT, ListUtils.Of(LayerNames.PLAY_AREA_OBJECT))
                 .Build()
             )
-            .SetCursorSettings(new CursorSettings(false, new CustomCursorSettings(Path("test\\cursor.png"))))
+            .SetCursorSettings(new CursorSettings(false))
             .SetGizmoSettings(GizmoSettingsBuilder
                 .Builder()
                 .ShowBoundingBoxes(false)
