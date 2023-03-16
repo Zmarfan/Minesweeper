@@ -20,7 +20,8 @@ public static class PlayerFactory {
             .SetLayer(LayerNames.PLAYER)
             .SetTag(TagNames.PLAYER)
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateMultiple("player", 0, 0, 1, 2)).Build())
-            .SetComponent(new PolygonCollider(true, PlayerMovement.COLLIDER_VERTICES, ColliderState.TRIGGER, Vector2.Zero()))
+            .SetComponent(new PolygonCollider(true, PlayerBase.COLLIDER_VERTICES, ColliderState.TRIGGER, Vector2.Zero()))
+            .SetComponent(new PlayerBase())
             .SetComponent(new PlayerMovement())
             .SetComponent(AudioSourceBuilder
                 .Builder(SoundNames.THRUST, ChannelNames.EFFECTS)
@@ -51,7 +52,7 @@ public static class PlayerFactory {
                 .Transform.AddSibling("playerKillCollider")
                 .SetLayer(LayerNames.PLAYER)
                 .SetTag(TagNames.PLAYER)
-                .SetComponent(new PolygonCollider(true, PlayerMovement.COLLIDER_VERTICES, ColliderState.TRIGGERING_COLLIDER, Vector2.Zero()))
+                .SetComponent(new PolygonCollider(true, PlayerBase.COLLIDER_VERTICES, ColliderState.TRIGGERING_COLLIDER, Vector2.Zero()))
                 .Build()
             .Transform.Parent!.gameObject;
         

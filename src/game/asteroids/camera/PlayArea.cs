@@ -16,9 +16,12 @@ public class PlayArea : Script {
 
     private BoxCollider _boxCollider = null!;
     private Transform _player = null!;
+
+    private bool _respawnPlayer = false;
+    private ClockTimer _respawnTimer = new(3);
     
     public PlayArea() : base(true) {
-        PlayerMovement.PlayerDieEvent += SpawnPlayer;
+        PlayerBase.PlayerDieEvent += PlayerDied;
     }
 
     public override void Awake() {
@@ -35,6 +38,14 @@ public class PlayArea : Script {
         SaucerFactory.Create(settings);
         for (int i = 0; i < 10; i++) {
             AsteroidFactory.Create(Transform.GetRoot(), AsteroidType.BIG, new Vector2(-1200, 0));
+        }
+    }
+
+    public override void Update(float deltaTime) {
+        _respawnTimer.Time += deltaTime;
+        if (_respawnPlayer && _respawnTimer.Expired()) {
+            _respawnPlayer = false;
+            SpawnPlayer();
         }
     }
 
@@ -65,6 +76,11 @@ public class PlayArea : Script {
         _boxCollider.size = new Vector2(resolution.x + PLAY_AREA_BORDER, resolution.y + PLAY_AREA_BORDER) * Camera.Main.Size;
     }
 
+    private void PlayerDied() {
+        _respawnPlayer = true;
+        _respawnTimer.Reset();
+    }
+    
     private void SpawnPlayer() {
         _player = PlayerFactory.Create(Transform.GetRoot());
     }

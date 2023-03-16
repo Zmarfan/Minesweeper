@@ -12,13 +12,9 @@ using Worms.game.asteroids.saucer;
 namespace Worms.game.asteroids.player; 
 
 public class PlayerMovement : Script {
-    public delegate void PlayerDieDelegate();
-    public static event PlayerDieDelegate? PlayerDieEvent;
-    
     public const string THRUST_ANIMATION_TRIGGER = "thrust";
     public const string THRUST_AUDIO_SOURCE = "thrust";
     public const string FIRE_AUDIO_SOURCE = "fire";
-    public static readonly Vector2[] COLLIDER_VERTICES = { new(-15, 12), new(25, 0), new(-15, -12) };
     
     private const float ROTATE_SPEED = 100;
     private const float THRUST_SPEED = 10;
@@ -33,9 +29,7 @@ public class PlayerMovement : Script {
 
     private float _rotateAmount;
     private float _thrust;
-
-    private bool _dead = false;
-
+    
     private Vector2 ShotSpawnPosition => Transform.Position + Transform.Right * 30;
     
     public PlayerMovement() : base(true) {
@@ -79,25 +73,6 @@ public class PlayerMovement : Script {
         _rotateAmount = 0;
         _thrust = 0;
     }
-
-    public override void OnTriggerEnter(Collider collider) {
-        if (_dead) {
-            return;
-        }
-
-        _dead = true;
-        
-        switch (collider.gameObject.Tag) {
-            case TagNames.SHOT:
-                collider.gameObject.Destroy();
-                break;
-            case TagNames.ENEMY:
-                collider.GetComponentInChildren<SaucerShooter>().Die();
-                break;
-        }
-        Die();
-    }
-
     private void HandleThrust() {
         _thrust += Input.GetAxis(InputNames.THRUST).x;
         
@@ -115,12 +90,5 @@ public class PlayerMovement : Script {
         _animationController.SetTrigger(THRUST_ANIMATION_TRIGGER);
         _thrustAudioSource.loop = true;
         _thrustAudioSource.Play();
-    }
-
-    public void Die() {
-        ExplosionFactory.CreateShipExplosion(Transform.GetRoot(), Transform.Position);
-        ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, new RangeZero(5, 15));
-        PlayerDieEvent?.Invoke();
-        gameObject.Destroy();
     }
 }

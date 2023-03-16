@@ -37,7 +37,7 @@ public class Asteroid : Script {
                 ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, _details.particleCount);
                 break;
             case TagNames.PLAYER:
-                collider.Transform.Parent!.GetComponent<PlayerMovement>().Die();
+                collider.Transform.Parent!.GetComponent<PlayerBase>().Die();
                 ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, _details.particleCount);
                 break;
             default:
