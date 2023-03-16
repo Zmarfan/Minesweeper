@@ -3,6 +3,8 @@
 namespace Worms.engine.data; 
 
 public struct Vector2 {
+    private static readonly Random RANDOM = new();
+    
     public float x = 0;
     public float y = 0;
 
@@ -133,6 +135,10 @@ public struct Vector2 {
         Vector2 rotated = new(point.x * c - point.y * s, point.x * s + point.y * c);
 
         return rotated + center;
+    }
+    
+    public static Vector2 InsideUnitCircle() {
+        return InsideUnitCircle(RANDOM);
     }
 
     public static Vector2 InsideUnitCircle(Random random) {

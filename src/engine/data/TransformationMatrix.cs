@@ -77,7 +77,6 @@ public struct TransformationMatrix {
             this[0, 1] * this[1, 2] - this[1, 1] * this[0, 2],
             this[1, 0] * this[0, 2] - this[0, 0] * this[1, 2],
             this[0, 0] * this[1, 1] - this[1, 0] * this[0, 1]
-            
         );
     }
 
@@ -140,33 +139,15 @@ public struct TransformationMatrix {
         }
         set {
             switch (x) {
-                case 0 when y == 0:
-                    _m00 = value;
-                    break;
-                case 1 when y == 0:
-                    _m10 = value;
-                    break;
-                case 2 when y == 0:
-                    _m20 = value;
-                    break;
-                case 0 when y == 1:
-                    _m01 = value;
-                    break;
-                case 1 when y == 1:
-                    _m11 = value;
-                    break;
-                case 2 when y == 1:
-                    _m21 = value;
-                    break;
-                case 0 when y == 2:
-                    _m02 = value;
-                    break;
-                case 1 when y == 2:
-                    _m12 = value;
-                    break;
-                case 2 when y == 2:
-                    _m22 = value;
-                    break;
+                case 0 when y == 0: _m00 = value; break;
+                case 1 when y == 0: _m10 = value; break;
+                case 2 when y == 0: _m20 = value; break;
+                case 0 when y == 1: _m01 = value; break;
+                case 1 when y == 1: _m11 = value; break;
+                case 2 when y == 1: _m21 = value; break;
+                case 0 when y == 2: _m02 = value; break;
+                case 1 when y == 2: _m12 = value; break;
+                case 2 when y == 2: _m22 = value; break;
                 default:
                     throw new IndexOutOfRangeException();
             }
@@ -174,6 +155,6 @@ public struct TransformationMatrix {
     }
     
     public override string ToString() {
-        return $"{_m00}, {_m10}, {_m20}\n{_m01}, {_m11}, {_m21}\n{_m02}, {_m12}, {_m22}";
+        return $"{this[0, 0]}, {this[1, 0]}, {this[2, 0]}\n{this[0, 1]}, {this[1, 1]}, {this[2, 1]}\n{this[0, 2]}, {this[1, 2]}, {this[2, 2]}";
     }
 }

@@ -11,7 +11,6 @@ public class SaucerMovement : Script {
         new Vector2(1, 1).Normalized, 
         new Vector2(1, -1).Normalized
     );
-    private static readonly Random RANDOM = new();
 
     private readonly ClockTimer _directionChangeTimer = new(2);
     private int _directionIndex = 0;
@@ -21,15 +20,13 @@ public class SaucerMovement : Script {
         _right = right;
     }
 
-    public override void Update(float deltaTime) {
+    public override void FixedUpdate(float deltaTime) {
         _directionChangeTimer.Time += deltaTime;
         if (_directionChangeTimer.Expired()) {
-            _directionIndex = RANDOM.Next(POSSIBLE_DIRECTIONS.Count);
+            _directionIndex = RandomUtil.GetRandomZeroToMax(POSSIBLE_DIRECTIONS.Count);
             _directionChangeTimer.Reset();
         }
-    }
-
-    public override void FixedUpdate(float deltaTime) {
+        
         Transform.Position += POSSIBLE_DIRECTIONS[_directionIndex] * VELOCITY * deltaTime * (_right ? 1 : -1);
     }
 }

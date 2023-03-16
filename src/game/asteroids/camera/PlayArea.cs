@@ -26,9 +26,17 @@ public class PlayArea : Script {
         ResolutionChanged(WindowManager.CurrentResolution);
         WindowManager.ResolutionChangedEvent += ResolutionChanged;
 
-        SaucerFactory.Create(Transform.GetRoot(), new Vector2(-600, 0), true, true);
-        SaucerFactory.Create(Transform.GetRoot(), new Vector2(600, 100), false, false);
-        for (int i = 0; i < 50; i++) {
+        Transform? player = Transform.GetRoot().FindByTag(TagNames.PLAYER)?.Transform;
+        SaucerSettings settings = new(
+            Transform.GetRoot(),
+            new Vector2(-1200, 0),
+            null,
+            true,
+            true,
+            0.7f
+        );
+        SaucerFactory.Create(settings);
+        for (int i = 0; i < 10; i++) {
             AsteroidFactory.Create(Transform.GetRoot(), AsteroidType.BIG, new Vector2(0, 0));
         }
     }

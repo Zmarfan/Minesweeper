@@ -1,5 +1,6 @@
 ﻿using Worms.engine.data;
 using Worms.engine.game_object;
+using Worms.engine.game_object.components.audio_source;
 using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.game.asteroids.names;
@@ -22,15 +23,17 @@ public static class SaucerFactory {
         new (14, -23),
     };
     
-    public static void Create(Transform parent, Vector2 position, bool goesToTheRight, bool big) {
-        GameObject obj = parent.AddChild("saucer")
+    public static void Create(SaucerSettings settings) {
+        GameObject obj = settings.parent.AddChild("saucer")
             .SetLayer(LayerNames.ENEMY)
             .SetTag(TagNames.ENEMY)
-            .SetPosition(position)
-            .SetScale(big ? Vector2.One() : new Vector2(0.6f, 0.6f))
+            .SetPosition(settings.position)
+            .SetScale(settings.big ? Vector2.One() : new Vector2(0.6f, 0.6f))
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(TextureNames.ENEMY)).Build())
             .SetComponent(new PolygonCollider(true, COLLIDER_VERTICES, ColliderState.TRIGGERING_COLLIDER, Vector2.Zero()))
-            .SetComponent(new SaucerMovement(goesToTheRight))
+            .SetComponent(new SaucerMovement(settings.goesToTheRight))
+            .SetComponent(new SaucerShooter(settings.target, settings.skillRatio))
+            .SetComponent(AudioSourceBuilder.Builder(SoundNames.FIRE, ChannelNames.EFFECTS).Build())
             .Build()
                 .Transform.AddChild("playAreaContainer")
                 .SetTag(TagNames.ENEMY)

@@ -33,6 +33,7 @@ public static class Scene1 {
             .SetComponent(new PlayArea())
             .Build()
             .Transform.AddSibling("player")
+            .SetTag(TagNames.PLAYER)
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateMultiple("player", 0, 0, 1, 2)).Build())
             .SetComponent(new PolygonCollider(true, PlayerMovement.COLLIDER_VERTICES, ColliderState.TRIGGER, Vector2.Zero()))
             .SetComponent(new PlayerMovement())

@@ -9,14 +9,12 @@ namespace Worms.game.asteroids.asteroids;
 
 public static class AsteroidFactory {
     private const float MAX_ANGULAR_VELOCITY = 150;
-    
-    private static readonly Random RANDOM = new();
-    
+
     public static GameObject Create(Transform parent, AsteroidType type, Vector2 position) {
         AsteroidDetails generalDetails = AsteroidDetails.GetDetails(type);
-        AsteroidDetails.AsteroidTypeDetails details = generalDetails.details[RANDOM.Next(generalDetails.details.Count)];
+        AsteroidDetails.AsteroidTypeDetails details = generalDetails.details[RandomUtil.GetRandomZeroToMax(generalDetails.details.Count)];
         Vector2 velocity = CalculateInitialVelocity(generalDetails);
-        float angularVelocity = RandomUtil.GetRandomValueBetweenTwoValues(RANDOM, -MAX_ANGULAR_VELOCITY, MAX_ANGULAR_VELOCITY);
+        float angularVelocity = RandomUtil.GetRandomValueBetweenTwoValues(-MAX_ANGULAR_VELOCITY, MAX_ANGULAR_VELOCITY);
 
         GameObject obj = parent.AddChild("asteroid")
             .SetLayer(LayerNames.ASTEROID)
@@ -35,7 +33,7 @@ public static class AsteroidFactory {
     }
     
     private static Vector2 CalculateInitialVelocity(AsteroidDetails details) {
-        float speed = RandomUtil.GetRandomValueBetweenTwoValues(RANDOM, details.minVelocity, details.maxVelocity);
-        return Vector2.InsideUnitCircle(RANDOM) * speed;
+        float speed = RandomUtil.GetRandomValueBetweenTwoValues(details.minVelocity, details.maxVelocity);
+        return Vector2.InsideUnitCircle() * speed;
     }
 }
