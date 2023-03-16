@@ -11,6 +11,7 @@ public class Asteroid : Script {
     private readonly Vector2 _velocity;
     private readonly float _angularVelocity;
     private readonly AsteroidDetails _details;
+    private bool _destroyed = false;
     
     public Asteroid(Vector2 velocity, float angularVelocity, AsteroidDetails details) : base(true) {
         _velocity = velocity;
@@ -24,9 +25,11 @@ public class Asteroid : Script {
     }
 
     public override void OnTriggerEnter(Collider collider) {
-        if (collider.gameObject.Tag is not (TagNames.SHOT or TagNames.ENEMY)) {
+        if (_destroyed || collider.gameObject.Tag is not (TagNames.SHOT or TagNames.ENEMY)) {
             return;
         }
+
+        _destroyed = true;
         if (collider.gameObject.Tag == TagNames.ENEMY) {
             collider.GetComponentInChildren<SaucerShooter>().Die();
             ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, _details.particleCount);

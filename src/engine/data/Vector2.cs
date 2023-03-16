@@ -46,20 +46,7 @@ public struct Vector2 {
         t = Math.Clamp(t, 0, 1);
         return new Vector2(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t);
     }
-    
-    public static Vector2 MoveTowards(Vector2 current, Vector2 target, float maxDistanceDelta) {
-        float num = target.x - current.x;
-        float num2 = target.y - current.y;
-        float num3 = num * num + num2 * num2;
-        if (num3 == 0f || (maxDistanceDelta >= 0f && num3 <= maxDistanceDelta * maxDistanceDelta))
-        {
-            return target;
-        }
 
-        float num4 = (float)Math.Sqrt(num3);
-        return new Vector2(current.x + num / num4 * maxDistanceDelta, current.y + num2 / num4 * maxDistanceDelta);
-    }
-    
     public static Vector2 Reflect(Vector2 inDirection, Vector2 inNormal) {
         float num = -2f * Dot(inNormal, inDirection);
         return new Vector2(num * inNormal.x + inDirection.x, num * inNormal.y + inDirection.y);

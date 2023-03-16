@@ -16,6 +16,7 @@ public class SaucerShooter : Script {
     private readonly Transform? _target;
     private readonly float _skillRatio;
     private readonly ClockTimer _shootIntervalTimer = new(0.75f);
+    private bool _destroyed = false;
     
     public SaucerShooter(Transform? target, float skillRatio) : base(true) {
         _target = target;
@@ -47,6 +48,11 @@ public class SaucerShooter : Script {
     }
 
     public void Die() {
+        if (_destroyed) {
+            return;
+        }
+
+        _destroyed = true;
         ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, new RangeZero(10, 20), SoundNames.BANG_MEDIUM);
         Transform.Parent!.gameObject.Destroy();
     }

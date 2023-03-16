@@ -28,7 +28,7 @@ public static class SaucerFactory {
             .SetLayer(LayerNames.ENEMY)
             .SetTag(TagNames.ENEMY)
             .SetPosition(settings.position)
-            .SetScale(settings.target == null ? Vector2.One() : new Vector2(0.6f, 0.6f))
+            .SetScale(settings.target == null ? Vector2.One() : new Vector2(0.75f, 0.75f))
             .SetComponent(TextureRendererBuilder.Builder(Texture.CreateSingle(TextureNames.ENEMY)).Build())
             .SetComponent(new PolygonCollider(true, COLLIDER_VERTICES, ColliderState.TRIGGERING_COLLIDER, Vector2.Zero()))
             .SetComponent(new SaucerMovement(settings.goesToTheRight))
