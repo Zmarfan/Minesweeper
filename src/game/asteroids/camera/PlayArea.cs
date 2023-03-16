@@ -28,7 +28,7 @@ public class PlayArea : Script {
 
         SaucerFactory.Create(Transform.GetRoot(), new Vector2(-600, 0), true, true);
         SaucerFactory.Create(Transform.GetRoot(), new Vector2(600, 100), false, false);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 50; i++) {
             AsteroidFactory.Create(Transform.GetRoot(), AsteroidType.BIG, new Vector2(0, 0));
         }
     }
