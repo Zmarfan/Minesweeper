@@ -11,7 +11,7 @@ public class TrackObject {
     public readonly bool isWorld;
     public bool isActive;
     public readonly List<ToggleComponent> toggleComponents;
-    public Collider? Collider { get; private set; } = null!;
+    public IEnumerable<Collider> Colliders { get; private set; } = null!;
     public IEnumerable<RenderComponent> TextureRenderers { get; private set; } = null!;
     public IEnumerable<Script> Scripts { get; private set; } = null!;
 
@@ -31,7 +31,7 @@ public class TrackObject {
     }
     
     private void SetSpecificComponents() {
-        Collider = toggleComponents.OfType<Collider>().FirstOrDefault();
+        Colliders = toggleComponents.OfType<Collider>();
         TextureRenderers = toggleComponents.OfType<RenderComponent>();
         Scripts = toggleComponents.OfType<Script>();
     }

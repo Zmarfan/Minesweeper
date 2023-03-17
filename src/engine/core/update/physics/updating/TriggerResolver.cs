@@ -10,8 +10,10 @@ namespace Worms.engine.core.update.physics.updating;
 
 public static class TriggerResolver {
     public static void UpdateMouseTriggers(TrackObject obj, bool doMouseClick) {
-        bool isInsideTrigger = obj.Collider is { IsActive: true, state: ColliderState.TRIGGER }
-                               && obj.Collider.IsPointInside(GetMouseWorldPosition(obj));
+        bool isInsideTrigger = obj.Colliders.Any(collider => 
+            collider is { IsActive: true, state: ColliderState.TRIGGER }
+                && collider.IsPointInside(GetMouseWorldPosition(obj))
+        );
 
         switch (obj.MouseInsideTrigger) {
             case false when isInsideTrigger:
@@ -34,24 +36,33 @@ public static class TriggerResolver {
 
     public static void UpdateColliderTriggers(TrackObject obj, Dictionary<GameObject, TrackObject> objects) {
         HashSet<Collider> collidersInTrigger = new();
-        if (obj.Collider is not { IsActive: true, state: ColliderState.TRIGGER }) {
-            return;
-        }
-
-        foreach ((GameObject gameObject, TrackObject checkObj) in objects) {
-            if (!checkObj.isActive
-                || obj.Collider.gameObject == gameObject
-                || !LayerMask.CanLayersInteract(obj.Collider.gameObject.Layer, gameObject.Layer)
-                || checkObj.Collider is not { IsActive: true }
-                || checkObj.Collider.state != ColliderState.TRIGGERING_COLLIDER
-               ) {
-                continue;
+        foreach (Collider objCollider in obj.Colliders) {
+            if (objCollider is not { IsActive: true, state: ColliderState.TRIGGER }) {
+                return;
             }
 
-            if (IntersectUtils.DoTriggersIntersect(obj.Collider, checkObj.Collider)) {
-                collidersInTrigger.Add(checkObj.Collider);
+            foreach ((GameObject gameObject, TrackObject checkObj) in objects) {
+                if (!checkObj.isActive
+                    || objCollider.gameObject == gameObject
+                    || !LayerMask.CanLayersInteract(objCollider.gameObject.Layer, gameObject.Layer)
+                   ) {
+                    continue;
+                }
+
+                foreach (Collider checkObjCollider in checkObj.Colliders) {
+                    if (checkObjCollider is not { IsActive: true }
+                        || checkObjCollider.state != ColliderState.TRIGGERING_COLLIDER
+                    ) {
+                        continue;
+                    }
+                    
+                    if (IntersectUtils.DoTriggersIntersect(objCollider, checkObjCollider)) {
+                        collidersInTrigger.Add(checkObjCollider);
+                    }
+                }
             }
         }
+
 
         FireObjectTriggerEvents(obj, collidersInTrigger);
         obj.CollidersInsideTrigger = collidersInTrigger;

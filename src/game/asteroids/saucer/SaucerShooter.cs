@@ -19,7 +19,7 @@ public class SaucerShooter : Script {
     private readonly ClockTimer _shootIntervalTimer = new(0.75f);
     private bool _destroyed = false;
     
-    public SaucerShooter(Func<Transform>? targetSupplier, float skillRatio) : base() {
+    public SaucerShooter(Func<Transform>? targetSupplier, float skillRatio) {
         _targetSupplier = targetSupplier;
         _skillRatio = skillRatio;
     }

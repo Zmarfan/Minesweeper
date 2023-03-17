@@ -1,5 +1,4 @@
 ﻿using Worms.engine.data;
-using Worms.engine.game_object.components.particle_system.ranges;
 using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.scripts;
 using Worms.game.asteroids.names;
@@ -14,7 +13,7 @@ public class Asteroid : Script {
     private readonly AsteroidDetails _details;
     private bool _destroyed = false;
     
-    public Asteroid(Vector2 velocity, float angularVelocity, AsteroidDetails details) : base() {
+    public Asteroid(Vector2 velocity, float angularVelocity, AsteroidDetails details) {
         _velocity = velocity;
         _angularVelocity = angularVelocity;
         _details = details;

@@ -4,6 +4,7 @@ using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.scripts;
+using Worms.engine.helper;
 using Worms.game.asteroids.asteroids;
 using Worms.game.asteroids.names;
 using Worms.game.asteroids.player;
@@ -19,8 +20,9 @@ public class GameController : Script {
 
     private bool _respawnPlayer = false;
     private ClockTimer _respawnTimer = new(3);
+    private long _round = 0;
     
-    public GameController() : base() {
+    public GameController() {
         PlayerBase.PlayerDieEvent += PlayerDied;
     }
 
@@ -34,21 +36,64 @@ public class GameController : Script {
 
     public override void Start() {
         SpawnPlayer();
-        SaucerSettings settings = new(Transform.GetRoot(), new Vector2(1200, 0), null, 1f);
-        SaucerFactory.Create(settings);
-        for (int i = 0; i < 10; i++) {
-            AsteroidFactory.Create(Transform.GetRoot(), AsteroidType.BIG, new Vector2(-1200, 0));
-        }
     }
 
     public override void Update(float deltaTime) {
+        HandlePlayerRespawn(deltaTime);
+
+        if (AllEnemiesCleared()) {
+            SpawnAsteroidWave();
+        }
+    }
+
+    private bool AllEnemiesCleared() {
+        return false; // count children, also make it possible to have more than one collider as trigger/collider
+    }
+
+    private void HandlePlayerRespawn(float deltaTime) {
         _respawnTimer.Time += deltaTime;
         if (_respawnPlayer && _respawnTimer.Expired()) {
             _respawnPlayer = false;
             SpawnPlayer();
         }
     }
+    
+    private void SpawnAsteroidWave() {
+        long spawnAmount = 3 + _round++;
+        for (int i = 0; i < spawnAmount; i++) {
+            AsteroidFactory.Create(Transform.GetRoot(), AsteroidType.BIG, GetRandomPositionAlongBorder());
+        }
+    }
+    
+    private Vector2 GetRandomPositionAlongBorder() {
+        Vector2 position;
+        float p = RandomUtil.GetRandomValueBetweenTwoValues(0, _boxCollider.size.x * 2 + _boxCollider.size.y * 2);
+        if (p < _boxCollider.size.x + _boxCollider.size.y) {
+            if (p < _boxCollider.size.x) {
+                position.x = p;
+                position.y = 0;
+            }
+            else {
+                position.x = _boxCollider.size.x;
+                position.y = p - _boxCollider.size.x;
+            }
+        }
+        else {
+            p -= _boxCollider.size.x + _boxCollider.size.y;
+            if (p < _boxCollider.size.x) {
+                position.x = _boxCollider.size.x - p;
+                position.y = _boxCollider.size.y;
+            }
+            else {
+                position.x = 0;
+                position.y = _boxCollider.size.y - (p - _boxCollider.size.x);
+            }
+        }
 
+        return position - new Vector2(_boxCollider.size.x / 2f, _boxCollider.size.y / 2f);
+    }
+
+    
     public override void OnTriggerExit(Collider collider) {
         Vector2 half = _boxCollider.size / 2;
         Transform transform = collider.Transform.Parent!;

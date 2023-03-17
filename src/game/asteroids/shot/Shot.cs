@@ -11,7 +11,7 @@ public class Shot : Script {
     private readonly float _initialSpeed;
     private readonly ClockTimer _lifeTimer;
 
-    public Shot(Vector2 direction, float initialSpeed) : base() {
+    public Shot(Vector2 direction, float initialSpeed) {
         _direction = direction;
         _initialSpeed = initialSpeed;
         _lifeTimer = new ClockTimer(LIFE_TIME);
