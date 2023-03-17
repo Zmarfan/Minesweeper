@@ -10,10 +10,13 @@ using Worms.engine.helper;
 using Worms.game.asteroids.asteroids;
 using Worms.game.asteroids.names;
 using Worms.game.asteroids.player;
+using Worms.game.asteroids.saucer;
 
 namespace Worms.game.asteroids.controller; 
 
 public class GameController : Script {
+    private const float MIN_SAUCER_SPAWN_TIME = 10;
+    private const float MAX_SAUCER_SPAWN_TIME = 30;
     private const float FAR_AWAY = 10000;
     private const float PLAY_AREA_BORDER = 100f;
 
@@ -23,11 +26,15 @@ public class GameController : Script {
     private Transform _player = null!;
 
     private bool _respawnPlayer = false;
-    private ClockTimer _respawnTimer = new(3);
+    private bool _waveOver = true;
+    private readonly ClockTimer _spawnAsteroidsTimer = new(1.5f, 1.5f);
+    private readonly ClockTimer _respawnTimer = new(3);
+    private readonly ClockTimer _saucerSpawnerTimer = new(MIN_SAUCER_SPAWN_TIME);
     private long _round = 0;
     
     public GameController() {
         PlayerBase.PlayerDieEvent += PlayerDied;
+        _saucerSpawnerTimer.Duration = RandomUtil.GetRandomValueBetweenTwoValues(MIN_SAUCER_SPAWN_TIME, MAX_SAUCER_SPAWN_TIME);
     }
 
     public override void Awake() {
@@ -48,12 +55,31 @@ public class GameController : Script {
                 child.gameObject.Destroy();
             }
         }
-        
-        HandlePlayerRespawn(deltaTime);
 
+        HandleSaucerSpawning(deltaTime);
+        HandlePlayerRespawn(deltaTime);
         if (_enemyHolder.children.Count == 0) {
-            SpawnAsteroidWave();
+            HandleWaveSpawn(deltaTime);
         }
+    }
+
+    private void HandleSaucerSpawning(float deltaTime) {
+        _saucerSpawnerTimer.Time += deltaTime;
+        if (_saucerSpawnerTimer.Expired()) {
+            _saucerSpawnerTimer.Reset();
+            _saucerSpawnerTimer.Duration = RandomUtil.GetRandomValueBetweenTwoValues(MIN_SAUCER_SPAWN_TIME, MAX_SAUCER_SPAWN_TIME);
+            bool random = RandomUtil.RandomBool();
+            float skillRatio = Math.Min(0.5f + 0.05f * _round, 0.95f);
+            SaucerSettings settings = new(_enemyHolder, GetSaucerSpawnPosition(), random ? () => _player : null, skillRatio);
+            SaucerFactory.Create(settings);
+        }
+    }
+
+    private Vector2 GetSaucerSpawnPosition() {
+        int side = RandomUtil.RandomBool() ? 1 : -1;
+        const float SAUCER_OFFSET = 50;
+        float y = RandomUtil.GetRandomValueBetweenTwoValues(-_playArea.y / 2f, _playArea.y / 2f);
+        return new Vector2(side * (_playArea.x / 2f) - SAUCER_OFFSET * side, y);
     }
 
     private void HandlePlayerRespawn(float deltaTime) {
@@ -64,7 +90,19 @@ public class GameController : Script {
         }
     }
     
+    private void HandleWaveSpawn(float deltaTime) {
+        if (!_waveOver) {
+            _waveOver = true;
+            _spawnAsteroidsTimer.Reset();
+        }
+        _spawnAsteroidsTimer.Time += deltaTime;
+        if (_spawnAsteroidsTimer.Expired()) {
+            SpawnAsteroidWave();
+        }
+    }
+    
     private void SpawnAsteroidWave() {
+        _waveOver = false;
         long spawnAmount = 3 + _round++;
         for (int i = 0; i < spawnAmount; i++) {
             AsteroidFactory.Create(_enemyHolder, AsteroidType.BIG, GetRandomPositionAlongBorder());
@@ -114,12 +152,12 @@ public class GameController : Script {
             pos = new Vector2(pos.x, -pos.y + Math.Sign(pos.y) * (maxY - half.y + 10));
         }
 
-        if (collider.gameObject.Tag == TagNames.ENEMY) {
-            collider.Transform.Parent!.gameObject.Destroy();
-            return;
-        }
-
         if (maxX > _playArea.x / 2f) {
+            if (collider.gameObject.Tag == TagNames.ENEMY) {
+                collider.Transform.Parent!.gameObject.Destroy();
+                return;
+            }
+            
             pos = new Vector2(-pos.x + Math.Sign(pos.x) * (maxX - half.x + 10), pos.y);
         }
 
