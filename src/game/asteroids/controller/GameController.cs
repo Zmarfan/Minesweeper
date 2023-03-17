@@ -22,8 +22,9 @@ public class GameController : Script {
     private const float PLAY_AREA_BORDER = 100f;
 
     private Transform _enemyHolder = null!;
-    private Transform _lifeDisplayHolder = null;
+    private Transform _lifeDisplayHolder = null!;
     private AudioSource _lifeAudioSource = null!;
+    private MusicScript _musicScript = null!;
     private Vector2 _playArea;
     private List<PolygonCollider> _colliders = null!;
     private Transform _player = null!;
@@ -68,6 +69,7 @@ public class GameController : Script {
     }
 
     public override void Start() {
+        _musicScript = Transform.GetRoot().GetComponentInChildren<MusicScript>();
         SpawnPlayer();
     }
 
@@ -128,6 +130,7 @@ public class GameController : Script {
     }
     
     private void SpawnAsteroidWave() {
+        _musicScript.RestartMusic();
         _waveOver = false;
         long spawnAmount = Math.Min(2 + _round++, 100);
         for (int i = 0; i < spawnAmount; i++) {

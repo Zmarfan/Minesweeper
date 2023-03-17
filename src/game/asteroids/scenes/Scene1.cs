@@ -26,6 +26,10 @@ public static class Scene1 {
             .SetComponent(AudioSourceBuilder.Builder(SoundNames.EXTRA_LIFE, ChannelNames.EFFECTS).SetPlayOnAwake(false).Build())
             .SetComponent(new GameController())
             .Build()
+            .Transform.AddSibling("music")
+            .SetComponent(AudioSourceBuilder.Builder(SoundNames.BEAT_1, ChannelNames.MUSIC).SetPlayOnAwake(false).Build())
+            .SetComponent(new MusicScript())
+            .Build()
             .Transform.GetRoot().gameObject;
     }
 

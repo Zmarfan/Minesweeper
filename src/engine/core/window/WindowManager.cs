@@ -5,7 +5,7 @@ namespace Worms.engine.core.window;
 
 public class WindowManager {
     public delegate void ResolutionChangedDelegate(Vector2Int resolution);
-    public static event ResolutionChangedDelegate ResolutionChangedEvent;
+    public static event ResolutionChangedDelegate? ResolutionChangedEvent;
     
     private static WindowManager _self = null!;
 
