@@ -1,4 +1,6 @@
 ﻿using Worms.engine.camera;
+using Worms.engine.core.input;
+using Worms.engine.core.input.listener;
 using Worms.engine.core.window;
 using Worms.engine.data;
 using Worms.engine.game_object;
@@ -15,6 +17,7 @@ public class GameController : Script {
     private const float FAR_AWAY = 10000;
     private const float PLAY_AREA_BORDER = 100f;
 
+    private Transform _enemyHolder = null!;
     private Vector2 _playArea;
     private List<PolygonCollider> _colliders = null!;
     private Transform _player = null!;
@@ -28,27 +31,29 @@ public class GameController : Script {
     }
 
     public override void Awake() {
+        _enemyHolder = Transform.Instantiate(GameObjectBuilder.Builder("holder")).Transform;
         _colliders = GetComponents<PolygonCollider>();
-        Camera.Main.Size = 2f;
+        Camera.Main.Size = 1.5f;
         ResolutionChanged(WindowManager.CurrentResolution);
         WindowManager.ResolutionChangedEvent += ResolutionChanged;
     }
 
     public override void Start() {
         SpawnPlayer();
-        SpawnAsteroidWave();
     }
 
     public override void Update(float deltaTime) {
+        if (Input.GetKeyDown(Button.B)) {
+            foreach (Transform child in _enemyHolder.children) {
+                child.gameObject.Destroy();
+            }
+        }
+        
         HandlePlayerRespawn(deltaTime);
 
-        if (AllEnemiesCleared()) {
+        if (_enemyHolder.children.Count == 0) {
             SpawnAsteroidWave();
         }
-    }
-
-    private bool AllEnemiesCleared() {
-        return false; // count children, also make it possible to have more than one collider as trigger/collider
     }
 
     private void HandlePlayerRespawn(float deltaTime) {
@@ -62,7 +67,7 @@ public class GameController : Script {
     private void SpawnAsteroidWave() {
         long spawnAmount = 3 + _round++;
         for (int i = 0; i < spawnAmount; i++) {
-            AsteroidFactory.Create(Transform.GetRoot(), AsteroidType.BIG, GetRandomPositionAlongBorder());
+            AsteroidFactory.Create(_enemyHolder, AsteroidType.BIG, GetRandomPositionAlongBorder());
         }
     }
     
@@ -91,7 +96,7 @@ public class GameController : Script {
             }
         }
 
-        return position - new Vector2(_playArea.x, _playArea.y) / 2f;
+        return (position - new Vector2(_playArea.x, _playArea.y) / 2f) * 1.5f;
     }
 
     
@@ -106,7 +111,7 @@ public class GameController : Script {
         Vector2 half = _playArea / 2f;
         
         if (maxY > half.y) {
-            pos = new Vector2(pos.x, -pos.y + Math.Sign(pos.y) * (maxY - half.y + 5));
+            pos = new Vector2(pos.x, -pos.y + Math.Sign(pos.y) * (maxY - half.y + 10));
         }
 
         if (collider.gameObject.Tag == TagNames.ENEMY) {
@@ -115,7 +120,7 @@ public class GameController : Script {
         }
 
         if (maxX > _playArea.x / 2f) {
-            pos = new Vector2(-pos.x + Math.Sign(pos.x) * (maxX - half.x + 5), pos.y);
+            pos = new Vector2(-pos.x + Math.Sign(pos.x) * (maxX - half.x + 10), pos.y);
         }
 
         collider.Transform.Parent!.Position = pos;

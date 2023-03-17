@@ -11,7 +11,7 @@ namespace Worms.game.asteroids.asteroids;
 public static class AsteroidFactory {
     private const float MAX_ANGULAR_VELOCITY = 150;
 
-    public static GameObject Create(Transform parent, AsteroidType type, Vector2 position) {
+    public static void Create(Transform parent, AsteroidType type, Vector2 position) {
         AsteroidDetails generalDetails = AsteroidDetails.GetDetails(type);
         AsteroidDetails.AsteroidTypeDetails details = generalDetails.details[RandomUtil.GetRandomZeroToMax(generalDetails.details.Count)];
         Vector2 velocity = CalculateInitialVelocity(generalDetails);
@@ -30,7 +30,6 @@ public static class AsteroidFactory {
                 .Build()
             .Transform.Parent!.gameObject;
         Transform.Instantiate(obj);
-        return obj;
     }
     
     private static Vector2 CalculateInitialVelocity(AsteroidDetails details) {

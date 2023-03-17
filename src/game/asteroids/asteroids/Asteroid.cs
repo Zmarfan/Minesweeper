@@ -53,7 +53,7 @@ public class Asteroid : Script {
 
     private void SpawnNewAsteroids() {
         AsteroidType newType = _details.type == AsteroidType.BIG ? AsteroidType.MEDIUM : AsteroidType.SMALL;
-        AsteroidFactory.Create(Transform.GetRoot(), newType, Transform.Position);
-        AsteroidFactory.Create(Transform.GetRoot(), newType, Transform.Position);
+        AsteroidFactory.Create(Transform.Parent!, newType, Transform.Position);
+        AsteroidFactory.Create(Transform.Parent!, newType, Transform.Position);
     }
 }

@@ -5,7 +5,7 @@ namespace Worms.game.asteroids.shot;
 
 public class Shot : Script {
     private const float SPEED = 1500;
-    private const float LIFE_TIME = 1.5f;
+    private const float LIFE_TIME = 0.75f;
 
     private readonly Vector2 _direction;
     private readonly float _initialSpeed;
