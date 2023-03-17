@@ -89,7 +89,7 @@ public static class Asteroids {
                 new AssetDeclaration(Path("asteroids\\sounds\\bangSmall.wav"), SoundNames.BANG_SMALL),
                 new AssetDeclaration(Path("asteroids\\sounds\\beat1.wav"), SoundNames.BEAT_1),
                 new AssetDeclaration(Path("asteroids\\sounds\\beat2.wav"), SoundNames.BEAT_2),
-                new AssetDeclaration(Path("asteroids\\sounds\\extraShip.wav"), SoundNames.EXTRA_SHIP),
+                new AssetDeclaration(Path("asteroids\\sounds\\extraLife.wav"), SoundNames.EXTRA_LIFE),
                 new AssetDeclaration(Path("asteroids\\sounds\\fire.wav"), SoundNames.FIRE),
                 new AssetDeclaration(Path("asteroids\\sounds\\saucerBig.wav"), SoundNames.SAUCER_BIG),
                 new AssetDeclaration(Path("asteroids\\sounds\\saucerSmall.wav"), SoundNames.SAUCER_SMALL),

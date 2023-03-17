@@ -8,7 +8,7 @@ public class ScreenPivot : Script {
     private readonly Vector2Int _pivot;
     private Vector2Int _oldResolution;
     
-    public ScreenPivot(Vector2Int pivot, bool isActive, string name = "pivot") : base(isActive, name) {
+    public ScreenPivot(Vector2Int pivot, bool isActive = true, string name = "pivot") : base(isActive, name) {
         _pivot = pivot;
     }
 

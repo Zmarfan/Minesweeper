@@ -6,7 +6,7 @@ public static class SoundNames {
     public const string BANG_SMALL = "bangSmall";
     public const string BEAT_1 = "beat1";
     public const string BEAT_2 = "beat2";
-    public const string EXTRA_SHIP = "extraShip";
+    public const string EXTRA_LIFE = "extraLife";
     public const string FIRE = "fire";
     public const string SAUCER_BIG = "saucerBig";
     public const string SAUCER_SMALL = "saucerSmall";

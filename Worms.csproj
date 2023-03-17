@@ -114,9 +114,6 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
       <None Remove="src\assets\asteroids\sounds\extraShip.wav" />
-      <Content Include="src\assets\asteroids\sounds\extraShip.wav">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\sounds\fire.wav" />
       <Content Include="src\assets\asteroids\sounds\fire.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -139,6 +136,10 @@
       </Content>
       <None Remove="src\assets\asteroids\textures\ship_fragment.png" />
       <Content Include="src\assets\asteroids\textures\ship_fragment.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\asteroids\sounds\extraLife.wav" />
+      <Content Include="src\assets\asteroids\sounds\extraLife.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>

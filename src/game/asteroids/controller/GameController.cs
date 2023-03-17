@@ -4,6 +4,7 @@ using Worms.engine.core.input.listener;
 using Worms.engine.core.window;
 using Worms.engine.data;
 using Worms.engine.game_object;
+using Worms.engine.game_object.components.audio_source;
 using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.scripts;
 using Worms.engine.helper;
@@ -21,6 +22,8 @@ public class GameController : Script {
     private const float PLAY_AREA_BORDER = 100f;
 
     private Transform _enemyHolder = null!;
+    private Transform _lifeDisplayHolder = null;
+    private AudioSource _lifeAudioSource = null!;
     private Vector2 _playArea;
     private List<PolygonCollider> _colliders = null!;
     private Transform _player = null!;
@@ -30,7 +33,21 @@ public class GameController : Script {
     private readonly ClockTimer _spawnAsteroidsTimer = new(1.5f, 1.5f);
     private readonly ClockTimer _respawnTimer = new(3);
     private readonly ClockTimer _saucerSpawnerTimer = new(MIN_SAUCER_SPAWN_TIME);
-    private long _round = 0;
+    private long _round = 1;
+
+    private int Lives {
+        get => _lives;
+        set {
+            foreach (Transform child in _lifeDisplayHolder.children) {
+                child.gameObject.Destroy();
+            }
+
+            _lives = value;
+            LifeFactory.Create(_lifeDisplayHolder, _lives);
+        }
+    }
+
+    private int _lives;
     
     public GameController() {
         PlayerBase.PlayerDieEvent += PlayerDied;
@@ -38,11 +55,16 @@ public class GameController : Script {
     }
 
     public override void Awake() {
-        _enemyHolder = Transform.Instantiate(GameObjectBuilder.Builder("holder")).Transform;
+        _lifeAudioSource = GetComponent<AudioSource>();
+        _enemyHolder = Transform.Instantiate(GameObjectBuilder.Builder("enemyHolder")).Transform;
         _colliders = GetComponents<PolygonCollider>();
         Camera.Main.Size = 1.5f;
-        ResolutionChanged(WindowManager.CurrentResolution);
-        WindowManager.ResolutionChangedEvent += ResolutionChanged;
+        CalculateScreenArea(WindowManager.CurrentResolution);
+        _lifeDisplayHolder = Transform.Instantiate(GameObjectBuilder
+            .Builder("lifeHolder")
+            .SetPosition(new Vector2(-WindowManager.CurrentResolution.x / 2f + 20, WindowManager.CurrentResolution.y / 2f - 25) * Camera.Main.Size)
+        ).Transform;
+        Lives = 3;
     }
 
     public override void Start() {
@@ -97,13 +119,17 @@ public class GameController : Script {
         }
         _spawnAsteroidsTimer.Time += deltaTime;
         if (_spawnAsteroidsTimer.Expired()) {
+            if (_round % 3 == 0) {
+                _lifeAudioSource.Play();
+                Lives++;
+            }
             SpawnAsteroidWave();
         }
     }
     
     private void SpawnAsteroidWave() {
         _waveOver = false;
-        long spawnAmount = 3 + _round++;
+        long spawnAmount = Math.Min(2 + _round++, 100);
         for (int i = 0; i < spawnAmount; i++) {
             AsteroidFactory.Create(_enemyHolder, AsteroidType.BIG, GetRandomPositionAlongBorder());
         }
@@ -164,7 +190,7 @@ public class GameController : Script {
         collider.Transform.Parent!.Position = pos;
     }
 
-    private void ResolutionChanged(Vector2Int resolution) {
+    private void CalculateScreenArea(Vector2Int resolution) {
         _playArea = new Vector2(resolution.x + PLAY_AREA_BORDER, resolution.y + PLAY_AREA_BORDER) * Camera.Main.Size;
         float minX = -_playArea.x / 2;
         float maxX = _playArea.x / 2;
@@ -177,8 +203,14 @@ public class GameController : Script {
     }
 
     private void PlayerDied() {
-        _respawnPlayer = true;
-        _respawnTimer.Reset();
+        Lives--;
+        if (Lives != 0) {
+            _respawnPlayer = true;
+            _respawnTimer.Reset();
+            return;
+            
+        }
+        Console.WriteLine("dead");
     }
     
     private void SpawnPlayer() {

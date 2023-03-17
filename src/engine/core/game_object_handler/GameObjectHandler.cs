@@ -59,6 +59,10 @@ public class GameObjectHandler {
     }
 
     private void InstantiateGameObject(GameObject gameObject) {
+        if (objects.ContainsKey(gameObject)) {
+            return;
+        }
+        
         List<GameObject> allGameObjects = GetAllGameObjectsFromGameObject(gameObject, false).ToList();
         HashSet<GameObject> allActiveGameObjects = GetAllGameObjectsFromGameObject(gameObject, true).ToHashSet();
         allGameObjects.ForEach(obj => {

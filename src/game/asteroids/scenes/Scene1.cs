@@ -1,7 +1,7 @@
 ﻿using Worms.engine.data;
 using Worms.engine.game_object;
+using Worms.engine.game_object.components.audio_source;
 using Worms.engine.game_object.components.physics.colliders;
-using Worms.engine.game_object.components.screen_pivot;
 using Worms.engine.scene;
 using Worms.game.asteroids.controller;
 using Worms.game.asteroids.names;
@@ -23,25 +23,13 @@ public static class Scene1 {
             .SetComponent(new PolygonCollider(true, defaultVertices, ColliderState.TRIGGER, Vector2.Zero()))
             .SetComponent(new PolygonCollider(true, defaultVertices, ColliderState.TRIGGER, Vector2.Zero()))
             .SetComponent(new PolygonCollider(true, defaultVertices, ColliderState.TRIGGER, Vector2.Zero()))
+            .SetComponent(AudioSourceBuilder.Builder(SoundNames.EXTRA_LIFE, ChannelNames.EFFECTS).SetPlayOnAwake(false).Build())
             .SetComponent(new GameController())
             .Build()
             .Transform.GetRoot().gameObject;
     }
 
     private static GameObject CreateScreenRoot() {
-        return GameObjectBuilder.Root()
-            .Transform.AddChild("bottom-left")
-            .SetComponent(new ScreenPivot(new Vector2Int(0, 0), true))
-            .Build()
-            .Transform.AddSibling("top-left")
-            .SetComponent(new ScreenPivot(new Vector2Int(0, 1), true))
-            .Build()
-            .Transform.AddSibling("top-right")
-            .SetComponent(new ScreenPivot(new Vector2Int(1, 1), true))
-            .Build()
-            .Transform.AddSibling("bottom-right")
-            .SetComponent(new ScreenPivot(new Vector2Int(1, 0), true))
-            .Build()
-            .Transform.GetRoot().gameObject;
+        return GameObjectBuilder.Root();
     }
 }
