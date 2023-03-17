@@ -14,10 +14,15 @@ public static class Scene1 {
     }
     
     private static GameObject CreateWorldRoot() {
+        Vector2[] defaultVertices = { new(-1, -1), new(-1, 1), new(1, 1) };
+        
         return GameObjectBuilder.Root()
             .Transform.AddChild("gameController")
             .SetLayer(LayerNames.PLAY_AREA_OBJECT)
-            .SetComponent(new BoxCollider(true, ColliderState.TRIGGER, Vector2.One(), Vector2.Zero()))
+            .SetComponent(new PolygonCollider(true, defaultVertices, ColliderState.TRIGGER, Vector2.Zero()))
+            .SetComponent(new PolygonCollider(true, defaultVertices, ColliderState.TRIGGER, Vector2.Zero()))
+            .SetComponent(new PolygonCollider(true, defaultVertices, ColliderState.TRIGGER, Vector2.Zero()))
+            .SetComponent(new PolygonCollider(true, defaultVertices, ColliderState.TRIGGER, Vector2.Zero()))
             .SetComponent(new GameController())
             .Build()
             .Transform.GetRoot().gameObject;

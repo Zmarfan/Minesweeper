@@ -2,6 +2,7 @@
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.components.rendering.texture_renderer;
+using Worms.game.asteroids.controller;
 using Worms.game.asteroids.names;
 
 namespace Worms.game.asteroids.shot; 

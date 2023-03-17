@@ -3,6 +3,7 @@ using Worms.engine.game_object;
 using Worms.engine.game_object.components.physics.colliders;
 using Worms.engine.game_object.components.rendering.texture_renderer;
 using Worms.engine.helper;
+using Worms.game.asteroids.controller;
 using Worms.game.asteroids.names;
 
 namespace Worms.game.asteroids.asteroids; 
@@ -23,10 +24,10 @@ public static class AsteroidFactory {
             .SetComponent(new PolygonCollider(true, details.polygonVertices, ColliderState.TRIGGER, Vector2.Zero()))
             .SetComponent(new Asteroid(velocity, angularVelocity, generalDetails))
             .Build()
-            .Transform.AddChild("playAreaContainer")
-            .SetLayer(LayerNames.PLAY_AREA_OBJECT)
-            .SetComponent(new PolygonCollider(true, details.polygonVertices, ColliderState.TRIGGERING_COLLIDER, Vector2.Zero()))
-            .Build()
+                .Transform.AddChild("playAreaContainer")
+                .SetLayer(LayerNames.PLAY_AREA_OBJECT)
+                .SetComponent(new PolygonCollider(true, details.polygonVertices, ColliderState.TRIGGERING_COLLIDER, Vector2.Zero()))
+                .Build()
             .Transform.Parent!.gameObject;
         Transform.Instantiate(obj);
         return obj;
