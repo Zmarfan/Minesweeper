@@ -1,4 +1,5 @@
-﻿using Worms.engine.data;
+﻿using Worms.engine.core.audio;
+using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.animation.animation;
 using Worms.engine.game_object.components.animation.composition;
@@ -33,6 +34,7 @@ public static class PlayerFactory {
             .SetComponent(AudioSourceBuilder
                 .Builder(SoundNames.FIRE, ChannelNames.EFFECTS)
                 .SetName(PlayerMovement.FIRE_AUDIO_SOURCE)
+                .SetVolume(Volume.FromPercentage(50))
                 .SetPlayOnAwake(false)
                 .Build()
             )

@@ -36,7 +36,7 @@ public static class SaucerFactory {
             .SetComponent(new SaucerMovement(settings.position.x < 0))
             .SetComponent(AudioSourceBuilder
                 .Builder(settings.targetSupplier == null ? SoundNames.SAUCER_BIG : SoundNames.SAUCER_SMALL, ChannelNames.EFFECTS)
-                .SetVolume(Volume.FromPercentage(75))
+                .SetVolume(Volume.FromPercentage(50))
                 .SetLoop(true)
                 .Build()
             )
@@ -50,7 +50,7 @@ public static class SaucerFactory {
                 .SetTag(TagNames.ENEMY)
                 .SetLayer(LayerNames.ENEMY)
                 .SetComponent(new SaucerShooter(settings.targetSupplier, settings.skillRatio))
-                .SetComponent(AudioSourceBuilder.Builder(SoundNames.FIRE, ChannelNames.EFFECTS).SetPlayOnAwake(false).Build())
+                .SetComponent(AudioSourceBuilder.Builder(SoundNames.FIRE, ChannelNames.EFFECTS).SetPlayOnAwake(false).SetVolume(Volume.FromPercentage(50)).Build())
                 .SetComponent(new PolygonCollider(true, COLLIDER_VERTICES, ColliderState.TRIGGER, Vector2.Zero()))
                 .Build()
             .Transform.Parent!.gameObject;

@@ -17,12 +17,15 @@ public static class Scene1 {
         Vector2[] defaultVertices = { new(-1, -1), new(-1, 1), new(1, 1) };
         
         return GameObjectBuilder.Root()
-            .Transform.AddChild("gameController")
+            .Transform.AddChild("screenContainer")
             .SetLayer(LayerNames.PLAY_AREA_OBJECT)
             .SetComponent(new PolygonCollider(true, defaultVertices, ColliderState.TRIGGER, Vector2.Zero()))
             .SetComponent(new PolygonCollider(true, defaultVertices, ColliderState.TRIGGER, Vector2.Zero()))
             .SetComponent(new PolygonCollider(true, defaultVertices, ColliderState.TRIGGER, Vector2.Zero()))
             .SetComponent(new PolygonCollider(true, defaultVertices, ColliderState.TRIGGER, Vector2.Zero()))
+            .SetComponent(new ScreenContainer())
+            .Build()
+            .Transform.AddSibling("gameController")
             .SetComponent(AudioSourceBuilder.Builder(SoundNames.EXTRA_LIFE, ChannelNames.EFFECTS).SetPlayOnAwake(false).Build())
             .SetComponent(new GameController())
             .Build()
