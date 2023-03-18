@@ -148,6 +148,10 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
       <None Remove="src\assets\asteroids\textures\background.png" />
+      <None Remove="src\assets\asteroids\fonts\RoadPixel.ttf" />
+      <Content Include="src\assets\asteroids\fonts\RoadPixel.ttf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

@@ -9,13 +9,14 @@ public class TextureRenderer : RenderComponent {
     
     public TextureRenderer(
         bool isActive,
+        string name,
         Texture texture,
         string sortingLayer,
         int orderInLayer,
         Color color,
         bool flipX,
         bool flipY
-    ) : base(isActive, sortingLayer, orderInLayer, color) {
+    ) : base(sortingLayer, orderInLayer, color, isActive, name) {
         this.texture = texture;
         this.flipX = flipX;
         this.flipY = flipY;

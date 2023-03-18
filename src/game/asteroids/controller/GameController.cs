@@ -84,7 +84,7 @@ public class GameController : Script {
         _lifeAudioSource = GetComponent<AudioSource>();
         _enemyHolder = Transform.Instantiate(GameObjectBuilder.Builder("enemyHolder")).Transform;
         SetupDisplay();
-        Lives = 1;
+        Lives = 3;
     }
 
     public override void Start() {
@@ -97,7 +97,7 @@ public class GameController : Script {
         if (_gameOver) {
             _gameOverTimer.Time += deltaTime;
             if (_gameOverTimer.Expired()) {
-                SceneManager.LoadScene(SceneNames.GAME);
+                SceneManager.LoadScene(SceneNames.MAIN_MENU);
             }
             return;
         }

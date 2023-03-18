@@ -80,6 +80,7 @@ public class TextRenderer : RenderComponent {
     
     public TextRenderer(
         bool isActive,
+        string name,
         string sortingLayer,
         int orderInLayer,
         Color color,
@@ -91,7 +92,7 @@ public class TextRenderer : RenderComponent {
         bool italics,
         TextAlignment alignment,
         int lineSpacing
-    ) : base(isActive, sortingLayer, orderInLayer, color) {
+    ) : base(sortingLayer, orderInLayer, color, isActive, name) {
         _text = text;
         _font = font;
         _width = width;

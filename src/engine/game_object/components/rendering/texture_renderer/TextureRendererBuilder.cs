@@ -5,6 +5,7 @@ namespace Worms.engine.game_object.components.rendering.texture_renderer;
 
 public class TextureRendererBuilder {
     private bool _isActive = true;
+    private string _name = "textureRenderer";
     private readonly Texture _texture;
     private string _sortingLayer = RendererHandler.DEFAULT_SORTING_LAYER;
     private int _sortOrder;
@@ -21,11 +22,16 @@ public class TextureRendererBuilder {
     }
 
     public TextureRenderer Build() {
-        return new TextureRenderer(_isActive, _texture, _sortingLayer, _sortOrder, _color, _flipX, _flipY);
+        return new TextureRenderer(_isActive, _name, _texture, _sortingLayer, _sortOrder, _color, _flipX, _flipY);
     }
     
     public TextureRendererBuilder SetIsActive(bool isActive) {
         _isActive = isActive;
+        return this;
+    }
+    
+    public TextureRendererBuilder SetName(string name) {
+        _name = name;
         return this;
     }
     

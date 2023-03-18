@@ -11,7 +11,7 @@ public class RenderComponent : ToggleComponent {
     }
     protected Color color;
 
-    protected RenderComponent(bool isActive, string sortingLayer, int orderInLayer, Color color) : base(isActive) {
+    protected RenderComponent(string sortingLayer, int orderInLayer, Color color, bool isActive = true, string name = "renderComponent") : base(isActive, name) {
         this.sortingLayer = sortingLayer;
         this.orderInLayer = orderInLayer;
         this.color = color;

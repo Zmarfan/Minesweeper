@@ -25,7 +25,7 @@ public static class Asteroids {
             )))
             .SetWindowWidth(1280)   
             .SetWindowHeight(720)
-            .AddScenes(ListUtils.Of(GameScene.GetScene()))
+            .AddScenes(ListUtils.Of(MainMenuScene.GetScene(), GameScene.GetScene()))
             .AddInputListeners(ListUtils.Of(
                 InputListenerBuilder
                     .Builder(InputNames.ROTATE, Button.D)
@@ -40,6 +40,15 @@ public static class Asteroids {
                     .SetAltPositiveButton(Button.UP)
                     .SetSensitivity(2)
                     .Build(),
+                InputListenerBuilder
+                    .Builder(InputNames.MENU_UP, Button.W)
+                    .SetAltPositiveButton(Button.UP)
+                    .Build(),
+                InputListenerBuilder
+                    .Builder(InputNames.MENU_DOWN, Button.S)
+                    .SetAltPositiveButton(Button.DOWN)
+                    .Build(),
+                InputListenerBuilder.Builder(InputNames.MENU_SELECT, Button.SPACE).Build(),
                 InputListenerBuilder.Builder(InputNames.FIRE, Button.SPACE).Build()
             ))
             .SetPhysics(PhysicsSettingsBuilder
@@ -95,7 +104,8 @@ public static class Asteroids {
                 new AssetDeclaration(Path("asteroids\\sounds\\thrust.wav"), SoundNames.THRUST)
             ))
             .AddFonts(ListUtils.Of(
-                new AssetDeclaration(Path("asteroids\\fonts\\Pixeled.ttf"), FontNames.MAIN)
+                new AssetDeclaration(Path("asteroids\\fonts\\Pixeled.ttf"), FontNames.MAIN),
+                new AssetDeclaration(Path("asteroids\\fonts\\RoadPixel.ttf"), FontNames.TITLE)
             ))
             .Build();
     }

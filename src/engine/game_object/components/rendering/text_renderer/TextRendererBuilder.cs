@@ -5,6 +5,7 @@ namespace Worms.engine.game_object.components.rendering.text_renderer;
 
 public class TextRendererBuilder {
     private bool _isActive = true;
+    private string _name = "textRenderer";
     private string _sortingLayer = RendererHandler.DEFAULT_SORTING_LAYER;
     private int _sortOrder;
     private Color _color = Color.WHITE;
@@ -26,11 +27,16 @@ public class TextRendererBuilder {
     }
 
     public TextRenderer Build() {
-        return new TextRenderer(_isActive, _sortingLayer, _sortOrder, _color, _text, _font, _width, _size, _bold, _italics, _alignment, _lineSpacing);
+        return new TextRenderer(_isActive, _name, _sortingLayer, _sortOrder, _color, _text, _font, _width, _size, _bold, _italics, _alignment, _lineSpacing);
     }
     
     public TextRendererBuilder SetIsActive(bool isActive) {
         _isActive = isActive;
+        return this;
+    }
+    
+    public TextRendererBuilder SetName(string name) {
+        _name = name;
         return this;
     }
     

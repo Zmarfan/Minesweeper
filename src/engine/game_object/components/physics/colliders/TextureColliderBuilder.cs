@@ -28,7 +28,7 @@ public class TextureColliderBuilder {
             _isActive,
             _name,
             _state,
-            new TextureRenderer(true, _texture, _sortingLayer, _sortOrder, _color, _flipX, _flipY)
+            new TextureRenderer(true, "textureColliderRenderer", _texture, _sortingLayer, _sortOrder, _color, _flipX, _flipY)
         );
     }
     
