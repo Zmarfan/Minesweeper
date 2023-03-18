@@ -12,7 +12,7 @@ public class MainMenuController : Script {
     public const string QUIT = "QUIT";
     
     private int _selectedIndex = 0;
-    private List<Option> _options;
+    private List<Option> _options = null!;
 
     public override void Awake() {
         TextRenderer play = GetComponentsInChildren<TextRenderer>().First(r => r.Name == PLAY);
@@ -20,7 +20,7 @@ public class MainMenuController : Script {
         TextRenderer quit = GetComponentsInChildren<TextRenderer>().First(r => r.Name == QUIT);
         _options = new List<Option> {
             new(play, () => SceneManager.LoadScene(SceneNames.GAME), PLAY),
-            new(score, () => Console.WriteLine("score"), SCORE),
+            new(score, () => SceneManager.LoadScene(SceneNames.HIGH_SCORE), SCORE),
             new(quit, SceneManager.Quit, QUIT)
         };
     }

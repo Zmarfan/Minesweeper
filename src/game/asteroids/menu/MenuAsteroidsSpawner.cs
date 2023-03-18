@@ -2,9 +2,9 @@
 using Worms.game.asteroids.asteroids;
 using Worms.game.asteroids.controller;
 
-namespace Worms.game.asteroids.main_menu; 
+namespace Worms.game.asteroids.menu; 
 
-public class MainMenuAsteroids : Script {
+public class MenuAsteroidsSpawner : Script {
     private ScreenContainer _screenContainer = null!;
     
     public override void Start() {

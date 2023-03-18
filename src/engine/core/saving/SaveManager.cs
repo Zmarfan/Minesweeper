@@ -5,6 +5,10 @@ namespace Worms.engine.core.saving;
 public static class SaveManager {
     private static readonly JsonSerializerSettings SETTINGS = new() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
     
+    public static bool HasData<T>(string name) {
+        return File.Exists(FilePath(name));
+    }
+    
     public static void Save<T>(string name, T data) {
         Directory.CreateDirectory(SaveDirectory());
         string dataString = JsonConvert.SerializeObject(data, SETTINGS);

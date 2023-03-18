@@ -26,7 +26,7 @@ public static class Asteroids {
             )))
             .SetWindowWidth(1280)   
             .SetWindowHeight(720)
-            .AddScenes(ListUtils.Of(MainMenuScene.GetScene(), GameScene.GetScene()))
+            .AddScenes(ListUtils.Of(MainMenuScene.GetScene(), HighScoreScene.GetScene(), GameScene.GetScene()))
             .AddInputListeners(ListUtils.Of(
                 InputListenerBuilder
                     .Builder(InputNames.ROTATE, Button.D)

@@ -7,6 +7,7 @@ using Worms.engine.game_object.components.screen_pivot;
 using Worms.engine.scene;
 using Worms.game.asteroids.controller;
 using Worms.game.asteroids.main_menu;
+using Worms.game.asteroids.menu;
 using Worms.game.asteroids.names;
 
 namespace Worms.game.asteroids.scenes; 
@@ -27,7 +28,7 @@ public static class MainMenuScene {
             .SetComponent(new PolygonCollider(true, defaultVertices, ColliderState.TRIGGER, Vector2.Zero()))
             .SetComponent(new PolygonCollider(true, defaultVertices, ColliderState.TRIGGER, Vector2.Zero()))
             .SetComponent(new ScreenContainer())
-            .SetComponent(new MainMenuAsteroids())
+            .SetComponent(new MenuAsteroidsSpawner())
             .Build()
             .Transform.AddSibling("menuHolder")
             .SetComponent(new MainMenuController())
