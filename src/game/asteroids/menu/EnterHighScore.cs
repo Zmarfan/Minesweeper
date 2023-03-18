@@ -31,6 +31,11 @@ public class EnterHighScore : Script {
             if (_currentIndex > 2) {
                 SaveHighScore();
             }
+            else {
+                _currentChar = 'A';
+                _nickname[_currentIndex] = _currentChar;
+                DisplayText();
+            }
         }
     }
 
