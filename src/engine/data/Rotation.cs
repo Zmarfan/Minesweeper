@@ -1,4 +1,6 @@
-﻿namespace Worms.engine.data; 
+﻿using Newtonsoft.Json;
+
+namespace Worms.engine.data; 
 
 public struct Rotation {
     public float Degree {
@@ -6,6 +8,7 @@ public struct Rotation {
         set => _degree = value % 360;
     }
     private float _degree;
+    [JsonIgnore]
     public float Radians => MathF.DegreeToRadian(_degree);
 
     public static Rotation Identity() {

@@ -11,9 +11,9 @@ public class TrackObject {
     public readonly bool isWorld;
     public bool isActive;
     public readonly List<ToggleComponent> toggleComponents;
-    public IEnumerable<Collider> Colliders { get; private set; } = null!;
-    public IEnumerable<RenderComponent> TextureRenderers { get; private set; } = null!;
-    public IEnumerable<Script> Scripts { get; private set; } = null!;
+    public List<Collider> Colliders { get; private set; } = null!;
+    public List<RenderComponent> TextureRenderers { get; private set; } = null!;
+    public List<Script> Scripts { get; private set; } = null!;
 
     public bool MouseInsideTrigger { get; set; }
     public HashSet<Collider> CollidersInsideTrigger { get; set; } = new();
@@ -31,8 +31,8 @@ public class TrackObject {
     }
     
     private void SetSpecificComponents() {
-        Colliders = toggleComponents.OfType<Collider>();
-        TextureRenderers = toggleComponents.OfType<RenderComponent>();
-        Scripts = toggleComponents.OfType<Script>();
+        Colliders = toggleComponents.OfType<Collider>().ToList();
+        TextureRenderers = toggleComponents.OfType<RenderComponent>().ToList();
+        Scripts = toggleComponents.OfType<Script>().ToList();
     }
 }

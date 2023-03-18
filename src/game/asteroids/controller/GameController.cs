@@ -1,4 +1,5 @@
 ﻿using Worms.engine.camera;
+using Worms.engine.core.saving;
 using Worms.engine.core.window;
 using Worms.engine.data;
 using Worms.engine.game_object;
@@ -77,6 +78,9 @@ public class GameController : Script {
     }
 
     public override void Awake() {
+        SaveManager.Save("test", new Color(12, 153, 123, 255));
+        Console.WriteLine(SaveManager.Load<Color>("test"));
+        
         _lifeAudioSource = GetComponent<AudioSource>();
         _enemyHolder = Transform.Instantiate(GameObjectBuilder.Builder("enemyHolder")).Transform;
         SetupDisplay();

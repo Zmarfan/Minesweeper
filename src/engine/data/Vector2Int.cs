@@ -1,9 +1,12 @@
-﻿namespace Worms.engine.data; 
+﻿using Newtonsoft.Json;
+
+namespace Worms.engine.data; 
 
 public struct Vector2Int {
     public int x = 0;
     public int y = 0;
 
+    [JsonIgnore]
     public int SqrMagnitude => x * x + y * y;
 
     public static Vector2Int Zero() {

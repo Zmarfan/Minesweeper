@@ -1,4 +1,5 @@
-﻿using Worms.engine.helper;
+﻿using Newtonsoft.Json;
+using Worms.engine.helper;
 
 namespace Worms.engine.data; 
 
@@ -8,6 +9,7 @@ public struct Vector2 {
     public float x = 0;
     public float y = 0;
 
+    [JsonIgnore]
     public Vector2 Normalized {
         get {
             Vector2 copy = new(x, y);
@@ -15,7 +17,9 @@ public struct Vector2 {
             return copy;
         }
     }
+    [JsonIgnore]
     public float Magnitude => (float)Math.Sqrt(x * x + y * y);
+    [JsonIgnore]
     public float SqrMagnitude => x * x + y * y;
 
     public static Vector2 Zero() {

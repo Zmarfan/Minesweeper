@@ -1,4 +1,6 @@
-﻿namespace Worms.engine.data; 
+﻿using Newtonsoft.Json;
+
+namespace Worms.engine.data; 
 
 public struct Color {
     public static readonly Color BLACK = new(0, 0, 0);
@@ -15,9 +17,13 @@ public struct Color {
     public float b;
     public float a;
     
+    [JsonIgnore]
     public byte Rbyte => (byte)(r * byte.MaxValue);
+    [JsonIgnore]
     public byte Gbyte => (byte)(g * byte.MaxValue);
+    [JsonIgnore]
     public byte Bbyte => (byte)(b * byte.MaxValue);
+    [JsonIgnore]
     public byte Abyte => (byte)(a * byte.MaxValue);
 
     public Color(float r, float g, float b, float a) {
@@ -41,6 +47,7 @@ public struct Color {
         this.a = (float)a / byte.MaxValue;
     }
 
+    [JsonIgnore]
     public bool IsOpaque => Abyte == byte.MaxValue;
     
     public static Color Lerp(Color a, Color b, float t) {
