@@ -9,36 +9,53 @@ namespace Worms.game.asteroids.main_menu;
 public class MainMenuController : Script {
     public const string PLAY = "PLAY GAME";
     public const string SCORE = "HIGH SCORES";
+    public const string QUIT = "QUIT";
     
-    private bool _selectedPlay = true;
-    private TextRenderer _playRenderer = null!;
-    private TextRenderer _scoreRenderer = null!;
-    
+    private int _selectedIndex = 0;
+    private List<Option> _options;
+
     public override void Awake() {
-        _playRenderer = GetComponentsInChildren<TextRenderer>().First(r => r.Name == PLAY);
-        _scoreRenderer = GetComponentsInChildren<TextRenderer>().First(r => r.Name == SCORE);
+        TextRenderer play = GetComponentsInChildren<TextRenderer>().First(r => r.Name == PLAY);
+        TextRenderer score = GetComponentsInChildren<TextRenderer>().First(r => r.Name == SCORE);
+        TextRenderer quit = GetComponentsInChildren<TextRenderer>().First(r => r.Name == QUIT);
+        _options = new List<Option> {
+            new(play, () => SceneManager.LoadScene(SceneNames.GAME), PLAY),
+            new(score, () => Console.WriteLine("score"), SCORE),
+            new(quit, SceneManager.Quit, QUIT)
+        };
     }
 
     public override void Update(float deltaTime) {
-        bool selected = Input.GetButtonDown(InputNames.MENU_SELECT);
-        if (selected && _selectedPlay) {
-            SceneManager.LoadScene(SceneNames.GAME);
+        if (Input.GetButtonDown(InputNames.MENU_SELECT)) {
+            _options[_selectedIndex].clickAction.Invoke();
         }
+
         HandleMenuNavigation();
     }
 
     private void HandleMenuNavigation() {
-        if (Input.GetButtonDown(InputNames.MENU_UP) || Input.GetButtonDown(InputNames.MENU_DOWN)) {
-            _selectedPlay = !_selectedPlay;
+        if (Input.GetButtonDown(InputNames.MENU_UP)) {
+            _selectedIndex = (_selectedIndex - 1 + _options.Count) % _options.Count;
+        }
+
+        if (Input.GetButtonDown(InputNames.MENU_DOWN)) {
+            _selectedIndex = (_selectedIndex + 1) % _options.Count;
         }
         
-        if (_selectedPlay) {
-            _playRenderer.Text = $"- {PLAY} -";
-            _scoreRenderer.Text = SCORE;
+        for (int i = 0; i < _options.Count; i++) {
+            _options[i].textRenderer.Text = i == _selectedIndex ? $"- {_options[i].title} -" : _options[i].title;
         }
-        else {
-            _playRenderer.Text = PLAY;
-            _scoreRenderer.Text = $"- {SCORE} -";
+    }
+
+    protected readonly struct Option {
+        public readonly TextRenderer textRenderer;
+        public readonly Action clickAction;
+        public readonly string title;
+
+        public Option(TextRenderer textRenderer, Action clickAction, string title) {
+            this.textRenderer = textRenderer;
+            this.clickAction = clickAction;
+            this.title = title;
         }
     }
 }

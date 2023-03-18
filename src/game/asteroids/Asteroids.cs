@@ -17,6 +17,7 @@ public static class Asteroids {
     public static Game CreateGame() {
         return new Game(GameSettingsBuilder
             .Builder()
+            .SetBuildMode()
             .SetTitle("Asteroids")
             .SetAssets(DefineAssets())
             .SetAudioSettings(new AudioSettings(Volume.Max(), ListUtils.Of(

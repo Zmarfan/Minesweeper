@@ -71,6 +71,19 @@ public static class MainMenuScene {
                     .Build()
                 )
                 .Build()
+                .Transform.AddSibling("quit")
+                .SetLocalPosition(new Vector2(-400, -350))
+                .SetComponent(TextRendererBuilder
+                    .Builder(FontNames.MAIN)
+                    .SetName(MainMenuController.QUIT)
+                    .SetAlignment(TextAlignment.CENTER)
+                    .SetColor(Color.WHITE)
+                    .SetSize(25)
+                    .SetWidth(800)
+                    .SetText("QUIT")
+                    .Build()
+                )
+                .Build()
             .Transform.GetRoot().gameObject;
     }
 

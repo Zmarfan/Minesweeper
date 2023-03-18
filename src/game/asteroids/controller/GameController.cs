@@ -1,5 +1,4 @@
 ﻿using Worms.engine.camera;
-using Worms.engine.core.saving;
 using Worms.engine.core.window;
 using Worms.engine.data;
 using Worms.engine.game_object;
@@ -16,8 +15,8 @@ using Worms.game.asteroids.saucer;
 namespace Worms.game.asteroids.controller; 
 
 public class GameController : Script {
-    private static readonly Vector2 SCORE_DISPLAY_OFFSET = new(10, 10);
-    private static readonly Vector2 LIFE_DISPLAY_OFFSET = new(20, -90);
+    private static readonly Vector2 SCORE_DISPLAY_OFFSET = new(30, 10);
+    private static readonly Vector2 LIFE_DISPLAY_OFFSET = new(40, -90);
     
     private const float MIN_SAUCER_SPAWN_TIME = 10;
     private const float MAX_SAUCER_SPAWN_TIME = 30;
@@ -56,31 +55,13 @@ public class GameController : Script {
     private int _lives;
     
     public GameController() {
-        Asteroid.DestroyedAsteroidEvent += type => {
-            if (_lives == 0) {
-                return;
-            }
-            _score += type switch {
-                AsteroidType.BIG => 20,
-                AsteroidType.MEDIUM => 50,
-                AsteroidType.SMALL => 100,
-                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-            };
-        };
-        SaucerShooter.DestroyedSaucerEvent += big => {
-            if (_lives == 0) {
-                return;
-            }
-            _score += big ? 250 : 1000;
-        };
+        Asteroid.DestroyedAsteroidEvent += AsteroidDestroyedCallback;
+        SaucerShooter.DestroyedSaucerEvent += SaucerDestroyedCallback;
         PlayerBase.PlayerDieEvent += PlayerDied;
         _saucerSpawnerTimer.Duration = RandomUtil.GetRandomValueBetweenTwoValues(MIN_SAUCER_SPAWN_TIME, MAX_SAUCER_SPAWN_TIME);
     }
 
     public override void Awake() {
-        SaveManager.Save("test", new Color(12, 153, 123, 255));
-        Console.WriteLine(SaveManager.Load<Color>("test"));
-        
         _lifeAudioSource = GetComponent<AudioSource>();
         _enemyHolder = Transform.Instantiate(GameObjectBuilder.Builder("enemyHolder")).Transform;
         SetupDisplay();
@@ -168,9 +149,11 @@ public class GameController : Script {
             _respawnPlayer = true;
             _respawnTimer.Reset();
             return;
-            
         }
 
+        Asteroid.DestroyedAsteroidEvent -= AsteroidDestroyedCallback;
+        SaucerShooter.DestroyedSaucerEvent -= SaucerDestroyedCallback;
+        PlayerBase.PlayerDieEvent -= PlayerDied;
         _musicScript.Destroy();
         _gameOverTextRenderer.IsActive = true;
         _gameOver = true;
@@ -202,5 +185,18 @@ public class GameController : Script {
             .Builder("lifeHolder")
             .SetPosition(displayPosition + LIFE_DISPLAY_OFFSET)
         ).Transform;
+    }
+    
+    private void AsteroidDestroyedCallback(AsteroidType type) {
+        _score += type switch {
+            AsteroidType.BIG => 20,
+            AsteroidType.MEDIUM => 50,
+            AsteroidType.SMALL => 100,
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
+    }
+
+    private void SaucerDestroyedCallback(bool big) {
+        _score += big ? 250 : 1000;
     }
 }

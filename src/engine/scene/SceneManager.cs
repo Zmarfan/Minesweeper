@@ -1,4 +1,6 @@
-﻿namespace Worms.engine.scene; 
+﻿using SDL2;
+
+namespace Worms.engine.scene; 
 
 public class SceneManager {
     private static SceneManager _self = null!;
@@ -20,6 +22,11 @@ public class SceneManager {
 
         _self = new SceneManager(scenes, loadSceneCallback);
         LoadScene(ActiveScene);
+    }
+
+    public static void Quit() {
+        SDL.SDL_Event e = new() { type = SDL.SDL_EventType.SDL_QUIT };
+        SDL.SDL_PushEvent(ref e);
     }
 
     public static void LoadScene(string name) {
