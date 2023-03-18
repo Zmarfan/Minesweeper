@@ -12,7 +12,7 @@ namespace Worms.game.asteroids.scenes;
 
 public static class HighScoreScene {
     public static Scene GetScene() {
-        return new Scene(SceneNames.HIGH_SCORE, CreateWorldRoot, CreateScreenRoot);
+        return new Scene(SceneNames.HIGH_SCORE, CreateWorldRoot, CreateScreenRoot, c => c.Size = 1.5f);
     }
     
     private static GameObject CreateWorldRoot() {

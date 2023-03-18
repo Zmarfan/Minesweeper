@@ -83,6 +83,7 @@ public class Game {
 
     private void LoadScene(Scene scene) {
         Camera.CreateMainCamera(_settings);
+        scene.CameraInitializer.Invoke(Camera.Main);
         _sceneData.gameObjectHandler = new GameObjectHandler(scene.CreateWorldGameObjectRoot(), scene.CreateSceneGameObjectRoot());
     }
     

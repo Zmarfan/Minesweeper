@@ -17,7 +17,6 @@ public class ScreenContainer: Script {
     
     public override void Awake() {
         _colliders = GetComponents<PolygonCollider>();
-        Camera.Main.Size = 1.5f;
         CalculateScreenArea(WindowManager.CurrentResolution);
     }
 
