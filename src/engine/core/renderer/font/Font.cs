@@ -5,7 +5,7 @@ using Worms.engine.data;
 namespace Worms.engine.core.renderer.font; 
 
 public class Font {
-    public const int ATLAS_SIZE = 1024;
+    public const int ATLAS_SIZE = 2048;
     public const int FONT_SIZE = 55;
     private const char START_CHAR = ' ';
     private const char END_CHAR = 'ÿ';

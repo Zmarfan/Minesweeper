@@ -8,6 +8,9 @@ using Worms.game.asteroids.saucer;
 namespace Worms.game.asteroids.asteroids; 
 
 public class Asteroid : Script {
+    public delegate void DestroyedAsteroidDelegate(AsteroidType type);
+    public static event DestroyedAsteroidDelegate? DestroyedAsteroidEvent;
+    
     private readonly Vector2 _velocity;
     private readonly float _angularVelocity;
     private readonly AsteroidDetails _details;
@@ -32,7 +35,7 @@ public class Asteroid : Script {
         _destroyed = true;
         switch (collider.gameObject.Tag) {
             case TagNames.ENEMY:
-                collider.GetComponentInChildren<SaucerShooter>().Die();
+                collider.GetComponentInChildren<SaucerShooter>().Die(false);
                 ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, _details.particleCount);
                 break;
             case TagNames.PLAYER:
@@ -49,6 +52,7 @@ public class Asteroid : Script {
             SpawnNewAsteroids();
         }
         gameObject.Destroy();
+        DestroyedAsteroidEvent?.Invoke(_details.type);
     }
 
     private void SpawnNewAsteroids() {

@@ -5,7 +5,7 @@ using Worms.engine.core.window;
 using Worms.engine.data;
 using Worms.engine.game_object;
 using Worms.engine.game_object.components.audio_source;
-using Worms.engine.game_object.components.physics.colliders;
+using Worms.engine.game_object.components.rendering.text_renderer;
 using Worms.engine.game_object.scripts;
 using Worms.engine.helper;
 using Worms.game.asteroids.asteroids;
@@ -16,11 +16,15 @@ using Worms.game.asteroids.saucer;
 namespace Worms.game.asteroids.controller; 
 
 public class GameController : Script {
+    private static readonly Vector2 SCORE_DISPLAY_OFFSET = new(10, 10);
+    private static readonly Vector2 LIFE_DISPLAY_OFFSET = new(20, -90);
+    
     private const float MIN_SAUCER_SPAWN_TIME = 10;
     private const float MAX_SAUCER_SPAWN_TIME = 30;
 
     private Transform _enemyHolder = null!;
     private Transform _lifeDisplayHolder = null!;
+    private TextRenderer _scoreTextRenderer = null!;
     private AudioSource _lifeAudioSource = null!;
     private MusicScript _musicScript = null!;
     private ScreenContainer _screenContainer = null!;
@@ -32,6 +36,7 @@ public class GameController : Script {
     private readonly ClockTimer _respawnTimer = new(3);
     private readonly ClockTimer _saucerSpawnerTimer = new(MIN_SAUCER_SPAWN_TIME);
     private long _round = 1;
+    private long _score = 0;
 
     private int Lives {
         get => _lives;
@@ -48,6 +53,23 @@ public class GameController : Script {
     private int _lives;
     
     public GameController() {
+        Asteroid.DestroyedAsteroidEvent += type => {
+            if (_lives == 0) {
+                return;
+            }
+            _score += type switch {
+                AsteroidType.BIG => 20,
+                AsteroidType.MEDIUM => 50,
+                AsteroidType.SMALL => 100,
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            };
+        };
+        SaucerShooter.DestroyedSaucerEvent += big => {
+            if (_lives == 0) {
+                return;
+            }
+            _score += big ? 250 : 1000;
+        };
         PlayerBase.PlayerDieEvent += PlayerDied;
         _saucerSpawnerTimer.Duration = RandomUtil.GetRandomValueBetweenTwoValues(MIN_SAUCER_SPAWN_TIME, MAX_SAUCER_SPAWN_TIME);
     }
@@ -55,10 +77,7 @@ public class GameController : Script {
     public override void Awake() {
         _lifeAudioSource = GetComponent<AudioSource>();
         _enemyHolder = Transform.Instantiate(GameObjectBuilder.Builder("enemyHolder")).Transform;
-        _lifeDisplayHolder = Transform.Instantiate(GameObjectBuilder
-            .Builder("lifeHolder")
-            .SetPosition(new Vector2(-WindowManager.CurrentResolution.x / 2f + 20, WindowManager.CurrentResolution.y / 2f - 25) * Camera.Main.Size)
-        ).Transform;
+        SetupDisplay();
         Lives = 3;
     }
 
@@ -69,12 +88,8 @@ public class GameController : Script {
     }
 
     public override void Update(float deltaTime) {
-        if (Input.GetKeyDown(Button.B)) {
-            foreach (Transform child in _enemyHolder.children) {
-                child.gameObject.Destroy();
-            }
-        }
-
+        _scoreTextRenderer.Text = _score.ToString();
+        
         HandleSaucerSpawning(deltaTime);
         HandlePlayerRespawn(deltaTime);
         if (_enemyHolder.children.Count == 0) {
@@ -146,5 +161,28 @@ public class GameController : Script {
     
     private void SpawnPlayer() {
         _player = PlayerFactory.Create(Transform.GetRoot());
+    }
+    
+    private void SetupDisplay() {
+        Vector2 displayPosition = new Vector2(
+            -WindowManager.CurrentResolution.x / 2f,
+            WindowManager.CurrentResolution.y / 2f
+        ) * Camera.Main.Size;
+        _scoreTextRenderer = TextRendererBuilder
+            .Builder()
+            .SetFont(FontNames.MAIN)
+            .SetWidth(800)
+            .SetSize(25)
+            .SetColor(Color.WHITE)
+            .Build();
+        Transform.Instantiate(GameObjectBuilder
+            .Builder("text")
+            .SetPosition(displayPosition + SCORE_DISPLAY_OFFSET)
+            .SetComponent(_scoreTextRenderer)
+        );
+        _lifeDisplayHolder = Transform.Instantiate(GameObjectBuilder
+            .Builder("lifeHolder")
+            .SetPosition(displayPosition + LIFE_DISPLAY_OFFSET)
+        ).Transform;
     }
 }

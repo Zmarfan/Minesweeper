@@ -8,7 +8,7 @@ using Worms.game.asteroids.names;
 
 namespace Worms.game.asteroids.scenes; 
 
-public static class Scene1 {
+public static class GameScene {
     public static Scene GetScene() {
         return new Scene("main", CreateWorldRoot, CreateScreenRoot);
     }

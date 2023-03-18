@@ -142,6 +142,10 @@
       <Content Include="src\assets\asteroids\sounds\extraLife.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="src\assets\asteroids\fonts\Pixeled.ttf" />
+      <Content Include="src\assets\asteroids\fonts\Pixeled.ttf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

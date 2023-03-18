@@ -7,12 +7,14 @@ using Worms.engine.game_object.scripts;
 using Worms.engine.helper;
 using Worms.game.asteroids.asteroids;
 using Worms.game.asteroids.names;
-using Worms.game.asteroids.player;
 using Worms.game.asteroids.shot;
 
 namespace Worms.game.asteroids.saucer; 
 
 public class SaucerShooter : Script {
+    public delegate void DestroyedSaucerDelegate(bool big);
+    public static event DestroyedSaucerDelegate? DestroyedSaucerEvent;
+    
     private AudioSource _fireAudioSource = null!;
     private readonly Func<Transform>? _targetSupplier;
     private readonly float _skillRatio;
@@ -48,11 +50,14 @@ public class SaucerShooter : Script {
         return Vector2.InsideUnitCircle();
     }
 
-    public void Die() {
+    public void Die(bool killedByPlayer) {
         if (_destroyed) {
             return;
         }
 
+        if (killedByPlayer) {
+            DestroyedSaucerEvent?.Invoke(_targetSupplier == null);
+        }
         _destroyed = true;
         ExplosionFactory.CreateExplosion(Transform.GetRoot(), Transform.Position, new RangeZero(10, 20), SoundNames.BANG_MEDIUM);
         Transform.Parent!.gameObject.Destroy();
@@ -60,7 +65,7 @@ public class SaucerShooter : Script {
 
     public override void OnTriggerEnter(Collider collider) {
         if (collider.gameObject.Tag == TagNames.SHOT) {
-            Die();
+            Die(true);
             collider.gameObject.Destroy();
         }
     }

@@ -50,7 +50,7 @@ public class PlayerBase : Script {
                 collider.gameObject.Destroy();
                 break;
             case TagNames.ENEMY:
-                collider.GetComponentInChildren<SaucerShooter>().Die();
+                collider.GetComponentInChildren<SaucerShooter>().Die(true);
                 break;
         }
         Die();

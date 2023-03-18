@@ -26,7 +26,7 @@ public static class Asteroids {
             )))
             .SetWindowWidth(1280)
             .SetWindowHeight(720)
-            .AddScenes(ListUtils.Of(Scene1.GetScene()))
+            .AddScenes(ListUtils.Of(GameScene.GetScene()))
             .AddInputListeners(ListUtils.Of(
                 InputListenerBuilder
                     .Builder(InputNames.ROTATE, Button.D)
@@ -94,6 +94,9 @@ public static class Asteroids {
                 new AssetDeclaration(Path("asteroids\\sounds\\saucerBig.wav"), SoundNames.SAUCER_BIG),
                 new AssetDeclaration(Path("asteroids\\sounds\\saucerSmall.wav"), SoundNames.SAUCER_SMALL),
                 new AssetDeclaration(Path("asteroids\\sounds\\thrust.wav"), SoundNames.THRUST)
+            ))
+            .AddFonts(ListUtils.Of(
+                new AssetDeclaration(Path("asteroids\\fonts\\Pixeled.ttf"), FontNames.MAIN)
             ))
             .Build();
     }
