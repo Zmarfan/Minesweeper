@@ -146,6 +146,7 @@
       <Content Include="src\assets\asteroids\fonts\Pixeled.ttf">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="src\assets\asteroids\textures\background.png" />
     </ItemGroup>
 
 </Project>

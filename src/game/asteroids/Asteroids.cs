@@ -17,14 +17,13 @@ public static class Asteroids {
     public static Game CreateGame() {
         return new Game(GameSettingsBuilder
             .Builder()
-            .SetDebugMode()
             .SetTitle("Asteroids")
             .SetAssets(DefineAssets())
             .SetAudioSettings(new AudioSettings(Volume.Max(), ListUtils.Of(
                 new AudioChannel(ChannelNames.EFFECTS, Volume.Max()),
                 new AudioChannel(ChannelNames.MUSIC, Volume.Max())
             )))
-            .SetWindowWidth(1280)
+            .SetWindowWidth(1280)   
             .SetWindowHeight(720)
             .AddScenes(ListUtils.Of(GameScene.GetScene()))
             .AddInputListeners(ListUtils.Of(

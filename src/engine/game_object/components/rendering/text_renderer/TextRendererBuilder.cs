@@ -9,7 +9,7 @@ public class TextRendererBuilder {
     private int _sortOrder;
     private Color _color = Color.WHITE;
     private string _text = string.Empty;
-    private string _font = string.Empty;
+    private readonly string _font;
     private int _width = 200;
     private int _size = 16;
     private bool _bold;
@@ -17,8 +17,12 @@ public class TextRendererBuilder {
     private TextAlignment _alignment = TextAlignment.LEFT;
     private int _lineSpacing;
 
-    public static TextRendererBuilder Builder() {
-        return new TextRendererBuilder();
+    private TextRendererBuilder(string font) {
+        _font = font;
+    }
+
+    public static TextRendererBuilder Builder(string font) {
+        return new TextRendererBuilder(font);
     }
 
     public TextRenderer Build() {
@@ -49,12 +53,7 @@ public class TextRendererBuilder {
         _text = text;
         return this;
     }
-    
-    public TextRendererBuilder SetFont(string font) {
-        _font = font;
-        return this;
-    }
-    
+
     public TextRendererBuilder SetWidth(int width) {
         _width = width;
         return this;

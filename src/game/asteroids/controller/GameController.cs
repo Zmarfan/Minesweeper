@@ -1,6 +1,4 @@
 ﻿using Worms.engine.camera;
-using Worms.engine.core.input;
-using Worms.engine.core.input.listener;
 using Worms.engine.core.window;
 using Worms.engine.data;
 using Worms.engine.game_object;
@@ -8,6 +6,7 @@ using Worms.engine.game_object.components.audio_source;
 using Worms.engine.game_object.components.rendering.text_renderer;
 using Worms.engine.game_object.scripts;
 using Worms.engine.helper;
+using Worms.engine.scene;
 using Worms.game.asteroids.asteroids;
 using Worms.game.asteroids.names;
 using Worms.game.asteroids.player;
@@ -25,6 +24,7 @@ public class GameController : Script {
     private Transform _enemyHolder = null!;
     private Transform _lifeDisplayHolder = null!;
     private TextRenderer _scoreTextRenderer = null!;
+    private TextRenderer _gameOverTextRenderer = null!;
     private AudioSource _lifeAudioSource = null!;
     private MusicScript _musicScript = null!;
     private ScreenContainer _screenContainer = null!;
@@ -37,6 +37,8 @@ public class GameController : Script {
     private readonly ClockTimer _saucerSpawnerTimer = new(MIN_SAUCER_SPAWN_TIME);
     private long _round = 1;
     private long _score = 0;
+    private bool _gameOver = false;
+    private readonly ClockTimer _gameOverTimer = new(4f);
 
     private int Lives {
         get => _lives;
@@ -78,7 +80,7 @@ public class GameController : Script {
         _lifeAudioSource = GetComponent<AudioSource>();
         _enemyHolder = Transform.Instantiate(GameObjectBuilder.Builder("enemyHolder")).Transform;
         SetupDisplay();
-        Lives = 3;
+        Lives = 1;
     }
 
     public override void Start() {
@@ -88,6 +90,14 @@ public class GameController : Script {
     }
 
     public override void Update(float deltaTime) {
+        if (_gameOver) {
+            _gameOverTimer.Time += deltaTime;
+            if (_gameOverTimer.Expired()) {
+                SceneManager.LoadScene(SceneNames.GAME);
+            }
+            return;
+        }
+        
         _scoreTextRenderer.Text = _score.ToString();
         
         HandleSaucerSpawning(deltaTime);
@@ -156,7 +166,10 @@ public class GameController : Script {
             return;
             
         }
-        Console.WriteLine("dead");
+
+        _musicScript.Destroy();
+        _gameOverTextRenderer.IsActive = true;
+        _gameOver = true;
     }
     
     private void SpawnPlayer() {
@@ -164,13 +177,14 @@ public class GameController : Script {
     }
     
     private void SetupDisplay() {
+        _gameOverTextRenderer = GetComponentInChildren<TextRenderer>();
+        
         Vector2 displayPosition = new Vector2(
             -WindowManager.CurrentResolution.x / 2f,
             WindowManager.CurrentResolution.y / 2f
         ) * Camera.Main.Size;
         _scoreTextRenderer = TextRendererBuilder
-            .Builder()
-            .SetFont(FontNames.MAIN)
+            .Builder(FontNames.MAIN)
             .SetWidth(800)
             .SetSize(25)
             .SetColor(Color.WHITE)
