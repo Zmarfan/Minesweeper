@@ -8,6 +8,7 @@ using Worms.engine.game_object.scripts;
 using Worms.engine.helper;
 using Worms.engine.scene;
 using Worms.game.asteroids.asteroids;
+using Worms.game.asteroids.menu;
 using Worms.game.asteroids.names;
 using Worms.game.asteroids.player;
 using Worms.game.asteroids.saucer;
@@ -78,7 +79,8 @@ public class GameController : Script {
         if (_gameOver) {
             _gameOverTimer.Time += deltaTime;
             if (_gameOverTimer.Expired()) {
-                SceneManager.LoadScene(SceneNames.MAIN_MENU);
+                EnterHighScore.SCORE = _score;
+                SceneManager.LoadScene(ScoreGetsOnTheHighScore() ? SceneNames.ADD_HIGH_SCORE : SceneNames.MAIN_MENU);
             }
             return;
         }
@@ -198,5 +200,10 @@ public class GameController : Script {
 
     private void SaucerDestroyedCallback(bool big) {
         _score += big ? 250 : 1000;
+    }
+    
+    private bool ScoreGetsOnTheHighScore() {
+        List<HighScoreEntry> entries = HighScoreHandler.GetHighScores();
+        return entries.Count < HighScoreHandler.MAX_AMOUNT || _score > HighScoreHandler.GetHighScores().Last().score;
     }
 }
