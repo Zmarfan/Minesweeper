@@ -32,7 +32,7 @@ public class WindowManager {
         SDL.SDL_SetWindowSize(_self._window, resolution.x, resolution.y);
         _self._settings.width = resolution.x;
         _self._settings.height = resolution.y;
-        ResolutionChangedEvent(resolution);
+        ResolutionChangedEvent?.Invoke(resolution);
     }
     
     public static Vector2Int CurrentResolution => new(_self._settings.width, _self._settings.height);
