@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -47,111 +46,33 @@
       <None Remove="src\assets\test\Consolas.ttf" />
       <None Remove="src\assets\test\times-new-roman.ttf" />
       <None Remove="src\assets\asteroids\textures\big_asteroid_1.png" />
-      <Content Include="src\assets\asteroids\textures\big_asteroid_1.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\textures\big_asteroid_2.png" />
-      <Content Include="src\assets\asteroids\textures\big_asteroid_2.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\textures\big_asteroid_3.png" />
-      <Content Include="src\assets\asteroids\textures\big_asteroid_3.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\textures\enemy.png" />
-      <Content Include="src\assets\asteroids\textures\enemy.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\textures\medium_asteroid_1.png" />
-      <Content Include="src\assets\asteroids\textures\medium_asteroid_1.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\textures\medium_asteroid_2.png" />
-      <Content Include="src\assets\asteroids\textures\medium_asteroid_2.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\textures\medium_asteroid_3.png" />
-      <Content Include="src\assets\asteroids\textures\medium_asteroid_3.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\textures\player.png" />
-      <Content Include="src\assets\asteroids\textures\player.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\textures\shot.png" />
-      <Content Include="src\assets\asteroids\textures\shot.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\textures\small_asteroid_1.png" />
-      <Content Include="src\assets\asteroids\textures\small_asteroid_1.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\textures\small_asteroid_2.png" />
-      <Content Include="src\assets\asteroids\textures\small_asteroid_2.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\textures\small_asteroid_3.png" />
-      <Content Include="src\assets\asteroids\textures\small_asteroid_3.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\sounds\bangLarge.wav" />
-      <Content Include="src\assets\asteroids\sounds\bangLarge.wav">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\sounds\bangMedium.wav" />
-      <Content Include="src\assets\asteroids\sounds\bangMedium.wav">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\sounds\bangSmall.wav" />
-      <Content Include="src\assets\asteroids\sounds\bangSmall.wav">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\sounds\beat1.wav" />
-      <Content Include="src\assets\asteroids\sounds\beat1.wav">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\sounds\beat2.wav" />
-      <Content Include="src\assets\asteroids\sounds\beat2.wav">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\sounds\extraShip.wav" />
       <None Remove="src\assets\asteroids\sounds\fire.wav" />
-      <Content Include="src\assets\asteroids\sounds\fire.wav">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\sounds\saucerBig.wav" />
-      <Content Include="src\assets\asteroids\sounds\saucerBig.wav">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\sounds\saucerSmall.wav" />
-      <Content Include="src\assets\asteroids\sounds\saucerSmall.wav">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\sounds\thrust.wav" />
-      <Content Include="src\assets\asteroids\sounds\thrust.wav">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\textures\fragment.png" />
-      <Content Include="src\assets\asteroids\textures\fragment.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\textures\ship_fragment.png" />
-      <Content Include="src\assets\asteroids\textures\ship_fragment.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\sounds\extraLife.wav" />
-      <Content Include="src\assets\asteroids\sounds\extraLife.wav">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\fonts\Pixeled.ttf" />
-      <Content Include="src\assets\asteroids\fonts\Pixeled.ttf">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <None Remove="src\assets\asteroids\textures\background.png" />
       <None Remove="src\assets\asteroids\fonts\RoadPixel.ttf" />
-      <Content Include="src\assets\asteroids\fonts\RoadPixel.ttf">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
     </ItemGroup>
 
 </Project>
