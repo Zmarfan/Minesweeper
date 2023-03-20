@@ -60,7 +60,7 @@ public struct Texture {
         texturePixels = storedTexture.pixels;
     }
 
-    public unsafe SDL.SDL_Rect GetSrcRect(StoredTexture storedTexture) {
+    internal unsafe SDL.SDL_Rect GetSrcRect(StoredTexture storedTexture) {
         int w = storedTexture.surface->w / _columnLength;
         int h = storedTexture.surface->h / _rowLength;
         return new SDL.SDL_Rect { x = _column * w, y = _row * h, w = w, h = h };

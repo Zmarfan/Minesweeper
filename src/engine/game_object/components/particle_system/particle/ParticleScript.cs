@@ -3,7 +3,7 @@ using GameEngine.engine.game_object.scripts;
 
 namespace GameEngine.engine.game_object.components.particle_system.particle; 
 
-public class ParticleScript : Script {
+internal class ParticleScript : Script {
     private readonly bool _localSpace;
     private Vector2 _parentOldPosition;
     private Rotation _parentOldRotation;

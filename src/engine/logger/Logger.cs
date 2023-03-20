@@ -1,6 +1,6 @@
 ﻿namespace GameEngine.engine.logger; 
 
-public static class Logger {
+internal static class Logger {
     public static void Error(Exception e, string text = "") {
         Console.BackgroundColor = ConsoleColor.Red;
         Console.ForegroundColor = ConsoleColor.White;

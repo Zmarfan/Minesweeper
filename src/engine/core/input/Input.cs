@@ -56,7 +56,7 @@ public class Input {
         };
     }
 
-    public static Input Init(GameSettings settings, EventHandler eventHandler, List<InputListener> listeners) {
+    internal static Input Init(GameSettings settings, EventHandler eventHandler, List<InputListener> listeners) {
         if (_self != null) {
             throw new Exception("There can only be one input manager!");
         }
@@ -65,13 +65,13 @@ public class Input {
         return _self;
     }
 
-    public void Update(float deltaTime) {
+    internal void Update(float deltaTime) {
         foreach ((string _, InputListener listener) in _self._listenersByName) {
             listener.UpdateAxis(deltaTime);
         }
     }
 
-    public void FrameReset() {
+    internal void FrameReset() {
         MouseDirection = Vector2.Zero();
         foreach ((string _, InputListener listener) in _self._listenersByName) {
             listener.FrameReset();

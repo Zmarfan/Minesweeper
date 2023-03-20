@@ -3,7 +3,7 @@ using GameEngine.engine.core.renderer.textures;
 
 namespace GameEngine.engine.core.audio; 
 
-public class AudioHandler {
+internal class AudioHandler {
     private const int MAX_TRACKS = 32;
 
     private static AudioHandler _self = null!;

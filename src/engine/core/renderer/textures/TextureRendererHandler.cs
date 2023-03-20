@@ -4,7 +4,7 @@ using GameEngine.engine.game_object.components.rendering.texture_renderer;
 
 namespace GameEngine.engine.core.renderer.textures; 
 
-public static class TextureRendererHandler {
+internal static class TextureRendererHandler {
     public static unsafe void RenderTexture(nint renderer, TextureRenderer tr, TransformationMatrix matrix) {
         StoredTexture texture = TextureStorage.GetStoredTexture(tr.texture.textureId);
 

@@ -8,7 +8,7 @@ using GameEngine.engine.scene;
 
 namespace GameEngine.engine.core.renderer; 
 
-public class GameRenderer {
+internal class GameRenderer {
     private readonly nint _window;
     private readonly nint _renderer;
     private readonly TextureStorage _textureStorage;

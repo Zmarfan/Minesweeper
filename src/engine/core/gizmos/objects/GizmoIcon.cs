@@ -3,7 +3,7 @@ using GameEngine.engine.data;
 
 namespace GameEngine.engine.core.gizmos.objects; 
 
-public readonly struct GizmoIcon : IGizmosObject {
+internal readonly struct GizmoIcon : IGizmosObject {
     private static readonly Color BORDER_COLOR = Color.BLACK;
     private static readonly PixelType[,] TEMPLATE = {
         { PixelType.NONE, PixelType.NONE, PixelType.BORDER, PixelType.BORDER, PixelType.BORDER, PixelType.BORDER, PixelType.NONE, PixelType.NONE },

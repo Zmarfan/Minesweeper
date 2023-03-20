@@ -3,7 +3,7 @@ using GameEngine.engine.data;
 
 namespace GameEngine.engine.core.gizmos.objects; 
 
-public readonly struct GizmosEllipsis : IGizmosObject {
+internal readonly struct GizmosEllipsis : IGizmosObject {
     private readonly Color _color;
     private readonly Vector2 _center;
     private readonly Vector2 _radius;

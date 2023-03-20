@@ -6,7 +6,7 @@ using GameEngine.engine.scene;
 
 namespace GameEngine.engine.core.update.physics.updating; 
 
-public class PhysicsUpdateHandler {
+internal class PhysicsUpdateHandler {
     private readonly SceneData _sceneData;
     private GameObjectHandler GameObjectHandler => _sceneData.gameObjectHandler;
     private bool _mouseIsDown;

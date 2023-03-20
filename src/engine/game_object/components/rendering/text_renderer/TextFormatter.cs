@@ -3,7 +3,7 @@ using GameEngine.engine.core.renderer.font;
 
 namespace GameEngine.engine.game_object.components.rendering.text_renderer; 
 
-public static class TextFormatter {
+internal static class TextFormatter {
     public static List<TextLine> FormatText(string text, int width, int size, Font font) {
         float sizeModifier = size / (float)Font.FONT_SIZE;
         List<TextLine> allLines = new();

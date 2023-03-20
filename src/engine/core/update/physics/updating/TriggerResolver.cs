@@ -8,7 +8,7 @@ using GameEngine.engine.game_object.components.physics.colliders;
 
 namespace GameEngine.engine.core.update.physics.updating; 
 
-public static class TriggerResolver {
+internal static class TriggerResolver {
     public static void UpdateMouseTriggers(TrackObject obj, bool doMouseClick) {
         bool isInsideTrigger = obj.Colliders.Any(collider => 
             collider is { IsActive: true, state: ColliderState.TRIGGER }

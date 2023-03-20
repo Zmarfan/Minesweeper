@@ -5,7 +5,7 @@ using Object = GameEngine.engine.game_object.Object;
 
 namespace GameEngine.engine.core.game_object_handler; 
 
-public class GameObjectHandler {
+internal class GameObjectHandler {
     public readonly Dictionary<GameObject, TrackObject> objects = new();
 
     private readonly Queue<GameObject> _instantiatedGameObjects = new();

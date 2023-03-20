@@ -6,7 +6,7 @@ using GameEngine.engine.game_object.components.rendering.texture_renderer;
 
 namespace GameEngine.engine.game_object.components.particle_system.particle; 
 
-public static class ParticleFactory {
+internal static class ParticleFactory {
     public static GameObjectBuilder ParticleBuilder(
         bool localSpace,
         Vector2 startPosition,

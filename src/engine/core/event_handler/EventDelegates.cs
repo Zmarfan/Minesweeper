@@ -3,6 +3,6 @@ using GameEngine.engine.data;
 
 namespace GameEngine.engine.core.event_handler;
 
-public delegate void EventVoidDelegate();
-public delegate void ButtonEventDelegate(Button button);
-public delegate void MouseMovementEventDelegate(Vector2 position, Vector2 direction);
+internal delegate void EventVoidDelegate();
+internal delegate void ButtonEventDelegate(Button button);
+internal delegate void MouseMovementEventDelegate(Vector2 position, Vector2 direction);

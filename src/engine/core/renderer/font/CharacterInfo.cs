@@ -3,7 +3,7 @@ using GameEngine.engine.data;
 
 namespace GameEngine.engine.core.renderer.font; 
 
-public class CharacterInfo {
+internal class CharacterInfo {
     public Vector2Int dimension;
     public readonly Dictionary<char, int> kerningByCharacter = new();
     public readonly SDL.SDL_FPoint[] textureCoords;

@@ -3,7 +3,7 @@ using GameEngine.engine.data;
 
 namespace GameEngine.engine.core.renderer.textures; 
 
-public static class SurfaceReadWriteUtils {
+internal static class SurfaceReadWriteUtils {
     private const string ACCEPTED_PIXEL_FORMAT = "SDL_PIXELFORMAT_ABGR8888";
     
     public static unsafe nint SurfaceToTexture(nint renderer, SDL.SDL_Surface* surface) {

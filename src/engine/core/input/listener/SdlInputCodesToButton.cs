@@ -2,7 +2,7 @@
 
 namespace GameEngine.engine.core.input.listener; 
 
-public static class SdlInputCodeToButton {
+internal static class SdlInputCodeToButton {
     public static readonly Dictionary<SDL.SDL_Scancode, Button> SCANCODE_TO_BUTTON = new() {
         { SDL.SDL_Scancode.SDL_SCANCODE_SPACE, Button.SPACE },
         { SDL.SDL_Scancode.SDL_SCANCODE_KP_SPACE, Button.SPACE },

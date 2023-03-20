@@ -1,6 +1,6 @@
 ﻿namespace GameEngine.engine.game_object.components.rendering.text_renderer; 
 
-public class TextLine {
+internal class TextLine {
     public readonly string text;
     public readonly float fraction;
 

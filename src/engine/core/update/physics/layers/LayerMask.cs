@@ -11,7 +11,7 @@ public static class LayerMask {
     private static readonly Dictionary<string, int> LAYER_BY_NAME = new() { { DEFAULT, 0 }, { IGNORE_RAYCAST, 1} };
     private static readonly Dictionary<int, int> COLLISION_MASK_BY_LAYER = new();
 
-    public static void Init(Dictionary<string, List<string>> layers) {
+    internal static void Init(Dictionary<string, List<string>> layers) {
         if (layers.Keys.Distinct().Count() < layers.Count || layers.Keys.Count > MAX_LAYERS) {
             throw new Exception("There can be no layers with the same names!");
         }

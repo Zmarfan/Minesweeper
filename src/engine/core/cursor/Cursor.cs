@@ -23,7 +23,7 @@ public class Cursor {
         SDL.SDL_FreeSurface((nint)surface);
     }
 
-    public static Cursor Init(CursorSettings settings) {
+    internal static Cursor Init(CursorSettings settings) {
         if (_self != null) {
             throw new Exception("You can not init more than one cursor!");
         }
@@ -31,6 +31,11 @@ public class Cursor {
         _self = new Cursor(settings);
         SetActive(settings.enabled);
         return _self;
+    }
+    
+    internal void Clean() {
+        SDL.SDL_FreeCursor(_self._cursor);
+        _self = null!;
     }
 
     public static void SetActive(bool active) {
@@ -42,11 +47,6 @@ public class Cursor {
             throw new Exception($"Unable to set relative mouse mode due to: {SDL.SDL_GetError()}");
         }
         IsActive = active;
-    }
-
-    public void Clean() {
-        SDL.SDL_FreeCursor(_self._cursor);
-        _self = null!;
     }
     
     private static unsafe SDL.SDL_Surface* GetSurface(CustomCursorSettings settings) {

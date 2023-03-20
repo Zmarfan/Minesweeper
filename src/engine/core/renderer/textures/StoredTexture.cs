@@ -3,7 +3,7 @@ using GameEngine.engine.data;
 
 namespace GameEngine.engine.core.renderer.textures; 
 
-public class StoredTexture {
+internal class StoredTexture {
     public readonly unsafe SDL.SDL_Surface* surface;
     public readonly nint texture;
     public readonly Color[,] pixels;

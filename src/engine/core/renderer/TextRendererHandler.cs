@@ -7,7 +7,7 @@ using GameEngine.engine.game_object.components.rendering.text_renderer;
 
 namespace GameEngine.engine.core.renderer; 
 
-public static class TextRendererHandler {
+internal static class TextRendererHandler {
     private const int ITALICS_OFFSET = 20;
     private const int BOLD_OFFSET = 3;
     

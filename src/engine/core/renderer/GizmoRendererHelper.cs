@@ -3,7 +3,7 @@ using GameEngine.engine.data;
 
 namespace GameEngine.engine.core.renderer; 
 
-public static class GizmoRendererHelper {
+internal static class GizmoRendererHelper {
     public static void DrawEllipse(nint renderer, Vector2 center, Vector2 radius, Rotation rotation) {
         float sin = (float)Math.Sin(rotation.Radians);
         float cos = (float)Math.Cos(rotation.Radians);

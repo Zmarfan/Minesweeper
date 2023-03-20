@@ -1,13 +1,11 @@
-﻿using GameEngine.engine.game_object;
-using GameEngine.engine.game_object.components;
-using GameEngine.engine.game_object.components.physics;
+﻿using GameEngine.engine.game_object.components;
 using GameEngine.engine.game_object.components.physics.colliders;
 using GameEngine.engine.game_object.components.rendering;
 using GameEngine.engine.game_object.scripts;
 
 namespace GameEngine.engine.core.game_object_handler; 
 
-public class TrackObject {
+internal class TrackObject {
     public readonly bool isWorld;
     public bool isActive;
     public readonly List<ToggleComponent> toggleComponents;

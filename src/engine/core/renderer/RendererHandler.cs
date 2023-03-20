@@ -12,7 +12,7 @@ using GameEngine.engine.scene;
 
 namespace GameEngine.engine.core.renderer; 
 
-public class RendererHandler {
+internal class RendererHandler {
     public const string DEFAULT_SORTING_LAYER = "Default";
 
     private readonly nint _renderer;

@@ -106,8 +106,8 @@ public class Camera {
         _settings = settings;
         SetDirty();
     }
-    
-    public static void CreateMainCamera(GameSettings settings) {
+
+    internal static void CreateMainCamera(GameSettings settings) {
         Main = new Camera(settings);
     }
 

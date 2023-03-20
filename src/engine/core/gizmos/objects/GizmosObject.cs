@@ -2,7 +2,7 @@
 
 namespace GameEngine.engine.core.gizmos.objects; 
 
-public interface IGizmosObject {
+internal interface IGizmosObject {
     Color GetColor();
     void Render(nint renderer, TransformationMatrix worldToScreenMatrix);
 }

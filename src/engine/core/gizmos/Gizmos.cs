@@ -6,10 +6,10 @@ namespace GameEngine.engine.core.gizmos;
 
 public static class Gizmos {
     public static TransformationMatrix matrix;
-    public static readonly Queue<IGizmosObject> GIZMOS_OBJECTS = new();
+    internal static readonly Queue<IGizmosObject> GIZMOS_OBJECTS = new();
     private static Dictionary<string, GizmoIdDetails> _idDetails = new();
 
-    public static void Init(GizmoSettings settings) {
+    internal static void Init(GizmoSettings settings) {
         _idDetails = settings.gizmoIdDetails;
     }
     

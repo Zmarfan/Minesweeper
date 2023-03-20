@@ -10,7 +10,7 @@ using GameEngine.engine.scene;
 
 namespace GameEngine.engine.core.renderer; 
 
-public class GizmosRendererHandler {
+internal class GizmosRendererHandler {
     private readonly nint _renderer;
 
     public GizmosRendererHandler(nint renderer) {

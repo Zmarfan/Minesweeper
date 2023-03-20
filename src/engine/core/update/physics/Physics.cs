@@ -19,7 +19,7 @@ public class Physics {
         _sceneData = sceneData;
     }
 
-    public static void Init(SceneData sceneData) {
+    internal static void Init(SceneData sceneData) {
         if (_self != null) {
             throw new Exception("There can only be one Physics instance as it's a singleton!");
         }

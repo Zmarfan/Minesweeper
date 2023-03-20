@@ -4,7 +4,7 @@ using GameEngine.engine.game_object.scripts;
 
 namespace GameEngine.engine.core.update.physics.updating; 
 
-public static class PhysicsUtils {
+internal static class PhysicsUtils {
     public static void RunScriptsFunction(TrackObject obj, Action<Script> action) {
         foreach (Script script in obj.Scripts) {
             if (script.IsActive) {

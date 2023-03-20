@@ -3,7 +3,7 @@ using GameEngine.engine.data;
 
 namespace GameEngine.engine.core.renderer.textures; 
 
-public class TextureStorage {
+internal class TextureStorage {
     private static TextureStorage _self = null!;
 
     private readonly nint _renderer;

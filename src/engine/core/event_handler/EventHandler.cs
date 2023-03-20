@@ -5,7 +5,7 @@ using GameEngine.engine.logger;
 
 namespace GameEngine.engine.core.event_handler; 
 
-public class EventHandler {
+internal class EventHandler {
     public event EventVoidDelegate? QuitEvent;
     public event ButtonEventDelegate? KeyDownEvent;
     public event ButtonEventDelegate? KeyUpEvent;

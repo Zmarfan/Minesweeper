@@ -4,7 +4,7 @@ using GameEngine.engine.data;
 
 namespace GameEngine.engine.core.renderer.font; 
 
-public class Font {
+internal class Font {
     public const int ATLAS_SIZE = 2048;
     public const int FONT_SIZE = 55;
     private const char START_CHAR = ' ';

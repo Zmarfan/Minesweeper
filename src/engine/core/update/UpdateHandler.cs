@@ -10,8 +10,8 @@ using GameEngine.engine.scene;
 
 namespace GameEngine.engine.core.update; 
 
-public class UpdateHandler {
-    public const float FIXED_UPDATE_CYCLE_TIME = 0.02f;
+internal class UpdateHandler {
+    private const float FIXED_UPDATE_CYCLE_TIME = 0.02f;
 
     private readonly PhysicsUpdateHandler _physicsUpdateHandler;
     private readonly Input _inputHandler;

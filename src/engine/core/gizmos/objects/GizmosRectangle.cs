@@ -3,7 +3,7 @@ using GameEngine.engine.data;
 
 namespace GameEngine.engine.core.gizmos.objects; 
 
-public readonly struct GizmosRectangle : IGizmosObject {
+internal readonly struct GizmosRectangle : IGizmosObject {
     private readonly Color _color;
     private readonly Vector2 _center;
     private readonly Vector2 _size;

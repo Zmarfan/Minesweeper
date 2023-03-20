@@ -4,7 +4,7 @@ using GameEngine.engine.game_object.components.physics.colliders;
 
 namespace GameEngine.engine.core.update.physics.updating; 
 
-public static class IntersectUtils {
+internal static class IntersectUtils {
     public static bool DoTriggersIntersect(Collider c1, Collider c2) {
         if (!DoBoundingBoxesIntersect(c1, c2)) {
             return false;

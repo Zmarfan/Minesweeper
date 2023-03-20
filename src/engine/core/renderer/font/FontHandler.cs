@@ -3,7 +3,7 @@ using GameEngine.engine.core.renderer.textures;
 
 namespace GameEngine.engine.core.renderer.font; 
 
-public class FontHandler {
+internal class FontHandler {
     public readonly Dictionary<string, Font> fonts;
 
     public FontHandler(nint renderer, IEnumerable<AssetDeclaration> declarations) {

@@ -15,7 +15,7 @@ public class SceneManager {
         _loadSceneCallback = loadSceneCallback;
     }
 
-    public static void Init(List<Scene> scenes, Action<Scene> loadSceneCallback) {
+    internal static void Init(List<Scene> scenes, Action<Scene> loadSceneCallback) {
         if (_self != null) {
             throw new Exception("There can only be one instance of the SceneManager!");
         }

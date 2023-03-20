@@ -17,7 +17,7 @@ public class WindowManager {
         _settings = settings;
     }
 
-    public static void Init(nint window, GameSettings settings) {
+    internal static void Init(nint window, GameSettings settings) {
         if (_self != null) {
             throw new Exception("There can only be one Window Manager!");
         }

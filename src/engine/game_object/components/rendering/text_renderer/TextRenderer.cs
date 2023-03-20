@@ -67,7 +67,7 @@ public class TextRenderer : RenderComponent {
     public TextAlignment alignment;
     public int lineSpacing;
 
-    public IEnumerable<TextLine> Lines => _lines!;
+    internal IEnumerable<TextLine> Lines => _lines!;
 
     private string _text;
     private string _font;
@@ -103,7 +103,7 @@ public class TextRenderer : RenderComponent {
         this.lineSpacing = lineSpacing;
     }
 
-    public void RefreshDataIfNeeded(Font font) {
+    internal void RefreshDataIfNeeded(Font font) {
         if (_lines == null) {
             _lines = TextFormatter.FormatText(_text, _width, _size, font);
             Vertices = CreateVertices(font);

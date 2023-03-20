@@ -1,8 +1,6 @@
-﻿using SDL2;
+﻿namespace GameEngine.engine.core.audio; 
 
-namespace GameEngine.engine.core.audio; 
-
-public struct PlayingSound {
+internal struct PlayingSound {
     public readonly int track;
     public readonly string channel;
     public readonly Volume currentAudioVolume;
