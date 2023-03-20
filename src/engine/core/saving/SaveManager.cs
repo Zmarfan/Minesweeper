@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Worms.engine.core.saving; 
+namespace GameEngine.engine.core.saving; 
 
 public static class SaveManager {
     private static readonly JsonSerializerSettings SETTINGS = new() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };

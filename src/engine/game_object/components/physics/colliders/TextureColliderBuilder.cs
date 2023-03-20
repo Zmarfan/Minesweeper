@@ -1,8 +1,8 @@
-﻿using Worms.engine.core.renderer;
-using Worms.engine.data;
-using Worms.engine.game_object.components.rendering.texture_renderer;
+﻿using GameEngine.engine.core.renderer;
+using GameEngine.engine.data;
+using GameEngine.engine.game_object.components.rendering.texture_renderer;
 
-namespace Worms.engine.game_object.components.physics.colliders; 
+namespace GameEngine.engine.game_object.components.physics.colliders; 
 
 public class TextureColliderBuilder {
     private bool _isActive = true;

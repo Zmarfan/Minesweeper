@@ -1,8 +1,8 @@
-﻿using Worms.engine.core.update.physics.layers;
-using Worms.engine.data;
-using Worms.engine.game_object.components;
+﻿using GameEngine.engine.core.update.physics.layers;
+using GameEngine.engine.data;
+using GameEngine.engine.game_object.components;
 
-namespace Worms.engine.game_object; 
+namespace GameEngine.engine.game_object; 
 
 public class GameObjectBuilder {
     private readonly string _name;

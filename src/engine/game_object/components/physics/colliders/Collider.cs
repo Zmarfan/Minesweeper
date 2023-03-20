@@ -1,8 +1,8 @@
-﻿using Worms.engine.core.gizmos;
-using Worms.engine.core.update.physics;
-using Worms.engine.data;
+﻿using GameEngine.engine.core.gizmos;
+using GameEngine.engine.core.update.physics;
+using GameEngine.engine.data;
 
-namespace Worms.engine.game_object.components.physics.colliders; 
+namespace GameEngine.engine.game_object.components.physics.colliders; 
 
 public abstract class Collider : ToggleComponent {
     public Vector2 Center => Transform.LocalToWorldMatrix.ConvertPoint(offset);

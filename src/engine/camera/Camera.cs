@@ -1,7 +1,7 @@
-﻿using Worms.engine.core;
-using Worms.engine.data;
+﻿using GameEngine.engine.core;
+using GameEngine.engine.data;
 
-namespace Worms.engine.camera; 
+namespace GameEngine.engine.camera; 
 
 public class Camera {
     public static Camera Main { get; private set; } = null!;

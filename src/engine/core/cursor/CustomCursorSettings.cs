@@ -1,4 +1,4 @@
-﻿namespace Worms.engine.core.cursor; 
+﻿namespace GameEngine.engine.core.cursor; 
 
 public class CustomCursorSettings {
     public readonly string imageSource;

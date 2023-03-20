@@ -1,11 +1,11 @@
-﻿using Worms.engine.game_object;
-using Worms.engine.game_object.components;
-using Worms.engine.game_object.components.physics;
-using Worms.engine.game_object.components.physics.colliders;
-using Worms.engine.game_object.components.rendering;
-using Worms.engine.game_object.scripts;
+﻿using GameEngine.engine.game_object;
+using GameEngine.engine.game_object.components;
+using GameEngine.engine.game_object.components.physics;
+using GameEngine.engine.game_object.components.physics.colliders;
+using GameEngine.engine.game_object.components.rendering;
+using GameEngine.engine.game_object.scripts;
 
-namespace Worms.engine.core.game_object_handler; 
+namespace GameEngine.engine.core.game_object_handler; 
 
 public class TrackObject {
     public readonly bool isWorld;

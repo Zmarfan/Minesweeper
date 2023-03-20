@@ -1,4 +1,4 @@
-﻿namespace Worms.engine.game_object.components; 
+﻿namespace GameEngine.engine.game_object.components; 
 
 public abstract class Component : Object {
     public GameObject gameObject = null!;

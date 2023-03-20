@@ -1,6 +1,6 @@
-﻿using Worms.engine.helper;
+﻿using GameEngine.engine.helper;
 
-namespace Worms.engine.game_object.components.particle_system.ranges; 
+namespace GameEngine.engine.game_object.components.particle_system.ranges; 
 
 public readonly struct RangeZero {
     private readonly float _value1;

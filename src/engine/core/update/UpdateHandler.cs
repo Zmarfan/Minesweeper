@@ -1,14 +1,14 @@
 ﻿using System.Diagnostics;
-using Worms.engine.core.game_object_handler;
-using Worms.engine.core.input;
-using Worms.engine.core.update.physics;
-using Worms.engine.core.update.physics.updating;
-using Worms.engine.game_object;
-using Worms.engine.game_object.scripts;
-using Worms.engine.logger;
-using Worms.engine.scene;
+using GameEngine.engine.core.game_object_handler;
+using GameEngine.engine.core.input;
+using GameEngine.engine.core.update.physics;
+using GameEngine.engine.core.update.physics.updating;
+using GameEngine.engine.game_object;
+using GameEngine.engine.game_object.scripts;
+using GameEngine.engine.logger;
+using GameEngine.engine.scene;
 
-namespace Worms.engine.core.update; 
+namespace GameEngine.engine.core.update; 
 
 public class UpdateHandler {
     public const float FIXED_UPDATE_CYCLE_TIME = 0.02f;

@@ -1,7 +1,7 @@
-﻿using Worms.engine.core.renderer;
-using Worms.engine.data;
+﻿using GameEngine.engine.core.renderer;
+using GameEngine.engine.data;
 
-namespace Worms.engine.game_object.components.rendering.texture_renderer; 
+namespace GameEngine.engine.game_object.components.rendering.texture_renderer; 
 
 public class TextureRendererBuilder {
     private bool _isActive = true;

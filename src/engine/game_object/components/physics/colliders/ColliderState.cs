@@ -1,4 +1,4 @@
-﻿namespace Worms.engine.game_object.components.physics.colliders; 
+﻿namespace GameEngine.engine.game_object.components.physics.colliders; 
 
 public enum ColliderState {
     COLLIDER,

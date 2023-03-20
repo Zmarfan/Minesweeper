@@ -1,6 +1,6 @@
 ﻿using SDL2;
 
-namespace Worms.engine.scene; 
+namespace GameEngine.engine.scene; 
 
 public class SceneManager {
     private static SceneManager _self = null!;

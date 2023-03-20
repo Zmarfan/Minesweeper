@@ -1,7 +1,7 @@
-﻿using Worms.engine.game_object.components.animation.animation;
-using Worms.engine.game_object.scripts;
+﻿using GameEngine.engine.game_object.components.animation.animation;
+using GameEngine.engine.game_object.scripts;
 
-namespace Worms.engine.game_object.components.animation.controller; 
+namespace GameEngine.engine.game_object.components.animation.controller; 
 
 public class AnimationController : Script {
     private readonly Dictionary<string, Animation> _animationsByTriggers;

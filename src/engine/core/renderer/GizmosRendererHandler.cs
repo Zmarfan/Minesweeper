@@ -1,14 +1,14 @@
 ﻿using SDL2;
-using Worms.engine.camera;
-using Worms.engine.core.game_object_handler;
-using Worms.engine.core.gizmos;
-using Worms.engine.core.gizmos.objects;
-using Worms.engine.data;
-using Worms.engine.game_object;
-using Worms.engine.game_object.components;
-using Worms.engine.scene;
+using GameEngine.engine.camera;
+using GameEngine.engine.core.game_object_handler;
+using GameEngine.engine.core.gizmos;
+using GameEngine.engine.core.gizmos.objects;
+using GameEngine.engine.data;
+using GameEngine.engine.game_object;
+using GameEngine.engine.game_object.components;
+using GameEngine.engine.scene;
 
-namespace Worms.engine.core.renderer; 
+namespace GameEngine.engine.core.renderer; 
 
 public class GizmosRendererHandler {
     private readonly nint _renderer;

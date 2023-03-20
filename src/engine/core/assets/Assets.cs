@@ -1,6 +1,6 @@
-﻿using Worms.engine.core.renderer.textures;
+﻿using GameEngine.engine.core.renderer.textures;
 
-namespace Worms.engine.core.assets; 
+namespace GameEngine.engine.core.assets; 
 
 public record Assets(IEnumerable<AssetDeclaration> audioDeclarations, IEnumerable<AssetDeclaration> textureDeclarations, IEnumerable<AssetDeclaration> fontDeclarations) {
     public readonly IEnumerable<AssetDeclaration> audioDeclarations = audioDeclarations;

@@ -1,4 +1,4 @@
-﻿namespace Worms.engine.helper; 
+﻿namespace GameEngine.engine.helper; 
 
 public static class RandomUtil {
     private static readonly Random RANDOM = new();

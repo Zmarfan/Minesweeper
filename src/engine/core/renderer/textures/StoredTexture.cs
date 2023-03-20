@@ -1,7 +1,7 @@
 ﻿using SDL2;
-using Worms.engine.data;
+using GameEngine.engine.data;
 
-namespace Worms.engine.core.renderer.textures; 
+namespace GameEngine.engine.core.renderer.textures; 
 
 public class StoredTexture {
     public readonly unsafe SDL.SDL_Surface* surface;

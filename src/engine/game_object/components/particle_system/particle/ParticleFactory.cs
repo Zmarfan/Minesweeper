@@ -1,10 +1,10 @@
-﻿using Worms.engine.data;
-using Worms.engine.game_object.components.animation.animation;
-using Worms.engine.game_object.components.animation.controller;
-using Worms.engine.game_object.components.particle_system.renderer;
-using Worms.engine.game_object.components.rendering.texture_renderer;
+﻿using GameEngine.engine.data;
+using GameEngine.engine.game_object.components.animation.animation;
+using GameEngine.engine.game_object.components.animation.controller;
+using GameEngine.engine.game_object.components.particle_system.renderer;
+using GameEngine.engine.game_object.components.rendering.texture_renderer;
 
-namespace Worms.engine.game_object.components.particle_system.particle; 
+namespace GameEngine.engine.game_object.components.particle_system.particle; 
 
 public static class ParticleFactory {
     public static GameObjectBuilder ParticleBuilder(

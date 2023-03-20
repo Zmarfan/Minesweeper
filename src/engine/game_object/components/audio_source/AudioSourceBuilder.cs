@@ -1,6 +1,6 @@
-﻿using Worms.engine.core.audio;
+﻿using GameEngine.engine.core.audio;
 
-namespace Worms.engine.game_object.components.audio_source;
+namespace GameEngine.engine.game_object.components.audio_source;
 
 public class AudioSourceBuilder {
     private bool _isActive = true;

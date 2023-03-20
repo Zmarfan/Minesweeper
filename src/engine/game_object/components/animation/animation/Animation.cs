@@ -1,7 +1,7 @@
-﻿using Worms.engine.data;
-using Worms.engine.game_object.components.animation.composition;
+﻿using GameEngine.engine.data;
+using GameEngine.engine.game_object.components.animation.composition;
 
-namespace Worms.engine.game_object.components.animation.animation; 
+namespace GameEngine.engine.game_object.components.animation.animation; 
 
 public class Animation {
     public delegate void AnimationDelegate();

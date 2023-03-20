@@ -1,7 +1,7 @@
-﻿using Worms.engine.data;
-using Worms.engine.game_object.scripts;
+﻿using GameEngine.engine.data;
+using GameEngine.engine.game_object.scripts;
 
-namespace Worms.engine.game_object.components.particle_system.particle; 
+namespace GameEngine.engine.game_object.components.particle_system.particle; 
 
 public class ParticleScript : Script {
     private readonly bool _localSpace;

@@ -1,6 +1,6 @@
 ﻿using SDL2;
 
-namespace Worms.engine.core.cursor; 
+namespace GameEngine.engine.core.cursor; 
 
 public class Cursor {
     public static bool IsActive { get; private set; }

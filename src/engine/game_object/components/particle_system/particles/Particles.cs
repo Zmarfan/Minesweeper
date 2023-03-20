@@ -1,8 +1,8 @@
-﻿using Worms.engine.data;
-using Worms.engine.game_object.components.particle_system.ranges;
-using Range = Worms.engine.game_object.components.particle_system.ranges.Range;
+﻿using GameEngine.engine.data;
+using GameEngine.engine.game_object.components.particle_system.ranges;
+using Range = GameEngine.engine.game_object.components.particle_system.ranges.Range;
 
-namespace Worms.engine.game_object.components.particle_system.particles; 
+namespace GameEngine.engine.game_object.components.particle_system.particles; 
 
 public class Particles {
     public readonly bool localSpace;

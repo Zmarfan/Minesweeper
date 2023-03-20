@@ -1,4 +1,4 @@
-﻿namespace Worms.engine.core.audio; 
+﻿namespace GameEngine.engine.core.audio; 
 
 public class AudioChannel {
     public readonly string name;

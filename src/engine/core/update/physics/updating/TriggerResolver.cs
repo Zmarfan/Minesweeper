@@ -1,12 +1,12 @@
-﻿using Worms.engine.core.game_object_handler;
-using Worms.engine.core.input;
-using Worms.engine.core.update.physics.layers;
-using Worms.engine.data;
-using Worms.engine.game_object;
-using Worms.engine.game_object.components;
-using Worms.engine.game_object.components.physics.colliders;
+﻿using GameEngine.engine.core.game_object_handler;
+using GameEngine.engine.core.input;
+using GameEngine.engine.core.update.physics.layers;
+using GameEngine.engine.data;
+using GameEngine.engine.game_object;
+using GameEngine.engine.game_object.components;
+using GameEngine.engine.game_object.components.physics.colliders;
 
-namespace Worms.engine.core.update.physics.updating; 
+namespace GameEngine.engine.core.update.physics.updating; 
 
 public static class TriggerResolver {
     public static void UpdateMouseTriggers(TrackObject obj, bool doMouseClick) {

@@ -1,4 +1,4 @@
-﻿namespace Worms.engine.data; 
+﻿namespace GameEngine.engine.data; 
 
 public static class MathF {
     private const float EPSILON = 9.99999944E-6f;

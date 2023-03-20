@@ -1,8 +1,8 @@
-﻿using Worms.engine.core.window;
-using Worms.engine.data;
-using Worms.engine.game_object.scripts;
+﻿using GameEngine.engine.core.window;
+using GameEngine.engine.data;
+using GameEngine.engine.game_object.scripts;
 
-namespace Worms.engine.game_object.components.screen_pivot; 
+namespace GameEngine.engine.game_object.components.screen_pivot; 
 
 public class ScreenPivot : Script {
     private readonly Vector2 _pivot;

@@ -1,13 +1,13 @@
-﻿using Worms.engine.data;
-using Worms.engine.game_object.components.animation.animation;
-using Worms.engine.game_object.components.particle_system.emission;
-using Worms.engine.game_object.components.particle_system.particles;
-using Worms.engine.game_object.components.particle_system.ranges;
-using Worms.engine.game_object.components.particle_system.renderer;
-using Worms.engine.game_object.components.particle_system.shape;
-using Worms.engine.helper;
+﻿using GameEngine.engine.data;
+using GameEngine.engine.game_object.components.animation.animation;
+using GameEngine.engine.game_object.components.particle_system.emission;
+using GameEngine.engine.game_object.components.particle_system.particles;
+using GameEngine.engine.game_object.components.particle_system.ranges;
+using GameEngine.engine.game_object.components.particle_system.renderer;
+using GameEngine.engine.game_object.components.particle_system.shape;
+using GameEngine.engine.helper;
 
-namespace Worms.engine.game_object.components.particle_system; 
+namespace GameEngine.engine.game_object.components.particle_system; 
 
 public class ParticleSystemBuilder {
     private Particles _particles = ParticlesBuilder.Builder().Build();

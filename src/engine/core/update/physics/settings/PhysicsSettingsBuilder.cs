@@ -1,6 +1,6 @@
-﻿using Worms.engine.core.update.physics.layers;
+﻿using GameEngine.engine.core.update.physics.layers;
 
-namespace Worms.engine.core.update.physics.settings; 
+namespace GameEngine.engine.core.update.physics.settings; 
 
 public class PhysicsSettingsBuilder {
     private readonly Dictionary<string, List<string>> _layersToCollisionLayers = new() {

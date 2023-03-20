@@ -1,7 +1,7 @@
-﻿using Worms.engine.core.audio;
-using Worms.engine.game_object.scripts;
+﻿using GameEngine.engine.core.audio;
+using GameEngine.engine.game_object.scripts;
 
-namespace Worms.engine.game_object.components.audio_source; 
+namespace GameEngine.engine.game_object.components.audio_source; 
 
 public class AudioSource : Script {
     private static long UNIQUE_ID = long.MinValue;

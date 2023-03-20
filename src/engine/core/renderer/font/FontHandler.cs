@@ -1,7 +1,7 @@
 ﻿using SDL2;
-using Worms.engine.core.renderer.textures;
+using GameEngine.engine.core.renderer.textures;
 
-namespace Worms.engine.core.renderer.font; 
+namespace GameEngine.engine.core.renderer.font; 
 
 public class FontHandler {
     public readonly Dictionary<string, Font> fonts;

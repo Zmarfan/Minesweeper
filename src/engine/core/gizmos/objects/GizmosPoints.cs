@@ -1,7 +1,7 @@
 ﻿using SDL2;
-using Worms.engine.data;
+using GameEngine.engine.data;
 
-namespace Worms.engine.core.gizmos.objects; 
+namespace GameEngine.engine.core.gizmos.objects; 
 
 public readonly struct GizmosPoints : IGizmosObject {
     private readonly Color _color;

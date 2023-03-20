@@ -1,7 +1,7 @@
-﻿using Worms.engine.core.renderer;
-using Worms.engine.game_object.components.rendering.texture_renderer;
+﻿using GameEngine.engine.core.renderer;
+using GameEngine.engine.game_object.components.rendering.texture_renderer;
 
-namespace Worms.engine.game_object.components.particle_system.renderer; 
+namespace GameEngine.engine.game_object.components.particle_system.renderer; 
 
 public class RendererBuilder {
     private readonly Texture _texture;

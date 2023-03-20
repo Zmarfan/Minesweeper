@@ -1,6 +1,6 @@
-﻿using Worms.engine.data;
+﻿using GameEngine.engine.data;
 
-namespace Worms.engine.core.gizmos; 
+namespace GameEngine.engine.core.gizmos; 
 
 public record GizmoIdDetails(bool show, Color color) {
     public bool show = show;

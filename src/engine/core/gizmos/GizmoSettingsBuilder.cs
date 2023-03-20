@@ -1,6 +1,6 @@
-﻿using Worms.engine.data;
+﻿using GameEngine.engine.data;
 
-namespace Worms.engine.core.gizmos; 
+namespace GameEngine.engine.core.gizmos; 
 
 public class GizmoSettingsBuilder {
     private readonly Dictionary<string, GizmoIdDetails> _gizmoIdDetails = new() {

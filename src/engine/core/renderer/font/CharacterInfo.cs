@@ -1,7 +1,7 @@
 ﻿using SDL2;
-using Worms.engine.data;
+using GameEngine.engine.data;
 
-namespace Worms.engine.core.renderer.font; 
+namespace GameEngine.engine.core.renderer.font; 
 
 public class CharacterInfo {
     public Vector2Int dimension;

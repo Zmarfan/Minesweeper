@@ -1,7 +1,7 @@
-﻿using Worms.engine.data;
-using Worms.engine.helper;
+﻿using GameEngine.engine.data;
+using GameEngine.engine.helper;
 
-namespace Worms.engine.game_object.components.particle_system.ranges; 
+namespace GameEngine.engine.game_object.components.particle_system.ranges; 
 
 public readonly struct VectorRange {
     private readonly Vector2 _vector1;

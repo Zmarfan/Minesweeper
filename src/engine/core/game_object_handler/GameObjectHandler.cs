@@ -1,9 +1,9 @@
-﻿using Worms.engine.game_object;
-using Worms.engine.game_object.components;
-using Worms.engine.helper;
-using Object = Worms.engine.game_object.Object;
+﻿using GameEngine.engine.game_object;
+using GameEngine.engine.game_object.components;
+using GameEngine.engine.helper;
+using Object = GameEngine.engine.game_object.Object;
 
-namespace Worms.engine.core.game_object_handler; 
+namespace GameEngine.engine.core.game_object_handler; 
 
 public class GameObjectHandler {
     public readonly Dictionary<GameObject, TrackObject> objects = new();

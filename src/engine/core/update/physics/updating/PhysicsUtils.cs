@@ -1,8 +1,8 @@
-﻿using Worms.engine.core.game_object_handler;
-using Worms.engine.data;
-using Worms.engine.game_object.scripts;
+﻿using GameEngine.engine.core.game_object_handler;
+using GameEngine.engine.data;
+using GameEngine.engine.game_object.scripts;
 
-namespace Worms.engine.core.update.physics.updating; 
+namespace GameEngine.engine.core.update.physics.updating; 
 
 public static class PhysicsUtils {
     public static void RunScriptsFunction(TrackObject obj, Action<Script> action) {

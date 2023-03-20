@@ -1,8 +1,8 @@
 ﻿using SDL2;
-using Worms.engine.core.renderer.textures;
-using Worms.engine.data;
+using GameEngine.engine.core.renderer.textures;
+using GameEngine.engine.data;
 
-namespace Worms.engine.game_object.components.rendering.texture_renderer; 
+namespace GameEngine.engine.game_object.components.rendering.texture_renderer; 
 
 public struct Texture {
     public Color[,] SectionPixels => _sectionPixels ??= CalculateSectionPixels();

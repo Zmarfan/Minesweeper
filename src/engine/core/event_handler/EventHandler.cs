@@ -1,9 +1,9 @@
 ﻿using SDL2;
-using Worms.engine.core.input.listener;
-using Worms.engine.data;
-using Worms.engine.logger;
+using GameEngine.engine.core.input.listener;
+using GameEngine.engine.data;
+using GameEngine.engine.logger;
 
-namespace Worms.engine.core.event_handler; 
+namespace GameEngine.engine.core.event_handler; 
 
 public class EventHandler {
     public event EventVoidDelegate? QuitEvent;

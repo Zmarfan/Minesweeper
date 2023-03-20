@@ -1,10 +1,10 @@
-﻿using Worms.engine.core.game_object_handler;
-using Worms.engine.core.input;
-using Worms.engine.core.input.listener;
-using Worms.engine.game_object;
-using Worms.engine.scene;
+﻿using GameEngine.engine.core.game_object_handler;
+using GameEngine.engine.core.input;
+using GameEngine.engine.core.input.listener;
+using GameEngine.engine.game_object;
+using GameEngine.engine.scene;
 
-namespace Worms.engine.core.update.physics.updating; 
+namespace GameEngine.engine.core.update.physics.updating; 
 
 public class PhysicsUpdateHandler {
     private readonly SceneData _sceneData;

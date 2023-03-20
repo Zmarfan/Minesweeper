@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using Worms.engine.core.renderer.font;
+using GameEngine.engine.core.renderer.font;
 
-namespace Worms.engine.game_object.components.rendering.text_renderer; 
+namespace GameEngine.engine.game_object.components.rendering.text_renderer; 
 
 public static class TextFormatter {
     public static List<TextLine> FormatText(string text, int width, int size, Font font) {

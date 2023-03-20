@@ -1,8 +1,8 @@
 ﻿using SDL2;
-using Worms.engine.data;
-using Worms.engine.game_object.components.rendering.texture_renderer;
+using GameEngine.engine.data;
+using GameEngine.engine.game_object.components.rendering.texture_renderer;
 
-namespace Worms.engine.core.renderer.textures; 
+namespace GameEngine.engine.core.renderer.textures; 
 
 public static class TextureRendererHandler {
     public static unsafe void RenderTexture(nint renderer, TextureRenderer tr, TransformationMatrix matrix) {

@@ -1,8 +1,8 @@
-﻿using Worms.engine.data;
-using Worms.engine.game_object.components;
-using Worms.engine.game_object.components.physics.colliders;
+﻿using GameEngine.engine.data;
+using GameEngine.engine.game_object.components;
+using GameEngine.engine.game_object.components.physics.colliders;
 
-namespace Worms.engine.core.update.physics.updating; 
+namespace GameEngine.engine.core.update.physics.updating; 
 
 public static class IntersectUtils {
     public static bool DoTriggersIntersect(Collider c1, Collider c2) {

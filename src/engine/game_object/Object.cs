@@ -1,4 +1,4 @@
-﻿namespace Worms.engine.game_object; 
+﻿namespace GameEngine.engine.game_object; 
 
 public abstract class Object {
     public delegate void ObjectDestroyDelegate(Object obj);

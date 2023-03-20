@@ -1,7 +1,7 @@
 ﻿using SDL2;
-using Worms.engine.data;
+using GameEngine.engine.data;
 
-namespace Worms.engine.core.renderer; 
+namespace GameEngine.engine.core.renderer; 
 
 public static class GizmoRendererHelper {
     public static void DrawEllipse(nint renderer, Vector2 center, Vector2 radius, Rotation rotation) {

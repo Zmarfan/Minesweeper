@@ -1,4 +1,4 @@
-﻿namespace Worms.engine.core.gizmos; 
+﻿namespace GameEngine.engine.core.gizmos; 
 
 public class GizmoSettings {
     public const string COLLIDER_NAME = "internal_gizmo_collider";

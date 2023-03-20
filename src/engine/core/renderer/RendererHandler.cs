@@ -1,16 +1,16 @@
-﻿using Worms.engine.camera;
-using Worms.engine.core.game_object_handler;
-using Worms.engine.core.renderer.font;
-using Worms.engine.core.renderer.textures;
-using Worms.engine.data;
-using Worms.engine.game_object;
-using Worms.engine.game_object.components.rendering;
-using Worms.engine.game_object.components.rendering.text_renderer;
-using Worms.engine.game_object.components.rendering.texture_renderer;
-using Worms.engine.logger;
-using Worms.engine.scene;
+﻿using GameEngine.engine.camera;
+using GameEngine.engine.core.game_object_handler;
+using GameEngine.engine.core.renderer.font;
+using GameEngine.engine.core.renderer.textures;
+using GameEngine.engine.data;
+using GameEngine.engine.game_object;
+using GameEngine.engine.game_object.components.rendering;
+using GameEngine.engine.game_object.components.rendering.text_renderer;
+using GameEngine.engine.game_object.components.rendering.texture_renderer;
+using GameEngine.engine.logger;
+using GameEngine.engine.scene;
 
-namespace Worms.engine.core.renderer; 
+namespace GameEngine.engine.core.renderer; 
 
 public class RendererHandler {
     public const string DEFAULT_SORTING_LAYER = "Default";

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Worms.engine.data; 
+namespace GameEngine.engine.data; 
 
 public struct Color {
     public static readonly Color BLACK = new(0, 0, 0);

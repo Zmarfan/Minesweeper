@@ -1,4 +1,4 @@
-﻿namespace Worms.engine.data; 
+﻿namespace GameEngine.engine.data; 
 
 public struct TransformationMatrix {
     private float _m00 = 1;

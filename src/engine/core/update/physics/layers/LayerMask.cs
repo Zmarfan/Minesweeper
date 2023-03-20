@@ -1,4 +1,4 @@
-﻿namespace Worms.engine.core.update.physics.layers; 
+﻿namespace GameEngine.engine.core.update.physics.layers; 
 
 public static class LayerMask {
     public const string DEFAULT = "default";

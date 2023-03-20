@@ -1,7 +1,7 @@
-﻿using Worms.engine.game_object.components;
-using Worms.engine.game_object.components.physics.colliders;
+﻿using GameEngine.engine.game_object.components;
+using GameEngine.engine.game_object.components.physics.colliders;
 
-namespace Worms.engine.game_object.scripts; 
+namespace GameEngine.engine.game_object.scripts; 
 
 public abstract class Script : ToggleComponent {
     public bool HasRunAwake { get; set; }

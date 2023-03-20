@@ -1,4 +1,4 @@
-﻿namespace Worms.engine.core.renderer.textures; 
+﻿namespace GameEngine.engine.core.renderer.textures; 
 
 public readonly struct AssetDeclaration {
     public readonly string src;

@@ -1,4 +1,4 @@
-﻿namespace Worms.engine.logger; 
+﻿namespace GameEngine.engine.logger; 
 
 public static class Logger {
     public static void Error(Exception e, string text = "") {

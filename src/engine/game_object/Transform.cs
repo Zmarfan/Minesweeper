@@ -1,7 +1,7 @@
-﻿using Worms.engine.data;
-using Worms.engine.game_object.components;
+﻿using GameEngine.engine.data;
+using GameEngine.engine.game_object.components;
 
-namespace Worms.engine.game_object; 
+namespace GameEngine.engine.game_object; 
 
 public class Transform : Component {
     public delegate void GameObjectInstantiate(GameObject gameObject);

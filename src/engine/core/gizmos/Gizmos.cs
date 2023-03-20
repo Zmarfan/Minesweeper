@@ -1,8 +1,8 @@
-﻿using Worms.engine.core.gizmos.objects;
-using Worms.engine.data;
-using Worms.engine.helper;
+﻿using GameEngine.engine.core.gizmos.objects;
+using GameEngine.engine.data;
+using GameEngine.engine.helper;
 
-namespace Worms.engine.core.gizmos; 
+namespace GameEngine.engine.core.gizmos; 
 
 public static class Gizmos {
     public static TransformationMatrix matrix;

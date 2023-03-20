@@ -1,7 +1,7 @@
-﻿using Worms.engine.core.input.listener;
-using Worms.engine.data;
+﻿using GameEngine.engine.core.input.listener;
+using GameEngine.engine.data;
 
-namespace Worms.engine.core.event_handler;
+namespace GameEngine.engine.core.event_handler;
 
 public delegate void EventVoidDelegate();
 public delegate void ButtonEventDelegate(Button button);

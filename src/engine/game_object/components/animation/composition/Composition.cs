@@ -1,4 +1,4 @@
-﻿namespace Worms.engine.game_object.components.animation.composition; 
+﻿namespace GameEngine.engine.game_object.components.animation.composition; 
 
 public class Composition {
     public readonly int lastStateEndStep;

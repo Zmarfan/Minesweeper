@@ -1,4 +1,4 @@
-﻿namespace Worms.engine.core.audio; 
+﻿namespace GameEngine.engine.core.audio; 
 
 public readonly struct Volume {
     private const int MAX_VOLUME = 1;

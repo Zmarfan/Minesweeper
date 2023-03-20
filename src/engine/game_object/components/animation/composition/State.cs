@@ -1,4 +1,4 @@
-﻿namespace Worms.engine.game_object.components.animation.composition; 
+﻿namespace GameEngine.engine.game_object.components.animation.composition; 
 
 public struct State {
     public readonly Action<Component> action;

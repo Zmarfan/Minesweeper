@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Worms.engine.data; 
+namespace GameEngine.engine.data; 
 
 public struct Rotation {
     public float Degree {

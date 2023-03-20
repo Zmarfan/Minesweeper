@@ -1,4 +1,4 @@
-﻿namespace Worms.engine.game_object.components.particle_system; 
+﻿namespace GameEngine.engine.game_object.components.particle_system; 
 
 public enum StopAction {
     NONE,

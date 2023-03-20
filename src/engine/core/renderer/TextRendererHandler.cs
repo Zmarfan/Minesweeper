@@ -1,11 +1,11 @@
 ﻿using SDL2;
-using Worms.engine.camera;
-using Worms.engine.core.renderer.font;
-using Worms.engine.data;
-using Worms.engine.game_object.components;
-using Worms.engine.game_object.components.rendering.text_renderer;
+using GameEngine.engine.camera;
+using GameEngine.engine.core.renderer.font;
+using GameEngine.engine.data;
+using GameEngine.engine.game_object.components;
+using GameEngine.engine.game_object.components.rendering.text_renderer;
 
-namespace Worms.engine.core.renderer; 
+namespace GameEngine.engine.core.renderer; 
 
 public static class TextRendererHandler {
     private const int ITALICS_OFFSET = 20;

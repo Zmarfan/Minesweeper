@@ -1,7 +1,7 @@
 ﻿using SDL2;
-using Worms.engine.data;
+using GameEngine.engine.data;
 
-namespace Worms.engine.core.window; 
+namespace GameEngine.engine.core.window; 
 
 public class WindowManager {
     public delegate void ResolutionChangedDelegate(Vector2Int resolution);

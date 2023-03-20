@@ -1,12 +1,12 @@
 ﻿using SDL2;
-using Worms.engine.camera;
-using Worms.engine.core.renderer.font;
-using Worms.engine.core.renderer.textures;
-using Worms.engine.core.window;
-using Worms.engine.data;
-using Worms.engine.scene;
+using GameEngine.engine.camera;
+using GameEngine.engine.core.renderer.font;
+using GameEngine.engine.core.renderer.textures;
+using GameEngine.engine.core.window;
+using GameEngine.engine.data;
+using GameEngine.engine.scene;
 
-namespace Worms.engine.core.renderer; 
+namespace GameEngine.engine.core.renderer; 
 
 public class GameRenderer {
     private readonly nint _window;

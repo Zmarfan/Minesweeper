@@ -1,6 +1,6 @@
-﻿using Worms.engine.core.renderer.textures;
+﻿using GameEngine.engine.core.renderer.textures;
 
-namespace Worms.engine.core.assets; 
+namespace GameEngine.engine.core.assets; 
 
 public class AssetsBuilder {
     private readonly List<AssetDeclaration> _audioDeclarations = new();

@@ -1,13 +1,13 @@
-﻿using Worms.engine.data;
-using Worms.engine.game_object.components.animation.animation;
-using Worms.engine.game_object.components.particle_system.emission;
-using Worms.engine.game_object.components.particle_system.particle;
-using Worms.engine.game_object.components.particle_system.particles;
-using Worms.engine.game_object.components.particle_system.renderer;
-using Worms.engine.game_object.components.particle_system.shape;
-using Worms.engine.game_object.scripts;
+﻿using GameEngine.engine.data;
+using GameEngine.engine.game_object.components.animation.animation;
+using GameEngine.engine.game_object.components.particle_system.emission;
+using GameEngine.engine.game_object.components.particle_system.particle;
+using GameEngine.engine.game_object.components.particle_system.particles;
+using GameEngine.engine.game_object.components.particle_system.renderer;
+using GameEngine.engine.game_object.components.particle_system.shape;
+using GameEngine.engine.game_object.scripts;
 
-namespace Worms.engine.game_object.components.particle_system; 
+namespace GameEngine.engine.game_object.components.particle_system; 
 
 public class ParticleSystem : Script {
     private readonly Particles _particles;

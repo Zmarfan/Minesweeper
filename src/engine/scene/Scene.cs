@@ -1,7 +1,7 @@
-﻿using Worms.engine.camera;
-using Worms.engine.game_object;
+﻿using GameEngine.engine.camera;
+using GameEngine.engine.game_object;
 
-namespace Worms.engine.scene; 
+namespace GameEngine.engine.scene; 
 
 public class Scene {
     public readonly string name;

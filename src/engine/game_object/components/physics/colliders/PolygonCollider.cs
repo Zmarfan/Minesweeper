@@ -1,9 +1,9 @@
-﻿using Worms.engine.core.gizmos;
-using Worms.engine.core.update.physics;
-using Worms.engine.core.update.physics.updating;
-using Worms.engine.data;
+﻿using GameEngine.engine.core.gizmos;
+using GameEngine.engine.core.update.physics;
+using GameEngine.engine.core.update.physics.updating;
+using GameEngine.engine.data;
 
-namespace Worms.engine.game_object.components.physics.colliders; 
+namespace GameEngine.engine.game_object.components.physics.colliders; 
 
 public class PolygonCollider : Collider {
     public Vector2[] Vertices {

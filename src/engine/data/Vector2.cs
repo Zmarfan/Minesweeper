@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
-using Worms.engine.helper;
+using GameEngine.engine.helper;
 
-namespace Worms.engine.data; 
+namespace GameEngine.engine.data; 
 
 public struct Vector2 {
     private static readonly Random RANDOM = new();

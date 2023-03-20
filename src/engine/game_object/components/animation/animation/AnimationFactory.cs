@@ -1,8 +1,8 @@
-﻿using Worms.engine.game_object.components.animation.composition;
-using Worms.engine.game_object.components.rendering.texture_renderer;
-using Worms.engine.helper;
+﻿using GameEngine.engine.game_object.components.animation.composition;
+using GameEngine.engine.game_object.components.rendering.texture_renderer;
+using GameEngine.engine.helper;
 
-namespace Worms.engine.game_object.components.animation.animation; 
+namespace GameEngine.engine.game_object.components.animation.animation; 
 
 public static class AnimationFactory {
     public static Animation CreateTextureAnimation(string textureSrc, float stepLengthInSeconds, bool loop, int frameCount, bool reverse = false) {

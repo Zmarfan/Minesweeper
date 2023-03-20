@@ -1,7 +1,7 @@
-﻿using Worms.engine.data;
-using Worms.engine.game_object.components.particle_system.ranges;
+﻿using GameEngine.engine.data;
+using GameEngine.engine.game_object.components.particle_system.ranges;
 
-namespace Worms.engine.game_object.components.particle_system.emission; 
+namespace GameEngine.engine.game_object.components.particle_system.emission; 
 
 public class EmissionBurst {
     private readonly int _initCycles;

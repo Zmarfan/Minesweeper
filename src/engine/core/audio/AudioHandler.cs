@@ -1,7 +1,7 @@
 ﻿using SDL2;
-using Worms.engine.core.renderer.textures;
+using GameEngine.engine.core.renderer.textures;
 
-namespace Worms.engine.core.audio; 
+namespace GameEngine.engine.core.audio; 
 
 public class AudioHandler {
     private const int MAX_TRACKS = 32;

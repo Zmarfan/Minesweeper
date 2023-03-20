@@ -1,8 +1,8 @@
-﻿using Worms.engine.data;
-using Worms.engine.game_object;
-using Worms.engine.game_object.components.physics.colliders;
+﻿using GameEngine.engine.data;
+using GameEngine.engine.game_object;
+using GameEngine.engine.game_object.components.physics.colliders;
 
-namespace Worms.engine.core.update.physics; 
+namespace GameEngine.engine.core.update.physics; 
 
 public struct RaycastHit {
     public readonly Collider collider;

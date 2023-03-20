@@ -1,6 +1,6 @@
-﻿using Worms.engine.data;
+﻿using GameEngine.engine.data;
 
-namespace Worms.engine.core.input.listener; 
+namespace GameEngine.engine.core.input.listener; 
 
 public class InputListener {
     public readonly string name;

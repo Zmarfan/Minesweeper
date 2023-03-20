@@ -1,4 +1,4 @@
-﻿namespace Worms.engine.data; 
+﻿namespace GameEngine.engine.data; 
 
 public class ClockTimer {
     private float _time;

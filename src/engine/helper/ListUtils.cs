@@ -1,4 +1,4 @@
-﻿namespace Worms.engine.helper; 
+﻿namespace GameEngine.engine.helper; 
 
 public static class ListUtils {
     public static List<T> Of<T>(params T[] entries) {

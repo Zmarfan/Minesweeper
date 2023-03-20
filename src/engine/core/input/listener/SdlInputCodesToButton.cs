@@ -1,6 +1,6 @@
 ﻿using SDL2;
 
-namespace Worms.engine.core.input.listener; 
+namespace GameEngine.engine.core.input.listener; 
 
 public static class SdlInputCodeToButton {
     public static readonly Dictionary<SDL.SDL_Scancode, Button> SCANCODE_TO_BUTTON = new() {

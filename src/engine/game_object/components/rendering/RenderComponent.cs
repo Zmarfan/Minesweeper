@@ -1,6 +1,6 @@
-﻿using Worms.engine.data;
+﻿using GameEngine.engine.data;
 
-namespace Worms.engine.game_object.components.rendering; 
+namespace GameEngine.engine.game_object.components.rendering; 
 
 public class RenderComponent : ToggleComponent {
     public string sortingLayer;

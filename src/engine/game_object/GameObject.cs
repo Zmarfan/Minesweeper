@@ -1,9 +1,9 @@
 ﻿using System.Text;
-using Worms.engine.core.game_object_handler;
-using Worms.engine.game_object.components;
-using Worms.engine.helper;
+using GameEngine.engine.core.game_object_handler;
+using GameEngine.engine.game_object.components;
+using GameEngine.engine.helper;
 
-namespace Worms.engine.game_object; 
+namespace GameEngine.engine.game_object; 
 
 public class GameObject : Object {
     public delegate void GameObjectUpdate(GameObject gameObject);

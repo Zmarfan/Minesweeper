@@ -1,10 +1,10 @@
-﻿using Worms.engine.camera;
-using Worms.engine.core.input.listener;
-using Worms.engine.data;
-using Worms.engine.helper;
-using EventHandler = Worms.engine.core.event_handler.EventHandler;
+﻿using GameEngine.engine.camera;
+using GameEngine.engine.core.input.listener;
+using GameEngine.engine.data;
+using GameEngine.engine.helper;
+using EventHandler = GameEngine.engine.core.event_handler.EventHandler;
 
-namespace Worms.engine.core.input; 
+namespace GameEngine.engine.core.input; 
 
 public class Input {
     private static Input _self = null!;

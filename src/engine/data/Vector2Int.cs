@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Worms.engine.data; 
+namespace GameEngine.engine.data; 
 
 public struct Vector2Int {
     public int x = 0;

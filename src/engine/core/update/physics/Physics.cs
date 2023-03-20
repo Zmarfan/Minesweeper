@@ -1,11 +1,11 @@
-﻿using Worms.engine.core.game_object_handler;
-using Worms.engine.core.update.physics.layers;
-using Worms.engine.data;
-using Worms.engine.game_object;
-using Worms.engine.game_object.components.physics.colliders;
-using Worms.engine.scene;
+﻿using GameEngine.engine.core.game_object_handler;
+using GameEngine.engine.core.update.physics.layers;
+using GameEngine.engine.data;
+using GameEngine.engine.game_object;
+using GameEngine.engine.game_object.components.physics.colliders;
+using GameEngine.engine.scene;
 
-namespace Worms.engine.core.update.physics; 
+namespace GameEngine.engine.core.update.physics; 
 
 public class Physics {
     private static readonly int DEFAULT_LAYER_MASK = ~LayerMask.CreateMask(LayerMask.IGNORE_RAYCAST);

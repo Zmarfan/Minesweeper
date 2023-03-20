@@ -1,6 +1,6 @@
 ﻿using SDL2;
 
-namespace Worms.engine.core.audio; 
+namespace GameEngine.engine.core.audio; 
 
 public struct PlayingSound {
     public readonly int track;

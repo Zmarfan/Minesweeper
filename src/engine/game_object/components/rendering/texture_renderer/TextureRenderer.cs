@@ -1,6 +1,6 @@
-﻿using Worms.engine.data;
+﻿using GameEngine.engine.data;
 
-namespace Worms.engine.game_object.components.rendering.texture_renderer;
+namespace GameEngine.engine.game_object.components.rendering.texture_renderer;
 
 public class TextureRenderer : RenderComponent {
     public Texture texture;

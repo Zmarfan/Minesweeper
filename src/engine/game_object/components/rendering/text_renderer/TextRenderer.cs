@@ -1,9 +1,9 @@
 ﻿using SDL2;
-using Worms.engine.core.gizmos;
-using Worms.engine.core.renderer.font;
-using Worms.engine.data;
+using GameEngine.engine.core.gizmos;
+using GameEngine.engine.core.renderer.font;
+using GameEngine.engine.data;
 
-namespace Worms.engine.game_object.components.rendering.text_renderer; 
+namespace GameEngine.engine.game_object.components.rendering.text_renderer; 
 
 public class TextRenderer : RenderComponent {
     public override Color Color {

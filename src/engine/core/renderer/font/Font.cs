@@ -1,8 +1,8 @@
 ﻿using SDL2;
-using Worms.engine.core.renderer.textures;
-using Worms.engine.data;
+using GameEngine.engine.core.renderer.textures;
+using GameEngine.engine.data;
 
-namespace Worms.engine.core.renderer.font; 
+namespace GameEngine.engine.core.renderer.font; 
 
 public class Font {
     public const int ATLAS_SIZE = 2048;

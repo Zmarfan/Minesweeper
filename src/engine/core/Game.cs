@@ -1,19 +1,19 @@
 ﻿using System.Diagnostics;
 using SDL2;
-using Worms.engine.camera;
-using Worms.engine.core.audio;
-using Worms.engine.core.cursor;
-using Worms.engine.core.game_object_handler;
-using Worms.engine.core.gizmos;
-using Worms.engine.core.input;
-using Worms.engine.core.renderer;
-using Worms.engine.core.update;
-using Worms.engine.core.update.physics.layers;
-using Worms.engine.logger;
-using Worms.engine.scene;
-using EventHandler = Worms.engine.core.event_handler.EventHandler;
+using GameEngine.engine.camera;
+using GameEngine.engine.core.audio;
+using GameEngine.engine.core.cursor;
+using GameEngine.engine.core.game_object_handler;
+using GameEngine.engine.core.gizmos;
+using GameEngine.engine.core.input;
+using GameEngine.engine.core.renderer;
+using GameEngine.engine.core.update;
+using GameEngine.engine.core.update.physics.layers;
+using GameEngine.engine.logger;
+using GameEngine.engine.scene;
+using EventHandler = GameEngine.engine.core.event_handler.EventHandler;
 
-namespace Worms.engine.core; 
+namespace GameEngine.engine.core; 
 
 public class Game {
     private const float MAX_FPS = 120;
