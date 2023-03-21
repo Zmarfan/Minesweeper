@@ -5,9 +5,11 @@ namespace GameEngine.engine.core.cursor;
 public class Cursor {
     public static bool IsActive { get; private set; }
     private static Cursor _self = null!;
+    private readonly nint _window;
     private readonly nint _cursor;
     
-    private unsafe Cursor(CursorSettings settings) {
+    private unsafe Cursor(CursorSettings settings, nint window) {
+        _window = window;
         if (settings.customCursorSettings == null) {
             return;
         }
@@ -23,17 +25,17 @@ public class Cursor {
         SDL.SDL_FreeSurface((nint)surface);
     }
 
-    internal static Cursor Init(CursorSettings settings) {
+    internal static void Init(CursorSettings settings, nint window) {
         if (_self != null) {
             throw new Exception("You can not init more than one cursor!");
         }
 
-        _self = new Cursor(settings);
+        _self = new Cursor(settings, window);
         SetActive(settings.enabled);
-        return _self;
+        ConfineMouseToWindow(settings.confine);
     }
     
-    internal void Clean() {
+    internal static void Clean() {
         SDL.SDL_FreeCursor(_self._cursor);
         _self = null!;
     }
@@ -47,6 +49,10 @@ public class Cursor {
             throw new Exception($"Unable to set relative mouse mode due to: {SDL.SDL_GetError()}");
         }
         IsActive = active;
+    }
+
+    public static void ConfineMouseToWindow(bool confine) {
+        SDL.SDL_SetWindowMouseGrab(_self._window, confine ? SDL.SDL_bool.SDL_TRUE : SDL.SDL_bool.SDL_FALSE);
     }
     
     private static unsafe SDL.SDL_Surface* GetSurface(CustomCursorSettings settings) {

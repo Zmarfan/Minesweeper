@@ -23,7 +23,6 @@ public class Game {
     private readonly UpdateHandler _updateHandler;
     private readonly GameRenderer _gameRenderer;
     private readonly AudioHandler _audioHandler;
-    private readonly Cursor _cursorHandler;
     private readonly Stopwatch _actionFrameWatch = new();
     private readonly Stopwatch _totalFrameWatch = new();
     private float _deltaTime;
@@ -46,7 +45,6 @@ public class Game {
         _eventHandler.ToggleFullscreenEvent += _gameRenderer.ToggleFullScreen;
         _audioHandler = AudioHandler.Init(settings.audioSettings, settings.assets.audioDeclarations);
         LayerMask.Init(settings.physicsSettings.layersToCollisionLayers);
-        _cursorHandler = Cursor.Init(settings.cursorSettings);
         Gizmos.Init(settings.gizmoSettings);
         SceneManager.Init(settings.scenes, LoadScene);
         
@@ -88,7 +86,6 @@ public class Game {
     }
     
     private void Clean() {
-        _cursorHandler.Clean();
         _audioHandler.Clean();
         _gameRenderer.Clean();
         SDL.SDL_Quit();

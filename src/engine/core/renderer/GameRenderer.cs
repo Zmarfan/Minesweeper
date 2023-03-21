@@ -1,5 +1,6 @@
 ﻿using SDL2;
 using GameEngine.engine.camera;
+using GameEngine.engine.core.cursor;
 using GameEngine.engine.core.renderer.font;
 using GameEngine.engine.core.renderer.textures;
 using GameEngine.engine.core.window;
@@ -48,6 +49,7 @@ internal class GameRenderer {
         _fontHandler = new FontHandler(_renderer, settings.assets.fontDeclarations);
         _rendererHandler = new RendererHandler(_renderer, _fontHandler, settings);
         _gizmosRendererHandler = new GizmosRendererHandler(_renderer);
+        Cursor.Init(settings.cursorSettings, _window);
     }
 
     public void Render() {
@@ -72,6 +74,7 @@ internal class GameRenderer {
     }
     
     public void Clean() {
+        Cursor.Clean();
         _fontHandler.Clean();
         _textureStorage.Clean();
         SDL.SDL_DestroyWindow(_window);

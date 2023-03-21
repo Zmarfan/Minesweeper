@@ -27,7 +27,7 @@ public class GameSettingsBuilder {
         .Build();
     private readonly List<string> _sortLayers = new();
     private AudioSettings _audioSettings = new(Volume.Max(), ListUtils.Empty<AudioChannel>());
-    private CursorSettings _cursorSettings = new(true, null);
+    private CursorSettings _cursorSettings = new(true, true);
     private GizmoSettings _gizmoSettings = GizmoSettingsBuilder.Builder().Build();
     
     public static GameSettingsBuilder Builder() {
