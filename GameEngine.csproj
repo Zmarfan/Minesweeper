@@ -16,4 +16,11 @@
     <ItemGroup>
       <Folder Include="src\assets" />
     </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="src\assets\icon.png" />
+      <Content Include="src\assets\icon.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
 </Project>

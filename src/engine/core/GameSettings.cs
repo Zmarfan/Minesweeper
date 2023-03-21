@@ -13,6 +13,7 @@ public record GameSettings(
     string title,
     int width, 
     int height,
+    string? iconSrc,
     Assets assets,
     List<Scene> scenes, 
     List<InputListener> inputListeners,
@@ -26,6 +27,7 @@ public record GameSettings(
     public readonly string title = title;
     public int width = width;
     public int height = height;
+    public string? iconSrc = iconSrc;
     public readonly Assets assets = assets;
     public readonly List<Scene> scenes = scenes;
     public readonly List<InputListener> inputListeners = inputListeners;

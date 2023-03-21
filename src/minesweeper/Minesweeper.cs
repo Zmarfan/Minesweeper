@@ -22,6 +22,7 @@ public static class Minesweeper {
             .SetAudioSettings(new AudioSettings(Volume.Max(), ListUtils.Empty<AudioChannel>()))
             .SetWindowWidth(275)   
             .SetWindowHeight(350)
+            .SetWindowIcon(Path("icon.png"))
             .AddScenes(ListUtils.Of(Scene1.GetScene()))
             .AddInputListeners(ListUtils.Of(
                 InputListenerBuilder.Builder(InputNames.LEFT_CLICK, Button.LEFT_MOUSE).Build(),

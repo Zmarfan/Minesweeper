@@ -16,6 +16,7 @@ public class GameSettingsBuilder {
     private string _title = "My Game";
     private int _width = 600;
     private int _height = 400;
+    private string? _iconSrc = null;
     private Assets _assets = new(ListUtils.Empty<AssetDeclaration>(), ListUtils.Empty<AssetDeclaration>(), ListUtils.Empty<AssetDeclaration>());
     private readonly List<Scene> _scenes = new();
     private readonly List<InputListener> _inputListeners = new();
@@ -35,7 +36,7 @@ public class GameSettingsBuilder {
     }
 
     public GameSettings Build() {
-        return new GameSettings(_debug, _title, _width, _height, _assets, _scenes, _inputListeners, _physicsSettings, _sortLayers, _audioSettings, _cursorSettings, _gizmoSettings);
+        return new GameSettings(_debug, _title, _width, _height, _iconSrc, _assets, _scenes, _inputListeners, _physicsSettings, _sortLayers, _audioSettings, _cursorSettings, _gizmoSettings);
     }
 
     public GameSettingsBuilder SetAssets(Assets assets) {
@@ -65,6 +66,11 @@ public class GameSettingsBuilder {
     
     public GameSettingsBuilder SetWindowHeight(int height) {
         _height = height;
+        return this;
+    }
+
+    public GameSettingsBuilder SetWindowIcon(string iconSrc) {
+        _iconSrc = iconSrc;
         return this;
     }
     

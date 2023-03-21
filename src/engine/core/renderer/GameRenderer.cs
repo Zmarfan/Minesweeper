@@ -20,6 +20,7 @@ internal class GameRenderer {
     private readonly GameSettings _settings;
     private static Color DefaultDrawColor => Camera.Main.defaultDrawColor;
     private bool _isFullscreen;
+    private nint? _iconSurface;
     
     public GameRenderer(GameSettings settings, SceneData sceneData) {
         _window = SDL.SDL_CreateWindow(
@@ -43,6 +44,10 @@ internal class GameRenderer {
         
         WindowManager.Init(_window, settings);
 
+        if (settings.iconSrc != null) {
+            InitWindowIcon(settings.iconSrc);
+        }
+        
         _settings = settings;
         _sceneData = sceneData;
         _textureStorage = TextureStorage.Init(_renderer, _settings.assets.textureDeclarations);
@@ -73,12 +78,20 @@ internal class GameRenderer {
         _isFullscreen = !_isFullscreen;
     }
     
+    private void InitWindowIcon(string iconSrc) {
+        _iconSurface = SDL_image.IMG_Load(iconSrc);
+        SDL.SDL_SetWindowIcon(_window, _iconSurface.Value);
+    }
+    
     public void Clean() {
         Cursor.Clean();
         _fontHandler.Clean();
         _textureStorage.Clean();
         SDL.SDL_DestroyWindow(_window);
         SDL.SDL_DestroyRenderer(_renderer);
+        if (_iconSurface.HasValue) {
+            SDL.SDL_FreeSurface(_iconSurface.Value);
+        } 
     }
 
     private void SetDrawColor(Color c) {
