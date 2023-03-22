@@ -31,7 +31,7 @@ internal class GameRenderer {
             settings.height,
             SDL.SDL_WindowFlags.SDL_WINDOW_SHOWN
         );
-        SDL.SDL_SetHint( SDL.SDL_HINT_RENDER_SCALE_QUALITY, "1");
+        // SDL.SDL_SetHint( SDL.SDL_HINT_RENDER_SCALE_QUALITY, "1");
         if (_window == nint.Zero) {
             throw new Exception();
         }

@@ -8,6 +8,10 @@ public struct Texture {
     public Color[,] SectionPixels => _sectionPixels ??= CalculateSectionPixels();
     public string textureId;
     public readonly Vector2 textureScale;
+
+    public int Width => SectionPixels.GetLength(0);
+    public int Height => SectionPixels.GetLength(1);
+    
     private readonly int _column;
     private readonly int _row;
     private readonly int _columnLength;

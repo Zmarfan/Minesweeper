@@ -22,5 +22,17 @@
       <Content Include="src\assets\icon.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="src\assets\numbers.png" />
+      <Content Include="src\assets\numbers.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\smilies.png" />
+      <Content Include="src\assets\smileys.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="src\assets\tiles.png" />
+      <Content Include="src\assets\tiles.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 </Project>

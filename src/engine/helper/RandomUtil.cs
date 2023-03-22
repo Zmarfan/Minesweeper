@@ -28,4 +28,17 @@ public static class RandomUtil {
     public static bool RandomBool(Random random) {
         return random.Next(2) == 0;
     }
+
+    public static void RandomizeList<T>(ref List<T> list) {
+        RandomizeList(RANDOM, ref list);
+    }
+    
+    public static void RandomizeList<T>(Random random, ref List<T> list) {
+        int n = list.Count;  
+        while (n > 1) {  
+            n--;  
+            int k = random.Next(n + 1);  
+            (list[k], list[n]) = (list[n], list[k]);
+        }  
+    }
 }
