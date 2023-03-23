@@ -9,7 +9,7 @@ using GameEngine.engine.game_object.components.physics.colliders;
 namespace GameEngine.engine.core.update.physics.updating; 
 
 internal static class TriggerResolver {
-    public static void UpdateMouseTriggers(TrackObject obj, bool doMouseClick) {
+    public static void UpdateMouseTriggers(TrackObject obj, MouseClickMask mouseMask) {
         bool isInsideTrigger = obj.Colliders.Any(collider => 
             collider is { IsActive: true, state: ColliderState.TRIGGER }
                 && collider.IsPointInside(GetMouseWorldPosition(obj))
@@ -27,8 +27,8 @@ internal static class TriggerResolver {
                 break;
         }
 
-        if (doMouseClick && isInsideTrigger) {
-            PhysicsUtils.RunScriptsFunction(obj, static s => s.OnMouseClick());
+        if (mouseMask.mask != 0 && isInsideTrigger) {
+            PhysicsUtils.RunScriptsFunction(obj, s => s.OnMouseDown(mouseMask));
         } 
         
         obj.MouseInsideTrigger = isInsideTrigger;

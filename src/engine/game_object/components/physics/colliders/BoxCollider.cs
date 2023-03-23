@@ -32,7 +32,7 @@ public class BoxCollider : Collider {
 
     public override bool IsPointInside(Vector2 p) {
         p = Transform.WorldToLocalMatrix.ConvertPoint(p);
-        return p.x >= BottomLeftLocal.x && p.x <= TopRightLocal.x && p.y >= BottomLeftLocal.y && p.y <= TopRightLocal.y;
+        return p.x > BottomLeftLocal.x && p.x < TopRightLocal.x && p.y > BottomLeftLocal.y && p.y < TopRightLocal.y;
     }
 
     public override ColliderHit? Raycast(Vector2 origin, Vector2 direction) {

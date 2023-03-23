@@ -1,4 +1,5 @@
-﻿using GameEngine.engine.game_object.components;
+﻿using GameEngine.engine.core.update.physics.updating;
+using GameEngine.engine.game_object.components;
 using GameEngine.engine.game_object.components.physics.colliders;
 
 namespace GameEngine.engine.game_object.scripts; 
@@ -40,6 +41,9 @@ public abstract class Script : ToggleComponent {
     public virtual void OnMouseExit() {
     }
     
-    public virtual void OnMouseClick() {
+    public virtual void OnMouseDown(MouseClickMask mask) {
+    }
+    
+    public virtual void OnMouseUp(MouseClickMask mask) {
     }
 }

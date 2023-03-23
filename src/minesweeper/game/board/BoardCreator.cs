@@ -7,11 +7,6 @@ using GameEngine.engine.helper;
 namespace GameEngine.minesweeper.game.board; 
 
 public static class BoardCreator {
-    public const int TILE_LENGTH = 16;
-    public const int BOMB = -1;
-    public const int OPENED_BOMB = -2;
-    public const int WRONG_BOMB = -3;
-    
     public static void InitBoard(int mineCount, in Transform holder, in Tile[,] tiles) {
         HashSet<Vector2Int> mines = CreateMinePositions(mineCount, in tiles);
         for (int x = 0; x < tiles.GetLength(0); x++) {
@@ -35,7 +30,7 @@ public static class BoardCreator {
     
     private static int CalculateMinesAroundTile(Vector2Int position, HashSet<Vector2Int> mines, in Tile[,] tiles) {
         if (mines.Contains(position)) {
-            return BOMB;
+            return Board.BOMB;
         }
 
         int mineCount = 0;
@@ -48,13 +43,13 @@ public static class BoardCreator {
         return mineCount;
     }
     
-    private static Tile CreateTile(Transform holder, Vector2Int position, int mineCount) {
+    private static Tile CreateTile(Transform holder, Vector2Int position, int surroundingMineCount) {
         return holder.Instantiate(GameObjectBuilder
             .Builder($"tile: {position.x}, {position.y})")
-            .SetComponent(TextureRendererBuilder.Builder(TileProvider.GetTexture(mineCount, MarkType.NONE)).Build())
-            .SetComponent(new BoxCollider(true, ColliderState.TRIGGER, new Vector2(TILE_LENGTH, TILE_LENGTH), Vector2.Zero()))
-            .SetComponent(new Tile(mineCount))
-            .SetLocalPosition(new Vector2(position.x * TILE_LENGTH, position.y * TILE_LENGTH))
+            .SetComponent(TextureRendererBuilder.Builder(TileProvider.GetTexture(surroundingMineCount, MarkType.NONE)).Build())
+            .SetComponent(new BoxCollider(true, ColliderState.TRIGGER, new Vector2(Board.TILE_LENGTH, Board.TILE_LENGTH), Vector2.Zero()))
+            .SetComponent(new Tile(position, surroundingMineCount))
+            .SetLocalPosition(new Vector2(position.x * Board.TILE_LENGTH, position.y * Board.TILE_LENGTH))
         ).GetComponent<Tile>();
     }
 }
