@@ -1,4 +1,6 @@
 ﻿using GameEngine.engine.camera;
+using GameEngine.engine.core.input;
+using GameEngine.engine.core.input.listener;
 using GameEngine.engine.core.window;
 using GameEngine.engine.data;
 using GameEngine.engine.game_object;
@@ -15,11 +17,14 @@ public class Board : Script {
     private Transform _tileHolder = null!;
     private readonly Tile[,] _tiles;
     private readonly int _mineCount;
+    private readonly int _tilesToOpen;
+    private int _openedTiles = 0;
     private bool _gameOver = false;
     
     public Board(int width, int height, int mineCount) {
         _tiles = new Tile[width, height];
         _mineCount = mineCount;
+        _tilesToOpen = width * height - mineCount;
         Tile.LeftClickedTileEvent += TileLeftClicked;
         Tile.RightClickedTileEvent += TileRightClicked;
     }
@@ -38,33 +43,73 @@ public class Board : Script {
         BoardCreator.InitBoard(_mineCount, in _tileHolder, in _tiles);
     }
 
+    public override void Update(float deltaTime) {
+        if (Input.GetKeyDown(Button.R)) {
+            RestartGame();
+        }
+    }
+
+    private void RestartGame() {
+        foreach (Transform child in _tileHolder.children) {
+            child.gameObject.Destroy();
+        }
+        BoardCreator.InitBoard(_mineCount, in _tileHolder, in _tiles);
+        _openedTiles = 0;
+        _gameOver = false;
+    }
+
     private Vector2 CalculateTileHolderPosition() {
         return new Vector2(-_tiles.GetLength(0), -_tiles.GetLength(1)) / 2f * TILE_LENGTH
                + new Vector2(TILE_LENGTH, TILE_LENGTH) / 2f;
     }
 
     private void TileLeftClicked(Vector2Int position) {
+        Tile tile = _tiles[position.x, position.y];
         if (_gameOver) {
             return;
         }
-        // Add first click safe mechanics later
 
-        Tile tile = _tiles[position.x, position.y];
-        tile.Open();
-        if (tile.IsBomb) {
-            LoseGame();
+        if (tile.IsOpen) {
+            OpenTilesFromOpenTile(position);
         }
-        else if (tile.IsEmpty) {
+
+        OpenTile(tile);
+        if (tile.IsEmpty) {
             OpenEmptyTiles(position);
         }
     }
-    
+
     private void TileRightClicked(Vector2Int position) {
         if (_gameOver) {
             return;
         }
         
         _tiles[position.x, position.y].Flag();
+    }
+    
+    private void OpenTilesFromOpenTile(Vector2Int position) {
+        int flagCount = 0;
+        for (int x = Math.Max(position.x - 1, 0); x <= Math.Min(position.x + 1, _tiles.GetLength(0) - 1); x++) {
+            for (int y = Math.Max(position.y - 1, 0); y <= Math.Min(position.y + 1, _tiles.GetLength(0) - 1); y++) {
+                flagCount += _tiles[x, y].IsFlag ? 1 : 0;
+            }
+        }
+
+        if (flagCount != _tiles[position.x, position.y].SurroundingMineCount) {
+            return;
+        }
+        
+        for (int x = Math.Max(position.x - 1, 0); x <= Math.Min(position.x + 1, _tiles.GetLength(0) - 1); x++) {
+            for (int y = Math.Max(position.y - 1, 0); y <= Math.Min(position.y + 1, _tiles.GetLength(0) - 1); y++) {
+                if (_tiles[x, y].IsFlag) {
+                    continue;
+                }
+                OpenTile(_tiles[x, y]);
+                if (_tiles[x, y].IsEmpty) {
+                    OpenEmptyTiles(new Vector2Int(x, y));
+                }
+            }
+        }
     }
     
     private void OpenEmptyTiles(Vector2Int position) {
@@ -80,7 +125,7 @@ public class Board : Script {
                         continue;
                     }
 
-                    tile.Open();
+                    OpenTile(tile);
                     if (tile.IsEmpty) {
                         emptyTiles.Enqueue(new Vector2Int(x, y));
                     }
@@ -89,10 +134,26 @@ public class Board : Script {
         }
     }
 
-    private void LoseGame() {
+    private void OpenTile(Tile tile) {
+        if (tile.IsOpen) {
+            return;
+        }
+        tile.Open();
+        if (tile.IsBomb) {
+            EndGameRevealAllTiles(false);
+        }
+        else {
+            _openedTiles++;
+            if (_openedTiles == _tilesToOpen) {
+                EndGameRevealAllTiles(true);
+            }
+        }
+    }
+
+    private void EndGameRevealAllTiles(bool win) {
         _gameOver = true;
         foreach (Tile tile in _tiles) {
-            tile.Reveal();
+            tile.Reveal(win);
         }
     }
 }

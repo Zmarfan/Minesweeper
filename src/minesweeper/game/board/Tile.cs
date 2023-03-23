@@ -10,11 +10,12 @@ public class Tile : Script {
     public static event ClickedTileDelegate? LeftClickedTileEvent;
     public static event ClickedTileDelegate? RightClickedTileEvent;
 
-    public bool IsBomb => _surroundingMineCount < 0;
-    public bool IsEmpty => _surroundingMineCount == 0;
+    public bool IsBomb => SurroundingMineCount < 0;
+    public bool IsEmpty => SurroundingMineCount == 0;
     public bool IsOpen => _markType == MarkType.OPENED;
+    public bool IsFlag => _markType == MarkType.FLAGGED;
 
-    private int _surroundingMineCount;
+    public int SurroundingMineCount { get; private set; }
     private MarkType _markType = MarkType.NONE;
     private readonly Vector2Int _position;
 
@@ -22,7 +23,7 @@ public class Tile : Script {
 
     public Tile(Vector2Int position, int surroundingMineCount) {
         _position = position;
-        _surroundingMineCount = surroundingMineCount;
+        SurroundingMineCount = surroundingMineCount;
     }
 
     public override void Awake() {
@@ -41,7 +42,7 @@ public class Tile : Script {
     public void Open() {
         _markType = MarkType.OPENED;
         if (IsBomb) {
-            _surroundingMineCount = Board.OPENED_BOMB;
+            SurroundingMineCount = Board.OPENED_BOMB;
         }
         RefreshTexture();
     }
@@ -56,19 +57,25 @@ public class Tile : Script {
         RefreshTexture();
     }
     
-    public void Reveal() {
+    public void Reveal(bool win) {
         if (_markType == MarkType.FLAGGED && !IsBomb) {
-            _surroundingMineCount = Board.WRONG_BOMB;
+            SurroundingMineCount = Board.WRONG_BOMB;
         }
         else if (_markType == MarkType.FLAGGED) {
             return;
         }
+
+        if (win && IsBomb) {
+            _markType = MarkType.FLAGGED;
+        }
+        else {
+            _markType = MarkType.OPENED;
+        }
         
-        _markType = MarkType.OPENED;
         RefreshTexture();
     }
 
     private void RefreshTexture() {
-        _textureRenderer.texture = TileProvider.GetTexture(_surroundingMineCount, _markType);
+        _textureRenderer.texture = TileProvider.GetTexture(SurroundingMineCount, _markType);
     }
 }
