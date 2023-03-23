@@ -71,6 +71,8 @@ internal class GameRenderer {
     }
 
     public void ToggleFullScreen() {
+        // Currently not supported, it's weird with resolution
+        return;
         uint flag = _isFullscreen ? 0 : (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN;
         if (SDL.SDL_SetWindowFullscreen(_window, flag) != 0) {
             throw new Exception($"Unable to change window fullScreen mode due to: {SDL.SDL_GetError()}");

@@ -46,7 +46,7 @@ public static class BoardCreator {
     private static Tile CreateTile(Transform holder, Vector2Int position, int surroundingMineCount) {
         return holder.Instantiate(GameObjectBuilder
             .Builder($"tile: {position.x}, {position.y})")
-            .SetComponent(TextureRendererBuilder.Builder(TileProvider.GetTexture(surroundingMineCount, MarkType.NONE)).Build())
+            .SetComponent(TextureRendererBuilder.Builder(TextureProvider.GetTileTexture(surroundingMineCount, MarkType.NONE)).Build())
             .SetComponent(new BoxCollider(true, ColliderState.TRIGGER, new Vector2(Board.TILE_LENGTH, Board.TILE_LENGTH), Vector2.Zero()))
             .SetComponent(new Tile(position, surroundingMineCount))
             .SetLocalPosition(new Vector2(position.x * Board.TILE_LENGTH, position.y * Board.TILE_LENGTH))

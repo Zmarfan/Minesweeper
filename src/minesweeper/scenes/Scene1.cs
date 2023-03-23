@@ -9,7 +9,7 @@ namespace GameEngine.minesweeper.scenes;
 public static class Scene1 {
     public static Scene GetScene() {
         return new Scene(SceneNames.MAIN, CreateWorldRoot, CreateScreenRoot, camera => {
-            camera.defaultDrawColor = Color.WHITE;
+            camera.defaultDrawColor = new Color(192, 192, 192, 255);
             camera.Size = 3.5f;
         });
     }
@@ -17,6 +17,7 @@ public static class Scene1 {
      private static GameObject CreateWorldRoot() {
         return GameObjectBuilder.Root()
             .Transform.AddChild("board")
+            .SetLocalPosition(new Vector2(0, -Board.INFO_HEIGHT + Board.BORDER_LENGTH))
             .SetComponent(new Board(9, 9, 10))
             .Build()
             .Transform.GetRoot().gameObject;

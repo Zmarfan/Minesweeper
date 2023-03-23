@@ -12,11 +12,9 @@ public class Tile : Script {
 
     public bool IsBomb => SurroundingMineCount < 0;
     public bool IsEmpty => SurroundingMineCount == 0;
-    public bool IsOpen => _markType == MarkType.OPENED;
-    public bool IsFlag => _markType == MarkType.FLAGGED;
 
     public int SurroundingMineCount { get; private set; }
-    private MarkType _markType = MarkType.NONE;
+    public MarkType MarkType { get; private set; } = MarkType.NONE;
     private readonly Vector2Int _position;
 
     private TextureRenderer _textureRenderer = null!;
@@ -31,7 +29,7 @@ public class Tile : Script {
     }
 
     public override void OnMouseDown(MouseClickMask mask) {
-        if (mask.LeftClick && _markType != MarkType.FLAGGED || _markType == MarkType.OPENED) {
+        if (mask.LeftClick && MarkType != MarkType.FLAGGED || MarkType == MarkType.OPENED) {
             LeftClickedTileEvent?.Invoke(_position);
         } 
         else if (mask.RightClick) {
@@ -40,7 +38,7 @@ public class Tile : Script {
     }
 
     public void Open() {
-        _markType = MarkType.OPENED;
+        MarkType = MarkType.OPENED;
         if (IsBomb) {
             SurroundingMineCount = Board.OPENED_BOMB;
         }
@@ -48,34 +46,34 @@ public class Tile : Script {
     }
 
     public void Flag() {
-        _markType = _markType switch {
+        MarkType = MarkType switch {
             MarkType.NONE => MarkType.FLAGGED,
             MarkType.FLAGGED => MarkType.QUESTION_MARK,
             MarkType.QUESTION_MARK => MarkType.NONE,
-            _ => _markType
+            _ => MarkType
         };
         RefreshTexture();
     }
     
     public void Reveal(bool win) {
-        if (_markType == MarkType.FLAGGED && !IsBomb) {
+        if (MarkType == MarkType.FLAGGED && !IsBomb) {
             SurroundingMineCount = Board.WRONG_BOMB;
         }
-        else if (_markType == MarkType.FLAGGED) {
+        else if (MarkType == MarkType.FLAGGED) {
             return;
         }
 
         if (win && IsBomb) {
-            _markType = MarkType.FLAGGED;
+            MarkType = MarkType.FLAGGED;
         }
         else {
-            _markType = MarkType.OPENED;
+            MarkType = MarkType.OPENED;
         }
         
         RefreshTexture();
     }
 
     private void RefreshTexture() {
-        _textureRenderer.texture = TileProvider.GetTexture(SurroundingMineCount, _markType);
+        _textureRenderer.texture = TextureProvider.GetTileTexture(SurroundingMineCount, MarkType);
     }
 }

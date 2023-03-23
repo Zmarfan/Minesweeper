@@ -4,8 +4,22 @@ using GameEngine.minesweeper.names;
 
 namespace GameEngine.minesweeper.game; 
 
-public static class TileProvider {
-    public static Texture GetTexture(int mineCount, MarkType markType) {
+public static class TextureProvider {
+    public static Texture GetBorderTexture(BorderType type) {
+        return type switch {
+            BorderType.HORIZONTAL => CreateBorderTexture(0, 0),
+            BorderType.VERTICAL => CreateBorderTexture(1, 2),
+            BorderType.BOTTOM_LEFT_CORNER => CreateBorderTexture(0, 3),
+            BorderType.BOTTOM_RIGHT_CORNER => CreateBorderTexture(1, 3),
+            BorderType.TOP_LEFT_CORNER => CreateBorderTexture(0, 1),
+            BorderType.TOP_RIGHT_CORNER => CreateBorderTexture(1, 0),
+            BorderType.LEFT_PIPE => CreateBorderTexture(0, 2),
+            BorderType.RIGHT_PIPE => CreateBorderTexture(1, 1),
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
+    }
+    
+    public static Texture GetTileTexture(int mineCount, MarkType markType) {
         return markType switch {
             MarkType.NONE => CreateTileTexture(0, 0),
             MarkType.OPENED => mineCount switch {
@@ -23,5 +37,9 @@ public static class TileProvider {
 
     private static Texture CreateTileTexture(int column, int row) {
         return Texture.CreateMultiple(TextureNames.TILES, column, row, 8, 2);
+    }
+    
+    private static Texture CreateBorderTexture(int column, int row) {
+        return Texture.CreateMultiple(TextureNames.BORDER, column, row, 2, 4);
     }
 }

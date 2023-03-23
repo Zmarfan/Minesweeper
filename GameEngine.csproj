@@ -34,5 +34,9 @@
       <Content Include="src\assets\tiles.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="src\assets\border.png" />
+      <Content Include="src\assets\border.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 </Project>

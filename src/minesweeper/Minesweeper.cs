@@ -43,7 +43,8 @@ public static class Minesweeper {
             .AddTextures(ListUtils.Of(
                 new AssetDeclaration(Path("tiles.png"), TextureNames.TILES),
                 new AssetDeclaration(Path("numbers.png"), TextureNames.NUMBERS),
-                new AssetDeclaration(Path("smileys.png"), TextureNames.SMILEYS)
+                new AssetDeclaration(Path("smileys.png"), TextureNames.SMILEYS),
+                new AssetDeclaration(Path("border.png"), TextureNames.BORDER)
             ))
             .AddAudios(ListUtils.Empty<AssetDeclaration>())
             .AddFonts(ListUtils.Empty<AssetDeclaration>())

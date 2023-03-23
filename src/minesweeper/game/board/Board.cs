@@ -10,6 +10,8 @@ namespace GameEngine.minesweeper.game.board;
 
 public class Board : Script {
     public const int TILE_LENGTH = 89;
+    public const int BORDER_LENGTH = 60;
+    public const int INFO_HEIGHT = 175;
     public const int BOMB = -1;
     public const int OPENED_BOMB = -2;
     public const int WRONG_BOMB = -3;
@@ -18,8 +20,8 @@ public class Board : Script {
     private readonly Tile[,] _tiles;
     private readonly int _mineCount;
     private readonly int _tilesToOpen;
-    private int _openedTiles = 0;
-    private bool _gameOver = false;
+    private int _openedTiles;
+    private bool _gameOver;
     
     public Board(int width, int height, int mineCount) {
         _tiles = new Tile[width, height];
@@ -34,13 +36,14 @@ public class Board : Script {
             .Builder("tileHolder")
             .SetLocalPosition(CalculateTileHolderPosition())
         ).Transform;
+        BoardBackgroundFactory.Create(Transform, _tiles.GetLength(0), _tiles.GetLength(1));
         
         WindowManager.SetResolution(new Vector2Int(
-            (int)(TILE_LENGTH * _tiles.GetLength(0) * (1 / Camera.Main.Size)),
-            (int)(TILE_LENGTH * _tiles.GetLength(1) * (1 / Camera.Main.Size))
+            (int)((TILE_LENGTH * _tiles.GetLength(0) + BORDER_LENGTH * 2) * (1 / Camera.Main.Size)),
+            (int)((TILE_LENGTH * _tiles.GetLength(1) + BORDER_LENGTH * 3 + INFO_HEIGHT) * (1 / Camera.Main.Size))
         ));
 
-        BoardCreator.InitBoard(_mineCount, in _tileHolder, in _tiles);
+        RestartGame();
     }
 
     public override void Update(float deltaTime) {
@@ -69,7 +72,7 @@ public class Board : Script {
             return;
         }
 
-        if (tile.IsOpen) {
+        if (tile.MarkType == MarkType.OPENED) {
             OpenTilesFromOpenTile(position);
         }
 
@@ -91,7 +94,7 @@ public class Board : Script {
         int flagCount = 0;
         for (int x = Math.Max(position.x - 1, 0); x <= Math.Min(position.x + 1, _tiles.GetLength(0) - 1); x++) {
             for (int y = Math.Max(position.y - 1, 0); y <= Math.Min(position.y + 1, _tiles.GetLength(0) - 1); y++) {
-                flagCount += _tiles[x, y].IsFlag ? 1 : 0;
+                flagCount += _tiles[x, y].MarkType == MarkType.FLAGGED ? 1 : 0;
             }
         }
 
@@ -101,7 +104,7 @@ public class Board : Script {
         
         for (int x = Math.Max(position.x - 1, 0); x <= Math.Min(position.x + 1, _tiles.GetLength(0) - 1); x++) {
             for (int y = Math.Max(position.y - 1, 0); y <= Math.Min(position.y + 1, _tiles.GetLength(0) - 1); y++) {
-                if (_tiles[x, y].IsFlag) {
+                if (_tiles[x, y].MarkType == MarkType.FLAGGED) {
                     continue;
                 }
                 OpenTile(_tiles[x, y]);
@@ -121,7 +124,7 @@ public class Board : Script {
             for (int x = Math.Max(currentPosition.x - 1, 0); x <= Math.Min(currentPosition.x + 1, _tiles.GetLength(0) - 1); x++) {
                 for (int y = Math.Max(currentPosition.y - 1, 0); y <= Math.Min(currentPosition.y + 1, _tiles.GetLength(1) - 1); y++) {
                     Tile tile = _tiles[x, y];
-                    if (tile.IsOpen || (currentPosition.x == x && currentPosition.y == y)) {
+                    if (tile.MarkType == MarkType.OPENED || (currentPosition.x == x && currentPosition.y == y)) {
                         continue;
                     }
 
@@ -135,7 +138,7 @@ public class Board : Script {
     }
 
     private void OpenTile(Tile tile) {
-        if (tile.IsOpen) {
+        if (tile.MarkType == MarkType.OPENED) {
             return;
         }
         tile.Open();
