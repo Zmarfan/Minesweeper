@@ -11,20 +11,23 @@ public class NumberDisplay : Script {
     private const int NEGATIVE_SIGN = -1;
     private const int UNLIT = 100;
     
-    private TextureRenderer? _no0;
-    private TextureRenderer? _no1;
-    private TextureRenderer? _no2;
+    private TextureRenderer _no0 = null!;
+    private TextureRenderer _no1 = null!;
+    private TextureRenderer _no2 = null!;
 
     private readonly int[] _displayParts = new int[3];
 
     public NumberDisplay(string name) : base(true, name) {
     }
 
+    public override void Start() {
+        List<TextureRenderer> textureRenderers = GetComponentsInChildren<TextureRenderer>();
+        _no0 = textureRenderers.First(tr => tr.Name == NO_0);
+        _no1 = textureRenderers.First(tr => tr.Name == NO_1);
+        _no2 = textureRenderers.First(tr => tr.Name == NO_2);
+    }
+
     public void DisplayNumber(int number) {
-        if (_no0 == null || _no1 == null || _no2 == null) {
-            InitTextureRenderers();
-        }
-        
         switch (number) {
             case > 999:
                 SetNumbers(9, 9, 9);
@@ -39,17 +42,10 @@ public class NumberDisplay : Script {
         }
     }
 
-    private void InitTextureRenderers() {
-        List<TextureRenderer> textureRenderers = GetComponentsInChildren<TextureRenderer>();
-        _no0 = textureRenderers.First(tr => tr.Name == NO_0);
-        _no1 = textureRenderers.First(tr => tr.Name == NO_1);
-        _no2 = textureRenderers.First(tr => tr.Name == NO_2);
-    }
-
     private void SetNumbers(int no0, int no1, int no2) {
-        _no0!.texture = TextureProvider.GetNumberTexture(no0);
-        _no1!.texture = TextureProvider.GetNumberTexture(no1);
-        _no2!.texture = TextureProvider.GetNumberTexture(no2);
+        _no0.texture = TextureProvider.GetNumberTexture(no0);
+        _no1.texture = TextureProvider.GetNumberTexture(no1);
+        _no2.texture = TextureProvider.GetNumberTexture(no2);
     }
 
     private void CalculateNumberAsParts(int number) {

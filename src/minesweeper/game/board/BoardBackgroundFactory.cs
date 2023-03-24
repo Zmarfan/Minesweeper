@@ -2,7 +2,6 @@
 using GameEngine.engine.game_object;
 using GameEngine.engine.game_object.components.rendering.texture_renderer;
 using GameEngine.minesweeper.game.number_display;
-using GameEngine.minesweeper.names;
 
 namespace GameEngine.minesweeper.game.board; 
 
@@ -11,7 +10,7 @@ public static class BoardBackgroundFactory {
     private const float DISPLAY_OFFSET = (Board.INFO_HEIGHT + Board.BORDER_LENGTH) / 2f;
     private const float NUM_DISPLAY_OFFSET = 160;
 
-    public static GameObject Create(Transform parent, int width, int height) {
+    public static void Create(Transform parent, int width, int height) {
         Vector2 scaleFactor = CalculateScaleFactor(width, height);
         Vector2 boardOffset = CalculateBoardOffset(width, height);
 
@@ -84,7 +83,6 @@ public static class BoardBackgroundFactory {
         NumberDisplayFactory.Create(obj.Transform, new Vector2(boardOffset.x - NUM_DISPLAY_OFFSET, boardOffset.y + DISPLAY_OFFSET), Board.TIME_NUMBER_DISPLAY);
         
         Transform.Instantiate(obj);
-        return obj;
     }
     
     private static Vector2 CalculateScaleFactor(int width, int height) {

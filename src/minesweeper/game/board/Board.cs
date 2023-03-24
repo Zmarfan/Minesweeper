@@ -44,26 +44,26 @@ public class Board : Script {
             .Builder("tileHolder")
             .SetLocalPosition(CalculateTileHolderPosition())
         ).Transform;
-        GameObject background = BoardBackgroundFactory.Create(Transform, _tiles.GetLength(0), _tiles.GetLength(1));
-        List<NumberDisplay> numberDisplays = background.GetComponentsInChildren<NumberDisplay>();
-        _mineNumberDisplay = numberDisplays.First(display => display.Name == MINE_NUMBER_DISPLAY);
-        _timeNumberDisplay = numberDisplays.First(display => display.Name == TIME_NUMBER_DISPLAY);
-        
+        BoardBackgroundFactory.Create(Transform, _tiles.GetLength(0), _tiles.GetLength(1));
+
         WindowManager.SetResolution(new Vector2Int(
             (int)((TILE_LENGTH * _tiles.GetLength(0) + BORDER_LENGTH * 2) * (1 / Camera.Main.Size)),
             (int)((TILE_LENGTH * _tiles.GetLength(1) + BORDER_LENGTH * 3 + INFO_HEIGHT) * (1 / Camera.Main.Size))
         ));
+    }
 
+    public override void Start() {
+        List<NumberDisplay> numberDisplays = GetComponentsInChildren<NumberDisplay>();
+        _mineNumberDisplay = numberDisplays.First(display => display.Name == MINE_NUMBER_DISPLAY);
+        _timeNumberDisplay = numberDisplays.First(display => display.Name == TIME_NUMBER_DISPLAY);
         RestartGame();
     }
 
     public override void Update(float deltaTime) {
-        if (!_gameOver) {
-            _mineNumberDisplay.DisplayNumber(_mineCount - _tilesFlagged);
-            if (_madeFirstMove) {
-                _timePassed += deltaTime;
-                _timeNumberDisplay.DisplayNumber((int)_timePassed);
-            }
+        _mineNumberDisplay.DisplayNumber(_mineCount - _tilesFlagged);
+        _timeNumberDisplay.DisplayNumber((int)_timePassed);
+        if (!_gameOver && _madeFirstMove) {
+            _timePassed += deltaTime;
         }
         if (Input.GetKeyDown(Button.R)) {
             RestartGame();
@@ -71,7 +71,6 @@ public class Board : Script {
     }
 
     private void RestartGame() {
-        _timeNumberDisplay.DisplayNumber(0);
         _tilesFlagged = 0;
         foreach (Transform child in _tileHolder.children) {
             child.gameObject.Destroy();
