@@ -26,6 +26,5 @@ public static class NumberDisplayFactory {
                 .SetComponent(TextureRendererBuilder.Builder(TextureProvider.GetNumberTexture(0)).SetName(NumberDisplay.NO_2).Build())
                 .Build()
             .Transform.Parent!.gameObject;
-        Transform.Instantiate(obj);
     }
 }
