@@ -15,7 +15,9 @@ public class Board : Script {
     public const int BOMB = -1;
     public const int OPENED_BOMB = -2;
     public const int WRONG_BOMB = -3;
-    
+    public const string MINE_NUMBER_DISPLAY = "mineNumberDisplay";
+    public const string TIME_NUMBER_DISPLAY = "timeNumberDisplay";
+
     private Transform _tileHolder = null!;
     private readonly Tile[,] _tiles;
     private readonly int _mineCount;

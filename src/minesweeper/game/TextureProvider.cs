@@ -5,6 +5,16 @@ using GameEngine.minesweeper.names;
 namespace GameEngine.minesweeper.game; 
 
 public static class TextureProvider {
+    public static Texture GetNumberTexture(int number) {
+        if (number is >= 0 and <= 9) {
+            return Texture.CreateMultiple(TextureNames.NUMBERS, number, 0, 12, 1);
+        }
+        if (number < 0) {
+            return Texture.CreateMultiple(TextureNames.NUMBERS, 10, 0, 12, 1);
+        }
+        return Texture.CreateMultiple(TextureNames.NUMBERS, 11, 0, 12, 1);
+    }
+    
     public static Texture GetBorderTexture(BorderType type) {
         return type switch {
             BorderType.HORIZONTAL => CreateBorderTexture(0, 0),
