@@ -38,5 +38,9 @@
       <Content Include="src\assets\numbers.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="src\assets\smileys.png" />
+      <Content Include="src\assets\smileys.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 </Project>

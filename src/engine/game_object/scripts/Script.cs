@@ -43,7 +43,4 @@ public abstract class Script : ToggleComponent {
     
     public virtual void OnMouseDown(MouseClickMask mask) {
     }
-    
-    public virtual void OnMouseUp(MouseClickMask mask) {
-    }
 }

@@ -1,11 +1,10 @@
 ﻿using GameEngine.engine.camera;
-using GameEngine.engine.core.input;
-using GameEngine.engine.core.input.listener;
 using GameEngine.engine.core.window;
 using GameEngine.engine.data;
 using GameEngine.engine.game_object;
 using GameEngine.engine.game_object.scripts;
 using GameEngine.minesweeper.game.number_display;
+using GameEngine.minesweeper.game.smiley;
 
 namespace GameEngine.minesweeper.game.board; 
 
@@ -20,6 +19,7 @@ public class Board : Script {
     public const string TIME_NUMBER_DISPLAY = "timeNumberDisplay";
 
     private Transform _tileHolder = null!;
+    private Smiley _smiley = null!;
     private NumberDisplay _timeNumberDisplay = null!;
     private NumberDisplay _mineNumberDisplay = null!;
     private readonly Tile[,] _tiles;
@@ -50,6 +50,9 @@ public class Board : Script {
             (int)((TILE_LENGTH * _tiles.GetLength(0) + BORDER_LENGTH * 2) * (1 / Camera.Main.Size)),
             (int)((TILE_LENGTH * _tiles.GetLength(1) + BORDER_LENGTH * 3 + INFO_HEIGHT) * (1 / Camera.Main.Size))
         ));
+
+        _smiley = GetComponentInChildren<Smiley>();
+        _smiley.Clicked += RestartGame;
     }
 
     public override void Start() {
@@ -64,9 +67,6 @@ public class Board : Script {
         _timeNumberDisplay.DisplayNumber((int)_timePassed);
         if (!_gameOver && _madeFirstMove) {
             _timePassed += deltaTime;
-        }
-        if (Input.GetKeyDown(Button.R)) {
-            RestartGame();
         }
     }
 
@@ -172,19 +172,30 @@ public class Board : Script {
         }
         tile.Open();
         if (tile.IsBomb) {
-            EndGameRevealAllTiles(false);
+            LoseGame();
         }
         else {
             _openedTiles++;
             if (_openedTiles == _tilesToOpen) {
-                _mineNumberDisplay.DisplayNumber(0);
-                EndGameRevealAllTiles(true);
+                WinGame();
             }
         }
     }
 
-    private void EndGameRevealAllTiles(bool win) {
+    private void LoseGame() {
         _gameOver = true;
+        RevealAllTiles(false);
+        _smiley.LostGame();
+    }
+
+    private void WinGame() {
+        _gameOver = true;
+        _mineNumberDisplay.DisplayNumber(0);
+        RevealAllTiles(true);
+        _smiley.WonGame();
+    }
+    
+    private void RevealAllTiles(bool win) {
         foreach (Tile tile in _tiles) {
             tile.Reveal(win);
         }

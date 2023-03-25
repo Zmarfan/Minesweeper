@@ -1,10 +1,21 @@
 ﻿using GameEngine.engine.game_object.components.rendering.texture_renderer;
 using GameEngine.minesweeper.game.board;
+using GameEngine.minesweeper.game.smiley;
 using GameEngine.minesweeper.names;
 
 namespace GameEngine.minesweeper.game; 
 
 public static class TextureProvider {
+    public static Texture GetSmiley(SmileyType type) {
+        return type switch {
+            SmileyType.DEFAULT => Texture.CreateMultiple(TextureNames.SMILEYS, 0, 0, 4, 1),
+            SmileyType.DEFAULT_PRESSED => Texture.CreateMultiple(TextureNames.SMILEYS, 1, 0, 4, 1),
+            SmileyType.LOST => Texture.CreateMultiple(TextureNames.SMILEYS, 2, 0, 4, 1),
+            SmileyType.WON => Texture.CreateMultiple(TextureNames.SMILEYS, 3, 0, 4, 1),
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
+    }
+    
     public static Texture GetNumberTexture(int number) {
         if (number is >= 0 and <= 9) {
             return Texture.CreateMultiple(TextureNames.NUMBERS, number, 0, 12, 1);

@@ -1,7 +1,9 @@
 ﻿using GameEngine.engine.data;
 using GameEngine.engine.game_object;
+using GameEngine.engine.game_object.components.physics.colliders;
 using GameEngine.engine.game_object.components.rendering.texture_renderer;
 using GameEngine.minesweeper.game.number_display;
+using GameEngine.minesweeper.game.smiley;
 
 namespace GameEngine.minesweeper.game.board; 
 
@@ -77,6 +79,13 @@ public static class BoardBackgroundFactory {
                 .Transform.AddSibling("topRightDisplayCorner")
                 .SetLocalPosition(new Vector2(boardOffset.x, boardOffset.y + DISPLAY_OFFSET * 2))
                 .SetComponent(TextureRendererBuilder.Builder(TextureProvider.GetBorderTexture(BorderType.TOP_RIGHT_CORNER)).Build())
+                .Build()
+            
+                .Transform.AddSibling("smiley")
+                .SetLocalPosition(new Vector2(0, boardOffset.y + DISPLAY_OFFSET))
+                .SetComponent(new Smiley())
+                .SetComponent(new BoxCollider(true, ColliderState.TRIGGER, new Vector2(Smiley.LENGTH, Smiley.LENGTH), Vector2.Zero()))
+                .SetComponent(TextureRendererBuilder.Builder(TextureProvider.GetSmiley(SmileyType.DEFAULT)).Build())
                 .Build()
             .Transform.Parent!.gameObject;
         NumberDisplayFactory.Create(obj.Transform, new Vector2(-boardOffset.x + NUM_DISPLAY_OFFSET, boardOffset.y + DISPLAY_OFFSET), Board.MINE_NUMBER_DISPLAY);
