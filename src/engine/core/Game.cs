@@ -69,7 +69,6 @@ public class Game {
     private void RunFrame() {
         try {
             _eventHandler.HandleEvents();
-            _updateHandler.Awake();
             _updateHandler.Start();
             _updateHandler.UpdateLoops(_deltaTime);
             _gameRenderer.Render();

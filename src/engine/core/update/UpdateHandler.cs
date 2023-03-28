@@ -1,7 +1,5 @@
-﻿using System.Diagnostics;
-using GameEngine.engine.core.game_object_handler;
+﻿using GameEngine.engine.core.game_object_handler;
 using GameEngine.engine.core.input;
-using GameEngine.engine.core.update.physics;
 using GameEngine.engine.core.update.physics.updating;
 using GameEngine.engine.game_object;
 using GameEngine.engine.game_object.scripts;
@@ -26,24 +24,7 @@ internal class UpdateHandler {
         _fixedUpdateAcc = 0;
         _physicsUpdateHandler = new PhysicsUpdateHandler(sceneData);
     }
-    
-    public void Awake() {
-        foreach ((GameObject _, TrackObject obj) in GameObjectHandler.objects) {
-            foreach (Script script in obj.Scripts) {
-                try {
-                    if (!script.HasRunAwake) {
-                        script.Awake();
-                    }
-                }
-                catch (Exception e) {
-                    Logger.Error(e, $"An exception occured in {script} during the Awake callback");
-                }
-                script.HasRunAwake = true;
-            }
-        }
-        GameObjectHandler.FrameCleanup();
-    }
-    
+
     public void Start() {
         foreach ((GameObject _, TrackObject obj) in GameObjectHandler.objects) {
             if (!obj.isActive) {

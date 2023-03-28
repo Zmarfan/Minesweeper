@@ -1,6 +1,8 @@
 ﻿using GameEngine.engine.game_object;
 using GameEngine.engine.game_object.components;
+using GameEngine.engine.game_object.scripts;
 using GameEngine.engine.helper;
+using GameEngine.engine.logger;
 using Object = GameEngine.engine.game_object.Object;
 
 namespace GameEngine.engine.core.game_object_handler; 
@@ -18,12 +20,14 @@ internal class GameObjectHandler {
     public GameObjectHandler(GameObject worldRoot, GameObject screenRoot) {
         _worldRoot = worldRoot;
         
-        InstantiateGameObject(worldRoot);
-        InstantiateGameObject(screenRoot);
         Transform.GameObjectInstantiateEvent += obj => _instantiatedGameObjects.Enqueue(obj);
         GameObject.GameObjectComponentAdd +=  component => _addedGameObjectComponents.Add(component);
         Object.ObjectDestroyEvent += obj => _destroyObjects.Add(obj);
         GameObject.GameObjectActiveEvent += obj => _activeStatusChangedGameObjects.Add(obj);
+        
+        _instantiatedGameObjects.Enqueue(worldRoot);
+        _instantiatedGameObjects.Enqueue(screenRoot);
+        FrameCleanup();
     }
 
     public void FrameCleanup() {
@@ -70,11 +74,29 @@ internal class GameObjectHandler {
             TrackObject trackObject = new(isWorld, allActiveGameObjects.Contains(obj), obj.components.OfType<ToggleComponent>().ToList());
             objects.Add(obj, trackObject);
         });
+        
+        foreach (Script script in allGameObjects.SelectMany(obj => objects[obj].Scripts)) {
+            RunAwakeOnScript(script);
+        }
     }
 
     private void InstantiateComponent(ToggleComponent component) {
         component.gameObject.components.Add(component);
         objects[component.gameObject].toggleComponents.Add(component);
+        if (component is Script script) {
+            RunAwakeOnScript(script);
+        }
+    }
+
+    private static void RunAwakeOnScript(Script script) {
+        try {
+            if (!script.HasRunAwake) {
+                script.Awake();
+            }
+        }
+        catch (Exception e) {
+            Logger.Error(e, $"An exception occured in {script} during the Awake callback");
+        }
     }
 
     private void ChangeActiveGameObject(GameObject gameObject) {

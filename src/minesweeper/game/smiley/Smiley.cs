@@ -15,7 +15,7 @@ public class Smiley : Script {
     private readonly ClockTimer _clickedTimer = new(0.2f);
     private bool _clicked;
 
-    public override void Start() {
+    public override void Awake() {
         _textureRenderer = GetComponent<TextureRenderer>();
     }
 
