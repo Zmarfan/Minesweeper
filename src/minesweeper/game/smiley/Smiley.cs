@@ -30,8 +30,6 @@ public class Smiley : Script {
     }
 
     public override void OnMouseDown(MouseClickMask mask) {
-        _clicked = true;
-        _clickedTimer.Reset();
         Clicked?.Invoke();
     }
 
@@ -39,8 +37,10 @@ public class Smiley : Script {
         ChangeSmiley(SmileyType.WON);
     }
 
-    public void Default() {
-        ChangeSmiley(SmileyType.DEFAULT);
+    public void Restart() {
+        ChangeSmiley(SmileyType.DEFAULT_PRESSED);
+        _clicked = true;
+        _clickedTimer.Reset();
     }
     
     public void LostGame() {

@@ -18,7 +18,7 @@ public static class Scene1 {
         return GameObjectBuilder.Root()
             .Transform.AddChild("board")
             .SetLocalPosition(new Vector2(0, -Board.INFO_HEIGHT + Board.BORDER_LENGTH))
-            .SetComponent(new Board(9, 9, 10))
+            .SetComponent(new Board(30, 15, 99))
             .Build()
             .Transform.GetRoot().gameObject;
     }

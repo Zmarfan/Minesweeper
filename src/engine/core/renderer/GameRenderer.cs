@@ -25,6 +25,7 @@ internal class GameRenderer {
     private nint? _iconSurface;
     
     public GameRenderer(GameSettings settings, SceneData sceneData) {
+        SDL.SDL_SetHint( SDL.SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT , "1");
         _window = SDL.SDL_CreateWindow(
             settings.title,
             SDL.SDL_WINDOWPOS_CENTERED, 
@@ -74,12 +75,15 @@ internal class GameRenderer {
     }
 
     public void ToggleFullScreen() {
-        // Currently not supported, it's weird with resolution
-        return;
+        if (_settings.windowMenu != null) {
+            // You can not have a window menu and allow fullscreen, it wonky
+            return;
+        }
         uint flag = _isFullscreen ? 0 : (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN;
         if (SDL.SDL_SetWindowFullscreen(_window, flag) != 0) {
             throw new Exception($"Unable to change window fullScreen mode due to: {SDL.SDL_GetError()}");
         }
+        SDL.SDL_SetWindowSize(_window, _settings.width, _settings.height);
         _isFullscreen = !_isFullscreen;
     }
     

@@ -85,7 +85,7 @@ public class Board : Script {
     }
 
     private void RestartGame() {
-        _smiley.Default();
+        _smiley.Restart();
         _tilesFlagged = 0;
         foreach (Transform child in _tileHolder.children) {
             child.gameObject.Destroy();
