@@ -6,6 +6,8 @@ using GameEngine.engine.core.renderer.textures;
 using GameEngine.engine.core.window;
 using GameEngine.engine.data;
 using GameEngine.engine.scene;
+using GameEngine.engine.window;
+using GameEngine.engine.window.menu;
 
 namespace GameEngine.engine.core.renderer; 
 
@@ -50,6 +52,26 @@ internal class GameRenderer {
         
         _settings = settings;
         _sceneData = sceneData;
+        WindowHandler.Init(_window, WindowMenuBuilder
+            .Builder("menu")
+            .AddDropDown(WindowMenuBuilder
+                .Builder("dropdown")
+                .AddItem(MenuItemBuilder.Builder("1", "drop 1").IsChecked(true).Build())
+                .AddItem(MenuItemBuilder.Builder("2", "drop 2").Build())
+                .AddDropDown(WindowMenuBuilder
+                    .Builder("dropdown 2")
+                    .AddItem(MenuItemBuilder.Builder("3", "entry 1").IsChecked(true).Build())
+                    .AddItem(MenuItemBuilder.Builder("4", "entry 2").IsDisabled(true).Build())
+                    .AddBreak()
+                    .AddItem(MenuItemBuilder.Builder("5", "entry 3").Build())
+                    .Build()
+                )
+                .AddItem(MenuItemBuilder.Builder("6", "asdasd").Build())
+                .Build()
+            )
+            .AddItem(MenuItemBuilder.Builder("7", "123 2").Build())
+            .Build()
+        );
         _textureStorage = TextureStorage.Init(_renderer, _settings.assets.textureDeclarations);
         _fontHandler = new FontHandler(_renderer, settings.assets.fontDeclarations);
         _rendererHandler = new RendererHandler(_renderer, _fontHandler, settings);
