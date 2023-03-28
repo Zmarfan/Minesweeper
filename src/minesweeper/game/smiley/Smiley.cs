@@ -15,7 +15,7 @@ public class Smiley : Script {
     private readonly ClockTimer _clickedTimer = new(0.2f);
     private bool _clicked;
 
-    public override void Awake() {
+    public override void Start() {
         _textureRenderer = GetComponent<TextureRenderer>();
     }
 
@@ -30,7 +30,6 @@ public class Smiley : Script {
     }
 
     public override void OnMouseDown(MouseClickMask mask) {
-        ChangeSmiley(SmileyType.DEFAULT_PRESSED);
         _clicked = true;
         _clickedTimer.Reset();
         Clicked?.Invoke();
@@ -38,6 +37,10 @@ public class Smiley : Script {
 
     public void WonGame() {
         ChangeSmiley(SmileyType.WON);
+    }
+
+    public void Default() {
+        ChangeSmiley(SmileyType.DEFAULT);
     }
     
     public void LostGame() {

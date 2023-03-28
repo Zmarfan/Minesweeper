@@ -5,6 +5,7 @@ public class MenuItemBuilder {
     private readonly string _text;
     private bool _isChecked;
     private bool _disabled;
+    private string? _rightText = null;
 
     private MenuItemBuilder(string identifier, string text) {
         _identifier = identifier;
@@ -16,7 +17,7 @@ public class MenuItemBuilder {
     }
 
     public MenuItem Build() {
-        return new MenuItem(_identifier, _text, _isChecked, _disabled);
+        return new MenuItem(_identifier, _text, _isChecked, _disabled, _rightText);
     }
 
     public MenuItemBuilder IsChecked(bool isChecked) {
@@ -26,6 +27,11 @@ public class MenuItemBuilder {
 
     public MenuItemBuilder IsDisabled(bool isDisabled) {
         _disabled = isDisabled;
+        return this;
+    }
+
+    public MenuItemBuilder SetRightText(string rightText) {
+        _rightText = rightText;
         return this;
     }
 }

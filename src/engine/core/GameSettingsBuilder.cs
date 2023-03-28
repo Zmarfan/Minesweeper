@@ -8,6 +8,7 @@ using GameEngine.engine.core.update.physics.layers;
 using GameEngine.engine.core.update.physics.settings;
 using GameEngine.engine.helper;
 using GameEngine.engine.scene;
+using GameEngine.engine.window.menu;
 
 namespace GameEngine.engine.core; 
 
@@ -30,13 +31,14 @@ public class GameSettingsBuilder {
     private AudioSettings _audioSettings = new(Volume.Max(), ListUtils.Empty<AudioChannel>());
     private CursorSettings _cursorSettings = new(true, true);
     private GizmoSettings _gizmoSettings = GizmoSettingsBuilder.Builder().Build();
+    private WindowMenu? _windowMenu = null;
     
     public static GameSettingsBuilder Builder() {
         return new GameSettingsBuilder();
     }
 
     public GameSettings Build() {
-        return new GameSettings(_debug, _title, _width, _height, _iconSrc, _assets, _scenes, _inputListeners, _physicsSettings, _sortLayers, _audioSettings, _cursorSettings, _gizmoSettings);
+        return new GameSettings(_debug, _title, _width, _height, _iconSrc, _assets, _scenes, _inputListeners, _physicsSettings, _sortLayers, _audioSettings, _cursorSettings, _gizmoSettings, _windowMenu);
     }
 
     public GameSettingsBuilder SetAssets(Assets assets) {
@@ -106,6 +108,11 @@ public class GameSettingsBuilder {
 
     public GameSettingsBuilder SetGizmoSettings(GizmoSettings settings) {
         _gizmoSettings = settings;
+        return this;
+    }
+
+    public GameSettingsBuilder SetWindowMenu(WindowMenu menu) {
+        _windowMenu = menu;
         return this;
     }
 }

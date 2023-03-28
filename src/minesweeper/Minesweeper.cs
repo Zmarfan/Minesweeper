@@ -3,6 +3,7 @@ using GameEngine.engine.core.assets;
 using GameEngine.engine.core.cursor;
 using GameEngine.engine.core.renderer.textures;
 using GameEngine.engine.helper;
+using GameEngine.engine.window.menu;
 using GameEngine.minesweeper.names;
 using GameEngine.minesweeper.scenes;
 
@@ -18,6 +19,31 @@ public static class Minesweeper {
             .SetWindowIcon(Path("icon.png"))
             .AddScenes(ListUtils.Of(Scene1.GetScene()))
             .SetCursorSettings(new CursorSettings(true, false))
+            .SetWindowMenu(WindowMenuBuilder
+                .Builder("main_menu")
+                .AddDropDown(WindowMenuBuilder
+                    .Builder("Game")
+                    .AddItem(MenuItemBuilder.Builder(MenuNames.NEW, "New").SetRightText("F2").Build())
+                    .AddBreak()
+                    .AddItem(MenuItemBuilder.Builder(MenuNames.BEGINNER, "Beginner").Build())
+                    .AddItem(MenuItemBuilder.Builder(MenuNames.INTERMEDIATE, "Intermediate").Build())
+                    .AddItem(MenuItemBuilder.Builder(MenuNames.EXPERT, "Expert").Build())
+                    .AddItem(MenuItemBuilder.Builder(MenuNames.CUSTOM, "Custom...").Build())
+                    .AddBreak()
+                    .AddItem(MenuItemBuilder.Builder(MenuNames.MARKS, "Marks (?)").Build())
+                    .AddBreak()
+                    .AddItem(MenuItemBuilder.Builder(MenuNames.BEST_TIMES, "Best Times...").Build())
+                    .AddBreak()
+                    .AddItem(MenuItemBuilder.Builder(MenuNames.EXIT, "Exit").Build())
+                    .Build()
+                )
+                .AddDropDown(WindowMenuBuilder
+                    .Builder("Help")
+                    .AddItem(MenuItemBuilder.Builder(MenuNames.ABOUT, "About Minesweeper...").Build())
+                    .Build()
+                )
+                .Build()
+            )
             .Build()
         );
     }

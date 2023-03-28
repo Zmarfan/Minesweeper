@@ -10,7 +10,7 @@ public static class Scene1 {
     public static Scene GetScene() {
         return new Scene(SceneNames.MAIN, CreateWorldRoot, CreateScreenRoot, camera => {
             camera.defaultDrawColor = new Color(192, 192, 192, 255);
-            camera.Size = 3.5f;
+            camera.Size = 5.5f;
         });
     }
 

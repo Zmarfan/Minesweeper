@@ -13,13 +13,13 @@ public static class WindowHandler {
     private static readonly Dictionary<string, uint> IDENTIFIER_TO_UNIQUE_ID = new();
         
     internal static void Init(nint window, WindowMenu? menu) {
-        nint windowHandle = GetWindowHandle(window);
-        SDL.SDL_SetWindowsMessageHook(WindowMessageHook, nint.Zero);
-
         if (menu == null) {
             return;
         }
         
+        nint windowHandle = GetWindowHandle(window);
+        SDL.SDL_SetWindowsMessageHook(WindowMessageHook, nint.Zero);
+
         _mainMenu = WindowApi.CreateMenu();
         CreateMenu(_mainMenu, menu.menuItems);
         WindowApi.SetMenu(windowHandle, _mainMenu);
@@ -41,11 +41,15 @@ public static class WindowHandler {
         long lParam
     ) {
         if (message == WindowApi.CLICK_MESSAGE) {
-            MenuItemClicked?.Invoke(UNIQUE_ID_TO_IDENTIFIER[(uint)wParam]);
+            HandleClickEvent(wParam);
         }
         return WindowApi.CallNextHookEx(nint.Zero, 0, (nint)wParam, (nint)lParam);
     }
     
+    private static void HandleClickEvent(ulong menuItemId) {
+        MenuItemClicked?.Invoke(UNIQUE_ID_TO_IDENTIFIER[(uint)menuItemId]);
+    }
+
     private static nint GetWindowHandle(nint window) {
         SDL.SDL_VERSION(out SDL.SDL_version version);
         SDL.SDL_SysWMinfo windowInfo = new() { version = version };
@@ -61,13 +65,7 @@ public static class WindowHandler {
         foreach (IMenuEntry entry in entries) {
             switch (entry) {
                 case MenuItem item:
-                    uint flags = WindowApi.MENU_FLAG_STRING;
-                    flags |= item.disabled ? WindowApi.MENU_FLAG_GRAYED : 0;
-                    flags |= item.isChecked ? WindowApi.MENU_FLAG_CHECKED : 0;
-                    uint uniqueId = _uniqueId++;
-                    UNIQUE_ID_TO_IDENTIFIER.Add(uniqueId, item.identifier);
-                    IDENTIFIER_TO_UNIQUE_ID.Add(item.identifier, uniqueId);
-                    WindowApi.AppendMenu(menu, flags, uniqueId, item.text);
+                    CreateMenuItem(menu, item);
                     break;
                 case WindowMenu windowMenu:
                     nint dropdown = WindowApi.CreateMenu();
@@ -79,5 +77,17 @@ public static class WindowHandler {
                     break;
             }
         }
+    }
+
+    private static void CreateMenuItem(nint menu, MenuItem item) {
+        uint flags = WindowApi.MENU_FLAG_STRING;
+        flags |= item.disabled ? WindowApi.MENU_FLAG_GRAYED : 0;
+        flags |= item.isChecked ? WindowApi.MENU_FLAG_CHECKED : 0;
+        uint uniqueId = _uniqueId++;
+        UNIQUE_ID_TO_IDENTIFIER.Add(uniqueId, item.identifier);
+        IDENTIFIER_TO_UNIQUE_ID.Add(item.identifier, uniqueId);
+        string text = item.rightText == null ? item.text : $"{item.text}\t{item.rightText}";
+        
+        WindowApi.AppendMenu(menu, flags, uniqueId, text);
     }
 }

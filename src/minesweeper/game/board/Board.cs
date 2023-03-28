@@ -1,10 +1,15 @@
 ﻿using GameEngine.engine.camera;
+using GameEngine.engine.core.input;
+using GameEngine.engine.core.input.listener;
 using GameEngine.engine.core.window;
 using GameEngine.engine.data;
 using GameEngine.engine.game_object;
 using GameEngine.engine.game_object.scripts;
+using GameEngine.engine.window;
+using GameEngine.engine.window.menu;
 using GameEngine.minesweeper.game.number_display;
 using GameEngine.minesweeper.game.smiley;
+using GameEngine.minesweeper.names;
 
 namespace GameEngine.minesweeper.game.board; 
 
@@ -37,6 +42,11 @@ public class Board : Script {
         _tilesToOpen = width * height - mineCount;
         Tile.LeftClickedTileEvent += TileLeftClicked;
         Tile.RightClickedTileEvent += TileRightClicked;
+        WindowHandler.MenuItemClicked += id => {
+            if (id == MenuNames.NEW) {
+                RestartGame();
+            }
+        };
     }
 
     public override void Awake() {
@@ -68,9 +78,14 @@ public class Board : Script {
         if (!_gameOver && _madeFirstMove) {
             _timePassed += deltaTime;
         }
+
+        if (Input.GetKeyDown(Button.F2)) {
+            RestartGame();
+        }
     }
 
     private void RestartGame() {
+        _smiley.Default();
         _tilesFlagged = 0;
         foreach (Transform child in _tileHolder.children) {
             child.gameObject.Destroy();

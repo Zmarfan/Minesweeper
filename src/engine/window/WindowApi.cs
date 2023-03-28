@@ -6,6 +6,7 @@ internal static class WindowApi {
     private const string LIB = "user32.dll";
 
     public const int CLICK_MESSAGE = 0x0111;
+
     public const uint MENU_FLAG_STRING = 0x00000000;
     public const uint MENU_FLAG_GRAYED = 0x00000001;
     public const uint MENU_FLAG_CHECKED = 0x00000008;
