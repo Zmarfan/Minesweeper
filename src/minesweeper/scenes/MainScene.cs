@@ -5,6 +5,7 @@ using GameEngine.minesweeper.game;
 using GameEngine.minesweeper.game.board;
 using GameEngine.minesweeper.game.menu;
 using GameEngine.minesweeper.names;
+using Color = GameEngine.engine.data.Color;
 
 namespace GameEngine.minesweeper.scenes; 
 

@@ -3,5 +3,6 @@
 public enum ColliderState {
     COLLIDER,
     TRIGGERING_COLLIDER,
+    MOUSE_TRIGGER,
     TRIGGER
 }

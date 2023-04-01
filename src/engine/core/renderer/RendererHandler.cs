@@ -9,6 +9,7 @@ using GameEngine.engine.game_object.components.rendering.text_renderer;
 using GameEngine.engine.game_object.components.rendering.texture_renderer;
 using GameEngine.engine.logger;
 using GameEngine.engine.scene;
+using TextRenderer = GameEngine.engine.game_object.components.rendering.text_renderer.TextRenderer;
 
 namespace GameEngine.engine.core.renderer; 
 

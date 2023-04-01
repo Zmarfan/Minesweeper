@@ -11,7 +11,7 @@ namespace GameEngine.engine.core.update.physics.updating;
 internal static class TriggerResolver {
     public static void UpdateMouseTriggers(TrackObject obj, MouseClickMask mouseMask) {
         bool isInsideTrigger = obj.Colliders.Any(collider => 
-            collider is { IsActive: true, state: ColliderState.TRIGGER }
+            collider is { IsActive: true, state: ColliderState.MOUSE_TRIGGER }
                 && collider.IsPointInside(GetMouseWorldPosition(obj))
         );
 

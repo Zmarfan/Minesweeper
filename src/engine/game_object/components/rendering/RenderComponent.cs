@@ -1,4 +1,5 @@
 ﻿using GameEngine.engine.data;
+using Color = GameEngine.engine.data.Color;
 
 namespace GameEngine.engine.game_object.components.rendering; 
 

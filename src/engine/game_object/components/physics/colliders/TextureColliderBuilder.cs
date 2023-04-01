@@ -1,6 +1,7 @@
 ﻿using GameEngine.engine.core.renderer;
 using GameEngine.engine.data;
 using GameEngine.engine.game_object.components.rendering.texture_renderer;
+using Color = GameEngine.engine.data.Color;
 
 namespace GameEngine.engine.game_object.components.physics.colliders; 
 

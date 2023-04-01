@@ -4,6 +4,8 @@ using GameEngine.engine.core.renderer.font;
 using GameEngine.engine.data;
 using GameEngine.engine.game_object.components;
 using GameEngine.engine.game_object.components.rendering.text_renderer;
+using Font = GameEngine.engine.core.renderer.font.Font;
+using TextRenderer = GameEngine.engine.game_object.components.rendering.text_renderer.TextRenderer;
 
 namespace GameEngine.engine.core.renderer; 
 

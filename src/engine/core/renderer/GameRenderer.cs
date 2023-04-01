@@ -8,6 +8,8 @@ using GameEngine.engine.data;
 using GameEngine.engine.scene;
 using GameEngine.engine.window;
 using GameEngine.engine.window.menu;
+using Color = GameEngine.engine.data.Color;
+using Cursor = GameEngine.engine.core.cursor.Cursor;
 
 namespace GameEngine.engine.core.renderer; 
 

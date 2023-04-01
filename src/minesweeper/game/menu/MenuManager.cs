@@ -1,6 +1,7 @@
 ﻿using GameEngine.engine.game_object.scripts;
 using GameEngine.engine.scene;
 using GameEngine.engine.window;
+using GameEngine.minesweeper.game.menu.windows;
 using GameEngine.minesweeper.names;
 
 namespace GameEngine.minesweeper.game.menu; 
@@ -39,9 +40,19 @@ public class MenuManager : Script {
                 UseQuestionMarks = !UseQuestionMarks;
                 WindowMenuHandler.ChangeMenuItemCheckStatus(MenuNames.MARKS, UseQuestionMarks);
                 break;
+            case MenuNames.CUSTOM:
+                OpenCustomWindow();
+                break;
             case MenuNames.EXIT:
                 SceneManager.Quit();
                 break;
+        }
+    }
+    
+    private static void OpenCustomWindow() {
+        CustomBoardWindow dialog = new(Settings);
+        if (dialog.ShowDialog() == DialogResult.OK) {
+            RestartGame(new BoardSettings(dialog.BoardWidth, dialog.BoardHeight, Math.Min(dialog.BoardMines, dialog.BoardWidth * dialog.BoardHeight)));
         }
     }
 
@@ -55,6 +66,7 @@ public class MenuManager : Script {
         WindowMenuHandler.ChangeMenuItemCheckStatus(MenuNames.BEGINNER, Settings == BEGINNER_SETTINGS);
         WindowMenuHandler.ChangeMenuItemCheckStatus(MenuNames.INTERMEDIATE, Settings == INTERMEDIATE_SETTINGS);
         WindowMenuHandler.ChangeMenuItemCheckStatus(MenuNames.EXPERT, Settings == EXPERT_SETTINGS);
+        WindowMenuHandler.ChangeMenuItemCheckStatus(MenuNames.CUSTOM, Settings != BEGINNER_SETTINGS && Settings != INTERMEDIATE_SETTINGS && Settings != EXPERT_SETTINGS);
         WindowMenuHandler.ChangeMenuItemCheckStatus(MenuNames.MARKS, UseQuestionMarks);
     }
 }

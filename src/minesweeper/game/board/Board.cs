@@ -10,6 +10,7 @@ using GameEngine.engine.window.menu;
 using GameEngine.minesweeper.game.number_display;
 using GameEngine.minesweeper.game.smiley;
 using GameEngine.minesweeper.names;
+using Button = GameEngine.engine.core.input.listener.Button;
 
 namespace GameEngine.minesweeper.game.board; 
 

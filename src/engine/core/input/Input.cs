@@ -2,6 +2,7 @@
 using GameEngine.engine.core.input.listener;
 using GameEngine.engine.data;
 using GameEngine.engine.helper;
+using Button = GameEngine.engine.core.input.listener.Button;
 using EventHandler = GameEngine.engine.core.event_handler.EventHandler;
 
 namespace GameEngine.engine.core.input; 

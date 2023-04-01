@@ -3,6 +3,7 @@ using GameEngine.engine.game_object.components.animation.animation;
 using GameEngine.engine.game_object.components.animation.controller;
 using GameEngine.engine.game_object.components.particle_system.renderer;
 using GameEngine.engine.game_object.components.rendering.texture_renderer;
+using Color = GameEngine.engine.data.Color;
 
 namespace GameEngine.engine.game_object.components.particle_system.particle; 
 

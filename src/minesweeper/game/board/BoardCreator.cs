@@ -35,7 +35,7 @@ public static class BoardCreator {
 
         int mineCount = 0;
         for (int x = Math.Max(position.x - 1, 0); x <= Math.Min(position.x + 1, tiles.GetLength(0) - 1); x++) {
-            for (int y = Math.Max(position.y - 1, 0); y <= Math.Min(position.y + 1, tiles.GetLength(0) - 1); y++) {
+            for (int y = Math.Max(position.y - 1, 0); y <= Math.Min(position.y + 1, tiles.GetLength(1) - 1); y++) {
                 mineCount += mines.Contains(new Vector2Int(x, y)) ? 1 : 0;
             }
         }
@@ -47,7 +47,7 @@ public static class BoardCreator {
         return holder.Instantiate(GameObjectBuilder
             .Builder($"tile: {position.x}, {position.y})")
             .SetComponent(TextureRendererBuilder.Builder(TextureProvider.GetTileTexture(surroundingMineCount, MarkType.NONE)).Build())
-            .SetComponent(new BoxCollider(true, ColliderState.TRIGGER, new Vector2(Board.TILE_LENGTH, Board.TILE_LENGTH), Vector2.Zero()))
+            .SetComponent(new BoxCollider(true, ColliderState.MOUSE_TRIGGER, new Vector2(Board.TILE_LENGTH, Board.TILE_LENGTH), Vector2.Zero()))
             .SetComponent(new Tile(position, surroundingMineCount))
             .SetLocalPosition(new Vector2(position.x * Board.TILE_LENGTH, position.y * Board.TILE_LENGTH))
         ).GetComponent<Tile>();

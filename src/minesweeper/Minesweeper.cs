@@ -13,7 +13,7 @@ public static class Minesweeper {
     public static Game CreateGame() {
         return new Game(GameSettingsBuilder
             .Builder()
-            .SetBuildMode()
+            .SetDebugMode()
             .SetTitle("Minesweeper")
             .SetAssets(DefineAssets())
             .SetWindowIcon(Path("icon.png"))
@@ -63,7 +63,7 @@ public static class Minesweeper {
             .Build();
     }
     
-    private static string Path(string path) {
+    public static string Path(string path) {
         return $"{Directory.GetCurrentDirectory()}\\src\\assets\\{path}";
     }
 }

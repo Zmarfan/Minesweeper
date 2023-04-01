@@ -10,7 +10,7 @@ public abstract class Collider : ToggleComponent {
     public ColliderState state;
     public Vector2 offset;
 
-    protected string GizmoId => state == ColliderState.TRIGGER ? GizmoSettings.TRIGGER_NAME : GizmoSettings.COLLIDER_NAME;
+    protected string GizmoId => state is ColliderState.TRIGGER or ColliderState.MOUSE_TRIGGER ? GizmoSettings.TRIGGER_NAME : GizmoSettings.COLLIDER_NAME;
     
     protected readonly Vector2[] localCorners = new Vector2[4];
 

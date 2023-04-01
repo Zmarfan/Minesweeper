@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using GameEngine.engine.core.renderer.font;
+using Font = GameEngine.engine.core.renderer.font.Font;
 
 namespace GameEngine.engine.game_object.components.rendering.text_renderer; 
 

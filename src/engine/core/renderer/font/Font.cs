@@ -1,6 +1,7 @@
 ﻿using SDL2;
 using GameEngine.engine.core.renderer.textures;
 using GameEngine.engine.data;
+using Color = GameEngine.engine.data.Color;
 
 namespace GameEngine.engine.core.renderer.font; 
 

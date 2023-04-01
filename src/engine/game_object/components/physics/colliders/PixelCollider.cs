@@ -1,6 +1,7 @@
 ﻿using GameEngine.engine.core.gizmos;
 using GameEngine.engine.core.update.physics;
 using GameEngine.engine.data;
+using Color = GameEngine.engine.data.Color;
 
 namespace GameEngine.engine.game_object.components.physics.colliders; 
 

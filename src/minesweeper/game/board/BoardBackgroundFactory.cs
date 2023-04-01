@@ -84,7 +84,7 @@ public static class BoardBackgroundFactory {
                 .Transform.AddSibling("smiley")
                 .SetLocalPosition(new Vector2(0, boardOffset.y + DISPLAY_OFFSET))
                 .SetComponent(new Smiley())
-                .SetComponent(new BoxCollider(true, ColliderState.TRIGGER, new Vector2(Smiley.LENGTH, Smiley.LENGTH), Vector2.Zero()))
+                .SetComponent(new BoxCollider(true, ColliderState.MOUSE_TRIGGER, new Vector2(Smiley.LENGTH, Smiley.LENGTH), Vector2.Zero()))
                 .SetComponent(TextureRendererBuilder.Builder(TextureProvider.GetSmiley(SmileyType.DEFAULT)).Build())
                 .Build()
             .Transform.Parent!.gameObject;
