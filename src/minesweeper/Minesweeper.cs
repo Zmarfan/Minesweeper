@@ -13,7 +13,7 @@ public static class Minesweeper {
     public static Game CreateGame() {
         return new Game(GameSettingsBuilder
             .Builder()
-            .SetDebugMode()
+            .SetBuildMode()
             .SetTitle("Minesweeper")
             .SetAssets(DefineAssets())
             .SetWindowIcon(Path("icon.png"))
@@ -35,11 +35,6 @@ public static class Minesweeper {
                     .AddItem(MenuItemBuilder.Builder(MenuNames.BEST_TIMES, "Best Times...").Build())
                     .AddBreak()
                     .AddItem(MenuItemBuilder.Builder(MenuNames.EXIT, "Exit").Build())
-                    .Build()
-                )
-                .AddDropDown(WindowMenuBuilder
-                    .Builder("Help")
-                    .AddItem(MenuItemBuilder.Builder(MenuNames.ABOUT, "About Minesweeper...").Build())
                     .Build()
                 )
                 .Build()

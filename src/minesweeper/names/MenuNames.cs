@@ -9,5 +9,4 @@ public static class MenuNames {
     public const string MARKS = "marks";
     public const string BEST_TIMES = "bestTimes";
     public const string EXIT = "exit";
-    public const string ABOUT = "about";
 }
