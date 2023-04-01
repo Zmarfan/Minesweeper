@@ -7,6 +7,7 @@ using GameEngine.engine.game_object;
 using GameEngine.engine.game_object.scripts;
 using GameEngine.engine.window;
 using GameEngine.engine.window.menu;
+using GameEngine.minesweeper.game.menu;
 using GameEngine.minesweeper.game.number_display;
 using GameEngine.minesweeper.game.smiley;
 using GameEngine.minesweeper.names;
@@ -24,6 +25,7 @@ public class Board : Script {
     public const string MINE_NUMBER_DISPLAY = "mineNumberDisplay";
     public const string TIME_NUMBER_DISPLAY = "timeNumberDisplay";
 
+    private readonly GameType _gameType;
     private Transform _tileHolder = null!;
     private Smiley _smiley = null!;
     private NumberDisplay _timeNumberDisplay = null!;
@@ -37,10 +39,11 @@ public class Board : Script {
     private bool _gameOver;
     private bool _madeFirstMove;
     
-    public Board(int width, int height, int mineCount) {
+    public Board(int width, int height, int mineCount, GameType gameType) {
         _tiles = new Tile[width, height];
         _mineCount = mineCount;
         _tilesToOpen = width * height - mineCount;
+        _gameType = gameType;
         Tile.LeftClickedTileEvent += TileLeftClicked;
         Tile.RightClickedTileEvent += TileRightClicked;
     }
@@ -208,6 +211,7 @@ public class Board : Script {
         _mineNumberDisplay.DisplayNumber(0);
         RevealAllTiles(true);
         _smiley.WonGame();
+        HighScoreManager.SaveIfBetter((int)_timePassed, _gameType);
     }
     
     private void RevealAllTiles(bool win) {
