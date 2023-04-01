@@ -42,12 +42,11 @@ public class Board : Script {
         _tilesToOpen = width * height - mineCount;
         Tile.LeftClickedTileEvent += TileLeftClicked;
         Tile.RightClickedTileEvent += TileRightClicked;
-        WindowHandler.MenuItemClicked += id => {
-            if (id == MenuNames.NEW) {
-                RestartGame();
-            }
-        };
     }
+
+    public override void OnDestroy() {
+        Tile.LeftClickedTileEvent -= TileLeftClicked;
+        Tile.RightClickedTileEvent -= TileRightClicked;    }
 
     public override void Awake() {
         _tileHolder = Transform.Instantiate(GameObjectBuilder
@@ -137,7 +136,7 @@ public class Board : Script {
     private void OpenTilesFromOpenTile(Vector2Int position) {
         int flagCount = 0;
         for (int x = Math.Max(position.x - 1, 0); x <= Math.Min(position.x + 1, _tiles.GetLength(0) - 1); x++) {
-            for (int y = Math.Max(position.y - 1, 0); y <= Math.Min(position.y + 1, _tiles.GetLength(0) - 1); y++) {
+            for (int y = Math.Max(position.y - 1, 0); y <= Math.Min(position.y + 1, _tiles.GetLength(1) - 1); y++) {
                 flagCount += _tiles[x, y].MarkType == MarkType.FLAGGED ? 1 : 0;
             }
         }
@@ -147,7 +146,7 @@ public class Board : Script {
         }
         
         for (int x = Math.Max(position.x - 1, 0); x <= Math.Min(position.x + 1, _tiles.GetLength(0) - 1); x++) {
-            for (int y = Math.Max(position.y - 1, 0); y <= Math.Min(position.y + 1, _tiles.GetLength(0) - 1); y++) {
+            for (int y = Math.Max(position.y - 1, 0); y <= Math.Min(position.y + 1, _tiles.GetLength(1) - 1); y++) {
                 if (_tiles[x, y].MarkType == MarkType.FLAGGED) {
                     continue;
                 }

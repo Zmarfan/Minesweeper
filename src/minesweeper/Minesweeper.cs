@@ -17,7 +17,7 @@ public static class Minesweeper {
             .SetTitle("Minesweeper")
             .SetAssets(DefineAssets())
             .SetWindowIcon(Path("icon.png"))
-            .AddScenes(ListUtils.Of(Scene1.GetScene()))
+            .AddScenes(ListUtils.Of(MainScene.GetScene()))
             .SetCursorSettings(new CursorSettings(true, false))
             .SetWindowMenu(WindowMenuBuilder
                 .Builder("main_menu")

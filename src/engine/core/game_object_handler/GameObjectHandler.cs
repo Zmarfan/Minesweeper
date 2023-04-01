@@ -16,9 +16,11 @@ internal class GameObjectHandler {
     private readonly HashSet<GameObject> _activeStatusChangedGameObjects = new();
 
     private readonly GameObject _worldRoot;
+    private readonly GameObject _screenRoot;
 
     public GameObjectHandler(GameObject worldRoot, GameObject screenRoot) {
         _worldRoot = worldRoot;
+        _screenRoot = screenRoot;
         
         Transform.GameObjectInstantiateEvent += obj => _instantiatedGameObjects.Enqueue(obj);
         GameObject.GameObjectComponentAdd +=  component => _addedGameObjectComponents.Add(component);
@@ -49,6 +51,11 @@ internal class GameObjectHandler {
             ChangeActiveGameObject(obj);
             _activeStatusChangedGameObjects.Remove(obj);
         }
+    }
+
+    public void DestroyScene() {
+        DestroyGameObject(_worldRoot);
+        DestroyGameObject(_screenRoot);
     }
     
     private void DestroyObject(Object obj) {
@@ -116,7 +123,9 @@ internal class GameObjectHandler {
             .ToList()
             .ForEach(obj => {
                 obj.components.ForEach(component => component.OnDestroy());
-                gameObject.Transform.Parent!.children.Remove(gameObject.Transform);
+                if (gameObject.Transform != gameObject.Transform.GetRoot()) {
+                    gameObject.Transform.Parent!.children.Remove(gameObject.Transform);
+                }
                 objects.Remove(obj);
             });
     }

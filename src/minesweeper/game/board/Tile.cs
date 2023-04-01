@@ -2,6 +2,7 @@
 using GameEngine.engine.data;
 using GameEngine.engine.game_object.components.rendering.texture_renderer;
 using GameEngine.engine.game_object.scripts;
+using GameEngine.minesweeper.game.menu;
 
 namespace GameEngine.minesweeper.game.board; 
 
@@ -48,7 +49,7 @@ public class Tile : Script {
     public void Flag() {
         MarkType = MarkType switch {
             MarkType.NONE => MarkType.FLAGGED,
-            MarkType.FLAGGED => MarkType.QUESTION_MARK,
+            MarkType.FLAGGED => MenuManager.UseQuestionMarks ? MarkType.QUESTION_MARK : MarkType.NONE,
             MarkType.QUESTION_MARK => MarkType.NONE,
             _ => MarkType
         };

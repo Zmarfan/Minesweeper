@@ -3,7 +3,7 @@ using SDL2;
 
 namespace GameEngine.engine.window; 
 
-public static class WindowHandler {
+public static class WindowMenuHandler {
     public delegate void MenuItemClickedDelegate(string identifier);
     public static event MenuItemClickedDelegate? MenuItemClicked;
 

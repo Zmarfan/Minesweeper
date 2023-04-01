@@ -53,7 +53,7 @@ internal class GameRenderer {
         
         _settings = settings;
         _sceneData = sceneData;
-        WindowHandler.Init(_window, _settings.windowMenu);
+        WindowMenuHandler.Init(_window, _settings.windowMenu);
         _textureStorage = TextureStorage.Init(_renderer, _settings.assets.textureDeclarations);
         _fontHandler = new FontHandler(_renderer, settings.assets.fontDeclarations);
         _rendererHandler = new RendererHandler(_renderer, _fontHandler, settings);
