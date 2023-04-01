@@ -3,7 +3,7 @@ using GameEngine.engine.data;
 using GameEngine.engine.game_object.components.rendering.texture_renderer;
 using GameEngine.engine.game_object.scripts;
 
-namespace GameEngine.minesweeper.game.smiley; 
+namespace Minesweeper.minesweeper.game.smiley; 
 
 public class Smiley : Script {
     public delegate void ClickedDelegate();

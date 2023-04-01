@@ -1,4 +1,4 @@
-﻿namespace GameEngine.minesweeper.game.menu.windows;
+﻿namespace Minesweeper.minesweeper.game.menu.windows;
 
 public class CustomBoardWindow : PopupWindow {
     private const int CONTROL_Y_START_POS = 30;

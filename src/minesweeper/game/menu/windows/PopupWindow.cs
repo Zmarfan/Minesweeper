@@ -1,4 +1,4 @@
-﻿namespace GameEngine.minesweeper.game.menu.windows; 
+﻿namespace Minesweeper.minesweeper.game.menu.windows; 
 
 public class PopupWindow : Form {
     protected PopupWindow(string title, int width, int height) {

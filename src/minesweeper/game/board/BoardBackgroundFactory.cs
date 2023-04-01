@@ -2,10 +2,10 @@
 using GameEngine.engine.game_object;
 using GameEngine.engine.game_object.components.physics.colliders;
 using GameEngine.engine.game_object.components.rendering.texture_renderer;
-using GameEngine.minesweeper.game.number_display;
-using GameEngine.minesweeper.game.smiley;
+using Minesweeper.minesweeper.game.number_display;
+using Minesweeper.minesweeper.game.smiley;
 
-namespace GameEngine.minesweeper.game.board; 
+namespace Minesweeper.minesweeper.game.board; 
 
 public static class BoardBackgroundFactory {
     private const float DISPLAY_SCALE_FACTOR = Board.INFO_HEIGHT / (float)Board.BORDER_LENGTH;

@@ -1,11 +1,11 @@
-﻿using GameEngine.engine.core;
-using GameEngine.minesweeper;
+﻿using Minesweeper.minesweeper;
+using GameEngine.engine.core;
 
-namespace GameEngine; 
+namespace Minesweeper; 
 
 public static class Program {
     public static void Main() {
-        Game game = Minesweeper.CreateGame();
+        Game game = minesweeper.Minesweeper.CreateGame();
         game.Run();
     }
 }

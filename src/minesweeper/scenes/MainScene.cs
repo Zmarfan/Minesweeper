@@ -1,18 +1,16 @@
 ﻿using GameEngine.engine.data;
 using GameEngine.engine.game_object;
 using GameEngine.engine.scene;
-using GameEngine.minesweeper.game;
-using GameEngine.minesweeper.game.board;
-using GameEngine.minesweeper.game.menu;
-using GameEngine.minesweeper.names;
-using Color = GameEngine.engine.data.Color;
+using Minesweeper.minesweeper.game.board;
+using Minesweeper.minesweeper.game.menu;
+using Minesweeper.minesweeper.names;
 
-namespace GameEngine.minesweeper.scenes; 
+namespace Minesweeper.minesweeper.scenes; 
 
 public static class MainScene {
     public static Scene GetScene() {
         return new Scene(SceneNames.MAIN, CreateWorldRoot, CreateScreenRoot, camera => {
-            camera.defaultDrawColor = new Color(192, 192, 192, 255);
+            camera.defaultDrawColor = new GameEngine.engine.data.Color(192, 192, 192, 255);
             camera.Size = 3.5f;
         });
     }

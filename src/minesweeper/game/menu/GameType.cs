@@ -1,4 +1,4 @@
-﻿namespace GameEngine.minesweeper.game.menu; 
+﻿namespace Minesweeper.minesweeper.game.menu; 
 
 public enum GameType {
     BEGINNER,

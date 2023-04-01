@@ -4,10 +4,10 @@ using GameEngine.engine.core.cursor;
 using GameEngine.engine.core.renderer.textures;
 using GameEngine.engine.helper;
 using GameEngine.engine.window.menu;
-using GameEngine.minesweeper.names;
-using GameEngine.minesweeper.scenes;
+using Minesweeper.minesweeper.names;
+using Minesweeper.minesweeper.scenes;
 
-namespace GameEngine.minesweeper; 
+namespace Minesweeper.minesweeper; 
 
 public static class Minesweeper {
     public static Game CreateGame() {

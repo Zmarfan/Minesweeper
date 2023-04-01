@@ -1,9 +1,9 @@
 ﻿using GameEngine.engine.game_object.components.rendering.texture_renderer;
-using GameEngine.minesweeper.game.board;
-using GameEngine.minesweeper.game.smiley;
-using GameEngine.minesweeper.names;
+using Minesweeper.minesweeper.game.board;
+using Minesweeper.minesweeper.game.smiley;
+using Minesweeper.minesweeper.names;
 
-namespace GameEngine.minesweeper.game; 
+namespace Minesweeper.minesweeper.game; 
 
 public static class TextureProvider {
     public static Texture GetSmiley(SmileyType type) {

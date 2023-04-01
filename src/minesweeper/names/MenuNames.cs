@@ -1,4 +1,4 @@
-﻿namespace GameEngine.minesweeper.names; 
+﻿namespace Minesweeper.minesweeper.names; 
 
 public static class MenuNames {
     public const string NEW = "new";

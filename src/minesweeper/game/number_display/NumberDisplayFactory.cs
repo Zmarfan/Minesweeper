@@ -1,9 +1,9 @@
 ﻿using GameEngine.engine.data;
 using GameEngine.engine.game_object;
 using GameEngine.engine.game_object.components.rendering.texture_renderer;
-using GameEngine.minesweeper.names;
+using Minesweeper.minesweeper.names;
 
-namespace GameEngine.minesweeper.game.number_display; 
+namespace Minesweeper.minesweeper.game.number_display; 
 
 public static class NumberDisplayFactory {
     private const float NUMBER_CENTER_OFFSET = 70;

@@ -2,10 +2,10 @@
 using GameEngine.engine.game_object.scripts;
 using GameEngine.engine.scene;
 using GameEngine.engine.window;
-using GameEngine.minesweeper.game.menu.windows;
-using GameEngine.minesweeper.names;
+using Minesweeper.minesweeper.game.menu.windows;
+using Minesweeper.minesweeper.names;
 
-namespace GameEngine.minesweeper.game.menu; 
+namespace Minesweeper.minesweeper.game.menu; 
 
 public class MenuManager : Script {
     private static readonly BoardSettings BEGINNER_SETTINGS = new(9, 9, 10, GameType.BEGINNER);

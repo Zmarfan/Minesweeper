@@ -2,9 +2,9 @@
 using GameEngine.engine.data;
 using GameEngine.engine.game_object.components.rendering.texture_renderer;
 using GameEngine.engine.game_object.scripts;
-using GameEngine.minesweeper.game.menu;
+using Minesweeper.minesweeper.game.menu;
 
-namespace GameEngine.minesweeper.game.board; 
+namespace Minesweeper.minesweeper.game.board; 
 
 public class Tile : Script {
     public delegate void ClickedTileDelegate(Vector2Int position);

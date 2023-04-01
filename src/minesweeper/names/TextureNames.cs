@@ -1,4 +1,4 @@
-﻿namespace GameEngine.minesweeper.names; 
+﻿namespace Minesweeper.minesweeper.names; 
 
 public static class TextureNames {
     public const string TILES = "tiles";

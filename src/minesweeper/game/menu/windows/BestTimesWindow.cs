@@ -1,4 +1,4 @@
-﻿namespace GameEngine.minesweeper.game.menu.windows; 
+﻿namespace Minesweeper.minesweeper.game.menu.windows; 
 
 public class BestTimesWindow : PopupWindow {
     private const int BUTTON_Y_POSITION = 100;

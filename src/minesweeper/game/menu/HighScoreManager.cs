@@ -1,6 +1,6 @@
 ﻿using GameEngine.engine.core.saving;
 
-namespace GameEngine.minesweeper.game.menu; 
+namespace Minesweeper.minesweeper.game.menu; 
 
 public static class HighScoreManager {
     public const int WORST_TIME = 999;

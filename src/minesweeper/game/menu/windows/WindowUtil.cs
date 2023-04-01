@@ -1,4 +1,4 @@
-﻿namespace GameEngine.minesweeper.game.menu.windows; 
+﻿namespace Minesweeper.minesweeper.game.menu.windows; 
 
 public static class WindowUtil {
     private const int BUTTON_WIDTH = 60;

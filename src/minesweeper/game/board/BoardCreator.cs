@@ -4,7 +4,7 @@ using GameEngine.engine.game_object.components.physics.colliders;
 using GameEngine.engine.game_object.components.rendering.texture_renderer;
 using GameEngine.engine.helper;
 
-namespace GameEngine.minesweeper.game.board; 
+namespace Minesweeper.minesweeper.game.board; 
 
 public static class BoardCreator {
     public static void InitBoard(int mineCount, in Transform holder, in Tile[,] tiles) {

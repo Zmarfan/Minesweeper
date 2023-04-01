@@ -1,4 +1,4 @@
-﻿namespace GameEngine.minesweeper.game.board; 
+﻿namespace Minesweeper.minesweeper.game.board; 
 
 public enum MarkType {
     NONE,

@@ -1,7 +1,7 @@
 ﻿using GameEngine.engine.game_object.components.rendering.texture_renderer;
 using GameEngine.engine.game_object.scripts;
 
-namespace GameEngine.minesweeper.game.number_display; 
+namespace Minesweeper.minesweeper.game.number_display; 
 
 public class NumberDisplay : Script {
     public const string NO_0 = "no0";

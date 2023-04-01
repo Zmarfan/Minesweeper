@@ -1,4 +1,4 @@
-﻿namespace GameEngine.minesweeper.game.smiley; 
+﻿namespace Minesweeper.minesweeper.game.smiley; 
 
 public enum SmileyType {
     DEFAULT,

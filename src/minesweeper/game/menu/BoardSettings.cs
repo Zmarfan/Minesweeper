@@ -1,4 +1,4 @@
-﻿namespace GameEngine.minesweeper.game.menu; 
+﻿namespace Minesweeper.minesweeper.game.menu; 
 
 public record BoardSettings(int width, int height, int mines, GameType gameType) {
     public readonly int width = width;
