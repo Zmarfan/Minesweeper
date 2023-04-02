@@ -20,7 +20,7 @@ public static class MainScene {
             .Transform.AddChild("board")
             .SetLocalPosition(new Vector2(0, -Board.INFO_HEIGHT + Board.BORDER_LENGTH))
             .SetComponent(new MenuManager())
-            .SetComponent(new Board(MenuManager.Settings.width, MenuManager.Settings.height, MenuManager.Settings.mines, MenuManager.Settings.gameType))
+            .SetComponent(new Board(MenuManager.Settings))
             .Build()
             .Transform.GetRoot().gameObject;
     }

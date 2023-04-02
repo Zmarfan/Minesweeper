@@ -1,5 +1,4 @@
-﻿using GameEngine.engine.core.update.physics.updating;
-using GameEngine.engine.data;
+﻿using GameEngine.engine.data;
 using GameEngine.engine.game_object.components.rendering.texture_renderer;
 using GameEngine.engine.game_object.scripts;
 using Minesweeper.minesweeper.game.menu;
@@ -7,35 +6,20 @@ using Minesweeper.minesweeper.game.menu;
 namespace Minesweeper.minesweeper.game.board; 
 
 public class Tile : Script {
-    public delegate void ClickedTileDelegate(Vector2Int position);
-    public static event ClickedTileDelegate? LeftClickedTileEvent;
-    public static event ClickedTileDelegate? RightClickedTileEvent;
-
     public bool IsBomb => SurroundingMineCount < 0;
     public bool IsEmpty => SurroundingMineCount == 0;
 
     public int SurroundingMineCount { get; private set; }
     public MarkType MarkType { get; private set; } = MarkType.NONE;
-    private readonly Vector2Int _position;
 
     private TextureRenderer _textureRenderer = null!;
 
-    public Tile(Vector2Int position, int surroundingMineCount) {
-        _position = position;
+    public Tile(int surroundingMineCount) {
         SurroundingMineCount = surroundingMineCount;
     }
 
     public override void Awake() {
         _textureRenderer = GetComponent<TextureRenderer>();
-    }
-
-    public override void OnMouseDown(MouseClickMask mask) {
-        if (mask.LeftClick && MarkType != MarkType.FLAGGED || MarkType == MarkType.OPENED) {
-            LeftClickedTileEvent?.Invoke(_position);
-        } 
-        else if (mask.RightClick) {
-            RightClickedTileEvent?.Invoke(_position);
-        } 
     }
 
     public void Open() {

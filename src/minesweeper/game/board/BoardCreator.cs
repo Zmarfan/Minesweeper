@@ -1,6 +1,5 @@
 ﻿using GameEngine.engine.data;
 using GameEngine.engine.game_object;
-using GameEngine.engine.game_object.components.physics.colliders;
 using GameEngine.engine.game_object.components.rendering.texture_renderer;
 using GameEngine.engine.helper;
 
@@ -47,8 +46,7 @@ public static class BoardCreator {
         return holder.Instantiate(GameObjectBuilder
             .Builder($"tile: {position.x}, {position.y})")
             .SetComponent(TextureRendererBuilder.Builder(TextureProvider.GetTileTexture(surroundingMineCount, MarkType.NONE)).Build())
-            .SetComponent(new BoxCollider(true, ColliderState.MOUSE_TRIGGER, new Vector2(Board.TILE_LENGTH, Board.TILE_LENGTH), Vector2.Zero()))
-            .SetComponent(new Tile(position, surroundingMineCount))
+            .SetComponent(new Tile(surroundingMineCount))
             .SetLocalPosition(new Vector2(position.x * Board.TILE_LENGTH, position.y * Board.TILE_LENGTH))
         ).GetComponent<Tile>();
     }

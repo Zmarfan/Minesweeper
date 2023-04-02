@@ -7,6 +7,7 @@ using GameEngine.engine.game_object.scripts;
 using Minesweeper.minesweeper.game.menu;
 using Minesweeper.minesweeper.game.number_display;
 using Minesweeper.minesweeper.game.smiley;
+using Button = GameEngine.engine.core.input.listener.Button;
 
 namespace Minesweeper.minesweeper.game.board; 
 
@@ -20,43 +21,36 @@ public class Board : Script {
     public const string MINE_NUMBER_DISPLAY = "mineNumberDisplay";
     public const string TIME_NUMBER_DISPLAY = "timeNumberDisplay";
 
-    private readonly GameType _gameType;
+    private readonly BoardSettings _settings;
     private Transform _tileHolder = null!;
     private Smiley _smiley = null!;
     private NumberDisplay _timeNumberDisplay = null!;
     private NumberDisplay _mineNumberDisplay = null!;
     private readonly Tile[,] _tiles;
+    private Vector2Int? _hoveringTilePosition;
     private float _timePassed;
-    private readonly int _mineCount;
     private int _tilesFlagged;
     private readonly int _tilesToOpen;
     private int _openedTiles;
     private bool _gameOver;
     private bool _madeFirstMove;
     
-    public Board(int width, int height, int mineCount, GameType gameType) {
-        _tiles = new Tile[width, height];
-        _mineCount = mineCount;
-        _tilesToOpen = width * height - mineCount;
-        _gameType = gameType;
-        Tile.LeftClickedTileEvent += TileLeftClicked;
-        Tile.RightClickedTileEvent += TileRightClicked;
+    public Board(BoardSettings settings) {
+        _settings = settings;
+        _tiles = new Tile[settings.width, settings.height];
+        _tilesToOpen = settings.width * settings.height - settings.mines;
     }
-
-    public override void OnDestroy() {
-        Tile.LeftClickedTileEvent -= TileLeftClicked;
-        Tile.RightClickedTileEvent -= TileRightClicked;    }
 
     public override void Awake() {
         _tileHolder = Transform.Instantiate(GameObjectBuilder
             .Builder("tileHolder")
             .SetLocalPosition(CalculateTileHolderPosition())
         ).Transform;
-        BoardBackgroundFactory.Create(Transform, _tiles.GetLength(0), _tiles.GetLength(1));
+        BoardBackgroundFactory.Create(Transform, _settings.width, _settings.height);
 
         WindowManager.SetResolution(new Vector2Int(
-            (int)((TILE_LENGTH * _tiles.GetLength(0) + BORDER_LENGTH * 2) * (1 / Camera.Main.Size)),
-            (int)((TILE_LENGTH * _tiles.GetLength(1) + BORDER_LENGTH * 3 + INFO_HEIGHT) * (1 / Camera.Main.Size))
+            (int)((TILE_LENGTH * _settings.width + BORDER_LENGTH * 2) * (1 / Camera.Main.Size)),
+            (int)((TILE_LENGTH * _settings.height + BORDER_LENGTH * 3 + INFO_HEIGHT) * (1 / Camera.Main.Size))
         ));
 
         _smiley = GetComponentInChildren<Smiley>();
@@ -71,14 +65,26 @@ public class Board : Script {
     }
 
     public override void Update(float deltaTime) {
-        _mineNumberDisplay.DisplayNumber(_mineCount - _tilesFlagged);
+        _hoveringTilePosition = CalculateHoveringTilePosition();
+
+        _mineNumberDisplay.DisplayNumber(_settings.mines - _tilesFlagged);
         _timeNumberDisplay.DisplayNumber((int)_timePassed);
         if (!_gameOver && _madeFirstMove) {
             _timePassed += deltaTime;
         }
 
-        if (Input.GetKeyDown(GameEngine.engine.core.input.listener.Button.F2)) {
+        if (Input.GetKeyDown(Button.F2)) {
             RestartGame();
+        }
+
+        if (!_hoveringTilePosition.HasValue) {
+            return;
+        }
+        if (Input.GetKeyDown(Button.LEFT_MOUSE)) {
+            TileLeftClicked(_hoveringTilePosition.Value);
+        }
+        if (Input.GetKeyDown(Button.RIGHT_MOUSE)) {
+            TileRightClicked(_hoveringTilePosition.Value);
         }
     }
 
@@ -88,7 +94,7 @@ public class Board : Script {
         foreach (Transform child in _tileHolder.children) {
             child.gameObject.Destroy();
         }
-        BoardCreator.InitBoard(_mineCount, in _tileHolder, in _tiles);
+        BoardCreator.InitBoard(_settings.mines, in _tileHolder, in _tiles);
         _timePassed = 0;
         _openedTiles = 0;
         _madeFirstMove = false;
@@ -96,13 +102,13 @@ public class Board : Script {
     }
 
     private Vector2 CalculateTileHolderPosition() {
-        return new Vector2(-_tiles.GetLength(0), -_tiles.GetLength(1)) / 2f * TILE_LENGTH
+        return new Vector2(-_settings.width, -_settings.height) / 2f * TILE_LENGTH
                + new Vector2(TILE_LENGTH, TILE_LENGTH) / 2f;
     }
 
     private void TileLeftClicked(Vector2Int position) {
         Tile tile = _tiles[position.x, position.y];
-        if (_gameOver) {
+        if (_gameOver || tile.MarkType is MarkType.FLAGGED) {
             return;
         }
 
@@ -134,8 +140,8 @@ public class Board : Script {
     
     private void OpenTilesFromOpenTile(Vector2Int position) {
         int flagCount = 0;
-        for (int x = Math.Max(position.x - 1, 0); x <= Math.Min(position.x + 1, _tiles.GetLength(0) - 1); x++) {
-            for (int y = Math.Max(position.y - 1, 0); y <= Math.Min(position.y + 1, _tiles.GetLength(1) - 1); y++) {
+        for (int x = Math.Max(position.x - 1, 0); x <= Math.Min(position.x + 1, _settings.width - 1); x++) {
+            for (int y = Math.Max(position.y - 1, 0); y <= Math.Min(position.y + 1, _settings.height - 1); y++) {
                 flagCount += _tiles[x, y].MarkType == MarkType.FLAGGED ? 1 : 0;
             }
         }
@@ -144,8 +150,8 @@ public class Board : Script {
             return;
         }
         
-        for (int x = Math.Max(position.x - 1, 0); x <= Math.Min(position.x + 1, _tiles.GetLength(0) - 1); x++) {
-            for (int y = Math.Max(position.y - 1, 0); y <= Math.Min(position.y + 1, _tiles.GetLength(1) - 1); y++) {
+        for (int x = Math.Max(position.x - 1, 0); x <= Math.Min(position.x + 1, _settings.width - 1); x++) {
+            for (int y = Math.Max(position.y - 1, 0); y <= Math.Min(position.y + 1, _settings.height - 1); y++) {
                 if (_tiles[x, y].MarkType == MarkType.FLAGGED) {
                     continue;
                 }
@@ -163,8 +169,8 @@ public class Board : Script {
 
         while (emptyTiles.Count > 0) {
             Vector2Int currentPosition = emptyTiles.Dequeue();
-            for (int x = Math.Max(currentPosition.x - 1, 0); x <= Math.Min(currentPosition.x + 1, _tiles.GetLength(0) - 1); x++) {
-                for (int y = Math.Max(currentPosition.y - 1, 0); y <= Math.Min(currentPosition.y + 1, _tiles.GetLength(1) - 1); y++) {
+            for (int x = Math.Max(currentPosition.x - 1, 0); x <= Math.Min(currentPosition.x + 1, _settings.width - 1); x++) {
+                for (int y = Math.Max(currentPosition.y - 1, 0); y <= Math.Min(currentPosition.y + 1, _settings.height - 1); y++) {
                     Tile tile = _tiles[x, y];
                     if (tile.MarkType == MarkType.OPENED || (currentPosition.x == x && currentPosition.y == y)) {
                         continue;
@@ -206,12 +212,22 @@ public class Board : Script {
         _mineNumberDisplay.DisplayNumber(0);
         RevealAllTiles(true);
         _smiley.WonGame();
-        HighScoreManager.SaveIfBetter((int)_timePassed, _gameType);
+        HighScoreManager.SaveIfBetter((int)_timePassed, _settings.gameType);
     }
     
     private void RevealAllTiles(bool win) {
         foreach (Tile tile in _tiles) {
             tile.Reveal(win);
         }
+    }
+    
+    private Vector2Int? CalculateHoveringTilePosition() {
+        Vector2 position = _tileHolder.WorldToLocalMatrix.ConvertPoint(Input.MouseWorldPosition);
+        Vector2Int tilePosition = new((int)(position.x / TILE_LENGTH + 0.5f), (int)(position.y / TILE_LENGTH + 0.5f));
+        if (tilePosition.x < 0 || tilePosition.y < 0 || tilePosition.x >= _settings.width || tilePosition.y >= _settings.height) {
+            return null;
+        }
+
+        return tilePosition;
     }
 }

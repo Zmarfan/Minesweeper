@@ -13,7 +13,7 @@ public static class Minesweeper {
     public static Game CreateGame() {
         return new Game(GameSettingsBuilder
             .Builder()
-            .SetBuildMode()
+            .SetDebugMode()
             .SetTitle("Minesweeper")
             .SetAssets(DefineAssets())
             .SetWindowIcon(Path("icon.png"))
