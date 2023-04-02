@@ -22,6 +22,10 @@ public class Tile : Script {
         _textureRenderer = GetComponent<TextureRenderer>();
     }
 
+    public void PrepareOpen() {
+        _textureRenderer.texture = TextureProvider.GetTileTexture(0, MarkType.OPENED);
+    }
+    
     public void Open() {
         MarkType = MarkType.OPENED;
         if (IsBomb) {
@@ -58,7 +62,7 @@ public class Tile : Script {
         RefreshTexture();
     }
 
-    private void RefreshTexture() {
+    public void RefreshTexture() {
         _textureRenderer.texture = TextureProvider.GetTileTexture(SurroundingMineCount, MarkType);
     }
 }
