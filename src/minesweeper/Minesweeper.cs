@@ -3,6 +3,7 @@ using GameEngine.engine.core.assets;
 using GameEngine.engine.core.cursor;
 using GameEngine.engine.core.renderer.textures;
 using GameEngine.engine.helper;
+using GameEngine.engine.window;
 using GameEngine.engine.window.menu;
 using Minesweeper.minesweeper.names;
 using Minesweeper.minesweeper.scenes;
@@ -13,32 +14,38 @@ public static class Minesweeper {
     public static Game CreateGame() {
         return new Game(GameSettingsBuilder
             .Builder()
-            .SetDebugMode()
+            .SetBuildMode()
             .SetTitle("Minesweeper")
             .SetAssets(DefineAssets())
-            .SetWindowIcon(Path("icon.png"))
-            .AddScenes(ListUtils.Of(MainScene.GetScene()))
-            .SetCursorSettings(new CursorSettings(true, false))
-            .SetWindowMenu(WindowMenuBuilder
-                .Builder("main_menu")
-                .AddDropDown(WindowMenuBuilder
-                    .Builder("Game")
-                    .AddItem(MenuItemBuilder.Builder(MenuNames.NEW, "New").SetRightText("F2").Build())
-                    .AddBreak()
-                    .AddItem(MenuItemBuilder.Builder(MenuNames.BEGINNER, "Beginner").Build())
-                    .AddItem(MenuItemBuilder.Builder(MenuNames.INTERMEDIATE, "Intermediate").Build())
-                    .AddItem(MenuItemBuilder.Builder(MenuNames.EXPERT, "Expert").Build())
-                    .AddItem(MenuItemBuilder.Builder(MenuNames.CUSTOM, "Custom...").Build())
-                    .AddBreak()
-                    .AddItem(MenuItemBuilder.Builder(MenuNames.MARKS, "Marks (?)").Build())
-                    .AddBreak()
-                    .AddItem(MenuItemBuilder.Builder(MenuNames.BEST_TIMES, "Best Times...").Build())
-                    .AddBreak()
-                    .AddItem(MenuItemBuilder.Builder(MenuNames.EXIT, "Exit").Build())
+            .SetWindowSettings(WindowSettingsBuilder
+                .Builder()
+                .SetIconSrc(Path("icon.png"))
+                .SetAllowFullscreen(false)
+                .SetStartFullscreen(false)
+                .SetMenu(WindowMenuBuilder
+                    .Builder("main_menu")
+                    .AddDropDown(WindowMenuBuilder
+                        .Builder("Game")
+                        .AddItem(MenuItemBuilder.Builder(MenuNames.NEW, "New").SetRightText("F2").Build())
+                        .AddBreak()
+                        .AddItem(MenuItemBuilder.Builder(MenuNames.BEGINNER, "Beginner").Build())
+                        .AddItem(MenuItemBuilder.Builder(MenuNames.INTERMEDIATE, "Intermediate").Build())
+                        .AddItem(MenuItemBuilder.Builder(MenuNames.EXPERT, "Expert").Build())
+                        .AddItem(MenuItemBuilder.Builder(MenuNames.CUSTOM, "Custom...").Build())
+                        .AddBreak()
+                        .AddItem(MenuItemBuilder.Builder(MenuNames.MARKS, "Marks (?)").Build())
+                        .AddBreak()
+                        .AddItem(MenuItemBuilder.Builder(MenuNames.BEST_TIMES, "Best Times...").Build())
+                        .AddBreak()
+                        .AddItem(MenuItemBuilder.Builder(MenuNames.EXIT, "Exit").Build())
+                        .Build()
+                    )
                     .Build()
                 )
                 .Build()
             )
+            .AddScenes(ListUtils.Of(MainScene.GetScene()))
+            .SetCursorSettings(new CursorSettings(true, false))
             .Build()
         );
     }
